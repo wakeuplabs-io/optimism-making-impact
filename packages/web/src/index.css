@@ -4,15 +4,22 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Start of new custom colors */
+    --primary: hsla(353, 100%, 51%, 1);
+    --secondary: hsla(216, 15%, 48%, 1);
+    --white-high: hsla(0, 0%, 100%, 1);
+    --white-medium: hsla(0, 0%, 95%, 1);
+    --white-low: hsla(0, 0%, 80%, 1);
+    --dark-high: hsla(234, 24%, 8%, 1);
+    --dark-medium: hsla(0, 0%, 11%, 1);
+    --background: hsla(218, 40%, 96%, 1);
+    /* End of new custom colors */
+
     --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
     --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
@@ -61,8 +68,5 @@
 @layer base {
   * {
     @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
   }
 }
