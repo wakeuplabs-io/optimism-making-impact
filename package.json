@@ -11,19 +11,19 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "7.6.0",
-    "@typescript-eslint/parser": "7.6.0",
-    "eslint": "8.57.0",
-    "eslint-plugin-react": "7.34.1",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "eslint-plugin-react-refresh": "0.4.6",
-    "serverless": "3.38.0",
+    "@typescript-eslint/eslint-plugin": "8.18.0",
+    "@typescript-eslint/parser": "8.18.0",
+    "eslint": "9.16.0",
+    "eslint-plugin-react": "7.37.2",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "eslint-plugin-react-refresh": "0.4.16",
+    "serverless": "4.4.16",
     "serverless-plugin-common-excludes": "4.0.0",
-    "serverless-plugin-include-dependencies": "6.0.0",
-    "serverless-s3-sync": "3.3.0"
+    "serverless-plugin-include-dependencies": "6.1.1",
+    "serverless-s3-sync": "3.4.0"
   },
   "dependencies": {
-    "dotenv": "16.4.5",
-    "zod": "3.22.4"
+    "dotenv": "16.4.7",
+    "zod": "3.24.1"
   }
 }
