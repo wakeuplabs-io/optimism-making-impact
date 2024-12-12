@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "dev": "concurrently --kill-others \"pnpm --filter api run dev\" \"pnpm --filter ui run dev\"",
+    "lint": "pnpm -r --parallel run lint",
+    "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build"
   },
   "keywords": [],
@@ -13,7 +13,6 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "7.6.0",
     "@typescript-eslint/parser": "7.6.0",
-    "concurrently": "8.2.2",
     "eslint": "8.57.0",
     "eslint-plugin-react": "7.34.1",
     "eslint-plugin-react-hooks": "4.6.0",
