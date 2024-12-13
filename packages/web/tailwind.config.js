@@ -21,6 +21,14 @@ export default {
         background: 'var(--background)',
         // End of new custom colors
 
+        // Start of Card tag colors
+        simplicity: 'var(--simplicity)',
+        familiarity: 'var(--familiarity)',
+        extencibility: 'var(--extencibility)',
+        awareness: 'var(--awareness)',
+        understanding: 'var(--understanding)',
+        // End of Card tag colors
+
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',

@@ -15,6 +15,14 @@
     --background: hsla(218, 40%, 96%, 1);
     /* End of new custom colors */
 
+    /* Start of Card tag colors */
+    --simplicity: hsla(278, 32%, 90%, 1);
+    --familiarity: hsla(30, 7%, 94%, 1);
+    --extencibility: hsla(26, 83%, 88%, 1);
+    --awareness: hsla(202, 53%, 89%, 1);
+    --understanding: hsla(113, 40%, 90%, 1);
+    /* End of Card tag colors */
+
     --foreground: 224 71.4% 4.1%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
