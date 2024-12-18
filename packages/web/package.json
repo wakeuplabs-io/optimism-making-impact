@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "ui:add": "pnpm dlx shadcn@latest add"
+    "ui:add": "pnpm dlx shadcn@latest add",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
