@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "rimraf dist && tspc",
-    "dev": "docker compose up dev-db -d && pnpm prisma:generate:dev && pnpm dev",
+    "dev": "docker compose up dev-db -d && pnpm prisma:generate:dev && tsx watch src/app.ts",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",

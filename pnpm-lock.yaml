@@ -21,6 +21,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: 8.18.0
         version: 8.18.0(eslint@9.16.0(jiti@2.4.1))(typescript@5.6.3)
+      dotenv-cli:
+        specifier: ^7.4.4
+        version: 7.4.4
       eslint:
         specifier: 9.16.0
         version: 9.16.0(jiti@2.4.1)
@@ -76,9 +79,6 @@ importers:
       '@types/morgan':
         specifier: 1.9.9
         version: 1.9.9
-      dotenv-cli:
-        specifier: ^7.4.4
-        version: 7.4.4
       prisma:
         specifier: ^6.1.0
         version: 6.1.0
