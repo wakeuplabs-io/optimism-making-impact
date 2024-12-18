@@ -6,7 +6,14 @@
   "scripts": {
     "build": "rimraf dist && tspc",
     "dev": "tsx watch src/app.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
+    "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+    "prisma:push:dev": "dotenv -e .env.development -- prisma db push",
+    "prisma:reset:dev": "dotenv -e .env.development -- prisma migrate reset",
+    "studio": "dotenv -e .env.development -- prisma studio"
   },
   "keywords": [],
   "author": "",
