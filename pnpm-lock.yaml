@@ -48,6 +48,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@prisma/client':
+        specifier: ^6.1.0
+        version: 6.1.0
       cors:
         specifier: 2.8.5
         version: 2.8.5
@@ -851,6 +854,15 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@prisma/client@6.1.0':
+    resolution: {integrity: sha512-AbQYc5+EJKm1Ydfq3KxwcGiy7wIbm4/QbjCKWWoNROtvy7d6a3gmAGkKjK0iUCzh+rHV8xDhD5Cge8ke/kiy5Q==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
 
   '@radix-ui/react-compose-refs@1.1.0':
     resolution: {integrity: sha512-b4inOtiaOnYf9KWyO3jAeeCG6FeyfY6ldiEPanbUjWd+xIk5wZeHa8yVwmrJ2vderhu/BQvzCrJI0lHd+wIiqw==}
@@ -3870,6 +3882,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@prisma/client@6.1.0': {}
 
   '@radix-ui/react-compose-refs@1.1.0(@types/react@18.3.16)(react@18.3.1)':
     dependencies:
