@@ -1,4 +1,4 @@
-import { sendErrorResponse } from '@/lib/api-response/send-error-response.js';
+import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { NextFunction, Request, Response } from 'express';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
@@ -22,7 +22,7 @@ export function errorHandler(err: unknown, _: Request, res: Response, next: Next
     message = (err as Error).message;
   }
 
-  sendErrorResponse(res, statusCode, errorCode, message);
+  apiResponse.error(res, statusCode, errorCode, message);
 }
 
 export default { notFound, errorHandler };
