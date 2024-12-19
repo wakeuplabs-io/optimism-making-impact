@@ -7,7 +7,7 @@ export interface ApiErrorResponse {
   };
 }
 
-export type ApiSuccessResponseData = Record<string, any>;
+export type ApiSuccessResponseData = Record<string, unknown>;
 export interface SuccessResponse<T extends ApiSuccessResponseData> {
   success: true;
   status: number;
