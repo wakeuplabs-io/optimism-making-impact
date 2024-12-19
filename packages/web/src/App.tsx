@@ -1,4 +1,4 @@
-function App() {
+export function App() {
   return (
     <div className="flex h-screen flex-col">
       <nav className="absolute bg-green-100">Sidebar</nav>
@@ -7,5 +7,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
