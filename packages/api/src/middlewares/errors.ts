@@ -1,35 +1,28 @@
-import envParsed from "@/envParsed.js";
-import { Request, Response, NextFunction } from "express";
+import { sendErrorResponse } from '@/lib/api-response/send-error-response.js';
+import { ApiError } from '@/lib/errors/api-error.js';
+import { NextFunction, Request, Response } from 'express';
+import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 
-export const STATUS_CODES = {
-  NOT_FOUND: 404,
-  INTERNAL_SERVER_ERROR: 500,
-  OK: 200,
-};
-
-function notFound(req: Request, res: Response, next: NextFunction) {
-  res.status(STATUS_CODES.NOT_FOUND);
-
-  const error = new Error(`🔍 - Not Found - ${req.originalUrl}`);
-
-  next(error);
+function notFound() {
+  throw ApiError.notFound();
 }
 
-/* eslint-disable no-unused-vars */
-function errorHandler(err: unknown, req: Request, res: Response) {
+export function errorHandler(err: unknown, _: Request, res: Response, next: NextFunction): void {
   console.error(err);
 
-  const statusCode = res.statusCode !== 200 ? res.statusCode : STATUS_CODES.INTERNAL_SERVER_ERROR;
+  let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  let message = 'Internal Server Error';
+  let errorCode = getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR);
 
-  const message = err && (err instanceof Error || (typeof err === "object" && "message" in err)) ? err.message : "Internal Server Error";
+  if (err instanceof ApiError) {
+    statusCode = err.statusCode;
+    message = err.message;
+    errorCode = err.errorCode;
+  } else if (err && typeof err === 'object' && 'message' in err) {
+    message = (err as Error).message;
+  }
 
-  const stack = envParsed().NODE_ENV === "development" && err && typeof err === "object" && "stack" in err ? err.stack : undefined;
-
-  res.status(statusCode);
-  res.json({
-    message,
-    stack,
-  });
+  sendErrorResponse(res, statusCode, errorCode, message);
 }
 
 export default { notFound, errorHandler };
