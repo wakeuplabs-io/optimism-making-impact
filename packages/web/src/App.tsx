@@ -1,15 +1,11 @@
-import './App.css';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-
-function App() {
-  const [count, setCount] = useState(0);
-
+export function App() {
   return (
-    <div>
-      <Button onClick={() => setCount((count) => count + 1)}>Count is {count}</Button>
+    <div className="flex h-screen flex-col lg:flex-row">
+      <nav className="absolute bg-green-100 lg:static lg:h-full lg:w-[320px]">Sidebar</nav>
+      <div className="flex flex-1 flex-col">
+        <header className="bg-blue-100">Steps</header>
+        <main className="flex-1 bg-red-100">Layouts</main>
+      </div>
     </div>
   );
 }
-
-export default App;

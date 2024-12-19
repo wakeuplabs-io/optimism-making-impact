@@ -1,18 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Start of custom font */
+    --inter: 'Inter';
+    /* End of custom font */
+
+    /* Start of new custom colors */
+    --primary: hsla(353, 100%, 51%, 1);
+    --secondary: hsla(216, 15%, 48%, 1);
+    --white-high: hsla(0, 0%, 100%, 1);
+    --white-medium: hsla(0, 0%, 95%, 1);
+    --white-low: hsla(0, 0%, 80%, 1);
+    --dark-high: hsla(234, 24%, 8%, 1);
+    --dark-medium: hsla(0, 0%, 11%, 1);
+    --background: hsla(218, 40%, 96%, 1);
+    /* End of new custom colors */
+
+    /* Start of Card tag colors */
+    --simplicity: hsla(278, 32%, 90%, 1);
+    --familiarity: hsla(30, 7%, 94%, 1);
+    --extencibility: hsla(26, 83%, 88%, 1);
+    --awareness: hsla(202, 53%, 89%, 1);
+    --understanding: hsla(113, 40%, 90%, 1);
+    /* End of Card tag colors */
+
     --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
     --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
@@ -62,7 +83,20 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold leading-7 text-secondary;
+  }
+
+  h3 {
+    @apply text-xl font-medium leading-6 text-dark-high;
+  }
+
+  p {
+    @apply text-xl font-light leading-9;
   }
 }
