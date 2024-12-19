@@ -32,9 +32,9 @@ CREATE TABLE "Step" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
-    "roundId" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,
+    "roundId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -112,6 +112,9 @@ CREATE TABLE "Attribute" (
 
     CONSTRAINT "Attribute_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Step_position_roundId_key" ON "Step"("position", "roundId");
 
 -- AddForeignKey
 ALTER TABLE "Category" ADD CONSTRAINT "Category_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
