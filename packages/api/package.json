@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf dist && tspc",
     "dev": "tsx watch src/app.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "lint": "tsc --noEmit && eslint ."
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,11 @@
     "ts-patch": "3.1.2",
     "tsx": "4.11.0",
     "typescript": "5.4.4",
-    "typescript-transform-paths": "3.4.7"
+    "typescript-transform-paths": "3.4.7",
+    "@eslint/js": "^9.6.0",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "typescript-eslint": "^7.15.0"
   },
   "dependencies": {
     "cors": "2.8.5",

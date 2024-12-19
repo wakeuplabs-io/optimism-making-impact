@@ -7,7 +7,7 @@ function notFound() {
   throw ApiError.notFound();
 }
 
-export function errorHandler(err: unknown, _: Request, res: Response, next: NextFunction): void {
+export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
   console.error(err);
 
   let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
