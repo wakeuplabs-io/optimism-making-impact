@@ -14,8 +14,11 @@ dist-ssr
 !.vscode/settings.json
 
 .env*
-!.env.development
+.env.development
 !.env.sample
+
+# Docker
+docker-compose.yml
 
 # web3
 packages/web3/.dist
