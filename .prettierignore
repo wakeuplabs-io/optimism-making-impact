@@ -1,0 +1,13 @@
+# Ignore all files in the "node_modules" directory
+node_modules/
+
+# Ignore all files with a ".min.js" extension
+**/*.min.js
+
+# Ignore specific files or directories
+dist/
+build/
+coverage/
+
+.husky
+.vscode

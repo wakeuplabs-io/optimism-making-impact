@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf dist && tspc",
     "dev": "tsx watch src/app.ts",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
