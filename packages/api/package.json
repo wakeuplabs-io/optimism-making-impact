@@ -13,7 +13,7 @@
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
     "prisma:push:dev": "dotenv -e .env.development -- prisma db push",
     "prisma:reset:dev": "dotenv -e .env.development -- prisma migrate reset",
-    "studio": "dotenv -e .env.development -- prisma studio"
+    "studio": "dotenv -e .env.development -- prisma studio",
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write ."
   },
