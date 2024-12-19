@@ -1,4 +1,4 @@
-import errorMiddleware from "./errors.js";
+import errorMiddleware from './errors.js';
 
 const middlewares = {
   ...errorMiddleware,
