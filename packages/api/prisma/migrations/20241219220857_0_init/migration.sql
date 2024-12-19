@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "StepType" AS ENUM ('TYPE1', 'TYPE2', 'TYPE3');
+CREATE TYPE "StepType" AS ENUM ('INFOGRAPHY', 'ITEMS', 'CARD');
 
 -- CreateEnum
 CREATE TYPE "CardStrength" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
@@ -9,7 +9,6 @@ CREATE TABLE "Round" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
-    "missionId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

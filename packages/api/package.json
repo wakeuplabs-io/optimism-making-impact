@@ -5,10 +5,11 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "rimraf dist && tspc",
-    "dev": "pnpm prisma:generate:dev && tsx watch src/app.ts",
+    "dev": "pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.development -- tsx watch src/app.ts",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:deploy:dev": "dotenv -e .env.development -- prisma migrate deploy",
     "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
     "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
     "prisma:push:dev": "dotenv -e .env.development -- prisma db push",

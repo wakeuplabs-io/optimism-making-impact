@@ -8,11 +8,24 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+// Enums
+enum StepType {
+  INFOGRAPHY
+  ITEMS
+  CARD
+}
+
+enum CardStrength {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// Models
 model Round {
   id         String     @id @default(uuid())
   name       String
   icon       String
-  missionId  Int
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   categories Category[]
@@ -46,26 +59,26 @@ model Step {
 }
 
 model Infography {
-  id         String     @id @default(uuid())
-  markdown   String
-  image      String
-  position   Int
-  stepId     String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  step       Step       @relation(fields: [stepId], references: [id])
+  id        String   @id @default(uuid())
+  markdown  String
+  image     String
+  position  Int
+  stepId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  step      Step     @relation(fields: [stepId], references: [id])
 }
 
 model Item {
-  id           String     @id @default(uuid())
-  markdown     String
-  position     Int
-  stepId       String
-  attributeId  String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  step         Step       @relation(fields: [stepId], references: [id])
-  attribute    Attribute  @relation(fields: [attributeId], references: [id])
+  id          String    @id @default(uuid())
+  markdown    String
+  position    Int
+  stepId      String
+  attributeId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  step        Step      @relation(fields: [stepId], references: [id])
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
 }
 
 model Card {
@@ -92,36 +105,24 @@ model Keyword {
 }
 
 model CardKeyword {
-  cardId     String
-  keywordId  String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  cardId    String
+  keywordId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  card     Card     @relation(fields: [cardId], references: [id])
-  keyword  Keyword  @relation(fields: [keywordId], references: [id])
+  card    Card    @relation(fields: [cardId], references: [id])
+  keyword Keyword @relation(fields: [keywordId], references: [id])
 
   @@id([cardId, keywordId])
 }
 
 model Attribute {
-  id         String     @id @default(uuid())
+  id         String   @id @default(uuid())
   value      String
   categoryId String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  category   Category   @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  category   Category @relation(fields: [categoryId], references: [id])
   items      Item[]
   cards      Card[]
-}
-
-enum StepType {
-  TYPE1
-  TYPE2
-  TYPE3
-}
-
-enum CardStrength {
-  LOW
-  MEDIUM
-  HIGH
 }
