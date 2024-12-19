@@ -1,10 +1,11 @@
-import { Request, Response, Router, NextFunction } from "express";
+import { sendSuccessResponse } from '@/lib/api-response/send-success-response.js';
+import { NextFunction, Request, Response, Router } from 'express';
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.status(200).send("Hello World from github!");
+    sendSuccessResponse(res, { message: 'Hello World from github!' });
   } catch (error) {
     next(error);
   }

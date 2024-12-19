@@ -6,3 +6,12 @@ export interface ApiErrorResponse {
     message: string;
   };
 }
+
+export type ApiSuccessResponseData = Record<string, any>;
+export interface SuccessResponse<T extends ApiSuccessResponseData> {
+  success: true;
+  status: number;
+  code: string;
+  timestamp: string;
+  data: T;
+}
