@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Round {
+  id         String     @id @default(uuid())
+  name       String
+  icon       String
+  missionId  Int
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  categories Category[]
+  steps      Step[]
+}
+
+model Category {
+  id         String      @id @default(uuid())
+  name       String
+  icon       String
+  roundId    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  round      Round       @relation(fields: [roundId], references: [id])
+  attributes Attribute[]
+}
+
+model Step {
+  id           String       @id @default(uuid())
+  title        String
+  icon         String
+  roundId      String
+  position     Int
+  type         StepType
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  round        Round        @relation(fields: [roundId], references: [id])
+  infographies Infography[]
+  items        Item[]
+  cards        Card[]
+}
+
+model Infography {
+  id         String     @id @default(uuid())
+  markdown   String
+  image      String
+  position   Int
+  stepId     String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  step       Step       @relation(fields: [stepId], references: [id])
+}
+
+model Item {
+  id           String     @id @default(uuid())
+  markdown     String
+  position     Int
+  stepId       String
+  attributeId  String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  step         Step       @relation(fields: [stepId], references: [id])
+  attribute    Attribute  @relation(fields: [attributeId], references: [id])
+}
+
+model Card {
+  id           String        @id @default(uuid())
+  title        String
+  markdown     String
+  strength     CardStrength
+  position     Int
+  stepId       String
+  attributeId  String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  step         Step          @relation(fields: [stepId], references: [id])
+  attribute    Attribute     @relation(fields: [attributeId], references: [id])
+  cardKeywords CardKeyword[]
+}
+
+model Keyword {
+  id           String        @id @default(uuid())
+  value        String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  cardKeywords CardKeyword[]
+}
+
+model CardKeyword {
+  cardId     String
+  keywordId  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  card     Card     @relation(fields: [cardId], references: [id])
+  keyword  Keyword  @relation(fields: [keywordId], references: [id])
+
+  @@id([cardId, keywordId])
+}
+
+model Attribute {
+  id         String     @id @default(uuid())
+  value      String
+  categoryId String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  category   Category   @relation(fields: [categoryId], references: [id])
+  items      Item[]
+  cards      Card[]
+}
+
+enum StepType {
+  TYPE1
+  TYPE2
+  TYPE3
+}
+
+enum CardStrength {
+  LOW
+  MEDIUM
+  HIGH
+}

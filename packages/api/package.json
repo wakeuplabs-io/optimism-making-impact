@@ -5,8 +5,15 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "rimraf dist && tspc",
-    "dev": "tsx watch src/app.ts",
+    "dev": "pnpm prisma:generate:dev && tsx watch src/app.ts",
     "start": "node dist/app.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:generate:dev": "dotenv -e .env.development -- prisma generate",
+    "prisma:migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+    "prisma:push:dev": "dotenv -e .env.development -- prisma db push",
+    "prisma:reset:dev": "dotenv -e .env.development -- prisma migrate reset",
+    "studio": "dotenv -e .env.development -- prisma studio"
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write ."
   },
@@ -17,6 +24,7 @@
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
     "@types/morgan": "1.9.9",
+    "prisma": "^6.1.0",
     "rimraf": "5.0.5",
     "ts-patch": "3.1.2",
     "tsx": "4.11.0",
@@ -28,6 +36,7 @@
     "typescript-eslint": "^7.15.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.1.0",
     "cors": "2.8.5",
     "express": "4.19.2",
     "helmet": "7.1.0",
