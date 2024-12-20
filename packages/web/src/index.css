@@ -88,6 +88,10 @@
     font-family: 'Inter', sans-serif;
   }
 
+  h1 {
+    @apply text-[22px] font-black italic leading-7 2xl:text-2xl;
+  }
+
   h2 {
     @apply text-2xl font-semibold leading-7 text-secondary;
   }
