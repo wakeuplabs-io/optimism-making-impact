@@ -1,3 +1,4 @@
+import { AddNewRound } from '@/features/sidebar/components/add-new-round';
 import { DropdownMenu } from '@/features/sidebar/components/dropdown-menu';
 import { Logo } from '@/features/sidebar/components/logo';
 
@@ -7,6 +8,7 @@ export function Sidebar() {
       <div className="flex h-full flex-col gap-6">
         <Logo />
         <DropdownMenu />
+        <AddNewRound />
       </div>
     </nav>
   );
