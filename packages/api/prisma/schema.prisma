@@ -9,10 +9,10 @@ datasource db {
 }
 
 model Round {
-  id         String     @id @default(uuid())
+  id         String     @id @default(uuid()) // TODO: use int IDs whenever is possible.
   name       String
   icon       String
-  missionId  Int
+  missionId  Int // TODO: remove it
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   categories Category[]
@@ -20,7 +20,7 @@ model Round {
 }
 
 model Category {
-  id         String      @id @default(uuid())
+  id         String      @id @default(uuid())// TODO: use int IDs whenever is possible.
   name       String
   icon       String
   roundId    String
@@ -31,7 +31,7 @@ model Category {
 }
 
 model Step {
-  id           String       @id @default(uuid())
+  id           String       @id @default(uuid())// TODO: use int IDs whenever is possible.
   title        String
   icon         String
   roundId      String
@@ -46,7 +46,7 @@ model Step {
 }
 
 model Infography {
-  id         String     @id @default(uuid())
+  id         String     @id @default(uuid())// TODO: use int IDs whenever is possible.
   markdown   String
   image      String
   position   Int
@@ -57,7 +57,7 @@ model Infography {
 }
 
 model Item {
-  id           String     @id @default(uuid())
+  id           String     @id @default(uuid())// TODO: use int IDs whenever is possible.
   markdown     String
   position     Int
   stepId       String
@@ -69,7 +69,7 @@ model Item {
 }
 
 model Card {
-  id           String        @id @default(uuid())
+  id           String        @id @default(uuid())// TODO: use int IDs whenever is possible.
   title        String
   markdown     String
   strength     CardStrength
@@ -84,7 +84,7 @@ model Card {
 }
 
 model Keyword {
-  id           String        @id @default(uuid())
+  id           String        @id @default(uuid())// TODO: use int IDs whenever is possible.
   value        String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -104,7 +104,7 @@ model CardKeyword {
 }
 
 model Attribute {
-  id         String     @id @default(uuid())
+  id         String     @id @default(uuid())// TODO: use int IDs whenever is possible.
   value      String
   categoryId String
   createdAt  DateTime   @default(now())
@@ -115,9 +115,9 @@ model Attribute {
 }
 
 enum StepType {
-  TYPE1
-  TYPE2
-  TYPE3
+  INFOGRAPHIC
+  ITEMS
+  CARDS
 }
 
 enum CardStrength {
