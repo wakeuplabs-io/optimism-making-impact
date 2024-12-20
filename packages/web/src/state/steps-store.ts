@@ -19,6 +19,7 @@ const hardCodedSteps: Step[] = [
 interface StepsState {
   steps: Step[];
   selectedStep: Step;
+  loading: boolean;
 }
 
 interface StepsActions {
@@ -28,6 +29,7 @@ interface StepsActions {
 type StepsStore = StepsState & StepsActions;
 
 export const useStepsStore = create<StepsStore>()((set) => ({
+  loading: false,
   steps: hardCodedSteps,
   selectedStep: hardCodedSteps[0],
   setSelectedStep: (step: Step) => set((state) => ({ ...state, selectedStep: step })),
