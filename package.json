@@ -6,7 +6,8 @@
     "lint": "pnpm -r --parallel run lint",
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
-    "format": "pnpm -r --parallel run format"
+    "format": "pnpm -r --parallel run format",
+    "studio": "pnpm -r --parallel run studio"
   },
   "keywords": [],
   "author": "",
