@@ -1,5 +1,5 @@
-import letterO from '@/layouts/sidebar/assets/logo/letter-o.png';
-import letterP from '@/layouts/sidebar/assets/logo/letter-p.png';
+import letterO from '@/features/sidebar/assets/logo/letter-o.png';
+import letterP from '@/features/sidebar/assets/logo/letter-p.png';
 
 export function Logo() {
   const logoStyles = 'h-[22px] w-[23px] 2xl:h-[24px] 2xl:w-[25px]';

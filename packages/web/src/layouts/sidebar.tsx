@@ -1,4 +1,4 @@
-import { Logo } from '@/layouts/sidebar/components/logo';
+import { Logo } from '@/features/sidebar/components/logo';
 
 export function Sidebar() {
   return (
