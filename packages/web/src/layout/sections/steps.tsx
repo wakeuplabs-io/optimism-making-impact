@@ -7,9 +7,7 @@ export function StepsSection() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
-    (async () => {
-      setSteps(selectedRound.id);
-    })();
+    setSteps(selectedRound.id);
   }, [selectedRound.id]);
 
   return (
