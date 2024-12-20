@@ -6,7 +6,7 @@ CREATE TYPE "CardStrength" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
 -- CreateTable
 CREATE TABLE "Round" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -17,10 +17,10 @@ CREATE TABLE "Round" (
 
 -- CreateTable
 CREATE TABLE "Category" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
-    "roundId" TEXT NOT NULL,
+    "roundId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -29,12 +29,12 @@ CREATE TABLE "Category" (
 
 -- CreateTable
 CREATE TABLE "Step" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "icon" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,
-    "roundId" TEXT NOT NULL,
+    "roundId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -43,11 +43,11 @@ CREATE TABLE "Step" (
 
 -- CreateTable
 CREATE TABLE "Infography" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
-    "stepId" TEXT NOT NULL,
+    "stepId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -56,11 +56,11 @@ CREATE TABLE "Infography" (
 
 -- CreateTable
 CREATE TABLE "Item" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
-    "stepId" TEXT NOT NULL,
-    "attributeId" TEXT NOT NULL,
+    "stepId" INTEGER NOT NULL,
+    "attributeId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -69,13 +69,13 @@ CREATE TABLE "Item" (
 
 -- CreateTable
 CREATE TABLE "Card" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "markdown" TEXT NOT NULL,
     "strength" "CardStrength" NOT NULL,
     "position" INTEGER NOT NULL,
-    "stepId" TEXT NOT NULL,
-    "attributeId" TEXT NOT NULL,
+    "stepId" INTEGER NOT NULL,
+    "attributeId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -84,7 +84,7 @@ CREATE TABLE "Card" (
 
 -- CreateTable
 CREATE TABLE "Keyword" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -94,8 +94,8 @@ CREATE TABLE "Keyword" (
 
 -- CreateTable
 CREATE TABLE "CardKeyword" (
-    "cardId" TEXT NOT NULL,
-    "keywordId" TEXT NOT NULL,
+    "cardId" INTEGER NOT NULL,
+    "keywordId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -104,9 +104,9 @@ CREATE TABLE "CardKeyword" (
 
 -- CreateTable
 CREATE TABLE "Attribute" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL,
+    "categoryId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -23,7 +23,7 @@ enum CardStrength {
 
 // Models
 model Round {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   name String
   icon String
@@ -36,12 +36,12 @@ model Round {
 }
 
 model Category {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   name String
   icon String
 
-  roundId    String
+  roundId    Int
   round      Round       @relation(fields: [roundId], references: [id])
   attributes Attribute[]
 
@@ -50,14 +50,14 @@ model Category {
 }
 
 model Step {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   title    String
   icon     String
   position Int
   type     StepType
 
-  roundId      String
+  roundId      Int
   round        Round        @relation(fields: [roundId], references: [id])
   infographies Infography[]
   items        Item[]
@@ -70,28 +70,28 @@ model Step {
 }
 
 model Infography {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   markdown String
   image    String
   position Int
 
-  stepId String
-  step   Step   @relation(fields: [stepId], references: [id])
+  stepId Int
+  step   Step @relation(fields: [stepId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Item {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   markdown String
   position Int
 
-  stepId      String
+  stepId      Int
   step        Step      @relation(fields: [stepId], references: [id])
-  attributeId String
+  attributeId Int
   attribute   Attribute @relation(fields: [attributeId], references: [id])
 
   createdAt DateTime @default(now())
@@ -99,16 +99,16 @@ model Item {
 }
 
 model Card {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   title    String
   markdown String
   strength CardStrength
   position Int
 
-  stepId       String
+  stepId       Int
   step         Step          @relation(fields: [stepId], references: [id])
-  attributeId  String
+  attributeId  Int
   attribute    Attribute     @relation(fields: [attributeId], references: [id])
   cardKeywords CardKeyword[]
 
@@ -117,7 +117,7 @@ model Card {
 }
 
 model Keyword {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   value String
 
@@ -128,8 +128,8 @@ model Keyword {
 }
 
 model CardKeyword {
-  cardId    String
-  keywordId String
+  cardId    Int
+  keywordId Int
 
   card    Card    @relation(fields: [cardId], references: [id])
   keyword Keyword @relation(fields: [keywordId], references: [id])
@@ -141,11 +141,11 @@ model CardKeyword {
 }
 
 model Attribute {
-  id String @id @default(uuid())
+  id Int @id @default(autoincrement())
 
   value String
 
-  categoryId String
+  categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
   items      Item[]
   cards      Card[]
