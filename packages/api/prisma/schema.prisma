@@ -23,106 +23,133 @@ enum CardStrength {
 
 // Models
 model Round {
-  id         String     @id @default(uuid())
-  name       String
-  icon       String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id String @id @default(uuid())
+
+  name String
+  icon String
+
   categories Category[]
   steps      Step[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id         String      @id @default(uuid())
-  name       String
-  icon       String
+  id String @id @default(uuid())
+
+  name String
+  icon String
+
   roundId    String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
   round      Round       @relation(fields: [roundId], references: [id])
   attributes Attribute[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Step {
-  id           String       @id @default(uuid())
-  title        String
-  icon         String
+  id String @id @default(uuid())
+
+  title    String
+  icon     String
+  position Int
+  type     StepType
+
   roundId      String
-  position     Int
-  type         StepType
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
   round        Round        @relation(fields: [roundId], references: [id])
   infographies Infography[]
   items        Item[]
   cards        Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([position, roundId])
 }
 
 model Infography {
-  id        String   @id @default(uuid())
-  markdown  String
-  image     String
-  position  Int
-  stepId    String
+  id String @id @default(uuid())
+
+  markdown String
+  image    String
+  position Int
+
+  stepId String
+  step   Step   @relation(fields: [stepId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  step      Step     @relation(fields: [stepId], references: [id])
 }
 
 model Item {
-  id          String    @id @default(uuid())
-  markdown    String
-  position    Int
+  id String @id @default(uuid())
+
+  markdown String
+  position Int
+
   stepId      String
-  attributeId String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
   step        Step      @relation(fields: [stepId], references: [id])
+  attributeId String
   attribute   Attribute @relation(fields: [attributeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Card {
-  id           String        @id @default(uuid())
-  title        String
-  markdown     String
-  strength     CardStrength
-  position     Int
+  id String @id @default(uuid())
+
+  title    String
+  markdown String
+  strength CardStrength
+  position Int
+
   stepId       String
-  attributeId  String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
   step         Step          @relation(fields: [stepId], references: [id])
+  attributeId  String
   attribute    Attribute     @relation(fields: [attributeId], references: [id])
   cardKeywords CardKeyword[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Keyword {
-  id           String        @id @default(uuid())
-  value        String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id String @id @default(uuid())
+
+  value String
+
   cardKeywords CardKeyword[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CardKeyword {
   cardId    String
   keywordId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   card    Card    @relation(fields: [cardId], references: [id])
   keyword Keyword @relation(fields: [keywordId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([cardId, keywordId])
 }
 
 model Attribute {
-  id         String   @id @default(uuid())
-  value      String
+  id String @id @default(uuid())
+
+  value String
+
   categoryId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
   category   Category @relation(fields: [categoryId], references: [id])
   items      Item[]
   cards      Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
