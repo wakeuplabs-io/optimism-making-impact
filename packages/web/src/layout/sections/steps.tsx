@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { StepButton } from '@/components/steps-button';
 import { useSidebarStore, useStepsStore } from '@/state';
 import { useEffect } from 'react';
 
@@ -13,7 +13,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className="flex h-16 items-center justify-center bg-blue-200 px-10">
+    <header className="flex items-center justify-center h-16 px-10">
       <StepsSectionContent />
     </header>
   );
@@ -42,14 +42,23 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className="flex flex-1 justify-between">
+    <div className="flex justify-between flex-1">
       {stepsState.steps.length > 0 &&
-        stepsState.steps.map((step) => (
-          <Button key={step.id} onClick={() => stepsState.setSelectedStep(step)}>
-            {/* <img src="step.icon" alt="" /> */}
-            {step.title}
-          </Button>
-        ))}
+        stepsState.steps.map((step) => {
+          const buttonState =
+            stepsState.selectedStepPosition === step.position
+              ? 'active'
+              : stepsState.selectedStepPosition > step.position
+                ? 'past'
+                : 'coming';
+
+          return (
+            <StepButton state={buttonState} key={step.id} onClick={() => stepsState.setSelectedStepPosition(step.position)}>
+              {/* <img src="step.icon" alt="" /> */}
+              {step.title}
+            </StepButton>
+          );
+        })}
     </div>
   );
 }

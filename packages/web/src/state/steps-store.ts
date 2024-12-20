@@ -6,7 +6,7 @@ const stepSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
   icon: z.string(),
-  position: z.number(),
+  position: z.number(), // Zero-based
   type: z.enum(['INFOGRAPHY', 'ITEMS', 'CARD']),
   roundId: z.string().uuid(),
   createdAt: z.string().datetime(),
@@ -18,13 +18,16 @@ type Step = z.infer<typeof stepSchema>;
 
 interface StepsState {
   steps: Step[];
-  selectedStep: Step | null;
+  /**
+   * Zero-based.
+   */
+  selectedStepPosition: number;
   loading: boolean;
   error: string;
 }
 
 interface StepsActions {
-  setSelectedStep: (by: Step) => void;
+  setSelectedStepPosition: (position: number) => void;
   setSteps: (stepId: string) => void;
 }
 
@@ -34,11 +37,8 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set) => ({
   loading: false,
   error: '',
   steps: [],
-  selectedStep: null,
-  setSelectedStep: (step: Step) =>
-    set((state) => {
-      state.selectedStep = step; // Mutate the draft state safely
-    }),
+  selectedStepPosition: 0,
+  setSelectedStepPosition: (position: number) => set(() => ({ selectedStepPosition: position })),
   setSteps: async (stepId: string) => {
     try {
       set(() => ({ loading: true }));

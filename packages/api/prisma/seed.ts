@@ -123,7 +123,7 @@ async function main() {
       data: {
         title: 'Introduction to Technology',
         icon: 'intro-tech.png',
-        position: 1,
+        position: 0,
         type: 'INFOGRAPHY',
         roundId: round1.id,
       },
@@ -132,7 +132,7 @@ async function main() {
       data: {
         title: 'Advanced Technology',
         icon: 'advanced-tech.png',
-        position: 2,
+        position: 1,
         type: 'ITEMS',
         roundId: round1.id,
       },
@@ -141,7 +141,7 @@ async function main() {
       data: {
         title: 'Emerging Trends in Tech',
         icon: 'emerging-tech.png',
-        position: 3,
+        position: 2,
         type: 'CARD',
         roundId: round1.id,
       },
@@ -150,7 +150,7 @@ async function main() {
       data: {
         title: 'Future of Technology',
         icon: 'future-tech.png',
-        position: 4,
+        position: 3,
         type: 'INFOGRAPHY',
         roundId: round1.id,
       },
@@ -159,7 +159,7 @@ async function main() {
       data: {
         title: 'Introduction to Mathematics',
         icon: 'intro-math.png',
-        position: 1,
+        position: 0,
         type: 'INFOGRAPHY',
         roundId: round2.id,
       },
@@ -168,7 +168,7 @@ async function main() {
       data: {
         title: 'Algebra Basics',
         icon: 'algebra-basics.png',
-        position: 2,
+        position: 1,
         type: 'ITEMS',
         roundId: round2.id,
       },
@@ -177,7 +177,7 @@ async function main() {
       data: {
         title: 'Geometry Essentials',
         icon: 'geometry-essentials.png',
-        position: 3,
+        position: 2,
         type: 'CARD',
         roundId: round2.id,
       },
@@ -186,7 +186,7 @@ async function main() {
       data: {
         title: 'Advanced Calculus',
         icon: 'advanced-calculus.png',
-        position: 4,
+        position: 3,
         type: 'INFOGRAPHY',
         roundId: round2.id,
       },
@@ -195,7 +195,7 @@ async function main() {
       data: {
         title: 'Introduction to Arts',
         icon: 'intro-arts.png',
-        position: 1,
+        position: 0,
         type: 'INFOGRAPHY',
         roundId: round3.id,
       },
@@ -204,7 +204,7 @@ async function main() {
       data: {
         title: 'Modern Art Movements',
         icon: 'modern-art.png',
-        position: 2,
+        position: 1,
         type: 'ITEMS',
         roundId: round3.id,
       },
@@ -213,7 +213,7 @@ async function main() {
       data: {
         title: 'Classical Art Techniques',
         icon: 'classical-art.png',
-        position: 3,
+        position: 2,
         type: 'CARD',
         roundId: round3.id,
       },
@@ -222,7 +222,7 @@ async function main() {
       data: {
         title: 'Digital Art Revolution',
         icon: 'digital-art.png',
-        position: 4,
+        position: 3,
         type: 'INFOGRAPHY',
         roundId: round3.id,
       },
@@ -236,7 +236,7 @@ async function main() {
       data: {
         markdown: 'Understanding the basics of technology through visuals.',
         image: 'tech-basics.png',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[0].id,
       },
     }),
@@ -244,7 +244,7 @@ async function main() {
       data: {
         markdown: 'Explore advanced concepts in science.',
         image: 'science-advanced.png',
-        position: 2,
+        position: 2, // TODO: make it zero-based
         stepId: steps[0].id,
       },
     }),
@@ -252,7 +252,7 @@ async function main() {
       data: {
         markdown: 'Principles of mechanical engineering.',
         image: 'mechanical.png',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[6].id,
       },
     }),
@@ -264,7 +264,7 @@ async function main() {
     prisma.item.create({
       data: {
         markdown: 'Core principles of physics.',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[1].id,
         attributeId: attributes[2].id,
       },
@@ -272,7 +272,7 @@ async function main() {
     prisma.item.create({
       data: {
         markdown: 'Chemistry in everyday life.',
-        position: 2,
+        position: 2, // TODO: make it zero-based
         stepId: steps[1].id,
         attributeId: attributes[2].id,
       },
@@ -280,7 +280,7 @@ async function main() {
     prisma.item.create({
       data: {
         markdown: 'Renaissance art techniques.',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[9].id,
         attributeId: attributes[4].id,
       },
@@ -295,7 +295,7 @@ async function main() {
         title: 'Pythagorean Theorem',
         markdown: 'A fundamental theorem in mathematics.',
         strength: 'HIGH',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[2].id,
         attributeId: attributes[3].id,
       },
@@ -305,7 +305,7 @@ async function main() {
         title: 'Law of Gravity',
         markdown: 'An essential concept in physics.',
         strength: 'MEDIUM',
-        position: 2,
+        position: 2, // TODO: make it zero-based
         stepId: steps[2].id,
         attributeId: attributes[2].id,
       },
@@ -315,7 +315,7 @@ async function main() {
         title: "Da Vinci's Perspective",
         markdown: "Insights into Da Vinci's techniques.",
         strength: 'LOW',
-        position: 1,
+        position: 1, // TODO: make it zero-based
         stepId: steps[10].id,
         attributeId: attributes[4].id,
       },
