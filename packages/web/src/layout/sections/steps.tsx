@@ -22,9 +22,7 @@ export function StepsSectionContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
-    (async () => {
       stepsState.setSteps(selectedRound.id);
-    })();
   }, [selectedRound.id]);
 
   if (stepsState.loading) {
