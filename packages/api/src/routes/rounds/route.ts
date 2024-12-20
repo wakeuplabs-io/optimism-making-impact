@@ -20,10 +20,13 @@ roundsRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
 
 roundsRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Database will change IDS from strings to integers, change this after that!
-    const totalRounds = await prisma.round.count();
-    const nextRoundNumber = totalRounds + 1;
-    // ========
+    const lastRound = await prisma.round.findFirst({
+      orderBy: {
+        id: 'desc',
+      },
+    });
+
+    const nextRoundNumber = lastRound ? lastRound.id + 1 : 1;
 
     await prisma.round.create({
       data: {
