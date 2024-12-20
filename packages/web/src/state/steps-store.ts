@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createWithMiddlewares } from '@/state/create-with-middlewares';
 
 type Step = {
   id: string;
@@ -28,9 +28,12 @@ interface StepsActions {
 
 type StepsStore = StepsState & StepsActions;
 
-export const useStepsStore = create<StepsStore>()((set) => ({
+export const useStepsStore = createWithMiddlewares<StepsStore>((set) => ({
   loading: false,
   steps: hardCodedSteps,
   selectedStep: hardCodedSteps[0],
-  setSelectedStep: (step: Step) => set((state) => ({ ...state, selectedStep: step })),
+  setSelectedStep: (step: Step) =>
+    set((state) => {
+      state.selectedStep = step; // Mutate the draft state safely
+    }),
 }));
