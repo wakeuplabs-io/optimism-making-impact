@@ -1,6 +1,6 @@
 import { MainSection } from '@/layout/sections/main';
-import { SidebarSection } from '@/layout/sections/sidebar';
 import { StepsSection } from '@/layout/sections/steps';
+import { Sidebar } from '@/layouts/sidebar';
 import { useSidebarStore } from '@/state';
 import { useEffect } from 'react';
 
@@ -16,16 +16,16 @@ export function App() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center w-screen h-screen lg:flex-row">
+      <div className="flex h-screen w-screen flex-col items-center justify-center lg:flex-row">
         <div>Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col w-screen h-screen lg:flex-row">
-      <SidebarSection />
-      <div className="flex flex-col flex-1">
+    <div className="flex h-screen w-screen flex-col lg:flex-row">
+      <Sidebar />
+      <div className="flex flex-1 flex-col">
         <StepsSection />
         <MainSection />
       </div>
