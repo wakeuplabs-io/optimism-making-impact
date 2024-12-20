@@ -1,9 +1,10 @@
+import { roundsRouter } from '@/routes/rounds/route.js';
+import { testRouter } from '@/routes/test/route.js';
 import { Router } from 'express';
-
-import testRoute from './test/route.js';
 
 const router = Router();
 
-router.use('/test', testRoute);
+router.use('/test', testRouter);
+router.use('/rounds', roundsRouter);
 
 export default router;
