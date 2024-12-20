@@ -19,11 +19,12 @@ interface SidebarState {
 interface SidebarActions {
   setSelectedRound: (roundId: string) => void;
   setRounds: () => void;
+  addRound: () => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
 
-export const useSidebarStore = create<SidebarStore>()((set) => ({
+export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   loading: false,
   error: null,
   rounds: placeHolderRound,
@@ -38,5 +39,13 @@ export const useSidebarStore = create<SidebarStore>()((set) => ({
     const selectedRound = newRounds[0];
 
     set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound }));
+  },
+  addRound: async () => {
+    set((state) => ({ ...state, loading: true }));
+
+    await fetcher.post('/rounds').then((res) => res.data);
+    get().setRounds();
+
+    set((state) => ({ ...state, loading: false }));
   },
 }));
