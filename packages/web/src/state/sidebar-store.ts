@@ -36,9 +36,8 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
     const rounds = await fetcher.get('/rounds').then((res) => res.data);
 
     const newRounds: Round[] = rounds.data.rounds.map((round: Round) => ({ id: round.id, name: round.name, icon: round.icon }));
-    const selectedRound = newRounds[0];
 
-    set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound }));
+    set((state) => ({ ...state, loading: false, rounds: newRounds }));
   },
   addRound: async () => {
     set((state) => ({ ...state, loading: true }));
