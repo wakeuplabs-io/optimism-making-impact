@@ -16,6 +16,8 @@ type Category = {
   icon?: string;
 };
 
+const placeHolderCategory: Category[] = [{ id: 'Select-category-id', round_id: 'Select-category-round_id', name: 'Select' }];
+
 interface SidebarState {
   loading: boolean;
   error: string | null;
