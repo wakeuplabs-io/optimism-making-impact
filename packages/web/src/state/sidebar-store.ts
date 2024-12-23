@@ -38,7 +38,6 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   error: null,
   rounds: placeHolderRound,
   selectedRound: placeHolderRound[0],
-  //setSelectedRound: (roundId: string) => set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! })),
   setSelectedRound: (roundId: string) => {
     set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
     get().setCategories();
