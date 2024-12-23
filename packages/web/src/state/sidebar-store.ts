@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 type Round = {
   id: string;
-  icon: string;
+  icon?: string;
   name: string;
 };
 
