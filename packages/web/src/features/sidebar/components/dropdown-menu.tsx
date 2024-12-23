@@ -8,7 +8,7 @@ export function DropdownMenu() {
     <nav>
       <Select onValueChange={roundsState.setSelectedRound}>
         <SelectTrigger className="w-[125px] border-none bg-transparent text-lg leading-6 text-dark-medium shadow-none focus:ring-0 2xl:text-xl">
-          <SelectValue placeholder="Select" />
+          <SelectValue placeholder={roundsState.selectedRound.name} />
         </SelectTrigger>
         <SelectContent className="border-none bg-background">
           {roundsState.rounds.map((round) => (

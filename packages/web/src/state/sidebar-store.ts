@@ -3,11 +3,11 @@ import { create } from 'zustand';
 
 type Round = {
   id: string;
-  icon: string;
+  icon?: string;
   name: string;
 };
 
-const placeHolderRound: Round[] = [{ id: 'fake-id', name: 'fake-round-name', icon: 'fake-icon-1.svg' }];
+const placeHolderRound: Round[] = [{ id: 'select-round-id', name: 'Select' }];
 
 interface SidebarState {
   loading: boolean;
@@ -19,11 +19,12 @@ interface SidebarState {
 interface SidebarActions {
   setSelectedRound: (roundId: string) => void;
   setRounds: () => void;
+  addRound: () => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
 
-export const useSidebarStore = create<SidebarStore>()((set) => ({
+export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   loading: false,
   error: null,
   rounds: placeHolderRound,
@@ -35,8 +36,15 @@ export const useSidebarStore = create<SidebarStore>()((set) => ({
     const rounds = await fetcher.get('/rounds').then((res) => res.data);
 
     const newRounds: Round[] = rounds.data.rounds.map((round: Round) => ({ id: round.id, name: round.name, icon: round.icon }));
-    const selectedRound = newRounds[0];
 
-    set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound }));
+    set((state) => ({ ...state, loading: false, rounds: newRounds }));
+  },
+  addRound: async () => {
+    set((state) => ({ ...state, loading: true }));
+
+    await fetcher.post('/rounds').then((res) => res.data);
+    get().setRounds();
+
+    set((state) => ({ ...state, loading: false }));
   },
 }));
