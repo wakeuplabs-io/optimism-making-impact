@@ -1,7 +1,7 @@
 import { AddNewContent } from '@/components/add-new-content';
 import { Modal } from '@/components/modal';
 import { Button } from '@/components/ui/button';
-import { NewCategoryInputs } from '@/features/sidebar/components/new-category-inputs';
+import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
 import { useSidebarStore, isAdmin } from '@/state';
 import { Blocks } from 'lucide-react';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ export function CategoryList() {
       {isRoundSelected && categories}
       {isAdmin && isRoundSelected && (
         <Modal title="New Category" trigger={<AddNewContent buttonText="New category" />}>
-          <NewCategoryInputs />
+          <NewCategoryForm />
         </Modal>
       )}
     </ul>
