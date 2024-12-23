@@ -17,3 +17,21 @@ categoriesRouter.get('/', async (req: Request, res: Response, next: NextFunction
     next(error);
   }
 });
+
+categoriesRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { title, iconURL, roundId } = req.body;
+
+    await prisma.category.create({
+      data: {
+        name: title,
+        icon: iconURL,
+        roundId: Number(roundId),
+      },
+    });
+
+    apiResponse.success(res, { message: 'Category created successfully.' }, 201);
+  } catch (error) {
+    next(error);
+  }
+});
