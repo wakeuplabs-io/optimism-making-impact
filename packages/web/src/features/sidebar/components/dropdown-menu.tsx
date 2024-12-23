@@ -14,7 +14,7 @@ export function DropdownMenu() {
           {roundsState.rounds.map((round) => (
             <SelectItem
               key={round.id}
-              className="focus:bg-background-brighter text-dark-low h-14 text-sm focus:text-dark-medium 2xl:text-base"
+              className="h-14 cursor-pointer text-sm text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base"
               value={round.id}
             >
               {round.name}
