@@ -7,7 +7,7 @@ type Round = {
   name: string;
 };
 
-const placeHolderRound: Round[] = [{ id: 'fake-id', name: 'fake-round-name', icon: 'fake-icon-1.svg' }];
+const placeHolderRound: Round[] = [{ id: 'select-round-id', name: 'Select' }];
 
 interface SidebarState {
   loading: boolean;
