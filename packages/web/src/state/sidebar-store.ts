@@ -30,6 +30,7 @@ interface SidebarActions {
   setSelectedRound: (roundId: string) => void;
   setRounds: () => void;
   addRound: () => void;
+  setCategories: () => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
@@ -58,4 +59,18 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
     set((state) => ({ ...state, loading: false }));
   },
   categories: placeHolderCategory,
+  setCategories: async () => {
+    set((state) => ({ ...state, loading: true }));
+
+    const categories = await fetcher.get('/categories').then((res) => res.data);
+
+    const newCategories: Category[] = categories.data.categories.map((category: Category) => ({
+      id: category.id,
+      round_id: category.round_id,
+      name: category.name,
+      icon: category.icon,
+    }));
+
+    set((state) => ({ ...state, loading: false, categories: newCategories }));
+  },
 }));
