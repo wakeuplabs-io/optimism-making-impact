@@ -16,8 +16,6 @@ type Category = {
   icon?: string;
 };
 
-const placeHolderCategory: Category[] = [{ id: 'Select-category-id', roundId: 'Select-category-round_id', name: 'Select' }];
-
 interface SidebarState {
   loading: boolean;
   error: string | null;
@@ -62,7 +60,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
 
     set((state) => ({ ...state, loading: false }));
   },
-  categories: placeHolderCategory,
+  categories: [],
   setCategories: async () => {
     set((state) => ({ ...state, loading: true }));
 
