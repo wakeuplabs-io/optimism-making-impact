@@ -1,13 +1,29 @@
 import { Button } from '@/components/ui/button';
+import { useSidebarStore } from '@/state';
 import { Blocks } from 'lucide-react';
+import { useState } from 'react';
 
 export function CategoryList() {
-  return <ul>Category List</ul>;
+  const categoriesState = useSidebarStore((state) => state);
+  const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id);
+
+  function handleCategoryClick(categoryId: string) {
+    setActiveCategory(categoryId);
+  }
+
+  const categories = categoriesState.categories.map((category) => (
+    <li key={category.id}>
+      <IconButton text={category.name} isActive={activeCategory == category.id} onClick={() => handleCategoryClick(category.id)} />
+    </li>
+  ));
+
+  return <ul>{categories}</ul>;
 }
 
 type IconButtonProps = {
   text: string;
   isActive: boolean;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 };
 export function IconButton(props: IconButtonProps) {
   return (

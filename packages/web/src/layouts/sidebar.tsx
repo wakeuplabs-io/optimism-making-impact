@@ -1,4 +1,5 @@
 import { AddNewRound } from '@/features/sidebar/components/add-new-round';
+import { CategoryList } from '@/features/sidebar/components/category-list';
 import { DropdownMenu } from '@/features/sidebar/components/dropdown-menu';
 import { Logo } from '@/features/sidebar/components/logo';
 
@@ -11,6 +12,7 @@ export function Sidebar() {
           <DropdownMenu />
           <AddNewRound />
         </div>
+        <CategoryList />
       </div>
     </nav>
   );

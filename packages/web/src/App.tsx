@@ -6,13 +6,15 @@ import { useEffect } from 'react';
 
 export function App() {
   const fetchRounds = useSidebarStore((state) => state.setRounds);
+  const fetchCategories = useSidebarStore((state) => state.setCategories);
   const loading = useSidebarStore((state) => state.loading);
 
   useEffect(() => {
     (async function setRounds() {
       fetchRounds();
     })();
-  }, []);
+    fetchCategories();
+  }, [fetchRounds, fetchCategories]);
 
   if (loading) {
     return (

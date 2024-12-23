@@ -11,12 +11,12 @@ const placeHolderRound: Round[] = [{ id: 'select-round-id', name: 'Select' }];
 
 type Category = {
   id: string;
-  round_id: string;
+  roundId: string;
   name: string;
   icon?: string;
 };
 
-const placeHolderCategory: Category[] = [{ id: 'Select-category-id', round_id: 'Select-category-round_id', name: 'Select' }];
+const placeHolderCategory: Category[] = [{ id: 'Select-category-id', roundId: 'Select-category-round_id', name: 'Select' }];
 
 interface SidebarState {
   loading: boolean;
@@ -40,7 +40,11 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   error: null,
   rounds: placeHolderRound,
   selectedRound: placeHolderRound[0],
-  setSelectedRound: (roundId: string) => set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! })),
+  //setSelectedRound: (roundId: string) => set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! })),
+  setSelectedRound: (roundId: string) => {
+    set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
+    get().setCategories();
+  },
   setRounds: async () => {
     set((state) => ({ ...state, loading: true }));
 
@@ -64,13 +68,15 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
 
     const categories = await fetcher.get('/categories').then((res) => res.data);
 
-    const newCategories: Category[] = categories.data.categories.map((category: Category) => ({
-      id: category.id,
-      round_id: category.round_id,
-      name: category.name,
-      icon: category.icon,
-    }));
+    const filterCategoriesByRound: Category[] = categories.data.categories
+      .map((category: Category) => ({
+        id: category.id,
+        roundId: category.roundId,
+        name: category.name,
+        icon: category.icon,
+      }))
+      .filter((category: Category) => get().selectedRound.id == category.roundId);
 
-    set((state) => ({ ...state, loading: false, categories: newCategories }));
+    set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
   },
 }));
