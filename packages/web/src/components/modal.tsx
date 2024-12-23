@@ -1,5 +1,4 @@
-import { IconButton } from '@/components/icon-button';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import React from 'react';
 
 type ModalProps = {
@@ -14,12 +13,9 @@ export function Modal(props: ModalProps) {
       <DialogContent className="w-[600px] bg-white-high px-14 py-12">
         <DialogHeader className="pb-5">
           <DialogTitle className="text-center text-lg text-dark-low 2xl:text-xl">{props.title}</DialogTitle>
+          <DialogDescription className="text-center text-secondary">Click save when you are done.</DialogDescription>
         </DialogHeader>
         {props.children}
-        <DialogFooter className="pt-9">
-          <IconButton variant="save" />
-          <IconButton variant="delete" />
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
