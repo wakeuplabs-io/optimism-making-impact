@@ -9,6 +9,13 @@ type Round = {
 
 const placeHolderRound: Round[] = [{ id: 'select-round-id', name: 'Select' }];
 
+type Category = {
+  id: string;
+  round_id: string;
+  name: string;
+  icon?: string;
+};
+
 interface SidebarState {
   loading: boolean;
   error: string | null;
