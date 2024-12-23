@@ -23,6 +23,7 @@ interface SidebarState {
   error: string | null;
   rounds: Round[];
   selectedRound: Round;
+  categories: Category[];
 }
 
 interface SidebarActions {
@@ -56,4 +57,5 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
 
     set((state) => ({ ...state, loading: false }));
   },
+  categories: placeHolderCategory,
 }));
