@@ -18,6 +18,8 @@
     --white-low: hsla(0, 0%, 80%, 1);
     --dark-high: hsla(234, 24%, 8%, 1);
     --dark-medium: hsla(0, 0%, 11%, 1);
+    --dark-low: hsla(0, 0%, 25%, 1);
+    --background-brighter: hsla(218, 40%, 98%, 1);
     --background: hsla(218, 40%, 96%, 1);
     /* End of new custom colors */
 

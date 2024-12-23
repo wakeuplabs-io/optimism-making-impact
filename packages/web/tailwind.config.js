@@ -18,6 +18,8 @@ export default {
         ['white-low']: 'var(--white-low)',
         ['dark-high']: 'var(--dark-high)',
         ['dark-medium']: 'var(--dark-medium)',
+        ['dark-low']: 'var(--dark-low)',
+        ['background-brighter']: 'var(--background-brighter)',
         background: 'var(--background)',
         // End of new custom colors
 
