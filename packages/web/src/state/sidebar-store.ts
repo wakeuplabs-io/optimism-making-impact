@@ -24,11 +24,17 @@ interface SidebarState {
   categories: Category[];
 }
 
+export type CategoryFormData = {
+  title: string;
+  iconURL: string;
+};
+
 interface SidebarActions {
   setSelectedRound: (roundId: string) => void;
   setRounds: () => void;
   addRound: () => void;
   setCategories: () => void;
+  addCategory: (formData: CategoryFormData, roundId: string) => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
@@ -75,5 +81,19 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
       .filter((category: Category) => get().selectedRound.id == category.roundId);
 
     set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
+  },
+  addCategory: async (formData: CategoryFormData, roundId: string) => {
+    set((state) => ({ ...state, loading: true }));
+
+    await fetcher
+      .post('/categories', {
+        ...formData,
+        roundId: roundId,
+      })
+      .then((res) => res.data);
+
+    get().setCategories();
+
+    set((state) => ({ ...state, loading: false }));
   },
 }));
