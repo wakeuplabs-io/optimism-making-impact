@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 
 type AddNewContentProps = {
   buttonText: string;
-  addNewContent: () => void;
+  addNewContent?: () => void;
 };
 export function AddNewContent(props: AddNewContentProps) {
   return (
