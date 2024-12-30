@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "build": "rimraf dist && tspc",
-    "dev": "docker compose up -d && pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
+    "dev": "pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
