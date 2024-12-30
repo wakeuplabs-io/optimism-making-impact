@@ -2,16 +2,16 @@ import { fetcher } from '@/lib/fetcher';
 import { create } from 'zustand';
 
 type Round = {
-  id: string;
+  id: number;
   icon?: string;
   name: string;
 };
 
-const placeHolderRound: Round[] = [{ id: 'select-round-id', name: 'Select' }];
+const placeHolderRound: Round[] = [{ id: 1, name: 'Select' }];
 
 type Category = {
   id: string;
-  roundId: string;
+  roundId: number;
   name: string;
   icon?: string;
 };
@@ -30,11 +30,11 @@ export type CategoryFormData = {
 };
 
 interface SidebarActions {
-  setSelectedRound: (roundId: string) => void;
+  setSelectedRound: (roundId: number) => void;
   setRounds: () => void;
   addRound: () => void;
   setCategories: () => void;
-  addCategory: (formData: CategoryFormData, roundId: string) => void;
+  addCategory: (formData: CategoryFormData, roundId: number) => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
@@ -44,7 +44,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   error: null,
   rounds: placeHolderRound,
   selectedRound: placeHolderRound[0],
-  setSelectedRound: (roundId: string) => {
+  setSelectedRound: (roundId: number) => {
     set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
     get().setCategories();
   },
@@ -82,7 +82,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
 
     set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
   },
-  addCategory: async (formData: CategoryFormData, roundId: string) => {
+  addCategory: async (formData: CategoryFormData, roundId: number) => {
     set((state) => ({ ...state, loading: true }));
 
     await fetcher
