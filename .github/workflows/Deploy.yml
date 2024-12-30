@@ -36,7 +36,7 @@ jobs:
 
       - name: SAM Deploy
         run: |
-          sam deploy --stack-name ${{env.STACK_NAME}} --parameter-overrides StackName='${{ env.STACK_NAME }}' DomainName='${{env.UI_DOMAIN}}'
+          sam deploy --stack-name ${{ vars.STACK_NAME }} --parameter-overrides StackName='${{ vars.STACK_NAME }}' DomainName='${{vars.UI_DOMAIN}}'
 
       - name: Deploy UI to s3
         working-directory: ./packages/web

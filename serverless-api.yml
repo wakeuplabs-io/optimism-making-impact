@@ -1,4 +1,4 @@
-service: react-monorepo-template-api
+service: making-impact-api
 provider:
   name: aws
   region: sa-east-1
