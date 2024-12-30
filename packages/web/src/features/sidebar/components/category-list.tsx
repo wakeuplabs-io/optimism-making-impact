@@ -9,8 +9,7 @@ import { useState } from 'react';
 export function CategoryList() {
   const categoriesState = useSidebarStore((state) => state);
   const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id);
-  const isRoundNotSelected = categoriesState.selectedRound.id == 'select-round-id';
-  const isRoundSelected = categoriesState.selectedRound.id != 'select-round-id';
+  const isRoundSelected = Number.isInteger(categoriesState.selectedRound.id);
 
   function handleCategoryClick(categoryId: string) {
     setActiveCategory(categoryId);
@@ -24,7 +23,7 @@ export function CategoryList() {
 
   return (
     <ul className="grid gap-2">
-      {isRoundNotSelected && <p className="text-sm text-primary">Select a round to enable.</p>}
+      {!isRoundSelected && <p className="text-sm text-primary">Select a round to enable.</p>}
       {isRoundSelected && categories}
       {isAdmin && isRoundSelected && (
         <Modal title="New Category" trigger={<AddNewContent buttonText="New category" />}>

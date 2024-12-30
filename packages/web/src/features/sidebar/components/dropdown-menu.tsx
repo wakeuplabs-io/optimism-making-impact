@@ -6,7 +6,7 @@ export function DropdownMenu() {
 
   return (
     <nav>
-      <Select onValueChange={roundsState.setSelectedRound}>
+      <Select onValueChange={(val) => roundsState.setSelectedRound(+val)}>
         <SelectTrigger className="w-[125px] border-none bg-transparent text-lg leading-6 text-dark-medium shadow-none focus:ring-0 2xl:text-xl">
           <SelectValue placeholder={roundsState.selectedRound.name} />
         </SelectTrigger>
@@ -15,7 +15,7 @@ export function DropdownMenu() {
             <SelectItem
               key={round.id}
               className="h-14 cursor-pointer text-sm text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base"
-              value={round.id}
+              value={round.id.toString()}
             >
               {round.name}
             </SelectItem>

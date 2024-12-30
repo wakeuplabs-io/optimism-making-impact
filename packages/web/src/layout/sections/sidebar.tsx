@@ -6,13 +6,13 @@ export function SidebarSection() {
 
   return (
     <nav className="absolute bg-green-100 p-8 lg:static lg:h-full lg:w-[320px]">
-      <Select onValueChange={roundsState.setSelectedRound}>
+      <Select onValueChange={(val: string) =>roundsState.setSelectedRound(+val)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a round" />
         </SelectTrigger>
         <SelectContent>
           {roundsState.rounds.map((round) => (
-            <SelectItem key={round.id} value={round.id}>
+            <SelectItem key={round.id} value={round.id.toString()}>
               {round.name}
             </SelectItem>
           ))}
