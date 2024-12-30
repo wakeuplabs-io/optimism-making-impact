@@ -27,11 +27,11 @@ packages/web3/cache
 packages/web3/artifacts
 
 # UI
-packages/ui/.dist
-packages/ui/node_modules
-packages/ui/.env
-packages/ui/cache
-packages/ui/src/routeTree.gen.ts
+packages/web/.dist
+packages/web/node_modules
+packages/web/.env
+packages/web/cache
+packages/web/src/routeTree.gen.ts
 
 
 # TypeChain files

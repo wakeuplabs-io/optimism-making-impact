@@ -13,7 +13,7 @@ Resources:
   UI:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: packages/ui/template.yml
+      TemplateURL: packages/web/template.yml
       Parameters:
         StackName: !Ref StackName
         DomainName: !Ref DomainName
