@@ -3,12 +3,12 @@ import { createWithMiddlewares } from '@/state/create-with-middlewares';
 import { z } from 'zod';
 
 const stepSchema = z.object({
-  id: z.string().uuid(),
+  id: z.number(),
   title: z.string(),
   icon: z.string(),
   position: z.number(), // Zero-based
   type: z.enum(['INFOGRAPHY', 'ITEMS', 'CARD']),
-  roundId: z.string().uuid(),
+  roundId: z.number(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
@@ -28,7 +28,7 @@ interface StepsState {
 
 interface StepsActions {
   setSelectedStepPosition: (position: number) => void;
-  setSteps: (stepId: string) => void;
+  setSteps: (stepId: number) => void;
 }
 
 type StepsStore = StepsState & StepsActions;
@@ -39,7 +39,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set) => ({
   steps: [],
   selectedStepPosition: 0,
   setSelectedStepPosition: (position: number) => set(() => ({ selectedStepPosition: position })),
-  setSteps: async (stepId: string) => {
+  setSteps: async (stepId: number) => {
     try {
       set(() => ({ loading: true }));
       const { data } = await fetcher.get(`/steps/${stepId}`).then((res) => res.data);
