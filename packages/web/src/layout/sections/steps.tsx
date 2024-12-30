@@ -11,7 +11,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className="flex items-center justify-center h-16 px-10">
+    <header className="flex h-16 items-center justify-center px-10">
       <StepsSectionContent />
     </header>
   );
@@ -22,7 +22,7 @@ export function StepsSectionContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
-      stepsState.setSteps(selectedRound.id);
+    stepsState.setSteps(selectedRound.id);
   }, [selectedRound.id]);
 
   if (stepsState.loading) {
@@ -38,7 +38,7 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className="flex justify-between flex-1">
+    <div className="flex flex-1 justify-between">
       {stepsState.steps.length > 0 &&
         stepsState.steps.map((step) => {
           const buttonState =
