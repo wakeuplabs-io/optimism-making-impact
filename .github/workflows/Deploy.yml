@@ -41,11 +41,11 @@ jobs:
       - name: Deploy UI to s3
         working-directory: ./packages/web
         run: |
-          aws s3 sync dist s3://${{ env.STACK_NAME }}.${{env.UI_DOMAIN}}/
+          aws s3 sync dist s3://${{ vars.STACK_NAME }}.${{vars.UI_DOMAIN}}/
 
       - name: Invalidate UI Cloudfront Distribution
         run: |
-          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --stack-name ${{ env.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
+          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --stack-name ${{ vars.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
           aws cloudfront create-invalidation --distribution-id ${{env.DISTRIBUTION_ID}} --paths "/*"
 
       - name: Deploy Api
