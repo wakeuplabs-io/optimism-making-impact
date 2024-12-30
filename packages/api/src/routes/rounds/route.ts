@@ -1,6 +1,7 @@
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response, Router } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 export const roundsRouter = Router();
 
@@ -35,7 +36,8 @@ roundsRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
       },
     });
 
-    apiResponse.success(res, { message: 'Round created successfully' }, 201);
+    apiResponse.success(res, { message: 'Round created successfully' }, 201); // TODO: NO VA
+    res.status(StatusCodes.CREATED).json({ message: 'Round created successfully' });
   } catch (error) {
     next(error);
   }
