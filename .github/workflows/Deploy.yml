@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
@@ -36,22 +35,22 @@ jobs:
 
       - name: SAM Deploy
         run: |
-          sam deploy --stack-name ${{ vars.STACK_NAME }} --parameter-overrides StackName='${{ vars.STACK_NAME }}' DomainName='${{vars.UI_DOMAIN}}'
+          sam deploy --stack-name ${{ vars.STACK_NAME }} --parameter-overrides StackName='${{ vars.STACK_NAME }}' DomainName='${{ vars.UI_DOMAIN }}'
 
       - name: Deploy UI to s3
         working-directory: ./packages/web
         run: |
-          aws s3 sync dist s3://${{ vars.STACK_NAME }}.${{vars.UI_DOMAIN}}/
+          aws s3 sync dist s3://${{ vars.STACK_NAME }}.${{ vars.UI_DOMAIN }}/
 
       - name: Invalidate UI Cloudfront Distribution
         run: |
           DISTRIBUTION_ID=$(aws cloudformation describe-stacks --stack-name ${{ vars.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
-          aws cloudfront create-invalidation --distribution-id ${{env.DISTRIBUTION_ID}} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{vars.DISTRIBUTION_ID}} --paths "/*"
 
       - name: Deploy Api
         uses: serverless/github-action@v3.2
         with:
-          args: deploy --stage develop -c serverless-api.yml
+          args: deploy --stage main -c serverless-api.yml
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
