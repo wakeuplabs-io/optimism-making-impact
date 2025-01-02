@@ -17,8 +17,15 @@ Resources:
       Parameters:
         StackName: !Ref StackName
         DomainName: !Ref DomainName
+      Tags:
+        - Key: customer
+          Value: optimism-making-impact
 
 Outputs:
   CloudFrontDistributionId:
     Description: "CloudFront Distribution ID from the UI stack"
     Value: !GetAtt UI.Outputs.CloudFrontDistributionId
+
+Tags:
+  Key: customer
+  Value: optimism-making-impact
