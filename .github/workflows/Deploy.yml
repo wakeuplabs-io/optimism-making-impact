@@ -43,11 +43,6 @@ jobs:
         run: |
           aws s3 sync dist s3://${{ vars.STACK_NAME }}.${{ vars.UI_DOMAIN }}/
 
-      - name: Invalidate UI Cloudfront Distribution
-        run: |
-          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --stack-name ${{ vars.STACK_NAME }} --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" --output text)
-          aws cloudfront create-invalidation --distribution-id ${{vars.DISTRIBUTION_ID}} --paths "/*"
-
       - name: Deploy Api
         uses: serverless/github-action@v3.2
         with:
