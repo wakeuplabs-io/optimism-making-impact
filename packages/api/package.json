@@ -14,7 +14,7 @@
     "prisma:migrate:dev": "dotenv -e .env.local -- prisma migrate dev",
     "prisma:push:dev": "dotenv -e .env.local -- prisma db push",
     "prisma:reset:dev": "dotenv -e .env.local -- prisma migrate reset",
-    "prisma:db:seed": "dotenv -e .env.local -- prisma migrate reset",
+    "prisma:db:seed": "dotenv -e .env.local -- prisma db seed",
     "studio": "dotenv -e .env.local -- prisma studio",
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write ."
