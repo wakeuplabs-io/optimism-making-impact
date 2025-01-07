@@ -1,5 +1,4 @@
 /// <reference path="./.sst/platform/config.d.ts" />
-import { Input } from "./.sst/platform/src/components/input";
 
 export default $config({
   app(input) {
@@ -12,16 +11,6 @@ export default $config({
         supabase: {
           accessToken: process.env.SUPABASE_ACCESS_TOKEN,
         },
-        aws: {
-          region: process.env.AWS_REGION as Input<aws.Region>,
-          defaultTags: {
-            tags: {
-              company: 'WakeUp Labs',
-              client: 'Optimism',
-              app: 'Optimism Making Impact',
-            },
-          },
-        },
       },
     };
   },
@@ -31,7 +20,7 @@ export default $config({
       region: process.env.AWS_REGION ?? '',
       organizationId: process.env.SUPABASE_ORGANIZATION_ID ?? '',
       databasePassword: process.env.SUPABASE_DB_PASSWORD ?? '',
-    })
+    });
 
     return { db };
   },
