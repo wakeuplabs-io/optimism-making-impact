@@ -14,8 +14,7 @@ export default $config({
         aws: {
           defaultTags: {
             tags: {
-              client: 'optimism',
-              project: 'optimism-making-impact',
+              customer: 'optimism-making-impact',
               stage: input?.stage,
             }
           }
