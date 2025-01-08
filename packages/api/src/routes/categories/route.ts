@@ -1,5 +1,5 @@
 import { apiResponse } from '@/lib/api-response/index.js';
-import { prisma } from '@/prisma.js';
+import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response, Router } from 'express';
 
 export const categoriesRouter = Router();
