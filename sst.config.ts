@@ -50,8 +50,19 @@ export default $config({
       ],
     });
 
+    const ui = new sst.aws.StaticSite("web", {
+      build: {
+        command: "pnpm --filter web build",
+        output: "packages/web/dist",
+      },
+      environment: {
+        VITE_API_URL: $interpolate`${api.url}api`
+      }
+    });
+
     return {
       api: api.url,
+      ui: ui.url
     };
   },
 });
