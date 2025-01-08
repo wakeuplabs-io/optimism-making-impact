@@ -31,7 +31,7 @@ export default $config({
       databasePassword: process.env.SUPABASE_DB_PASSWORD ?? '',
     });
     
-    const api = new sst.aws.Function('api', {
+    const functionHandler = new sst.aws.Function('functionHandler', {
       url: true,
       handler: 'packages/api/src/app.handler',
       environment: {
@@ -50,18 +50,24 @@ export default $config({
       ],
     });
 
+    const apiGateway = new sst.aws.ApiGatewayV2("api", {
+      cors: true,
+    });
+
+    apiGateway.route("$default", functionHandler.arn);
+
     const ui = new sst.aws.StaticSite("web", {
       build: {
         command: "pnpm --filter web build",
         output: "packages/web/dist",
       },
       environment: {
-        VITE_API_URL: $interpolate`${api.url}api`
+        VITE_API_URL: $interpolate`${apiGateway.url}/api`
       }
     });
 
     return {
-      api: api.url,
+      api: apiGateway.url,
       ui: ui.url
     };
   },
