@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "postinstall": "prisma generate",
-    "build": "rimraf dist && tspc",
+    "build": "rimraf dist && pnpm prisma:generate && tspc",
     "dev": "pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
