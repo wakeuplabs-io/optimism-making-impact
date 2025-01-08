@@ -7,12 +7,14 @@
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
     "format": "pnpm -r --parallel run format",
-    "studio": "pnpm -r --parallel run studio"
+    "studio": "pnpm -r --parallel run studio",
+    "deploy:app:staging": "sst deploy --stage=staging --print-logs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tsconfig/node18": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "8.18.0",
     "@typescript-eslint/parser": "8.18.0",
     "dotenv-cli": "^7.4.4",
@@ -28,6 +30,7 @@
   "dependencies": {
     "dotenv": "16.4.7",
     "prettier": "^3.4.2",
+    "sst": "3.4.54",
     "zod": "3.24.1"
   }
 }
