@@ -1,23 +1,23 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 export class Prisma extends PrismaClient {
-  private static instance: Prisma
+  private static instance: Prisma;
 
   private constructor() {
-    super()
-    this.$connect()
+    super();
+    this.$connect();
   }
 
   static getInstance(): Prisma {
     if (!Prisma.instance) {
-      Prisma.instance = new Prisma()
+      Prisma.instance = new Prisma();
     }
-    return Prisma.instance
+    return Prisma.instance;
   }
 
   async disconnect(): Promise<void> {
-    await this.$disconnect()
+    await this.$disconnect();
   }
 }
 
-export const prisma = Prisma.getInstance()
+export const DEPRECATED_prisma = Prisma.getInstance();

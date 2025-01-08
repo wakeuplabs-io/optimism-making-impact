@@ -1,6 +1,6 @@
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
-import { prisma } from '@/lib/prisma/instance.js';
+import { prisma } from '@/prisma.js';
 import { NextFunction, Request, Response, Router } from 'express';
 import { z } from 'zod';
 
