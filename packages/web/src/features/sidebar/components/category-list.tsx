@@ -27,11 +27,11 @@ export function CategoryList() {
         {sidebarState.categories.map((category) => (
           <li key={category.id}>
             <CategoryButton
-              label={category.name}
+              category={category}
               isActive={sidebarState.selectedCategoryId === category.id}
               onClick={() => handleCategoryClick(category.id)}
-              iconURL={category.icon}
               isAdmin={isAdmin}
+              onDelete={sidebarState.deleteCategory}
             />
           </li>
         ))}

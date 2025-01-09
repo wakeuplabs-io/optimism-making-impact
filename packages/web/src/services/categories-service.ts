@@ -19,14 +19,18 @@ class CategoriesServiceClass {
     return CategoriesServiceClass.instance;
   }
 
-  async getCategories() {
+  async getAll() {
     return this.fetcher.get(categoriesEndpoint).then((res) => res.data);
   }
 
-  async createCategory(data: { title: string; iconURL: string; roundId: number }) {
+  async createOne(data: { title: string; iconURL: string; roundId: number }) {
     return this.fetcher.post('/categories', {
       ...data,
     });
+  }
+
+  async deleteOne(categoryId: number) {
+    return this.fetcher.delete(`/categories/${categoryId}`);
   }
 }
 

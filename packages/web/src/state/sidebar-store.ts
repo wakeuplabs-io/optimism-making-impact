@@ -10,7 +10,8 @@ type Round = {
 
 const placeHolderRound = { id: -1, name: 'Select' };
 
-type Category = {
+// TODO: move to a types file
+export type Category = {
   id: number;
   roundId: number;
   name: string;
@@ -38,6 +39,7 @@ interface SidebarActions {
   addRound: () => void;
   setCategories: () => void;
   addCategory: (formData: CategoryFormData, roundId: number) => void;
+  deleteCategory: (categoryId: number) => void;
 }
 
 type SidebarStore = SidebarState & SidebarActions;
@@ -72,7 +74,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   setCategories: async () => {
     set((state) => ({ ...state, loading: true }));
 
-    const categories = await CategoriesService.getCategories();
+    const categories = await CategoriesService.getAll();
 
     const filterCategoriesByRound: Category[] = categories.data.categories
       .map((category: Category) => ({
@@ -91,7 +93,16 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   addCategory: async (formData: CategoryFormData, roundId: number) => {
     set((state) => ({ ...state, loading: true }));
 
-    await CategoriesService.createCategory({ ...formData, roundId: roundId });
+    await CategoriesService.createOne({ ...formData, roundId: roundId });
+
+    get().setCategories();
+
+    set((state) => ({ ...state, loading: false }));
+  },
+  deleteCategory: async (categoryId: number) => {
+    set((state) => ({ ...state, loading: true }));
+
+    await CategoriesService.deleteOne(categoryId);
 
     get().setCategories();
 
