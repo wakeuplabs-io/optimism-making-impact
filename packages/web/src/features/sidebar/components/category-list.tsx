@@ -8,7 +8,7 @@ import { useState } from 'react';
 export function CategoryList() {
   const categoriesState = useSidebarStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
-  const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id);
+  const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id); // Move to state
   const isRoundSelected = Number.isInteger(categoriesState.selectedRound.id);
 
   function handleCategoryClick(categoryId: string) {
@@ -25,7 +25,7 @@ export function CategoryList() {
 
   return (
     <>
-      <ul className="grid gap-2">
+      <ul className="flex flex-col gap-2">
         {categoriesState.categories.map((category) => (
           <li key={category.id}>
             <CategoryButton
@@ -33,6 +33,7 @@ export function CategoryList() {
               isActive={activeCategory == category.id}
               onClick={() => handleCategoryClick(category.id)}
               iconURL={category.icon}
+              isAdmin={isAdmin}
             />
           </li>
         ))}
