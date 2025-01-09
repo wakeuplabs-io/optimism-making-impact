@@ -1,4 +1,4 @@
-import envParsed from '@/envParsed.js';
+import { envParsed } from '@/config/env-parsed.js';
 import middlewares from '@/middlewares/index.js';
 import routes from '@/routes/index.js';
 import cors from 'cors';
@@ -19,9 +19,9 @@ app.use('/api', routes);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 
-if (envParsed().NODE_ENV === 'development') {
-  app.listen(envParsed().PORT, () => {
-    console.log(`App Started at PORT=${envParsed().PORT}`);
+if (envParsed.NODE_ENV === 'development') {
+  app.listen(envParsed.PORT, () => {
+    console.log(`App Started at PORT=${envParsed.PORT}`);
   });
 }
 
