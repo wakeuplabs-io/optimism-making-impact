@@ -29,6 +29,7 @@ export default $config({
       organizationId: process.env.SUPABASE_ORGANIZATION_ID ?? '',
       databasePassword: process.env.SUPABASE_DB_PASSWORD ?? '',
     });
+
     const functionHandler = new sst.aws.Function('functionHandler', {
       url: true,
       handler: 'packages/api/src/app.handler',
