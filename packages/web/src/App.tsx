@@ -1,7 +1,7 @@
 import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
 import { MainSection } from '@/layout/sections/main';
+import { SidebarSection } from '@/layout/sections/sidebar';
 import { StepsSection } from '@/layout/sections/steps';
-import { Sidebar } from '@/layouts/sidebar';
 import { useSidebarStore } from '@/state';
 import { useEffect } from 'react';
 
@@ -27,7 +27,7 @@ export function App() {
 
   return (
     <div className="flex h-screen w-screen flex-col lg:flex-row">
-      <Sidebar />
+      <SidebarSection />
       <div className="flex flex-1 flex-col">
         <StepsSection />
         <MainSection />
