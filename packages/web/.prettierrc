@@ -2,6 +2,7 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": true,
+  "jsxSingleQuote": true,
   "trailingComma": "all",
   "printWidth": 140,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
