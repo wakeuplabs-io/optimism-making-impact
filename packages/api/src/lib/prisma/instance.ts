@@ -1,23 +1,17 @@
-import { PrismaClient } from '@prisma/client'
+// This file implements a singleton pattern for the PrismaClient.
+import { PrismaClient } from '@prisma/client';
 
-export class Prisma extends PrismaClient {
-  private static instance: Prisma
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-  private constructor() {
-    super()
-    this.$connect()
-  }
+/**
+ * In serverless environments, we need to ensure that only one PrismaClient instance
+ * is created per container to avoid exhausting database connections. This is achieved by storing the
+ * PrismaClient instance in a global variable, which persists across invocations in the same warm container.
+ */
+export const prisma = globalForPrisma.prisma || new PrismaClient();
 
-  static getInstance(): Prisma {
-    if (!Prisma.instance) {
-      Prisma.instance = new Prisma()
-    }
-    return Prisma.instance
-  }
-
-  async disconnect(): Promise<void> {
-    await this.$disconnect()
-  }
-}
-
-export const prisma = Prisma.getInstance()
+/**
+ * In development mode, this setup also ensures that the PrismaClient instance persists across hot reloads,
+ * preventing unnecessary reinitializations that can lead to connection issues or slowdowns.
+ */
+if (process.env.NODE_ENV === 'development') globalForPrisma.prisma = prisma;
