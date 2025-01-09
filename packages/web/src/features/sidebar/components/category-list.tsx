@@ -1,9 +1,8 @@
 import { AddNewContent } from '@/components/add-new-content';
+import { CategoryButton } from '@/components/category-button';
 import { Modal } from '@/components/modal';
-import { Button } from '@/components/ui/button';
 import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
 import { useSidebarStore, useUserStore } from '@/state';
-import { Blocks } from 'lucide-react';
 import { useState } from 'react';
 
 export function CategoryList() {
@@ -16,40 +15,33 @@ export function CategoryList() {
     setActiveCategory(categoryId);
   }
 
-  const categories = categoriesState.categories.map((category) => (
-    <li key={category.id}>
-      <IconButton text={category.name} isActive={activeCategory == category.id} onClick={() => handleCategoryClick(category.id)} />
-    </li>
-  ));
+  if (!isRoundSelected) {
+    return <p className="text-sm text-primary">Select a round to enable.</p>;
+  }
+
+  if (!categoriesState.categories.length) {
+    return <p className="text-sm text-primary">There are no categories yet.</p>;
+  }
 
   return (
-    <ul className="grid gap-2">
-      {!isRoundSelected && <p className="text-sm text-primary">Select a round to enable.</p>}
-      {isRoundSelected && categories}
-      {isAdmin && isRoundSelected && (
+    <>
+      <ul className="grid gap-2">
+        {categoriesState.categories.map((category) => (
+          <li key={category.id}>
+            <CategoryButton
+              label={category.name}
+              isActive={activeCategory == category.id}
+              onClick={() => handleCategoryClick(category.id)}
+              iconURL={category.icon}
+            />
+          </li>
+        ))}
+      </ul>
+      {isAdmin && (
         <Modal title="New Category" trigger={<AddNewContent buttonText="New category" />}>
           <NewCategoryForm />
         </Modal>
       )}
-    </ul>
-  );
-}
-
-type IconButtonProps = {
-  text: string;
-  isActive: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-};
-export function IconButton(props: IconButtonProps) {
-  return (
-    <Button
-      className={`flex w-full items-center justify-start rounded-xl px-2.5 py-5 shadow-none hover:text-dark-high ${
-        props.isActive ? 'bg-background text-dark-high hover:bg-background' : 'bg-white-high text-secondary hover:bg-white-medium'
-      }`}
-      onClick={props.onClick}
-    >
-      <Blocks strokeWidth={1.7} style={{ width: '22px', height: '22px' }} />
-      <span className="text-sm font-semibold leading-5 2xl:text-base">{props.text}</span>
-    </Button>
+    </>
   );
 }
