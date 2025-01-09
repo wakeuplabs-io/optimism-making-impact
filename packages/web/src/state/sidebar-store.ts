@@ -7,10 +7,10 @@ type Round = {
   name: string;
 };
 
-const placeHolderRound: Round[] = [{ id: 1, name: 'Select' }];
+const placeHolderRound = { id: -1, name: 'Select' };
 
 type Category = {
-  id: string;
+  id: number;
   roundId: number;
   name: string;
   icon?: string;
@@ -22,6 +22,7 @@ interface SidebarState {
   rounds: Round[];
   selectedRound: Round;
   categories: Category[];
+  selectedCategoryId: number;
 }
 
 export type CategoryFormData = {
@@ -31,6 +32,7 @@ export type CategoryFormData = {
 
 interface SidebarActions {
   setSelectedRound: (roundId: number) => void;
+  setSelectedCategoryId: (categoryId: number) => void;
   setRounds: () => void;
   addRound: () => void;
   setCategories: () => void;
@@ -42,8 +44,9 @@ type SidebarStore = SidebarState & SidebarActions;
 export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   loading: false,
   error: null,
-  rounds: placeHolderRound,
-  selectedRound: placeHolderRound[0],
+  rounds: [],
+  selectedRound: placeHolderRound,
+  selectedCategoryId: 0,
   setSelectedRound: (roundId: number) => {
     set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
     get().setCategories();
@@ -51,11 +54,12 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   setRounds: async () => {
     set((state) => ({ ...state, loading: true }));
 
+    // TODO: create service like in the branch i already have
     const rounds = await fetcher.get('/rounds').then((res) => res.data);
 
     const newRounds: Round[] = rounds.data.rounds.map((round: Round) => ({ id: round.id, name: round.name, icon: round.icon }));
 
-    set((state) => ({ ...state, loading: false, rounds: newRounds }));
+    set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound: newRounds[0] }));
   },
   addRound: async () => {
     set((state) => ({ ...state, loading: true }));
@@ -81,6 +85,9 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
       .filter((category: Category) => get().selectedRound.id == category.roundId);
 
     set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
+  },
+  setSelectedCategoryId: async (categoryId: number) => {
+    set((state) => ({ ...state, selectedCategoryId: categoryId }));
   },
   addCategory: async (formData: CategoryFormData, roundId: number) => {
     set((state) => ({ ...state, loading: true }));

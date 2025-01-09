@@ -3,34 +3,32 @@ import { CategoryButton } from '@/components/category-button';
 import { Modal } from '@/components/modal';
 import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
 import { useSidebarStore, useUserStore } from '@/state';
-import { useState } from 'react';
 
 export function CategoryList() {
-  const categoriesState = useSidebarStore((state) => state);
+  const sidebarState = useSidebarStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
-  const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id); // Move to state
-  const isRoundSelected = Number.isInteger(categoriesState.selectedRound.id);
+  const isRoundSelected = Number.isInteger(sidebarState.selectedRound.id);
 
-  function handleCategoryClick(categoryId: string) {
-    setActiveCategory(categoryId);
+  function handleCategoryClick(categoryId: number) {
+    sidebarState.setSelectedCategoryId(categoryId);
   }
 
   if (!isRoundSelected) {
-    return <p className="text-sm text-primary">Select a round to enable.</p>;
+    return <p className='text-sm text-primary'>Select a round to enable.</p>;
   }
 
-  if (!categoriesState.categories.length) {
-    return <p className="text-sm text-primary">There are no categories yet.</p>;
+  if (!sidebarState.categories.length) {
+    return <p className='text-sm text-primary'>There are no categories yet.</p>;
   }
 
   return (
     <>
-      <ul className="flex flex-col gap-2">
-        {categoriesState.categories.map((category) => (
+      <ul className='flex flex-col gap-2'>
+        {sidebarState.categories.map((category) => (
           <li key={category.id}>
             <CategoryButton
               label={category.name}
-              isActive={activeCategory == category.id}
+              isActive={sidebarState.selectedCategoryId === category.id}
               onClick={() => handleCategoryClick(category.id)}
               iconURL={category.icon}
               isAdmin={isAdmin}
@@ -39,7 +37,7 @@ export function CategoryList() {
         ))}
       </ul>
       {isAdmin && (
-        <Modal title="New Category" trigger={<AddNewContent buttonText="New category" />}>
+        <Modal title='New Category' trigger={<AddNewContent buttonText='New category' />}>
           <NewCategoryForm />
         </Modal>
       )}
