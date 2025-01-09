@@ -2,12 +2,13 @@ import { AddNewContent } from '@/components/add-new-content';
 import { Modal } from '@/components/modal';
 import { Button } from '@/components/ui/button';
 import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
-import { useSidebarStore, isAdmin } from '@/state';
+import { useSidebarStore, useUserStore } from '@/state';
 import { Blocks } from 'lucide-react';
 import { useState } from 'react';
 
 export function CategoryList() {
   const categoriesState = useSidebarStore((state) => state);
+  const isAdmin = useUserStore((state) => state.isAdmin);
   const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id);
   const isRoundSelected = Number.isInteger(categoriesState.selectedRound.id);
 

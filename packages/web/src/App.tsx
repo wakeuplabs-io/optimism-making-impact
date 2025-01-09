@@ -1,3 +1,4 @@
+import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
 import { MainSection } from '@/layout/sections/main';
 import { StepsSection } from '@/layout/sections/steps';
 import { Sidebar } from '@/layouts/sidebar';
@@ -31,6 +32,7 @@ export function App() {
         <StepsSection />
         <MainSection />
       </div>
+      {import.meta.env.DEV && <IsAdminIndicator />}
     </div>
   );
 }
