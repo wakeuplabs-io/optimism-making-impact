@@ -8,9 +8,6 @@ export default $config({
       protect: ['production'].includes(input?.stage),
       home: 'aws',
       providers: {
-        supabase: {
-          accessToken: process.env.SUPABASE_ACCESS_TOKEN,
-        },
         aws: {
           defaultTags: {
             tags: {
@@ -23,19 +20,13 @@ export default $config({
     };
   },
   async run() {
-    const db = new supabase.Project('db', {
-      name: $interpolate`optimism-making-impact-${$app.stage}-db`,
-      region: process.env.AWS_REGION ?? '',
-      organizationId: process.env.SUPABASE_ORGANIZATION_ID ?? '',
-      databasePassword: process.env.SUPABASE_DB_PASSWORD ?? '',
-    });
     const functionHandler = new sst.aws.Function('functionHandler', {
       url: true,
       handler: 'packages/api/src/app.handler',
       environment: {
         PRISMA_QUERY_ENGINE_LIBRARY: '/var/task/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node',
-        DB_URL: $interpolate`postgresql://postgres.${db.id}:${db.databasePassword}@aws-0-${db.region}.pooler.supabase.com:6543/postgres?pgbouncer=true`,
-        DB_URL_NON_POOLING: $interpolate`postgresql://postgres:${db.databasePassword}@aws-0-${db.region}.pooler.supabase.com:5432/postgres`,
+        DB_URL: process.env.DB_URL ?? '',
+        DB_URL_NON_POOLING: process.env.DB_URL_NON_POOLING ?? '',
       },
       copyFiles: [
         {
