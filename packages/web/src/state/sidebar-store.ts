@@ -1,4 +1,5 @@
-import { fetcher } from '@/lib/fetcher';
+import { CategoriesService } from '@/services/categories-service';
+import { RoundsService } from '@/services/rounds-service';
 import { create } from 'zustand';
 
 type Round = {
@@ -54,17 +55,15 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   setRounds: async () => {
     set((state) => ({ ...state, loading: true }));
 
-    // TODO: create service like in the branch i already have
-    const rounds = await fetcher.get('/rounds').then((res) => res.data);
-
-    const newRounds: Round[] = rounds.data.rounds.map((round: Round) => ({ id: round.id, name: round.name, icon: round.icon }));
+    const rounds = await RoundsService.getRounds();
+    const newRounds: Round[] = rounds.data.rounds;
 
     set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound: newRounds[0] }));
   },
   addRound: async () => {
     set((state) => ({ ...state, loading: true }));
 
-    await fetcher.post('/rounds').then((res) => res.data);
+    await RoundsService.createRound();
     get().setRounds();
 
     set((state) => ({ ...state, loading: false }));
@@ -73,7 +72,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   setCategories: async () => {
     set((state) => ({ ...state, loading: true }));
 
-    const categories = await fetcher.get('/categories').then((res) => res.data);
+    const categories = await CategoriesService.getCategories();
 
     const filterCategoriesByRound: Category[] = categories.data.categories
       .map((category: Category) => ({
@@ -92,12 +91,7 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
   addCategory: async (formData: CategoryFormData, roundId: number) => {
     set((state) => ({ ...state, loading: true }));
 
-    await fetcher
-      .post('/categories', {
-        ...formData,
-        roundId: roundId,
-      })
-      .then((res) => res.data);
+    await CategoriesService.createCategory({ ...formData, roundId: roundId });
 
     get().setCategories();
 
