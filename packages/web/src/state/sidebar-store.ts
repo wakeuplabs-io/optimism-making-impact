@@ -39,6 +39,7 @@ interface SidebarActions {
   addRound: () => void;
   setCategories: () => void;
   addCategory: (formData: CategoryFormData, roundId: number) => void;
+  editCategory: (categoryId: number, name: string) => void;
   deleteCategory: (categoryId: number) => void;
 }
 
@@ -98,6 +99,20 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
     get().setCategories();
 
     set((state) => ({ ...state, loading: false }));
+  },
+  editCategory: async (categoryId: number, name: string) => {
+    try {
+      set((state) => ({ ...state, loading: true }));
+
+      await CategoriesService.editOne(categoryId, name);
+
+      get().setCategories();
+    } catch (error) {
+      console.error(error);
+      set(() => ({ error: `Error editing ${name} category` }));
+    } finally {
+      set((state) => ({ ...state, loading: false }));
+    }
   },
   deleteCategory: async (categoryId: number) => {
     set((state) => ({ ...state, loading: true }));

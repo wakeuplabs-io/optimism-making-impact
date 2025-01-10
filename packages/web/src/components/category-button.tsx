@@ -1,14 +1,18 @@
 import { ActionButton } from '@/components/action-button';
 import { Modal } from '@/components/modal';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Category } from '@/state';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { Blocks, Pencil, Trash, X } from 'lucide-react';
+import { Label } from '@radix-ui/react-label';
+import { Blocks, Pencil, Save, Trash, X } from 'lucide-react';
+import { useState } from 'react';
 
 type CategoryButtonProps = {
   category: Category;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   onDelete?: (id: number) => void;
+  onEdit?: (id: number, name: string) => void;
   isActive?: boolean;
   isAdmin?: boolean;
 };
@@ -37,7 +41,7 @@ export function CategoryButton(props: CategoryButtonProps) {
       </div>
       {props.isAdmin && (
         <div className='hidden gap-1 group-hover:flex'>
-          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+          <EditIcon category={props.category} onEdit={props.onEdit} />
           <DeleteIcon category={props.category} onDelete={props.onDelete} />
         </div>
       )}
@@ -60,6 +64,48 @@ function DeleteIcon(props: DeleteIconProps) {
           <ActionButton label='Cancel' variant='secondary' />
         </DialogClose>
         <ActionButton icon={<Trash />} label='Delete' variant='primary' onClick={() => props.onDelete?.(props.category.id)} />
+      </div>
+    </Modal>
+  );
+}
+
+interface EditIconProps {
+  category: Category;
+  onEdit?: (id: number, name: string) => void;
+}
+
+function EditIcon(props: EditIconProps) {
+  const [newName, setNewName] = useState(props.category.name);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setNewName(event.target.value);
+  }
+
+  return (
+    <Modal title='Edit category' trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
+      <span>Edit {props.category.name} category?</span>
+
+      <div className='grid gap-4 py-4'>
+        <div>
+          <Label htmlFor='name' className='sr-only'>
+            Title
+          </Label>
+          <Input
+            id='name'
+            name='name'
+            value={newName}
+            onChange={handleChange}
+            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
+            placeholder='Name'
+          />
+        </div>
+      </div>
+
+      <div className='flex gap-4'>
+        <DialogClose asChild>
+          <ActionButton label='Cancel' variant='secondary' />
+        </DialogClose>
+        <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onEdit?.(props.category.id, newName)} />
       </div>
     </Modal>
   );

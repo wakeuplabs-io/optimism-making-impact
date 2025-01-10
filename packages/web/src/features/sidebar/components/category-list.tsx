@@ -32,6 +32,7 @@ export function CategoryList() {
               onClick={() => handleCategoryClick(category.id)}
               isAdmin={isAdmin}
               onDelete={sidebarState.deleteCategory}
+              onEdit={sidebarState.editCategory}
             />
           </li>
         ))}
