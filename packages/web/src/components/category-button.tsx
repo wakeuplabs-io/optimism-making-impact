@@ -1,6 +1,9 @@
+import { ActionButton } from '@/components/action-button';
+import { Modal } from '@/components/modal';
 import { cn } from '@/lib/utils';
 import { Category } from '@/state';
-import { Blocks, Pencil, X } from 'lucide-react';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { Blocks, Pencil, Trash, X } from 'lucide-react';
 
 type CategoryButtonProps = {
   category: Category;
@@ -35,13 +38,29 @@ export function CategoryButton(props: CategoryButtonProps) {
       {props.isAdmin && (
         <div className='hidden gap-1 group-hover:flex'>
           <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
-          <X
-            size={14}
-            className='stroke-[#4E4E4E] hover:stroke-black'
-            onClick={() => props.onDelete && props.onDelete(props.category.id)}
-          />
+          <DeleteIcon category={props.category} onDelete={props.onDelete} />
         </div>
       )}
     </button>
+  );
+}
+
+interface DeleteIconProps {
+  category: Category;
+  onDelete?: (id: number) => void;
+}
+
+function DeleteIcon(props: DeleteIconProps) {
+  return (
+    <Modal title='Delete category' trigger={<X size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
+      <span>Are you sure you want to delete {props.category.name} category?</span>
+
+      <div className='flex gap-4'>
+        <DialogClose asChild>
+          <ActionButton label='Cancel' variant='secondary' />
+        </DialogClose>
+        <ActionButton icon={<Trash />} label='Delete' variant='primary' onClick={() => props.onDelete?.(props.category.id)} />
+      </div>
+    </Modal>
   );
 }
