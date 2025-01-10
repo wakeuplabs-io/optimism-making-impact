@@ -29,6 +29,9 @@ model Round {
   name String
   icon String
 
+  link1 String? @default("")
+  link2 String? @default("")
+
   categories Category[]
   steps      Step[]
 

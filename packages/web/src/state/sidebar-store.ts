@@ -2,13 +2,16 @@ import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
 import { create } from 'zustand';
 
+// TODO: move to a types file
 type Round = {
   id: number;
   icon?: string;
   name: string;
+  link1: string;
+  link2: string;
 };
 
-const placeHolderRound = { id: -1, name: 'Select' };
+const placeHolderRound = { id: -1, name: 'Select', link1: '', link2: '' };
 
 // TODO: move to a types file
 export type Category = {

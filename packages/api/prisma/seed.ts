@@ -11,6 +11,8 @@ async function main() {
     data: {
       name: 'Round 1',
       icon: 'round-icon-1.png',
+      link1: 'https://www.wakeuplabs.io/',
+      link2: 'https://www.wakeuplabs.io/',
     },
   });
 
@@ -18,6 +20,8 @@ async function main() {
     data: {
       name: 'Round 2',
       icon: 'round-icon-2.png',
+      link1: 'https://www.wakeuplabs.io/',
+      link2: 'https://www.wakeuplabs.io/',
     },
   });
 
@@ -25,6 +29,8 @@ async function main() {
     data: {
       name: 'Round 3',
       icon: 'round-icon-3.png',
+      link1: 'https://www.wakeuplabs.io/',
+      link2: 'https://www.wakeuplabs.io/',
     },
   });
   console.log(`Created 3 rounds`);
