@@ -38,7 +38,7 @@ export function CategoryList() {
         ))}
       </ul>
       {isAdmin && (
-        <Modal title='New Category' trigger={<AddNewContent buttonText='New category' />}>
+        <Modal title='New Category' subtitle='Click save when you are done.' trigger={<AddNewContent buttonText='New category' />}>
           <NewCategoryForm />
         </Modal>
       )}

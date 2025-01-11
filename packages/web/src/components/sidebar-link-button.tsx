@@ -38,6 +38,7 @@ function EditIcon(props: EditIconProps) {
   return (
     <Modal
       title='Edit link'
+      subtitle='Click save when you are done.'
       trigger={<Pencil size={18} className='absolute right-2 top-2 z-50 cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}
     >
       <div className='grid gap-4 py-4'>

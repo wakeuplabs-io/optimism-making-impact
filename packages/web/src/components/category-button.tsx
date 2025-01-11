@@ -26,7 +26,7 @@ export function CategoryButton(props: CategoryButtonProps) {
       )}
       onClick={props.onClick}
     >
-      <div className='flex w-full items-center gap-2 overflow-hidden'>
+      <div className='flex items-center w-full gap-2 overflow-hidden'>
         <div className='h-[22px] w-[22px]'>
           {props.category.icon ? (
             <img src={props.category.icon} className='h-[22px] w-[22px]' />
@@ -35,7 +35,7 @@ export function CategoryButton(props: CategoryButtonProps) {
             <Blocks className='h-[22px] w-[22px]' />
           )}
         </div>
-        <span className='overflow-hidden truncate whitespace-nowrap text-sm font-semibold leading-5 2xl:text-base'>
+        <span className='overflow-hidden text-sm font-semibold leading-5 truncate whitespace-nowrap 2xl:text-base'>
           {props.category.name}
         </span>
       </div>
@@ -56,7 +56,11 @@ interface DeleteIconProps {
 
 function DeleteIcon(props: DeleteIconProps) {
   return (
-    <Modal title='Delete category' trigger={<X size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
+    <Modal
+      title='Delete category'
+      subtitle='Click save when you are done.'
+      trigger={<X size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
+    >
       <span>Are you sure you want to delete {props.category.name} category?</span>
 
       <div className='flex gap-4'>
