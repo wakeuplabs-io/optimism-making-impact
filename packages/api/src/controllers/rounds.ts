@@ -37,6 +37,24 @@ async function create(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function update(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+    const { ...data } = req.body; // TODO: validate input
+
+    const edited = await prisma.round.update({
+      where: {
+        id: Number(id),
+      },
+      data,
+    });
+
+    apiResponse.success(res, { message: 'Round edited successfully', data: edited }, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params; // TODO: validate input
@@ -56,5 +74,6 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 export const roundsController = {
   getAll,
   create,
+  update,
   deleteOne,
 };

@@ -3,7 +3,7 @@ import { RoundsService } from '@/services/rounds-service';
 import { create } from 'zustand';
 
 // TODO: move to a types file
-type Round = {
+export type Round = {
   id: number;
   icon?: string;
   name: string;
@@ -40,6 +40,7 @@ interface SidebarActions {
   setSelectedCategoryId: (categoryId: number) => void;
   setRounds: () => void;
   addRound: () => void;
+  editRound: (roundId: number, data: Partial<Round>) => void;
   setCategories: () => void;
   addCategory: (formData: CategoryFormData, roundId: number) => void;
   editCategory: (categoryId: number, name: string) => void;
@@ -80,14 +81,9 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
 
     const categories = await CategoriesService.getAll();
 
-    const filterCategoriesByRound: Category[] = categories.data.categories
-      .map((category: Category) => ({
-        id: category.id,
-        roundId: category.roundId,
-        name: category.name,
-        icon: category.icon,
-      }))
-      .filter((category: Category) => get().selectedRound.id == category.roundId);
+    const filterCategoriesByRound: Category[] = categories.data.categories.filter(
+      (category: Category) => get().selectedRound.id == category.roundId,
+    );
 
     set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
   },
@@ -102,6 +98,20 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
     get().setCategories();
 
     set((state) => ({ ...state, loading: false }));
+  },
+  editRound: async (categoryId: number, data: Partial<Round>) => {
+    try {
+      set((state) => ({ ...state, loading: true }));
+
+      const editedRound = await RoundsService.editOne(categoryId, data);
+
+      set((state) => ({ ...state, selectedRound: editedRound.data.data }));
+    } catch (error) {
+      console.error(error);
+      set(() => ({ error: `Error editing round` }));
+    } finally {
+      set((state) => ({ ...state, loading: false }));
+    }
   },
   editCategory: async (categoryId: number, name: string) => {
     try {

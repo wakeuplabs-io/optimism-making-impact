@@ -5,4 +5,5 @@ export const roundsRouter = Router();
 
 roundsRouter.get('/', roundsController.getAll);
 roundsRouter.post('/', roundsController.create);
-roundsRouter.delete('/', roundsController.deleteOne);
+roundsRouter.put('/:id', roundsController.update);
+roundsRouter.delete('/:id', roundsController.deleteOne);

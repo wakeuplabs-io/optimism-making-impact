@@ -1,4 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
+import { Round } from '@/state';
 import { AxiosInstance } from 'axios';
 
 const roundsEndpoint = '/rounds';
@@ -24,6 +25,10 @@ export class RoundsServiceClass {
 
   async createRound() {
     return this.fetcher.post(roundsEndpoint).then((res) => res.data);
+  }
+
+  async editOne(id: number, data: Partial<Round>) {
+    return this.fetcher.put(roundsEndpoint + `/${id}`, { ...data }).then((res) => res.data);
   }
 }
 
