@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-interface ImageButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ImageButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   src: string;
   className?: string;
   isAdmin?: boolean;
