@@ -2,23 +2,21 @@ import { ActionButton } from '@/components/action-button';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
-import { Round } from '@/state';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
 import { Pencil, Save } from 'lucide-react';
 import { useState } from 'react';
 
-interface SidebarImageButtonProps extends Pick<ImageButtonProps, 'isAdmin' | 'src'> {
-  selectedRound: Round;
-  onClick: (link: string) => void;
-  linkNumber: 1 | 2;
+interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'isAdmin' | 'src'> {
+  link: string;
+  onClick: (url: string) => void;
 }
 
-export function SidebarLinkButton(props: SidebarImageButtonProps) {
+export function SidebarLinkButton(props: SidebarLinkButtonProps) {
   return (
     <div className='relative'>
-      {props.isAdmin && <EditIcon round={props.selectedRound} onClick={props.onClick} linkNumber={props.linkNumber} />}
-      <a href={props.selectedRound.link1} target='_blank' rel='noreferrer'>
+      {props.isAdmin && <EditIcon onClick={props.onClick} link={props.link} />}
+      <a href={props.link} target='_blank' rel='noreferrer'>
         <ImageButton src={props.src} isAdmin={props.isAdmin} />
       </a>
     </div>
@@ -26,13 +24,12 @@ export function SidebarLinkButton(props: SidebarImageButtonProps) {
 }
 
 interface EditIconProps {
-  round: Round;
   onClick?: (link: string) => void;
-  linkNumber: 1 | 2;
+  link: string;
 }
 
 function EditIcon(props: EditIconProps) {
-  const [newLink, setNewLink] = useState(props.linkNumber === 1 ? props.round.link1 : props.round.link2);
+  const [newLink, setNewLink] = useState(props.link);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setNewLink(event.target.value);
@@ -43,10 +40,6 @@ function EditIcon(props: EditIconProps) {
       title='Edit link'
       trigger={<Pencil size={18} className='absolute right-2 top-2 z-50 cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}
     >
-      <span>
-        Edit {props.round.name} link number {props.linkNumber}?
-      </span>
-
       <div className='grid gap-4 py-4'>
         <div>
           <Label htmlFor='name' className='sr-only'>

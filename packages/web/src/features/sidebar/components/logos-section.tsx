@@ -11,17 +11,15 @@ export default function LogosSection() {
     <div className='flex flex-col w-full gap-4'>
       <SidebarLinkButton
         src={VoteHere}
-        selectedRound={selectedRound}
+        link={selectedRound.link1}
         isAdmin={isAdmin}
-        onClick={(newLink: string) => editRound(selectedRound.id, { link1: newLink })}
-        linkNumber={1}
+        onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
       />
       <SidebarLinkButton
         src={RetroList}
-        selectedRound={selectedRound}
+        link={selectedRound.link2}
         isAdmin={isAdmin}
-        onClick={(newLink: string) => editRound(selectedRound.id, { link2: newLink })}
-        linkNumber={2}
+        onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
       />
     </div>
   );
