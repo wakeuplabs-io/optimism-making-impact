@@ -19,10 +19,15 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
     statusCode = err.statusCode;
     message = err.message;
     errorCode = err.errorCode;
-  } else if (err instanceof Prisma.PrismaClientUnknownRequestError || err instanceof Prisma.PrismaClientKnownRequestError) {
-    statusCode = StatusCodes.BAD_REQUEST;
-    message = 'Could not process request';
-    errorCode = getReasonPhrase(StatusCodes.BAD_REQUEST);
+  } else if (
+    err instanceof Prisma.PrismaClientUnknownRequestError ||
+    err instanceof Prisma.PrismaClientKnownRequestError ||
+    err instanceof Prisma.PrismaClientValidationError ||
+    err instanceof Prisma.PrismaClientRustPanicError
+  ) {
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    message = 'An error occurred while processing the request.';
+    errorCode = getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR);
   } else if (err && typeof err === 'object' && 'message' in err) {
     message = (err as Error).message;
   }
