@@ -1,13 +1,13 @@
 import { toast } from '@/hooks/use-toast';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { CategoryFormData, SidebarStore } from '@/state/sidebar/types';
+import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { Category, Round } from '@/types';
 import { AxiosError } from 'axios';
 
-const placeHolderRound = { id: -1, name: 'Select', link1: '', link2: '' };
+const placeHolderRound = { id: 1, name: 'Select', link1: '', link2: '' };
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   loading: false,
@@ -50,10 +50,10 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   setSelectedCategoryId: async (categoryId: number) => {
     set((state) => ({ ...state, selectedCategoryId: categoryId }));
   },
-  addCategory: async (formData: CategoryFormData, roundId: number) => {
+  addCategory: async (name: string, icon: string, roundId: number) => {
     set((state) => ({ ...state, loading: true }));
 
-    await CategoriesService.createOne({ ...formData, roundId: roundId });
+    await CategoriesService.createOne({ title: name, iconURL: icon, roundId: roundId });
 
     get().setCategories();
 

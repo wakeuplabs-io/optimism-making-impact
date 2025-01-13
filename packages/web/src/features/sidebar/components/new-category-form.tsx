@@ -2,34 +2,31 @@ import { ActionButton } from '@/components/action-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSidebarStore } from '@/state';
-import { CategoryFormData } from '@/state/sidebar/types';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Save } from 'lucide-react';
 import { useState } from 'react';
 
 export function NewCategoryForm() {
   const categoriesState = useSidebarStore((state) => state);
+  const [title, setTitle] = useState('');
+  const [iconURL, setIconURL] = useState('');
 
-  const [formData, setFormData] = useState<CategoryFormData>({
-    title: '',
-    iconURL: '',
-  });
+  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setTitle(event.target.value);
+  }
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  function handleIconURLChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setIconURL(event.target.value);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    categoriesState.addCategory(formData, categoriesState.selectedRound.id);
+    categoriesState.addCategory(title, iconURL, categoriesState.selectedRound.id);
 
-    setFormData({ title: '', iconURL: '' });
+    // Reset the states after submission
+    setTitle('');
+    setIconURL('');
   }
 
   return (
@@ -42,8 +39,8 @@ export function NewCategoryForm() {
           <Input
             id='title'
             name='title'
-            value={formData.title}
-            onChange={handleChange}
+            value={title}
+            onChange={handleTitleChange}
             className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
             placeholder='Title'
           />
@@ -55,8 +52,8 @@ export function NewCategoryForm() {
           <Input
             id='icon'
             name='iconURL'
-            value={formData.iconURL}
-            onChange={handleChange}
+            value={iconURL}
+            onChange={handleIconURLChange}
             className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
             placeholder='https://link-to-your-icon'
           />

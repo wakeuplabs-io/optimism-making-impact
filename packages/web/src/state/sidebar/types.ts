@@ -9,11 +9,6 @@ export interface SidebarState {
   selectedCategoryId: number;
 }
 
-export type CategoryFormData = {
-  title: string;
-  iconURL: string;
-};
-
 export interface SidebarActions {
   setSelectedRound: (roundId: number) => void;
   setSelectedCategoryId: (categoryId: number) => void;
@@ -21,7 +16,7 @@ export interface SidebarActions {
   addRound: () => void;
   editRound: (roundId: number, data: Partial<Round>) => void;
   setCategories: () => void;
-  addCategory: (formData: CategoryFormData, roundId: number) => void;
+  addCategory: (name: string, icon: string, roundId: number) => void;
   editCategory: (categoryId: number, name: string) => void;
   deleteCategory: (categoryId: number) => void;
 }
