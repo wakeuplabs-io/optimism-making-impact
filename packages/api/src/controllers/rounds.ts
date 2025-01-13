@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
     const rounds = await prisma.round.findMany({
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
     });
 
     apiResponse.success(res, { rounds });
@@ -18,7 +18,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
   try {
     const lastRound = await prisma.round.findFirst({
       orderBy: {
-        id: 'desc',
+        createdAt: 'desc',
       },
     });
 
