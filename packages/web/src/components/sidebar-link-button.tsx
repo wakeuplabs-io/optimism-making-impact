@@ -39,7 +39,7 @@ function EditIcon(props: EditIconProps) {
     <Modal
       title='Edit link'
       subtitle='Click save when you are done.'
-      trigger={<Pencil size={18} className='absolute right-3 top-3 z-50 cursor-pointer stroke-[white] hover:stroke-black' />}
+      trigger={<Pencil size={18} className='absolute right-3 top-3 z-50 cursor-pointer stroke-[white] hover:opacity-50' />}
     >
       <div className='grid gap-4 py-4'>
         <div>
@@ -61,7 +61,9 @@ function EditIcon(props: EditIconProps) {
         <DialogClose asChild>
           <ActionButton label='Cancel' variant='secondary' />
         </DialogClose>
-        <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(newLink)} />
+        <DialogClose asChild>
+          <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(newLink)} />
+        </DialogClose>
       </div>
     </Modal>
   );

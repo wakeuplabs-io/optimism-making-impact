@@ -14,7 +14,7 @@ export interface SidebarActions {
   setSelectedCategoryId: (categoryId: number) => void;
   setRounds: () => void;
   addRound: () => void;
-  editRound: (roundId: number, data: Partial<Round>) => void;
+  editRound: (roundId: number, data: Round) => void;
   setCategories: () => void;
   addCategory: (name: string, icon: string, roundId: number) => void;
   editCategory: (categoryId: number, name: string) => void;

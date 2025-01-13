@@ -15,29 +15,45 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   rounds: [],
   selectedRound: placeHolderRound,
   selectedCategoryId: 0,
+  categories: [],
   setSelectedRound: (roundId: number) => {
     set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
     get().setCategories();
   },
   setRounds: async () => {
-    set((state) => ({ ...state, loading: true }));
+    set((state) => ({ ...state, loading: true })); // DELETE:
 
     const rounds = await RoundsService.getRounds();
     const newRounds: Round[] = rounds.data.rounds;
 
+    //  cuando creo una round que me la muestre por defecto
     set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound: newRounds[0] }));
   },
   addRound: async () => {
-    set((state) => ({ ...state, loading: true }));
+    // TODO: probar todo este flow para que me cree todas las entidades que me tiene que crear
+    await optimisticUpdate({
+      getStateSlice: () => get().rounds,
+      updateFn: (rounds) => [...rounds, { id: Date.now(), name: 'New Round', link1: '', link2: '' }],
+      setStateSlice: (rounds) => set({ rounds }),
+      apiCall: () => RoundsService.createRound(),
+      onError: (error) => {
+        const title = 'Failed to add round';
+        let description = 'Unknown error';
 
-    await RoundsService.createRound();
-    get().setRounds();
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
 
-    set((state) => ({ ...state, loading: false }));
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: () => {
+        get().setRounds();
+      },
+    });
   },
-  categories: [],
+
   setCategories: async () => {
-    const categories = await CategoriesService.getAll();
+    const categories = await CategoriesService.getAll(); // TODO: getByRoundNumber
 
     const filterCategoriesByRound: Category[] = categories.data.categories.filter(
       (category: Category) => get().selectedRound.id == category.roundId,
@@ -54,8 +70,30 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       updateFn: (categories) => [...categories, { id: Date.now(), name, iconURL: icon, roundId }],
       setStateSlice: (categories) => set({ categories }),
       apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
-      onError: (error, rollbackState) => {
+      onError: (error) => {
         const title = 'Failed to add category';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: () => {
+        get().setCategories();
+      },
+    });
+  },
+
+  editRound: async (categoryId: number, data: Round) => {
+    await optimisticUpdate({
+      getStateSlice: () => get().rounds,
+      updateFn: (rounds) => rounds.map((round) => (round.id === data.id ? { ...round, ...data } : round)),
+      setStateSlice: (rounds) => set({ rounds }),
+      apiCall: () => RoundsService.editOne(categoryId, data),
+      onError: (error, rollbackState) => {
+        const title = 'Failed to update round';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {
@@ -67,24 +105,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         console.error('Rollback state:', rollbackState);
       },
       onSuccess: () => {
-        get().setCategories();
+        get().setRounds();
       },
     });
-  },
-
-  editRound: async (categoryId: number, data: Partial<Round>) => {
-    try {
-      set((state) => ({ ...state, loading: true }));
-
-      const editedRound = await RoundsService.editOne(categoryId, data);
-
-      set((state) => ({ ...state, selectedRound: editedRound.data.data }));
-    } catch (error) {
-      console.error(error);
-      set(() => ({ error: `Error editing round` }));
-    } finally {
-      set((state) => ({ ...state, loading: false }));
-    }
   },
   editCategory: async (categoryId: number, name: string) => {
     await optimisticUpdate({
