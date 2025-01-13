@@ -23,6 +23,10 @@ class CategoriesServiceClass {
     return this.fetcher.get(categoriesEndpoint).then((res) => res.data);
   }
 
+  async getAllByRound(roundId: number) {
+    return this.fetcher.get(categoriesEndpoint + `?roundId=${roundId}`).then((res) => res.data);
+  }
+
   async createOne(data: { title: string; iconURL: string; roundId: number }) {
     return this.fetcher.post('/categories', {
       ...data,

@@ -1,11 +1,22 @@
 import { apiResponse } from '@/lib/api-response/index.js';
+import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
+import { z } from 'zod';
+
+const getAllQuerySchema = z.object({
+  roundId: z.string().transform(Number).optional(),
+});
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
+    const parsed = getAllQuerySchema.safeParse(req.query);
+
+    if (!parsed.success) throw ApiError.badRequest();
+
     const categories = await prisma.category.findMany({
       orderBy: { createdAt: 'asc' },
+      where: { roundId: parsed.data.roundId },
     });
 
     apiResponse.success(res, { categories });

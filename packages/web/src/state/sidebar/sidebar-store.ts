@@ -51,11 +51,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
 
   setCategories: async () => {
-    const categories = await CategoriesService.getAll(); // TODO: getByRoundNumber
+    const response = await CategoriesService.getAllByRound(get().selectedRound.id);
 
-    const filterCategoriesByRound: Category[] = categories.data.categories.filter(
-      (category: Category) => get().selectedRound.id == category.roundId,
-    );
+    const filterCategoriesByRound: Category[] = response.data.categories;
 
     set(() => ({ categories: filterCategoriesByRound }));
   },
@@ -83,7 +81,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       },
     });
   },
-
   editRound: async (categoryId: number, data: Round) => {
     await optimisticUpdate({
       getStateSlice: () => get().rounds,
