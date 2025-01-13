@@ -92,12 +92,23 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     });
   },
   deleteCategory: async (categoryId: number) => {
-    set((state) => ({ ...state, loading: true }));
+    await optimisticUpdate({
+      getStateSlice: () => get().categories,
+      updateFn: (categories) => categories.filter((cat) => cat.id !== categoryId),
+      setStateSlice: (categories) => set({ categories }),
+      apiCall: () => CategoriesService.deleteOne(categoryId),
+      onError: (error, rollbackState) => {
+        const title = 'Failed to delete category';
+        let description = 'Unknown error';
 
-    await CategoriesService.deleteOne(categoryId);
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
 
-    get().setCategories();
+        toast({ title, description, variant: 'destructive' });
 
-    set((state) => ({ ...state, loading: false }));
+        console.error('Rollback state:', rollbackState);
+      },
+    });
   },
 }));
