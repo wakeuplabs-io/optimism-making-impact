@@ -1,7 +1,7 @@
 import { ActionButton } from '@/components/action-button';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { cn, isValidUrl } from '@/lib/utils';
 import { Category } from '@/state';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
@@ -28,7 +28,7 @@ export function CategoryButton(props: CategoryButtonProps) {
     >
       <div className='flex w-full items-center gap-2 overflow-hidden'>
         <div className='h-[22px] w-[22px]'>
-          {props.category.icon ? (
+          {isValidUrl(props.category.icon) ? (
             <img src={props.category.icon} className='h-[22px] w-[22px]' />
           ) : (
             // DEFAULT:
