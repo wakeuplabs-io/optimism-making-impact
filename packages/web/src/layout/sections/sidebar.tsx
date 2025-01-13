@@ -8,7 +8,7 @@ import LogosSection from '@/features/sidebar/components/logos-section';
 import { Rounds } from '@/features/sidebar/components/rounds';
 import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 
 export function SidebarSection() {
@@ -57,14 +57,18 @@ function SidebarContainer(props: SidebarContainerProps) {
 }
 
 function SidebarContent() {
-  const { setRounds, setCategories, loading } = useSidebarStore((state) => state);
+  const { setRounds, setCategories } = useSidebarStore((state) => state);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
-    setRounds();
-    setCategories();
+    (async () => {
+      await setRounds();
+      await setCategories();
+      setInitialLoading(false);
+    })();
   }, []);
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <div className='flex h-full flex-col items-center justify-center gap-6'>
         <span>Loading...</span>

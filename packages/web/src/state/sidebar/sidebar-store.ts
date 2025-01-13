@@ -10,7 +10,6 @@ import { AxiosError } from 'axios';
 const placeHolderRound = { id: 1, name: 'Select', link1: '', link2: '' };
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
-  loading: false,
   error: null,
   rounds: [],
   selectedRound: placeHolderRound,
@@ -21,13 +20,11 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     get().setCategories();
   },
   setRounds: async () => {
-    set((state) => ({ ...state, loading: true })); // DELETE:
-
     const rounds = await RoundsService.getRounds();
     const newRounds: Round[] = rounds.data.rounds;
 
     //  cuando creo una round que me la muestre por defecto
-    set((state) => ({ ...state, loading: false, rounds: newRounds, selectedRound: newRounds[0] }));
+    set(() => ({ rounds: newRounds, selectedRound: newRounds[0] }));
   },
   addRound: async () => {
     // TODO: probar todo este flow para que me cree todas las entidades que me tiene que crear

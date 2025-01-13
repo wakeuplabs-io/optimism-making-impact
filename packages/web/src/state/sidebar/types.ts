@@ -1,7 +1,6 @@
 import { Category, Round } from '@/types';
 
 export interface SidebarState {
-  loading: boolean;
   error: string | null;
   rounds: Round[];
   selectedRound: Round;
