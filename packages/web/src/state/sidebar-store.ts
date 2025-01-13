@@ -1,6 +1,9 @@
+import { toast } from '@/hooks/use-toast';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { create } from 'zustand';
+import { createWithMiddlewares } from '@/state/create-with-middlewares';
+import { optimisticUpdate } from '@/state/utils/optimistic-update';
+import { AxiosError } from 'axios';
 
 // TODO: move to a types file
 export type Round = {
@@ -49,7 +52,7 @@ interface SidebarActions {
 
 type SidebarStore = SidebarState & SidebarActions;
 
-export const useSidebarStore = create<SidebarStore>()((set, get) => ({
+export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   loading: false,
   error: null,
   rounds: [],
@@ -114,18 +117,22 @@ export const useSidebarStore = create<SidebarStore>()((set, get) => ({
     }
   },
   editCategory: async (categoryId: number, name: string) => {
-    try {
-      set((state) => ({ ...state, loading: true }));
+    await optimisticUpdate({
+      getStateSlice: () => get().categories,
+      updateFn: (categories) => categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat)),
+      setStateSlice: (categories) => set({ categories }),
+      apiCall: () => CategoriesService.editOne(categoryId, name),
+      onError: (error) => {
+        const title = 'Failed to update category';
+        let description = 'Unknown error';
 
-      await CategoriesService.editOne(categoryId, name);
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
 
-      get().setCategories();
-    } catch (error) {
-      console.error(error);
-      set(() => ({ error: `Error editing ${name} category` }));
-    } finally {
-      set((state) => ({ ...state, loading: false }));
-    }
+        toast({ title, description, variant: 'destructive' });
+      },
+    });
   },
   deleteCategory: async (categoryId: number) => {
     set((state) => ({ ...state, loading: true }));
