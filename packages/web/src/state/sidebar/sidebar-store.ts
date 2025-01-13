@@ -37,28 +37,41 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   categories: [],
   setCategories: async () => {
-    set((state) => ({ ...state, loading: true }));
-
     const categories = await CategoriesService.getAll();
 
     const filterCategoriesByRound: Category[] = categories.data.categories.filter(
       (category: Category) => get().selectedRound.id == category.roundId,
     );
 
-    set((state) => ({ ...state, loading: false, categories: filterCategoriesByRound }));
+    set(() => ({ categories: filterCategoriesByRound }));
   },
   setSelectedCategoryId: async (categoryId: number) => {
     set((state) => ({ ...state, selectedCategoryId: categoryId }));
   },
   addCategory: async (name: string, icon: string, roundId: number) => {
-    set((state) => ({ ...state, loading: true }));
+    await optimisticUpdate({
+      getStateSlice: () => get().categories,
+      updateFn: (categories) => [...categories, { id: Date.now(), name, iconURL: icon, roundId }],
+      setStateSlice: (categories) => set({ categories }),
+      apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
+      onError: (error, rollbackState) => {
+        const title = 'Failed to add category';
+        let description = 'Unknown error';
 
-    await CategoriesService.createOne({ title: name, iconURL: icon, roundId: roundId });
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
 
-    get().setCategories();
+        toast({ title, description, variant: 'destructive' });
 
-    set((state) => ({ ...state, loading: false }));
+        console.error('Rollback state:', rollbackState);
+      },
+      onSuccess: () => {
+        get().setCategories();
+      },
+    });
   },
+
   editRound: async (categoryId: number, data: Partial<Round>) => {
     try {
       set((state) => ({ ...state, loading: true }));
