@@ -2,7 +2,7 @@ import { ActionButton } from '@/components/action-button';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
 import { cn, isValidUrl } from '@/lib/utils';
-import { Category } from '@/state';
+import { Category } from '@/types';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
 import { Blocks, Pencil, Save, Trash, X } from 'lucide-react';
@@ -29,6 +29,7 @@ export function CategoryButton(props: CategoryButtonProps) {
       <div className='flex w-full items-center gap-2 overflow-hidden'>
         <div className='h-[22px] w-[22px]'>
           {isValidUrl(props.category.icon) ? (
+            // TODO: probar edge cases
             <img src={props.category.icon} className='h-[22px] w-[22px]' />
           ) : (
             // DEFAULT:
