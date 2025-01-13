@@ -49,8 +49,8 @@ function SidebarContainer(props: SidebarContainerProps) {
 
   // Render static sidebar on Desktop
   return (
-    <div className='w-[320px]'>
-      <nav className='h-full w-[320px] bg-white-high p-6 lg:static'>{props.children}</nav>;
+    <div className='w-[320px] overflow-y-auto overflow-x-hidden'>
+      <nav className='w-[320px] bg-white-high p-6 lg:static'>{props.children}</nav>
     </div>
   );
 }
@@ -72,7 +72,7 @@ function SidebarContent() {
   }
 
   return (
-    <div className='flex h-full flex-col gap-6'>
+    <div className='flex flex-col gap-6'>
       <Logo />
       <Rounds />
       <CategoryList />
