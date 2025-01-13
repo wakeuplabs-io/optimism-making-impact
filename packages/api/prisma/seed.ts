@@ -259,7 +259,7 @@ async function main() {
         markdown: 'Principles of mechanical engineering.',
         image: 'mechanical.png',
         position: 1, // TODO: make it zero-based
-        stepId: steps[6].id,
+        stepId: steps[11].id,
       },
     }),
   ]);

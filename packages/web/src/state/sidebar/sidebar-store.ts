@@ -27,11 +27,12 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     set(() => ({ rounds: newRounds, selectedRound: newRounds[0] }));
   },
   addRound: async () => {
-    // TODO: probar todo este flow para que me cree todas las entidades que me tiene que crear
     await optimisticUpdate({
       getStateSlice: () => get().rounds,
-      updateFn: (rounds) => [...rounds, { id: Date.now(), name: 'New Round', link1: '', link2: '' }],
-      setStateSlice: (rounds) => set({ rounds }),
+      updateFn: (rounds) => [{ ...rounds[0], id: rounds[0].id, name: `Round ${rounds[0].id + 1}` }, ...rounds],
+      setStateSlice: (rounds) => {
+        set({ rounds, selectedRound: rounds[0] });
+      },
       apiCall: () => RoundsService.createRound(),
       onError: (error) => {
         const title = 'Failed to add round';
