@@ -82,7 +82,7 @@ function SidebarContent() {
       <Rounds />
       <CategoryList />
       <LogosSection />
-      <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
+      <a href={WAKEUP_URL} target='_blank' rel='noreferrer' className='mx-auto mt-8'>
         <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
       </a>
     </div>
