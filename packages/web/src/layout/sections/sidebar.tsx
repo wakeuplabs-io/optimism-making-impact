@@ -1,6 +1,7 @@
 import WakeUpLogo from '@/assets/wake-up-logo.png';
+import { ImageButton } from '@/components/image-button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { MOBILE_THRESHOLD } from '@/config';
+import { MOBILE_THRESHOLD, WAKEUP_URL } from '@/config';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { Logo } from '@/features/sidebar/components/logo';
 import LogosSection from '@/features/sidebar/components/logos-section';
@@ -77,7 +78,9 @@ function SidebarContent() {
       <Rounds />
       <CategoryList />
       <LogosSection />
-      <img src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
+      <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
+        <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
+      </a>
     </div>
   );
 }
