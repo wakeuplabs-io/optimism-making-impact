@@ -1,56 +1,13 @@
 import { toast } from '@/hooks/use-toast';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
+import { CategoryFormData, SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
+import { Category, Round } from '@/types';
 import { AxiosError } from 'axios';
 
-// TODO: move to a types file
-export type Round = {
-  id: number;
-  icon?: string;
-  name: string;
-  link1: string;
-  link2: string;
-};
-
 const placeHolderRound = { id: -1, name: 'Select', link1: '', link2: '' };
-
-// TODO: move to a types file
-export type Category = {
-  id: number;
-  roundId: number;
-  name: string;
-  icon?: string;
-};
-
-interface SidebarState {
-  loading: boolean;
-  error: string | null;
-  rounds: Round[];
-  selectedRound: Round;
-  categories: Category[];
-  selectedCategoryId: number;
-}
-
-export type CategoryFormData = {
-  title: string;
-  iconURL: string;
-};
-
-interface SidebarActions {
-  setSelectedRound: (roundId: number) => void;
-  setSelectedCategoryId: (categoryId: number) => void;
-  setRounds: () => void;
-  addRound: () => void;
-  editRound: (roundId: number, data: Partial<Round>) => void;
-  setCategories: () => void;
-  addCategory: (formData: CategoryFormData, roundId: number) => void;
-  editCategory: (categoryId: number, name: string) => void;
-  deleteCategory: (categoryId: number) => void;
-}
-
-type SidebarStore = SidebarState & SidebarActions;
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   loading: false,

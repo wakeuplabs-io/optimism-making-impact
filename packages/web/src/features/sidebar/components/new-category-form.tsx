@@ -1,7 +1,8 @@
 import { ActionButton } from '@/components/action-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CategoryFormData, useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state';
+import { CategoryFormData } from '@/state/sidebar/types';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Save } from 'lucide-react';
 import { useState } from 'react';
