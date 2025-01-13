@@ -38,7 +38,9 @@ function SidebarContainer(props: SidebarContainerProps) {
             <Menu className='text-black' />
           </SheetTrigger>
 
-          <SheetContent side='left'>{props.children}</SheetContent>
+          <SheetContent side='left' className='w-[320px]'>
+            {props.children}
+          </SheetContent>
         </Sheet>
         <span>{props.title}</span>
       </nav>
@@ -46,7 +48,11 @@ function SidebarContainer(props: SidebarContainerProps) {
   }
 
   // Render static sidebar on Desktop
-  return <nav className='absolute h-full w-[320px] bg-white-high p-6 lg:static'>{props.children}</nav>;
+  return (
+    <div className='w-[320px]'>
+      <nav className='h-full w-[320px] bg-white-high p-6 lg:static'>{props.children}</nav>;
+    </div>
+  );
 }
 
 function SidebarContent() {

@@ -6,9 +6,9 @@ import { StepsSection } from '@/layout/sections/steps';
 
 export function App() {
   return (
-    <div className='flex h-screen w-screen flex-col lg:flex-row'>
+    <div className='flex h-screen w-screen flex-col overflow-hidden md:flex-row'>
       <SidebarSection />
-      <div className='flex flex-1 flex-col'>
+      <div className='flex flex-1 flex-col overflow-hidden'>
         <StepsSection />
         <MainSection />
       </div>
