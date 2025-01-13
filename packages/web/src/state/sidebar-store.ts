@@ -1,7 +1,7 @@
 import { toast } from '@/hooks/use-toast';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { createWithMiddlewares } from '@/state/create-with-middlewares';
+import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { AxiosError } from 'axios';
 

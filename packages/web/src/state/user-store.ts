@@ -1,4 +1,4 @@
-import { createWithMiddlewares } from '@/state/create-with-middlewares';
+import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 
 interface StepsState {
   isAdmin: boolean;
