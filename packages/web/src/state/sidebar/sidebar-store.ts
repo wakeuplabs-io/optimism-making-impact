@@ -1,4 +1,5 @@
 import { toast } from '@/hooks/use-toast';
+import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
@@ -34,6 +35,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     if (selectedRound) {
       const categories = selectedRound.categories;
       set(() => ({ selectedRound, categories }));
+      router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
     }
   },
   addRound: async () => {
