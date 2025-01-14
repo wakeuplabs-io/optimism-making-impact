@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 export interface ImageButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   src: string;
   className?: string;
-  isAdmin?: boolean;
   editIcon?: React.ReactNode;
   alt?: string;
 }

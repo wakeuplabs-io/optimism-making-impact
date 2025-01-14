@@ -7,9 +7,10 @@ import { Label } from '@radix-ui/react-label';
 import { Pencil, Save } from 'lucide-react';
 import { useState } from 'react';
 
-interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'isAdmin' | 'src'> {
+interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   link: string;
   onClick: (url: string) => void;
+  isAdmin?: boolean;
 }
 
 export function SidebarLinkButton(props: SidebarLinkButtonProps) {
@@ -17,7 +18,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
     <div className='relative'>
       {props.isAdmin && <EditIcon onClick={props.onClick} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
-        <ImageButton src={props.src} isAdmin={props.isAdmin} />
+        <ImageButton src={props.src} />
       </a>
     </div>
   );
