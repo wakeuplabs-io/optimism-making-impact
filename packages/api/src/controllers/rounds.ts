@@ -75,8 +75,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
         },
       });
 
-      console.log('🎈 New Round Created:', newRound.id);
-
       // Step 2: Update Categories with Attributes
       await Promise.all(
         categories.map(async (category, index) => {
