@@ -7,24 +7,19 @@ import { useSidebarStore, useUserStore } from '@/state';
 export function CategoryList() {
   const sidebarState = useSidebarStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
-  const isRoundSelected = Number.isInteger(sidebarState.selectedRound.id);
 
   function handleCategoryClick(categoryId: number) {
     sidebarState.setSelectedCategoryId(categoryId);
   }
 
-  if (!isRoundSelected) {
-    return <p className='text-sm text-primary'>Select a round to enable.</p>;
-  }
-
-  if (!sidebarState.categories.length) {
+  if (!sidebarState.selectedRound.categories.length) {
     return <p className='text-sm text-primary'>There are no categories yet.</p>;
   }
 
   return (
     <>
       <ul className='flex flex-col gap-2'>
-        {sidebarState.categories.map((category) => (
+        {sidebarState.selectedRound.categories.map((category) => (
           <li key={category.id}>
             <CategoryButton
               category={category}

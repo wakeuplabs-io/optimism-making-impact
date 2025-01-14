@@ -14,7 +14,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   rounds: [],
   selectedRound: placeHolderRound,
   selectedCategoryId: 0,
-  categories: [],
   fetchData: async () => {
     const response = await RoundsService.getRounds();
 
@@ -58,9 +57,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   addCategory: async (name: string, icon: string, roundId: number) => {
     await optimisticUpdate({
-      getStateSlice: () => get().categories,
+      getStateSlice: () => get().selectedRound.categories,
       updateFn: (categories) => [...categories, { id: Date.now(), name, iconURL: icon, roundId }],
-      setStateSlice: (categories) => set({ categories }),
+      setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
       onError: (error) => {
         const title = 'Failed to add category';
@@ -102,9 +101,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   editCategory: async (categoryId: number, name: string) => {
     await optimisticUpdate({
-      getStateSlice: () => get().categories,
+      getStateSlice: () => get().selectedRound.categories,
       updateFn: (categories) => categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat)),
-      setStateSlice: (categories) => set({ categories }),
+      setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.editOne(categoryId, name),
       onError: (error) => {
         const title = 'Failed to update category';
@@ -120,9 +119,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   deleteCategory: async (categoryId: number) => {
     await optimisticUpdate({
-      getStateSlice: () => get().categories,
+      getStateSlice: () => get().selectedRound.categories,
       updateFn: (categories) => categories.filter((cat) => cat.id !== categoryId),
-      setStateSlice: (categories) => set({ categories }),
+      setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.deleteOne(categoryId),
       onError: (error, rollbackState) => {
         const title = 'Failed to delete category';
