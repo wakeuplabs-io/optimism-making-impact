@@ -16,9 +16,15 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   selectedCategoryId: 0,
   fetchData: async () => {
     const response = await RoundsService.getRounds();
-
     const rounds: RoundWithCategories[] = response.data.rounds;
-    const selectedRound: RoundWithCategories = rounds[0];
+
+    let selectedRound = get().selectedRound;
+
+    if (selectedRound.name === placeHolderRound.name) {
+      // Just set the selecteRound to the latest if it is the first load
+      selectedRound = rounds[0];
+    }
+
     const categories: Category[] = selectedRound.categories;
 
     set(() => ({ rounds, selectedRound, categories }));

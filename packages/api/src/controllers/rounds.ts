@@ -8,7 +8,9 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
       orderBy: { createdAt: 'desc' },
       take: 10,
       include: {
-        categories: true,
+        categories: {
+          orderBy: { createdAt: 'asc' },
+        },
       },
     });
 
