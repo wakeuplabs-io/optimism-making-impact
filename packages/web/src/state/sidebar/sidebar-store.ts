@@ -21,8 +21,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     let selectedRound = get().selectedRound;
 
     if (selectedRound.name === placeHolderRound.name) {
-      // Just set the selecteRound to the latest if it is the first load
-      selectedRound = rounds[0];
+      selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
     }
 
     const categories: Category[] = selectedRound.categories;
@@ -30,10 +29,12 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     set(() => ({ rounds, selectedRound, categories }));
   },
   setSelectedRound: (roundId: number) => {
-    const selectedRound = get().rounds.find((round) => round.id === roundId)!;
-    const categories = selectedRound.categories;
+    const selectedRound = get().rounds.find((round) => round.id === roundId);
 
-    set(() => ({ selectedRound, categories }));
+    if (selectedRound) {
+      const categories = selectedRound.categories;
+      set(() => ({ selectedRound, categories }));
+    }
   },
   addRound: async () => {
     await optimisticUpdate({
