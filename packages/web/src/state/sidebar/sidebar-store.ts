@@ -4,10 +4,10 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Category, Round } from '@/types';
+import { Category, Round, RoundWithCategories } from '@/types';
 import { AxiosError } from 'axios';
 
-const placeHolderRound = { id: 1, name: 'Select', link1: '', link2: '' };
+const placeHolderRound = { id: 1, name: 'Select', link1: '', link2: '', categories: [] };
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
@@ -15,16 +15,20 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   selectedRound: placeHolderRound,
   selectedCategoryId: 0,
   categories: [],
-  setSelectedRound: (roundId: number) => {
-    set((state) => ({ ...state, selectedRound: state.rounds.find((round) => round.id === roundId)! }));
-    get().setCategories();
-  },
-  setRounds: async () => {
-    const rounds = await RoundsService.getRounds();
-    const newRounds: Round[] = rounds.data.rounds;
+  fetchData: async () => {
+    const response = await RoundsService.getRounds();
 
-    //  cuando creo una round que me la muestre por defecto
-    set(() => ({ rounds: newRounds, selectedRound: newRounds[0] }));
+    const rounds: RoundWithCategories[] = response.data.rounds;
+    const selectedRound: RoundWithCategories = rounds[0];
+    const categories: Category[] = selectedRound.categories;
+
+    set(() => ({ rounds, selectedRound, categories }));
+  },
+  setSelectedRound: (roundId: number) => {
+    const selectedRound = get().rounds.find((round) => round.id === roundId)!;
+    const categories = selectedRound.categories;
+
+    set(() => ({ selectedRound, categories }));
   },
   addRound: async () => {
     await optimisticUpdate({
@@ -45,17 +49,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().setRounds();
+        get().fetchData();
       },
     });
-  },
-
-  setCategories: async () => {
-    const response = await CategoriesService.getAllByRound(get().selectedRound.id);
-
-    const filterCategoriesByRound: Category[] = response.data.categories;
-
-    set(() => ({ categories: filterCategoriesByRound }));
   },
   setSelectedCategoryId: async (categoryId: number) => {
     set((state) => ({ ...state, selectedCategoryId: categoryId }));
@@ -77,7 +73,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().setCategories();
+        get().fetchData();
       },
     });
   },
@@ -100,7 +96,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         console.error('Rollback state:', rollbackState);
       },
       onSuccess: () => {
-        get().setRounds();
+        get().fetchData();
       },
     });
   },

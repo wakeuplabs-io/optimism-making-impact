@@ -57,15 +57,15 @@ function SidebarContainer(props: SidebarContainerProps) {
 }
 
 function SidebarContent() {
-  const { setRounds, setCategories } = useSidebarStore((state) => state);
+  const { rounds, fetchData } = useSidebarStore((state) => state);
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      await setRounds();
-      await setCategories();
-      setInitialLoading(false);
+      if (rounds.length > 0) return;
+      await fetchData();
     })();
+    setInitialLoading(false);
   }, []);
 
   if (initialLoading) {

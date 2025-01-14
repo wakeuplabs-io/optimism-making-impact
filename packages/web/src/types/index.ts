@@ -7,7 +7,15 @@ export type Round = {
   link2: string;
 };
 
-// TODO: use prisma to keep in sync
+export type RoundWithCategories = {
+  id: number;
+  icon?: string;
+  name: string;
+  link1: string;
+  link2: string;
+  categories: Category[];
+};
+
 export type Category = {
   id: number;
   roundId: number;

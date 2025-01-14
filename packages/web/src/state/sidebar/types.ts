@@ -1,20 +1,19 @@
-import { Category, Round } from '@/types';
+import { Category, Round, RoundWithCategories } from '@/types';
 
 export interface SidebarState {
   error: string | null;
-  rounds: Round[];
-  selectedRound: Round;
+  rounds: RoundWithCategories[];
+  selectedRound: RoundWithCategories;
   categories: Category[];
   selectedCategoryId: number;
 }
 
 export interface SidebarActions {
+  fetchData: () => void;
   setSelectedRound: (roundId: number) => void;
   setSelectedCategoryId: (categoryId: number) => void;
-  setRounds: () => void;
   addRound: () => void;
   editRound: (roundId: number, data: Round) => void;
-  setCategories: () => void;
   addCategory: (name: string, icon: string, roundId: number) => void;
   editCategory: (categoryId: number, name: string) => void;
   deleteCategory: (categoryId: number) => void;
