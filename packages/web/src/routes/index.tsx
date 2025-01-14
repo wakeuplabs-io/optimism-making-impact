@@ -7,16 +7,16 @@ import { useSidebarStore } from '@/state';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 
-const mainSchema = z.object({
+const indexRouteSearchParamsSchema = z.object({
   roundId: z.number().min(1).optional(),
 });
 
-type MainSearchParams = z.infer<typeof mainSchema>;
+type IndexRouteSearchParams = z.infer<typeof indexRouteSearchParamsSchema>;
 
 export const Route = createFileRoute('/')({
-  component: Main,
-  validateSearch: (search: Record<string, unknown>): MainSearchParams => {
-    const parsed = mainSchema.safeParse(search);
+  component: Index,
+  validateSearch: (search): IndexRouteSearchParams => {
+    const parsed = indexRouteSearchParamsSchema.safeParse(search);
     return { roundId: parsed.data?.roundId };
   },
   onEnter: async ({ search }) => {
@@ -27,7 +27,7 @@ export const Route = createFileRoute('/')({
   },
 });
 
-function Main() {
+function Index() {
   return (
     <div className='flex h-screen w-screen flex-col overflow-hidden md:flex-row'>
       <SidebarSection />
