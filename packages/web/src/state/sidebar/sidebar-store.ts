@@ -77,7 +77,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       },
     });
   },
-  editRound: async (categoryId: number, data: Round) => {
+  editRound: async (categoryId: number, data: Partial<Round>) => {
     await optimisticUpdate({
       getStateSlice: () => get().rounds,
       updateFn: (rounds) => rounds.map((round) => (round.id === data.id ? { ...round, ...data } : round)),

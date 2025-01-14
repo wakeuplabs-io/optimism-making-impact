@@ -8,18 +8,18 @@ export default function LogosSection() {
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (
-    <div className='flex w-full flex-col gap-4'>
+    <div className='flex flex-col w-full gap-4'>
       <SidebarLinkButton
         src={VoteHere}
         link={selectedRound.link1}
         isAdmin={isAdmin}
-        onClick={(url: string) => editRound(selectedRound.id, { ...selectedRound, link1: url })}
+        onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
       />
       <SidebarLinkButton
         src={RetroList}
         link={selectedRound.link2}
         isAdmin={isAdmin}
-        onClick={(url: string) => editRound(selectedRound.id, { ...selectedRound, link2: url })}
+        onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
       />
     </div>
   );

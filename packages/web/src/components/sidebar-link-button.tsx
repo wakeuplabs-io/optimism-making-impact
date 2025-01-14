@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
 import { Pencil, Save } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   link: string;
@@ -31,6 +31,8 @@ interface EditIconProps {
 
 function EditIcon(props: EditIconProps) {
   const [newLink, setNewLink] = useState(props.link);
+
+  useEffect(() => setNewLink(props.link), [props.link]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setNewLink(event.target.value);
