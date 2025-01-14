@@ -115,6 +115,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
 
         toast({ title, description, variant: 'destructive' });
       },
+      onSuccess: () => {
+        get().fetchData();
+      },
     });
   },
   deleteCategory: async (categoryId: number) => {
@@ -134,6 +137,9 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         toast({ title, description, variant: 'destructive' });
 
         console.error('Rollback state:', rollbackState);
+      },
+      onSuccess: () => {
+        get().fetchData();
       },
     });
   },
