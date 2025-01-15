@@ -1,9 +1,10 @@
 import { StepButton } from '@/components/steps-button';
-import { useSidebarStore, useStepsStore } from '@/state';
+import { useSidebarStore } from '@/state';
+import { useStepsStore } from '@/state/steps/steps-store';
 import { useEffect } from 'react';
 
 export function StepsSection() {
-  const setSteps = useStepsStore((state) => state.setSteps);
+  const setSteps = useStepsStore((state) => state.fetchByRoundId);
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
@@ -11,7 +12,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className='flex h-16 items-center justify-center px-10'>
+    <header className='flex items-center justify-center h-16 px-10'>
       <StepsSectionContent />
     </header>
   );
@@ -22,7 +23,7 @@ export function StepsSectionContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
-    stepsState.setSteps(selectedRound.id);
+    stepsState.fetchByRoundId(selectedRound.id);
   }, [selectedRound.id]);
 
   if (stepsState.loading) {
@@ -38,7 +39,7 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className='flex max-w-full flex-1 justify-between overflow-hidden'>
+    <div className='flex justify-between flex-1 max-w-full overflow-hidden'>
       {stepsState.steps.length > 0 &&
         stepsState.steps.map((step) => {
           const buttonState =
