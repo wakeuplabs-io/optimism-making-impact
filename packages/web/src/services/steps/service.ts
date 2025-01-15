@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateBody, UpdateBody } from '@/services/steps/schemas';
+import { CreateStepBody, UpdateStepBody } from '@/services/steps/schemas';
 import { AxiosInstance } from 'axios';
 
 const stepsEndpoint = '/steps';
@@ -23,11 +23,11 @@ export class StepsServiceClass {
     return this.fetcher.get(stepsEndpoint + `/${roundId}`).then((res) => res.data);
   }
 
-  async create(data: CreateBody) {
+  async create(data: CreateStepBody) {
     return this.fetcher.post(stepsEndpoint, data).then((res) => res.data);
   }
 
-  async update(id: number, data: UpdateBody) {
+  async update(id: number, data: UpdateStepBody) {
     return this.fetcher.put(stepsEndpoint + `/${id}`, data).then((res) => res.data);
   }
 
