@@ -76,6 +76,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
       // Get all remaining steps ordered by position
       const remainingSteps = await prisma.step.findMany({
+        where: { roundId: deleted.roundId },
         orderBy: { position: 'asc' },
       });
 
@@ -84,14 +85,12 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       }
 
       // Update their positions sequentially (zero-based)
-      await Promise.all(
-        remainingSteps.map((step, index) =>
-          prisma.step.update({
-            where: { id: step.id },
-            data: { position: index },
-          }),
-        ),
-      );
+      for await (const step of remainingSteps) {
+        await prisma.step.update({
+          where: { id: step.id },
+          data: { position: remainingSteps.indexOf(step) },
+        });
+      }
 
       return deleted;
     });

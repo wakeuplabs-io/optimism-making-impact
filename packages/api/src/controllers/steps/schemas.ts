@@ -13,7 +13,7 @@ export const createBodySchema = z.object({
   title: z.string(),
   icon: z.string(),
   type: z.nativeEnum(StepType).default(StepType.INFOGRAPHY),
-  roundId: z.string().transform(Number),
+  roundId: z.number().min(1),
 });
 
 export const updateBodySchema = z.object({
