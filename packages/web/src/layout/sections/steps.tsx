@@ -13,7 +13,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className='flex items-center justify-center h-16 px-10'>
+    <header className='flex h-16 items-center justify-center px-10'>
       <StepsSectionContent />
     </header>
   );
@@ -40,18 +40,18 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className='flex justify-between flex-1 max-w-full overflow-hidden'>
+    <div className='flex max-w-full flex-1 justify-between overflow-hidden'>
       {stepsState.steps.length > 0 &&
         stepsState.steps.map((step) => {
           const buttonState =
-            stepsState.selectedStepPosition === step.position
+            stepsState.selectedStep?.position === step.position
               ? 'active'
-              : stepsState.selectedStepPosition > step.position
+              : stepsState.selectedStep?.position && stepsState.selectedStep.position > step.position
                 ? 'past'
                 : 'coming';
 
           return (
-            <StepButton state={buttonState} key={step.title} onClick={() => stepsState.setSelectedStepPosition(step.position)}>
+            <StepButton state={buttonState} key={step.title} onClick={() => stepsState.setSelectedStep(step.id)}>
               <div className='flex items-center gap-2'>
                 <IconWithDefault src={step.icon} />
                 {step.title}

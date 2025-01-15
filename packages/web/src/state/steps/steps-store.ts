@@ -11,15 +11,19 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   loading: false,
   error: '',
   steps: [],
-  selectedStepPosition: 0, // TODO: change for selectedStep
-  setSelectedStepPosition: (position: number) => set(() => ({ selectedStepPosition: position })),
+  selectedStep: null,
+  setSelectedStep: (stepId: number) => {
+    const selectedStep = get().steps.find((step) => step.id === stepId);
+    if (!selectedStep) return;
+    set(() => ({ selectedStep }));
+  },
   fetchByRoundId: async (roundId: number) => {
     try {
       const { data } = await StepsService.getByRoundId(roundId);
 
       const parsedSteps = stepArraySchema.parse(data.steps);
 
-      set(() => ({ steps: parsedSteps, selectedStep: parsedSteps[0] }));
+      set(() => ({ steps: parsedSteps, selectedStep: parsedSteps[parsedSteps.length - 1] }));
     } catch (error) {
       console.error(error);
       set(() => ({ error: 'Error fetching steps' }));
@@ -92,8 +96,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
     await optimisticUpdate({
       getStateSlice: () => get().steps,
       updateFn: (steps) => steps.filter((s) => s.id !== stepId),
-      setStateSlice: (steps) =>
-        set((state) => ({ steps, selectedStepPosition: state.selectedStepPosition - 1 >= 0 ? state.selectedStepPosition - 1 : 0 })),
+      setStateSlice: (steps) => set({ steps }),
       apiCall: () => StepsService.deleteOne(stepId),
       onError: (error) => {
         const title = 'Failed to delete step';
