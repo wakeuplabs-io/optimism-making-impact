@@ -32,7 +32,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       orderBy: { position: 'desc' },
     });
 
-    const position = lastStep ? lastStep.position + 1 : 1;
+    const position = lastStep ? lastStep.position + 1 : 0;
 
     const created = await prisma.step.create({
       data: { ...parsed.data, position },
@@ -79,10 +79,6 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
         where: { roundId: deleted.roundId },
         orderBy: { position: 'asc' },
       });
-
-      if (remainingSteps.length === 0) {
-        throw new ApiError(400, 'Cannot delete the last remaining step.');
-      }
 
       // Update their positions sequentially (zero-based)
       for await (const step of remainingSteps) {
