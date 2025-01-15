@@ -1,11 +1,12 @@
 import { ActionButton } from '@/components/action-button';
+import { IconWithDefault } from '@/components/icon-with-default';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
-import { cn, isValidUrl } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Category } from '@/types';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
-import { Blocks, Pencil, Save, Trash, X } from 'lucide-react';
+import { Pencil, Save, Trash, X } from 'lucide-react';
 import { useState } from 'react';
 
 type CategoryButtonProps = {
@@ -28,12 +29,7 @@ export function CategoryButton(props: CategoryButtonProps) {
     >
       <div className='flex items-center w-full gap-2 overflow-hidden'>
         <div className='h-[22px] w-[22px]'>
-          {isValidUrl(props.category.icon) ? (
-            <img src={props.category.icon} className='h-[22px] w-[22px]' />
-          ) : (
-            // DEFAULT:
-            <Blocks className='h-[22px] w-[22px]' />
-          )}
+          <IconWithDefault src={props.category.icon ?? ''} />
         </div>
         <span className='overflow-hidden text-sm font-semibold leading-5 truncate whitespace-nowrap 2xl:text-base'>
           {props.category.name}

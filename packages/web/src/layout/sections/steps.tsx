@@ -1,3 +1,4 @@
+import { IconWithDefault } from '@/components/icon-with-default';
 import { StepButton } from '@/components/steps-button';
 import { useSidebarStore } from '@/state';
 import { useStepsStore } from '@/state/steps/steps-store';
@@ -50,9 +51,11 @@ export function StepsSectionContent() {
                 : 'coming';
 
           return (
-            <StepButton state={buttonState} key={step.id} onClick={() => stepsState.setSelectedStepPosition(step.position)}>
-              {/* <img src="step.icon" alt="" /> */}
-              {step.title}
+            <StepButton state={buttonState} key={step.title} onClick={() => stepsState.setSelectedStepPosition(step.position)}>
+              <div className='flex items-center gap-2'>
+                <IconWithDefault src={step.icon} />
+                {step.title}
+              </div>
             </StepButton>
           );
         })}
