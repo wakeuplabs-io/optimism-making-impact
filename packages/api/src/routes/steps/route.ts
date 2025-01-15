@@ -1,4 +1,4 @@
-import { stepsController } from '@/controllers/steps/index.js';
+import { stepsController } from '@/controllers/steps/steps-controller.js';
 import { Router } from 'express';
 
 export const stepsRouter = Router();
