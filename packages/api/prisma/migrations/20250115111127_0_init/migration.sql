@@ -118,6 +118,9 @@ CREATE TABLE "Attribute" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Step_position_roundId_key" ON "Step"("position", "roundId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Step_title_roundId_key" ON "Step"("title", "roundId");
+
 -- AddForeignKey
 ALTER TABLE "Category" ADD CONSTRAINT "Category_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
