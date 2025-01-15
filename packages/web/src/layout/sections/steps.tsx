@@ -1,14 +1,17 @@
 import { ActionButton } from '@/components/action-button';
+import { AddStepButton } from '@/components/add-step-button';
 import { Modal } from '@/components/modal';
+import { Select } from '@/components/select';
 import { StepButton } from '@/components/step-button';
 import { Input } from '@/components/ui/input';
+import { capitalizeFirst } from '@/lib/utils';
 import { CreateStepBody } from '@/services/steps/schemas';
 import { useSidebarStore, useUserStore } from '@/state';
 import { useStepsStore } from '@/state/steps/steps-store';
-import { Step } from '@/types';
+import { Step, StepType, stepTypes } from '@/types';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
-import { Plus, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function StepsSection() {
@@ -89,16 +92,10 @@ function StepsList(props: StepsListProps) {
   );
 }
 
-function AddStepButton(props: React.HTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      className='flex h-[49px] w-[49px] items-center justify-center rounded-full bg-[#14141A] transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-primary'
-      {...props}
-    >
-      <Plus className='text-white' />
-    </button>
-  );
-}
+const options = stepTypes.map((type) => ({
+  value: type,
+  label: capitalizeFirst(type),
+}));
 
 interface AddStepModalProps {
   roundId: number;
@@ -108,6 +105,7 @@ interface AddStepModalProps {
 function AddStepModal(props: AddStepModalProps) {
   const [title, setTitle] = useState('');
   const [icon, setIcon] = useState('');
+  const [type, setType] = useState<string>(options[0].value);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
@@ -117,8 +115,13 @@ function AddStepModal(props: AddStepModalProps) {
     setIcon(event.target.value);
   }
 
+  function handleTypeChange(value: string) {
+    setType(value);
+  }
+
   function handleSubmit() {
-    props.onClick?.(props.roundId, { title, icon, roundId: props.roundId });
+    const selectedType = type as StepType;
+    props.onClick?.(props.roundId, { title, icon, type: selectedType, roundId: props.roundId });
     setTitle('');
     setIcon('');
   }
@@ -156,14 +159,7 @@ function AddStepModal(props: AddStepModalProps) {
           <Label htmlFor='type' className='sr-only'>
             Type
           </Label>
-          <Input
-            id='type'
-            name='type'
-            value={icon}
-            onChange={handleIconChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Icon'
-          />
+          <Select items={options} placeholder='Select a type' defaultValue={options[0].value} onValueChange={handleTypeChange} />
         </div>
       </div>
 

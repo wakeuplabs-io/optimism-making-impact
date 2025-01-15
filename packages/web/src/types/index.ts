@@ -25,7 +25,8 @@ export type Category = {
   icon?: string;
 };
 
-export const stepTypeSchema = z.enum(['INFOGRAPHY', 'ITEMS', 'CARD']);
+export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const;
+export const stepTypeSchema = z.enum(stepTypes);
 export type StepType = z.infer<typeof stepTypeSchema>;
 
 export const stepSchema = z.object({
