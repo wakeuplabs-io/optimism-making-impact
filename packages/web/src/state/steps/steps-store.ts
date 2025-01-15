@@ -11,7 +11,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   loading: false,
   error: '',
   steps: [],
-  selectedStepPosition: 0,
+  selectedStepPosition: 0, // TODO: change for selectedStep
   setSelectedStepPosition: (position: number) => set(() => ({ selectedStepPosition: position })),
   fetchByRoundId: async (roundId: number) => {
     try {
@@ -25,13 +25,27 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
       set(() => ({ error: 'Error fetching steps' }));
     }
   },
-  addStep: async (data: CreateStepBody) => {
+  addStep: async (roundId: number, data: CreateStepBody) => {
     await optimisticUpdate({
       getStateSlice: () => get().steps,
-      updateFn: (steps) => [
-        ...steps,
-        { ...steps[steps.length - 1], ...data, id: steps[steps.length - 1].id, type: data.type ?? 'INFOGRAPHY' },
-      ],
+      updateFn: (steps) => {
+        if (steps.length > 0) {
+          const lastStep = steps[steps.length - 1];
+          return [...steps, { ...lastStep, ...data, id: lastStep.id, type: data.type ?? 'INFOGRAPHY', position: lastStep.position + 1 }];
+        } else {
+          return [
+            ...steps,
+            {
+              ...data,
+              id: 1,
+              position: 0,
+              type: data.type ?? 'INFOGRAPHY',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            },
+          ];
+        }
+      },
       setStateSlice: (steps) => {
         set({ steps });
       },
@@ -47,7 +61,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().fetchByRoundId(get().steps[0].roundId);
+        get().fetchByRoundId(roundId);
       },
     });
   },
@@ -73,6 +87,8 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
     });
   },
   deleteStep: async (stepId: number) => {
+    const roundId = get().steps[0].roundId;
+
     await optimisticUpdate({
       getStateSlice: () => get().steps,
       updateFn: (steps) => steps.filter((s) => s.id !== stepId),
@@ -90,7 +106,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().fetchByRoundId(get().steps[0].roundId);
+        get().fetchByRoundId(roundId);
       },
     });
   },

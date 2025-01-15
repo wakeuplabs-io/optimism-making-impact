@@ -11,7 +11,7 @@ interface StepsState {
 interface StepsActions {
   fetchByRoundId: (roundId: number) => void;
   setSelectedStepPosition: (position: number) => void;
-  addStep: (data: CreateStepBody) => void;
+  addStep: (roundId: number, data: CreateStepBody) => void;
   editStep: (stepId: number, data: UpdateStepBody) => void;
   deleteStep: (stepId: number) => void;
 }
