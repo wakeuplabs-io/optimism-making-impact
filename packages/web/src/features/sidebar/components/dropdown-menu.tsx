@@ -13,7 +13,7 @@ export function DropdownMenu() {
       <Select onValueChange={(val) => roundsState.setSelectedRound(+val)}>
         <SelectTrigger className='w-[125px] border-none bg-transparent text-lg leading-6 text-dark-medium shadow-none focus:ring-0 2xl:text-xl'>
           <div className='flex items-center gap-8'>
-            <p className='text-xl font-normal'>{roundsState.selectedRound.name}</p>
+            <p className='text-xl font-normal'>{roundsState.selectedRound?.name}</p>
             <ChevronDown size={18} color='black' />
           </div>
         </SelectTrigger>
@@ -21,7 +21,7 @@ export function DropdownMenu() {
           {roundsState.rounds.map((round) => (
             <SelectItem
               key={round.id}
-              className='text-sm cursor-pointer h-14 text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base'
+              className='h-14 cursor-pointer text-sm text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base'
               value={round.id.toString()}
             >
               {round.name}

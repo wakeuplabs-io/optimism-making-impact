@@ -7,7 +7,7 @@ import { Save } from 'lucide-react';
 import { useState } from 'react';
 
 export function NewCategoryForm() {
-  const categoriesState = useSidebarStore((state) => state);
+  const sidebarState = useSidebarStore((state) => state);
   const [title, setTitle] = useState('');
   const [iconURL, setIconURL] = useState('');
 
@@ -22,7 +22,9 @@ export function NewCategoryForm() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    categoriesState.addCategory(title, iconURL, categoriesState.selectedRound.id);
+    if (!sidebarState.selectedRound) return;
+
+    sidebarState.addCategory(title, iconURL, sidebarState.selectedRound.id);
 
     // Reset the states after submission
     setTitle('');

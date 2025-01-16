@@ -19,8 +19,10 @@ export function StepsSection() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   useEffect(() => {
-    setSteps(selectedRound.id);
-  }, [selectedRound.id]);
+    if (selectedRound) {
+      setSteps(selectedRound.id);
+    }
+  }, [selectedRound?.id]);
 
   return (
     <header className='flex h-16 items-center justify-center px-2'>
@@ -35,11 +37,13 @@ export function StepsSectionContent() {
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   useEffect(() => {
-    stepsState.fetchByRoundId(selectedRound.id);
-  }, [selectedRound.id]);
+    if (selectedRound) {
+      stepsState.fetchByRoundId(selectedRound.id);
+    }
+  }, [selectedRound?.id]);
 
-  if (stepsState.loading) {
-    return <p>Loading...</p>;
+  if (!selectedRound) {
+    return <p>Select a round to see the steps</p>;
   }
 
   if (stepsState.error) {

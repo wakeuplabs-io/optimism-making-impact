@@ -11,10 +11,10 @@ import { Menu } from 'lucide-react';
 import { useWindowSize } from 'usehooks-ts';
 
 export function SidebarSection() {
-  const title = useSidebarStore((state) => state.selectedRound.name);
+  const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   return (
-    <SidebarContainer title={title}>
+    <SidebarContainer title={selectedRound?.name}>
       <SidebarContent />
     </SidebarContainer>
   );

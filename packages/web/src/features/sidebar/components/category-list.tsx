@@ -12,7 +12,7 @@ export function CategoryList() {
     sidebarState.setSelectedCategoryId(categoryId);
   }
 
-  if (!sidebarState.selectedRound.categories.length) {
+  if (!sidebarState.selectedRound?.categories.length) {
     return <p className='text-sm text-primary'>There are no categories yet.</p>;
   }
 

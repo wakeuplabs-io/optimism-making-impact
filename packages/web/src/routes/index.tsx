@@ -5,6 +5,7 @@ import { SidebarSection } from '@/layout/sections/sidebar';
 import { StepsSection } from '@/layout/sections/steps';
 import { useSidebarStore } from '@/state';
 import { createFileRoute } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { z } from 'zod';
 
 const indexRouteSearchParamsSchema = z.object({
@@ -19,15 +20,19 @@ export const Route = createFileRoute('/')({
     const parsed = indexRouteSearchParamsSchema.safeParse(search);
     return { roundId: parsed.data?.roundId };
   },
-  onEnter: async ({ search }) => {
-    await useSidebarStore.getState().fetchData();
-    if (search.roundId) {
-      useSidebarStore.getState().setSelectedRound(search.roundId);
-    }
-  },
 });
 
 function Index() {
+  const selectedRound = useSidebarStore((state) => state.selectedRound);
+  const search = Route.useSearch();
+
+  useEffect(() => {
+    (async () => {
+      await useSidebarStore.getState().fetchData();
+      if (search.roundId) useSidebarStore.getState().setSelectedRound(search.roundId);
+    })();
+  }, [selectedRound?.id]);
+
   return (
     <div className='flex h-screen w-screen flex-col overflow-hidden md:flex-row'>
       <SidebarSection />
