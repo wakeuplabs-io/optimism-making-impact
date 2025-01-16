@@ -1,9 +1,9 @@
-import { Step } from '@/types';
+import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
   error: string | null;
   loading: boolean;
-  step: Step | null;
+  step: CompleteStep | null;
 }
 
 export interface MainSectionActions {

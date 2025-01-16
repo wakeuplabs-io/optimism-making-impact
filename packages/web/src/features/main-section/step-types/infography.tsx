@@ -1,9 +1,15 @@
-import { Step } from '@/types';
+import { CompleteStep } from '@/types';
 
 interface InfogrpahyStepProps {
-  step: Step;
+  step: CompleteStep;
 }
 
 export function InfographyStep(props: InfogrpahyStepProps) {
-  return <span>{JSON.stringify(props.step, null, 2)}</span>;
+  return (
+    <div className='flex flex-col'>
+      {props.step.infographies.map((infography) => {
+        return <span className='my-2 bg-teal-300'>{JSON.stringify(infography, null, 2)}</span>;
+      })}
+    </div>
+  );
 }

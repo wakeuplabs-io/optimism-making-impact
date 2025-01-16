@@ -1,3 +1,4 @@
+import { infographySchema } from '@/types/infographies';
 import { z } from 'zod';
 
 // TODO: single source of truth
@@ -21,5 +22,9 @@ export const stepSchema = z.object({
   updatedAt: z.string().datetime(),
 });
 export const stepArraySchema = z.array(stepSchema);
-
 export type Step = z.infer<typeof stepSchema>;
+
+export const completeStepSchema = stepSchema.extend({
+  infographies: z.array(infographySchema),
+});
+export type CompleteStep = z.infer<typeof completeStepSchema>;
