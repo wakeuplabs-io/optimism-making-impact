@@ -34,9 +34,9 @@ function Index() {
   }, []);
 
   return (
-    <div className='flex h-screen w-screen flex-col overflow-hidden md:flex-row'>
+    <div className='flex h-screen w-screen flex-col overflow-hidden lg:flex-row'>
       <SidebarSection />
-      <div className='flex flex-1 flex-col overflow-hidden'>
+      <div className='flex flex-1 flex-col-reverse overflow-hidden lg:flex-col'>
         <StepsSection />
         <MainSectionLayout />
       </div>

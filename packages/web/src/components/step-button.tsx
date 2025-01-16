@@ -2,6 +2,7 @@ import { ActionButton } from '@/components/action-button';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { cn } from '@/lib/utils';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
@@ -27,12 +28,16 @@ const buttonVariants: Record<StepButtonState, string> = {
 };
 
 export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonProps) {
+  const isMobile = useIsMobile();
+  const showActionIcons = isAdmin && !isMobile;
+
   return (
     <button
       {...props}
       className={cn(
         'flex h-[45px] max-w-[300px] items-center overflow-hidden whitespace-nowrap rounded-3xl border px-[27px] py-[12px]',
         buttonVariants[props.state],
+        { 'w-[45px] justify-center p-5 px-0 py-0': isMobile },
       )}
     >
       <div className='flex max-w-full items-center gap-2'>
@@ -40,9 +45,9 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           <IconWithDefault src={props.step.icon} />
         </div>
 
-        <div className='flex-1 truncate text-left'>{props.step.title}</div>
+        {!isMobile && <div className='flex-1 truncate text-left'>{props.step.title}</div>}
 
-        {isAdmin && (
+        {showActionIcons && (
           <div className='ml-1 flex gap-4'>
             <DeleteIcon step={props.step} onClick={onDelete} />
             <EditIcon step={props.step} onClick={onEdit} />
