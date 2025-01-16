@@ -23,7 +23,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className='flex items-center justify-center h-16 px-2'>
+    <header className='flex h-16 items-center justify-center px-2'>
       <StepsSectionContent />
     </header>
   );
@@ -46,12 +46,8 @@ export function StepsSectionContent() {
     return <p>{stepsState.error}</p>;
   }
 
-  if (stepsState.steps.length === 0) {
-    return <span>There are no steps for this round.</span>;
-  }
-
   return (
-    <div className='flex items-center justify-between flex-1 max-w-full gap-4 overflow-hidden'>
+    <div className='flex max-w-full flex-1 items-center justify-between gap-4 overflow-hidden'>
       <StepsList steps={stepsState.steps} />
       {isAdmin && <AddStepModal roundId={selectedRound.id} onClick={stepsState.addStep} />}
     </div>
@@ -66,8 +62,16 @@ function StepsList(props: StepsListProps) {
   const stepsState = useStepsStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
+  if (stepsState.steps.length === 0) {
+    return (
+      <div className='flex max-w-full flex-1 justify-center overflow-hidden'>
+        <span>There are no steps for this round.</span>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex justify-between flex-1 max-w-full overflow-hidden'>
+    <div className='flex max-w-full flex-1 justify-between overflow-hidden'>
       {props.steps.map((step) => {
         const buttonState =
           stepsState.selectedStep?.position === step.position
