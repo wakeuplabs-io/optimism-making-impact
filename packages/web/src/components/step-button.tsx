@@ -30,13 +30,20 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
   return (
     <button
       {...props}
-      className={cn('flex h-[45px] items-center truncate rounded-3xl border px-[27px] py-[12px]', buttonVariants[props.state])}
+      className={cn(
+        'flex h-[45px] max-w-[300px] items-center overflow-hidden whitespace-nowrap rounded-3xl border px-[27px] py-[12px]',
+        buttonVariants[props.state],
+      )}
     >
-      <div className='flex items-center gap-2'>
-        <IconWithDefault src={props.step.icon} />
-        {props.step.title}
+      <div className='flex max-w-full items-center gap-2'>
+        <div>
+          <IconWithDefault src={props.step.icon} />
+        </div>
+
+        <div className='flex-1 truncate text-left'>{props.step.title}</div>
+
         {isAdmin && (
-          <div className='ml-2 flex gap-4'>
+          <div className='ml-1 flex gap-4'>
             <DeleteIcon step={props.step} onClick={onDelete} />
             <EditIcon step={props.step} onClick={onEdit} />
           </div>
