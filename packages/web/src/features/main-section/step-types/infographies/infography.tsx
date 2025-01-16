@@ -9,7 +9,7 @@ export function InfographyStep(props: InfogrpahyStepProps) {
   return (
     <div className='flex flex-col gap-4'>
       {props.step.infographies.map((infography, order) => {
-        return <InfographyCard infography={infography} order={order} key={infography.id + order} />;
+        return <InfographyCard infography={infography} order={order} key={`${infography.id}-${order}`} />;
       })}
     </div>
   );
