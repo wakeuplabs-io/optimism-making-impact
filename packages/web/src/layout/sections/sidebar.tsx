@@ -8,7 +8,6 @@ import LogosSection from '@/features/sidebar/components/logos-section';
 import { Rounds } from '@/features/sidebar/components/rounds';
 import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 
 export function SidebarSection() {
@@ -38,7 +37,6 @@ function SidebarContainer(props: SidebarContainerProps) {
           <SheetTrigger asChild>
             <Menu className='text-black' />
           </SheetTrigger>
-
           <SheetContent side='left' className='w-[320px]'>
             {props.children}
           </SheetContent>
@@ -57,25 +55,6 @@ function SidebarContainer(props: SidebarContainerProps) {
 }
 
 function SidebarContent() {
-  const { rounds, fetchData } = useSidebarStore((state) => state);
-  const [initialLoading, setInitialLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      if (rounds.length > 0) return;
-      await fetchData();
-    })();
-    setInitialLoading(false);
-  }, []);
-
-  if (initialLoading) {
-    return (
-      <div className='flex h-full flex-col items-center justify-center gap-6'>
-        <span>Loading...</span>
-      </div>
-    );
-  }
-
   return (
     <div className='flex flex-col gap-6'>
       <Logo />
