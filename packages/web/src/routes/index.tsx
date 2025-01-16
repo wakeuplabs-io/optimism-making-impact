@@ -23,15 +23,15 @@ export const Route = createFileRoute('/')({
 });
 
 function Index() {
-  const selectedRound = useSidebarStore((state) => state.selectedRound);
   const search = Route.useSearch();
 
+  // Set the initial state
   useEffect(() => {
     (async () => {
       await useSidebarStore.getState().fetchData();
       if (search.roundId) useSidebarStore.getState().setSelectedRound(search.roundId);
     })();
-  }, [selectedRound?.id]);
+  }, []);
 
   return (
     <div className='flex h-screen w-screen flex-col overflow-hidden md:flex-row'>
