@@ -7,6 +7,6 @@ export const createInfogrpahyBodySchema = z.object({
 });
 
 export const updateInfogrpahyBodySchema = z.object({
-  markdown: z.string().min(1),
-  image: z.string().min(1),
+  markdown: z.string().min(1).optional(),
+  image: z.string().min(1).optional(),
 });
