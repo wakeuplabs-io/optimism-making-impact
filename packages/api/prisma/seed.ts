@@ -242,7 +242,7 @@ async function main() {
       data: {
         markdown:
           'Incididunt est fugiat commodo nostrud enim fugiat duis laborum veniam eiusmod velit quis. Ex non sunt est deserunt. Ipsum magna pariatur officia do est sit fugiat pariatur adipisicing adipisicing labore nostrud sint. Quis laboris cupidatat Lorem nostrud minim reprehenderit nisi cillum pariatur exercitation ut excepteur reprehenderit. Cillum Lorem id commodo occaecat incididunt tempor proident labore consequat magna in. Proident dolor sit laborum aute nulla cupidatat nulla. Est velit quis consequat pariatur aliqua nisi deserunt cillum deserunt irure aliquip Lorem cillum dolore.',
-        image: 'tech-basics.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 0,
         stepId: steps[0].id,
       },
@@ -251,7 +251,7 @@ async function main() {
       data: {
         markdown:
           'Commodo adipisicing id minim cupidatat id magna cupidatat laborum excepteur. Quis laborum consectetur ipsum magna enim in. Mollit consectetur culpa velit proident ipsum aliqua proident ut aliquip labore sint incididunt. Reprehenderit fugiat tempor nisi cillum excepteur id culpa Lorem aute anim cillum incididunt dolor nisi. Mollit non anim aliquip eiusmod culpa occaecat consequat commodo esse nostrud. Ad id cillum in exercitation eiusmod esse eu occaecat.',
-        image: 'science-advanced.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 1,
         stepId: steps[0].id,
       },
@@ -260,7 +260,7 @@ async function main() {
       data: {
         markdown:
           'Non ea reprehenderit fugiat ut mollit aute eu excepteur fugiat Lorem officia laborum. Nulla in do nostrud sint et ea magna qui do culpa. Lorem qui sunt eiusmod dolore aute. Culpa ad pariatur fugiat cillum est. Qui laborum irure veniam velit do laboris. Esse id sunt ad excepteur fugiat sint eiusmod eu occaecat ullamco sunt deserunt cillum. Amet sint eiusmod elit magna ad sint.',
-        image: 'mechanical.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 0,
         stepId: steps[11].id,
       },
@@ -269,7 +269,7 @@ async function main() {
       data: {
         markdown:
           'Nostrud aute velit ipsum ullamco ut laborum Lorem. Cupidatat velit mollit occaecat pariatur id sunt eiusmod non ullamco nulla eiusmod exercitation. Fugiat aliqua adipisicing commodo anim aute veniam excepteur sint duis id consectetur.',
-        image: 'digital-rise.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 1,
         stepId: steps[11].id,
       },
@@ -278,7 +278,7 @@ async function main() {
       data: {
         markdown:
           'Esse mollit esse duis nulla dolore labore incididunt non. Incididunt cillum ullamco exercitation minim laborum. Qui in dolor consequat nostrud. Quis ut enim magna eiusmod irure deserunt duis fugiat voluptate exercitation exercitation elit cillum mollit. Minim excepteur irure aliqua excepteur sit proident ex labore do laboris esse mollit culpa.',
-        image: 'creativity-tech.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 2,
         stepId: steps[11].id,
       },
@@ -287,7 +287,7 @@ async function main() {
       data: {
         markdown:
           'Quis duis eu nulla velit. Laborum consectetur excepteur in cupidatat. Id duis tempor voluptate esse mollit amet amet eu voluptate dolor commodo. Elit minim consectetur ex aliquip cillum minim anim. Dolor esse ad exercitation do velit minim ullamco consequat aliqua duis occaecat. Ut pariatur consequat sint reprehenderit adipisicing dolor dolor ut non consequat est dolore.',
-        image: 'art-ai.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 3,
         stepId: steps[11].id,
       },
@@ -296,7 +296,7 @@ async function main() {
       data: {
         markdown:
           'Sunt enim anim quis laborum quis minim in laborum dolore. Ea exercitation eiusmod commodo excepteur sit proident ipsum ut tempor anim reprehenderit exercitation amet consequat. Pariatur ut elit fugiat excepteur aute proident anim eiusmod elit amet. Quis ex nulla aliqua et dolore velit magna nulla enim sit aute ipsum.',
-        image: 'art-ai.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 4,
         stepId: steps[11].id,
       },
@@ -305,7 +305,7 @@ async function main() {
       data: {
         markdown:
           'Irure cillum velit elit pariatur est tempor laborum cillum ullamco ex ipsum. Tempor cupidatat ad ipsum aute laboris culpa velit ad laborum mollit et culpa cupidatat. Amet aute voluptate fugiat culpa minim occaecat do deserunt ea ullamco cupidatat amet. Do irure nisi commodo excepteur. Dolor anim aliquip duis consequat laboris.',
-        image: 'art-ai.png',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 5,
         stepId: steps[11].id,
       },
