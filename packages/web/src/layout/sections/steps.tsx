@@ -11,7 +11,7 @@ export function StepsSection() {
   }, [selectedRound.id]);
 
   return (
-    <header className="flex h-16 items-center justify-center px-10">
+    <header className='flex h-16 items-center justify-center px-10'>
       <StepsSectionContent />
     </header>
   );
@@ -38,7 +38,7 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className="flex flex-1 justify-between">
+    <div className='flex max-w-full flex-1 justify-between overflow-hidden'>
       {stepsState.steps.length > 0 &&
         stepsState.steps.map((step) => {
           const buttonState =

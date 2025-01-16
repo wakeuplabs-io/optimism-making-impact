@@ -29,6 +29,9 @@ model Round {
   name String
   icon String
 
+  link1 String? @default("")
+  link2 String? @default("")
+
   categories Category[]
   steps      Step[]
 
@@ -93,7 +96,7 @@ model Item {
   stepId      Int
   step        Step      @relation(fields: [stepId], references: [id])
   attributeId Int
-  attribute   Attribute @relation(fields: [attributeId], references: [id])
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -110,7 +113,7 @@ model Card {
   stepId       Int
   step         Step          @relation(fields: [stepId], references: [id])
   attributeId  Int
-  attribute    Attribute     @relation(fields: [attributeId], references: [id])
+  attribute    Attribute     @relation(fields: [attributeId], references: [id], onDelete: Cascade)
   cardKeywords CardKeyword[]
 
   createdAt DateTime @default(now())
@@ -132,8 +135,8 @@ model CardKeyword {
   cardId    Int
   keywordId Int
 
-  card    Card    @relation(fields: [cardId], references: [id])
-  keyword Keyword @relation(fields: [keywordId], references: [id])
+  card    Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -147,7 +150,7 @@ model Attribute {
   value String
 
   categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   items      Item[]
   cards      Card[]
 

@@ -1,42 +1,9 @@
-import { apiResponse } from '@/lib/api-response/index.js';
-import { prisma } from '@/lib/prisma/instance.js';
-import { NextFunction, Request, Response, Router } from 'express';
+import { roundsController } from '@/controllers/rounds.js';
+import { Router } from 'express';
 
 export const roundsRouter = Router();
 
-roundsRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const rounds = await prisma.round.findMany({
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
-
-    apiResponse.success(res, { rounds });
-  } catch (error) {
-    next(error);
-  }
-});
-
-roundsRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const lastRound = await prisma.round.findFirst({
-      orderBy: {
-        id: 'desc',
-      },
-    });
-
-    const nextRoundNumber = lastRound ? lastRound.id + 1 : 1;
-
-    await prisma.round.create({
-      data: {
-        name: `Round ${nextRoundNumber}`,
-        icon: 'DELETE_THIS',
-      },
-    });
-
-    apiResponse.success(res, { message: 'Round created successfully' }, 201);
-  } catch (error) {
-    next(error);
-  }
-});
+roundsRouter.get('/', roundsController.getAll);
+roundsRouter.post('/', roundsController.create);
+roundsRouter.put('/:id', roundsController.update);
+roundsRouter.delete('/:id', roundsController.deleteOne);

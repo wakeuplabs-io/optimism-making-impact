@@ -1,25 +1,90 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import WakeUpLogo from '@/assets/wake-up-logo.png';
+import { ImageButton } from '@/components/image-button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { MOBILE_THRESHOLD, WAKEUP_URL } from '@/config';
+import { CategoryList } from '@/features/sidebar/components/category-list';
+import { Logo } from '@/features/sidebar/components/logo';
+import LogosSection from '@/features/sidebar/components/logos-section';
+import { Rounds } from '@/features/sidebar/components/rounds';
 import { useSidebarStore } from '@/state';
+import { Menu } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useWindowSize } from 'usehooks-ts';
 
 export function SidebarSection() {
-  const roundsState = useSidebarStore((state) => state);
+  const title = useSidebarStore((state) => state.selectedRound.name);
 
   return (
-    <nav className="absolute bg-green-100 p-8 lg:static lg:h-full lg:w-[320px]">
-      <Select onValueChange={(val: string) =>roundsState.setSelectedRound(+val)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a round" />
-        </SelectTrigger>
-        <SelectContent>
-          {roundsState.rounds.map((round) => (
-            <SelectItem key={round.id} value={round.id.toString()}>
-              {round.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <SidebarContainer title={title}>
+      <SidebarContent />
+    </SidebarContainer>
+  );
+}
 
-      {roundsState.selectedRound.id}
-    </nav>
+interface SidebarContainerProps {
+  children: React.ReactNode;
+  title?: string;
+}
+
+function SidebarContainer(props: SidebarContainerProps) {
+  const { width = 0 } = useWindowSize();
+  const isMobile = width < MOBILE_THRESHOLD;
+
+  if (isMobile) {
+    // Render as a Sheet on Mobile
+    return (
+      <nav className='flex h-28 w-full items-center justify-start gap-4 p-3 lg:static'>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Menu className='text-black' />
+          </SheetTrigger>
+
+          <SheetContent side='left' className='w-[320px]'>
+            {props.children}
+          </SheetContent>
+        </Sheet>
+        <span>{props.title}</span>
+      </nav>
+    );
+  }
+
+  // Render static sidebar on Desktop
+  return (
+    <div className='w-[320px] overflow-y-auto overflow-x-hidden'>
+      <nav className='w-[320px] bg-white-high p-6 lg:static'>{props.children}</nav>
+    </div>
+  );
+}
+
+function SidebarContent() {
+  const { rounds, fetchData } = useSidebarStore((state) => state);
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      if (rounds.length > 0) return;
+      await fetchData();
+    })();
+    setInitialLoading(false);
+  }, []);
+
+  if (initialLoading) {
+    return (
+      <div className='flex h-full flex-col items-center justify-center gap-6'>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className='flex flex-col gap-6'>
+      <Logo />
+      <Rounds />
+      <CategoryList />
+      <LogosSection />
+      <a href={WAKEUP_URL} target='_blank' rel='noreferrer' className='mx-auto mt-8'>
+        <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
+      </a>
+    </div>
   );
 }

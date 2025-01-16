@@ -8,6 +8,7 @@
     "build": "pnpm -r run build",
     "format": "pnpm -r --parallel run format",
     "studio": "pnpm -r --parallel run studio",
+    "ui:add": "pnpm --filter web ui:add",
     "deploy:app:staging": "sst deploy --stage=staging --print-logs"
   },
   "keywords": [],

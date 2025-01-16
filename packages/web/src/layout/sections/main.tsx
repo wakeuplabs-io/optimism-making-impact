@@ -5,8 +5,8 @@ export function MainSection() {
   const steps = useStepsStore((state) => state.steps);
 
   return (
-    <main className="flex items-center justify-center flex-1 bg-red-100">
-      {steps.length > 0 && JSON.stringify(steps[selectedStepPosition])}
+    <main className='flex flex-1 items-center justify-center bg-red-100 p-4'>
+      <span>{JSON.stringify(steps[selectedStepPosition], null, 2)}</span>
     </main>
   );
 }

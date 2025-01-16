@@ -1,54 +1,42 @@
 import { AddNewContent } from '@/components/add-new-content';
+import { CategoryButton } from '@/components/category-button';
 import { Modal } from '@/components/modal';
-import { Button } from '@/components/ui/button';
 import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
-import { useSidebarStore, isAdmin } from '@/state';
-import { Blocks } from 'lucide-react';
-import { useState } from 'react';
+import { useSidebarStore, useUserStore } from '@/state';
 
 export function CategoryList() {
-  const categoriesState = useSidebarStore((state) => state);
-  const [activeCategory, setActiveCategory] = useState(categoriesState.categories[0]?.id);
-  const isRoundSelected = Number.isInteger(categoriesState.selectedRound.id);
+  const sidebarState = useSidebarStore((state) => state);
+  const isAdmin = useUserStore((state) => state.isAdmin);
 
-  function handleCategoryClick(categoryId: string) {
-    setActiveCategory(categoryId);
+  function handleCategoryClick(categoryId: number) {
+    sidebarState.setSelectedCategoryId(categoryId);
   }
 
-  const categories = categoriesState.categories.map((category) => (
-    <li key={category.id}>
-      <IconButton text={category.name} isActive={activeCategory == category.id} onClick={() => handleCategoryClick(category.id)} />
-    </li>
-  ));
+  if (!sidebarState.selectedRound.categories.length) {
+    return <p className='text-sm text-primary'>There are no categories yet.</p>;
+  }
 
   return (
-    <ul className="grid gap-2">
-      {!isRoundSelected && <p className="text-sm text-primary">Select a round to enable.</p>}
-      {isRoundSelected && categories}
-      {isAdmin && isRoundSelected && (
-        <Modal title="New Category" trigger={<AddNewContent buttonText="New category" />}>
+    <>
+      <ul className='flex flex-col gap-2'>
+        {sidebarState.selectedRound.categories.map((category) => (
+          <li key={category.id}>
+            <CategoryButton
+              category={category}
+              isActive={sidebarState.selectedCategoryId === category.id}
+              onClick={() => handleCategoryClick(category.id)}
+              isAdmin={isAdmin}
+              onDelete={sidebarState.deleteCategory}
+              onEdit={sidebarState.editCategory}
+            />
+          </li>
+        ))}
+      </ul>
+      {isAdmin && (
+        <Modal title='New Category' subtitle='Click save when you are done.' trigger={<AddNewContent buttonText='New category' />}>
           <NewCategoryForm />
         </Modal>
       )}
-    </ul>
-  );
-}
-
-type IconButtonProps = {
-  text: string;
-  isActive: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-};
-export function IconButton(props: IconButtonProps) {
-  return (
-    <Button
-      className={`flex w-full items-center justify-start rounded-xl px-2.5 py-5 shadow-none hover:text-dark-high ${
-        props.isActive ? 'bg-background text-dark-high hover:bg-background' : 'bg-white-high text-secondary hover:bg-white-medium'
-      }`}
-      onClick={props.onClick}
-    >
-      <Blocks strokeWidth={1.7} style={{ width: '22px', height: '22px' }} />
-      <span className="text-sm font-semibold leading-5 2xl:text-base">{props.text}</span>
-    </Button>
+    </>
   );
 }

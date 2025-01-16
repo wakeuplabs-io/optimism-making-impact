@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const env = {
   NODE_ENV: process.env.NODE_ENV,
