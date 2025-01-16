@@ -1,4 +1,4 @@
-import { createBodySchema, getAllQueryParms, updateBodySchema } from '@/controllers/steps/schemas.js';
+import { createStepBodySchema, getAllStepsQueryParms, updateStepBodySchema } from '@/controllers/steps/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
@@ -33,7 +33,7 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = getAllQueryParms.safeParse(req.query);
+    const parsed = getAllStepsQueryParms.safeParse(req.query);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -49,7 +49,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 }
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = createBodySchema.safeParse(req.body);
+    const parsed = createStepBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -73,7 +73,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
-    const parsedBody = updateBodySchema.safeParse(req.body);
+    const parsedBody = updateStepBodySchema.safeParse(req.body);
 
     if (!parsedBody.success || !parsedId.success) throw ApiError.badRequest();
 
