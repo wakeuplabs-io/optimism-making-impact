@@ -16,7 +16,9 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
       where: { id: parsedParams.data.id },
       include: {
         cards: true,
-        infographies: true,
+        infographies: {
+          orderBy: { position: 'asc' },
+        },
         items: true,
       },
     });
