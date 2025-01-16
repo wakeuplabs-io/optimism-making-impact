@@ -6,6 +6,29 @@ import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+async function getOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsedParams = idParamsSchema.safeParse(req.params);
+
+    if (!parsedParams.success) throw ApiError.badRequest();
+
+    const step = await prisma.step.findUnique({
+      where: { id: parsedParams.data.id },
+      include: {
+        cards: true,
+        infographies: true,
+        items: true,
+      },
+    });
+
+    if (!step) throw ApiError.notFound();
+
+    apiResponse.success(res, step);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = getAllQueryParms.safeParse(req.query);
@@ -99,6 +122,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 }
 
 export const stepsController = {
+  getOne,
   getAll,
   create,
   update,
