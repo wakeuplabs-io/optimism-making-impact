@@ -27,11 +27,11 @@ export function CategoryButton(props: CategoryButtonProps) {
       )}
       onClick={props.onClick}
     >
-      <div className='flex items-center w-full gap-2 overflow-hidden'>
+      <div className='flex w-full items-center gap-2 overflow-hidden'>
         <div className='h-[22px] w-[22px]'>
           <IconWithDefault src={props.category.icon ?? ''} />
         </div>
-        <span className='overflow-hidden text-sm font-semibold leading-5 truncate whitespace-nowrap 2xl:text-base'>
+        <span className='overflow-hidden truncate whitespace-nowrap text-sm font-semibold leading-5 2xl:text-base'>
           {props.category.name}
         </span>
       </div>
