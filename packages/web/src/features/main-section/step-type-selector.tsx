@@ -1,5 +1,5 @@
 import { CardStep } from '@/features/main-section/step-types/cards';
-import { InfographyStep } from '@/features/main-section/step-types/infography';
+import { InfographyStep } from '@/features/main-section/step-types/infographies/infography';
 import { ItemStep } from '@/features/main-section/step-types/items';
 import { CompleteStep } from '@/types';
 
