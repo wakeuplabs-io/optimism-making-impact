@@ -26,7 +26,7 @@ const buttonVariants: Record<StepButtonState, string> = {
   coming: 'border-secondary hover:bg-primary hover:text-white transition-all ease-in-out duration-500',
 };
 
-export function StepButton(props: StepButtonProps) {
+export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonProps) {
   return (
     <button
       {...props}
@@ -35,10 +35,10 @@ export function StepButton(props: StepButtonProps) {
       <div className='flex items-center gap-2'>
         <IconWithDefault src={props.step.icon} />
         {props.step.title}
-        {props.isAdmin && (
-          <div className='flex gap-4 ml-2'>
-            <DeleteIcon step={props.step} onClick={props.onDelete} />
-            <EditIcon step={props.step} onClick={props.onEdit} />
+        {isAdmin && (
+          <div className='ml-2 flex gap-4'>
+            <DeleteIcon step={props.step} onClick={onDelete} />
+            <EditIcon step={props.step} onClick={onEdit} />
           </div>
         )}
       </div>
@@ -53,11 +53,7 @@ interface DeleteIconProps {
 
 function DeleteIcon(props: DeleteIconProps) {
   return (
-    <Modal
-      title='Delete step'
-      subtitle='Click save when you are done.'
-      trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}
-    >
+    <Modal title='Delete step' trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}>
       <span>Are you sure you want to delete {props.step.title} step?</span>
       <div className='flex gap-4'>
         <DialogClose asChild>
