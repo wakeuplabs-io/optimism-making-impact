@@ -1,12 +1,8 @@
 import { StepType } from '@prisma/client';
 import { z } from 'zod';
 
-export const idParamsSchema = z.object({
-  id: z.string().transform(Number),
-});
-
-export const roundIdParamsSchema = z.object({
-  roundId: z.string().transform(Number),
+export const getAllQueryParms = z.object({
+  roundId: z.string().transform(Number).optional(),
 });
 
 export const createBodySchema = z.object({

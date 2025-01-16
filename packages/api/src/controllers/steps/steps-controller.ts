@@ -1,13 +1,14 @@
-import { createBodySchema, idParamsSchema, roundIdParamsSchema, updateBodySchema } from '@/controllers/steps/schemas.js';
+import { createBodySchema, getAllQueryParms, updateBodySchema } from '@/controllers/steps/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-async function getByRoundId(req: Request, res: Response, next: NextFunction) {
+async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = roundIdParamsSchema.safeParse(req.params);
+    const parsed = getAllQueryParms.safeParse(req.query);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -98,7 +99,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 }
 
 export const stepsController = {
-  getByRoundId,
+  getAll,
   create,
   update,
   deleteOne,
