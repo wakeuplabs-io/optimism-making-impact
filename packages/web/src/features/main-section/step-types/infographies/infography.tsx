@@ -34,6 +34,7 @@ export function InfographyStep(props: InfogrpahyStepProps) {
             isAdmin={isAdmin}
             onDelete={deleteInfogrpahy}
             onChangeText={(infographyId, markdown) => editInfogrpahy(infographyId, { markdown })}
+            onEditImage={(infographyId, image) => editInfogrpahy(infographyId, { image })}
           />
         );
       })}

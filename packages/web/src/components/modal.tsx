@@ -4,13 +4,14 @@ import React from 'react';
 type ModalProps = {
   title?: string;
   subtitle?: string;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   children: React.ReactNode;
+  open?: boolean;
 };
 
 export function Modal(props: ModalProps) {
   return (
-    <Dialog>
+    <Dialog open={props.open}>
       <DialogTrigger asChild>{props.trigger}</DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px] bg-white-high px-14 py-12'>
         <DialogHeader className='pb-5'>
