@@ -48,7 +48,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   }
 
   return (
-    <Modal title='Add step' trigger={<ActionButton label='Add' variant='secondary' icon={<Plus />} className='w-full' />}>
+    <Modal title='Add step' trigger={<ActionButton label='Add' variant='secondary' icon={<Plus />} />}>
       <div className='grid gap-4 py-4'>
         <div>
           <Label htmlFor='markdown' className='sr-only'>

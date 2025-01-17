@@ -20,8 +20,9 @@ export function InfographyStep(props: InfogrpahyStepProps) {
   return (
     <div className='flex w-full max-w-[1000px] flex-col gap-4'>
       {isAdmin && (
-        <div className='flex w-full justify-end'>
+        <div className='flex w-full justify-end gap-2'>
           <ActionButton label='Save' icon={<Save />} onClick={() => bulkEditInfogrpahies(props.step.infographies)} />
+          <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />
         </div>
       )}
       {props.step.infographies.map((infography, order) => {
@@ -36,7 +37,6 @@ export function InfographyStep(props: InfogrpahyStepProps) {
           />
         );
       })}
-      {isAdmin && <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />}
     </div>
   );
 }
