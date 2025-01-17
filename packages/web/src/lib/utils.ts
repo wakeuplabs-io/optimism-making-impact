@@ -20,25 +20,13 @@ export function isValidUrl(url: unknown) {
  */
 export async function isValidImageUrl(url: string): Promise<boolean> {
   try {
-    const response = await axios.head(url, {
-      timeout: 5000, // Optional: Timeout for the request
-    });
-
-    // Check if the Content-Type header starts with "image/"
+    const response = await axios.head(url, { timeout: 5000 });
     const contentType = response.headers['content-type'];
     return contentType?.startsWith('image/') ?? false;
-  } catch (error) {
-    console.error('Error verifying image URL:', error);
+  } catch {
     return false;
   }
 }
-
-// Example usage
-(async () => {
-  const url = 'https://example.com/image.jpg';
-  const isValid = await isValidImageUrl(url);
-  console.log(`Is valid image URL: ${isValid}`);
-})();
 
 export function capitalizeFirst(string: string) {
   const lower = string.toLowerCase();
