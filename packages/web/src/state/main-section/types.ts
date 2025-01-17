@@ -1,3 +1,4 @@
+import { UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
@@ -8,13 +9,13 @@ export interface MainSectionState {
 
 export interface MainSectionActions {
   fetchData: (stepId: number) => void;
-  deleteInfogrpahy: (infogrpahyId: number) => void;
+  deleteInfogrpahy: (infographyId: number) => void;
+  editInfogrpahy: (infographyId: number, data: UpdateInfographyBody) => void;
   // setSelectedRound: (roundId: number) => void;
   // setSelectedCategoryId: (categoryId: number) => void;
   // addRound: () => void;
   // editRound: (roundId: number, data: Partial<Round>) => void;
   // addCategory: (name: string, icon: string, roundId: number) => void;
-  // editCategory: (categoryId: number, name: string) => void;
   // deleteCategory: (categoryId: number) => void;
 }
 

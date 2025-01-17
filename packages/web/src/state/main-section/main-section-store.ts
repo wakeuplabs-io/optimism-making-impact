@@ -1,4 +1,5 @@
 import { toast } from '@/hooks/use-toast';
+import { UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
@@ -39,6 +40,33 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       apiCall: () => InfographiesService.deleteOne(infographyId),
       onError: (error) => {
         const title = 'Failed to delete infography';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: () => {
+        get().fetchData(stepId);
+      },
+    });
+  },
+  editInfogrpahy: async (infographyId: number, data: UpdateInfographyBody) => {
+    const currentStep = get().step;
+    if (!currentStep) return;
+
+    const stepId = currentStep.id;
+
+    await optimisticUpdate({
+      getStateSlice: () => currentStep.infographies,
+      updateFn: (infographies) =>
+        infographies.map((infography) => (infography.id === infographyId ? { ...infography, ...data } : infography)),
+      setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies } })),
+      apiCall: () => InfographiesService.update(infographyId, data),
+      onError: (error) => {
+        const title = 'Failed to edit infography';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {

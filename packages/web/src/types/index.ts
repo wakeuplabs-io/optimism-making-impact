@@ -1,3 +1,4 @@
+export * from './infographies';
 export * from './steps';
 
 // TODO: use prisma to keep in sync
