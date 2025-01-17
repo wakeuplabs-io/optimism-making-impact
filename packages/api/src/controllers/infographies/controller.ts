@@ -1,4 +1,8 @@
-import { createInfogrpahyBodySchema, updateInfogrpahyBodySchema } from '@/controllers/infographies/schemas.js';
+import {
+  bulkUpdateInfogrpahyBodySchema,
+  createInfogrpahyBodySchema,
+  updateInfogrpahyBodySchema,
+} from '@/controllers/infographies/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
@@ -47,6 +51,30 @@ async function update(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+export async function updateBulk(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsedBody = bulkUpdateInfogrpahyBodySchema.safeParse(req.body);
+
+    if (!parsedBody.success) {
+      throw ApiError.badRequest();
+    }
+
+    const updates = parsedBody.data;
+
+    const updated = await prisma.$transaction(async (prisma) => {
+      const results = await Promise.all(
+        updates.map(async ({ id, ...data }) => {
+          return prisma.infography.update({ where: { id }, data });
+        }),
+      );
+      return results;
+    });
+
+    apiResponse.success(res, { updated });
+  } catch (error) {
+    next(error);
+  }
+}
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = idParamsSchema.safeParse(req.params);
@@ -66,5 +94,6 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 export const infographiesController = {
   create,
   update,
+  updateBulk,
   deleteOne,
 };

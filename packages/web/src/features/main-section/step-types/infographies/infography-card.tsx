@@ -5,21 +5,18 @@ import { cn } from '@/lib/utils';
 import { Infography } from '@/types/infographies';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Trash, X } from 'lucide-react';
-import { useState } from 'react';
 
 interface InfogrpahyCardProps {
   infography: Infography;
   order: number;
   isAdmin?: boolean;
   onDelete?: (infographyId: number) => void;
+  onChangeText?: (infographyId: number, markdown: string) => void;
 }
 
 export function InfographyCard(props: InfogrpahyCardProps) {
-  const [markdown, setMarkdown] = useState(props.infography.markdown);
-
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newMarkdown = e.target.value;
-    setMarkdown(newMarkdown);
+    props.onChangeText?.(props.infography.id, e.target.value);
   };
 
   return (
@@ -34,7 +31,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         <img className='h-full w-full object-fill object-center' src={props.infography.image} alt='' />
       </div>
       <div className='flex w-screen max-w-[500px] flex-[2] items-center px-4 lg:px-0'>
-        <EditableText value={markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
+        <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
       {props.isAdmin && <DeleteIcon infography={props.infography} onClick={props.onDelete} />}
     </div>

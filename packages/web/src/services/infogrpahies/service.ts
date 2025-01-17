@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
+import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { AxiosInstance } from 'axios';
 
 const infogrpahiesEndpoint = '/infographies';
@@ -25,6 +25,10 @@ export class InfographiesServiceClass {
 
   async update(id: number, data: UpdateInfographyBody) {
     return this.fetcher.put(infogrpahiesEndpoint + `/${id}`, data).then((res) => res.data);
+  }
+
+  async updateBulk(data: BulkUpdateInfographyBody) {
+    return this.fetcher.put(infogrpahiesEndpoint + `/bulk`, data).then((res) => res.data);
   }
 
   async deleteOne(id: number) {

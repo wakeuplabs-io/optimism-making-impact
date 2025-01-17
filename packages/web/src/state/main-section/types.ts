@@ -1,4 +1,4 @@
-import { CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
+import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
@@ -12,6 +12,7 @@ export interface MainSectionActions {
   fetchData: (stepId: number) => void;
   deleteInfogrpahy: (infographyId: number) => void;
   editInfogrpahy: (infographyId: number, data: UpdateInfographyBody) => void;
+  bulkEditInfogrpahies: (data: BulkUpdateInfographyBody) => void;
   addInfography: (data: CreateInfographyBody) => void;
   // setSelectedRound: (roundId: number) => void;
   // setSelectedCategoryId: (categoryId: number) => void;

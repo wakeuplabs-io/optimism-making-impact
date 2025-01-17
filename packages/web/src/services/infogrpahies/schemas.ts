@@ -12,3 +12,12 @@ export const updateInfographyBodySchema = z.object({
   image: z.string().min(1).optional(),
 });
 export type UpdateInfographyBody = z.infer<typeof updateInfographyBodySchema>;
+
+export const bulkUpdateInfogrpahyBodySchema = z.array(
+  z.object({
+    id: z.number(),
+    markdown: z.string().min(1).optional(),
+    image: z.string().min(1).optional(),
+  }),
+);
+export type BulkUpdateInfographyBody = z.infer<typeof bulkUpdateInfogrpahyBodySchema>;

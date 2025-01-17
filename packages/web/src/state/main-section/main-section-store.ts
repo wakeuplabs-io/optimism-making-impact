@@ -1,5 +1,5 @@
 import { toast } from '@/hooks/use-toast';
-import { CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
+import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
@@ -56,6 +56,20 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     });
   },
   editInfogrpahy: async (infographyId: number, data: UpdateInfographyBody) => {
+    const infography = get().step?.infographies.find((infography) => infography.id === infographyId);
+
+    if (!infography) return;
+
+    set((state) => ({
+      step: {
+        ...state.step,
+        infographies: state.step?.infographies.map((infography) =>
+          infography.id === infographyId ? { ...infography, ...data } : infography,
+        ),
+      },
+    }));
+  },
+  bulkEditInfogrpahies: async (data: BulkUpdateInfographyBody) => {
     const currentStep = get().step;
     if (!currentStep) return;
 
@@ -63,12 +77,11 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     await optimisticUpdate({
       getStateSlice: () => currentStep.infographies,
-      updateFn: (infographies) =>
-        infographies.map((infography) => (infography.id === infographyId ? { ...infography, ...data } : infography)),
+      updateFn: (infographies) => infographies.map((infography) => ({ ...infography, ...data })),
       setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies } })),
-      apiCall: () => InfographiesService.update(infographyId, data),
+      apiCall: () => InfographiesService.updateBulk(data),
       onError: (error) => {
-        const title = 'Failed to edit infography';
+        const title = 'Failed to edit categories';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {
@@ -77,8 +90,9 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
         toast({ title, description, variant: 'destructive' });
       },
-      onSuccess: () => {
-        get().fetchData(stepId);
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+        toast({ title: 'Saved', description: 'Infographies updated successfully' });
       },
     });
   },
