@@ -8,6 +8,7 @@ export interface MainSectionState {
 
 export interface MainSectionActions {
   fetchData: (stepId: number) => void;
+  deleteInfogrpahy: (infogrpahyId: number) => void;
   // setSelectedRound: (roundId: number) => void;
   // setSelectedCategoryId: (categoryId: number) => void;
   // addRound: () => void;
