@@ -7,10 +7,10 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   variant: 'primary' | 'secondary';
 }
 
-export function ActionButton({ label, icon, variant, ...props }: ActionButtonProps) {
+export function ActionButton({ label, icon, variant, className, ...props }: ActionButtonProps) {
   return (
     <button
-      className={cn('flex h-[46px] w-fit min-w-40 flex-row items-center justify-center gap-2 rounded-full bg-primary', {
+      className={cn('flex h-[46px] w-fit min-w-40 flex-row items-center justify-center gap-2 rounded-full bg-primary', className, {
         'bg-primary': variant === 'primary',
         'bg-[#10111A]': variant === 'secondary',
       })}

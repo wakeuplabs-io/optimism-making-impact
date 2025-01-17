@@ -37,7 +37,12 @@ function Content({ value, isAdmin, editModeClassName, className, ...props }: Inf
   if (editMode && isAdmin) {
     return (
       <>
-        <textarea rows={7} className={cn('max-w-screen flex w-[500px] items-center', editModeClassName)} value={value} {...props} />
+        <textarea
+          rows={7}
+          className={cn('max-w-screen flex w-[500px] items-center overflow-auto break-words rounded border p-2', editModeClassName)}
+          value={value}
+          {...props}
+        />
         {<EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />}
       </>
     );
@@ -45,7 +50,7 @@ function Content({ value, isAdmin, editModeClassName, className, ...props }: Inf
 
   return (
     <>
-      <span className={cn('w-full items-center', className)}>{value}</span>
+      <span className={cn('w-full items-center overflow-auto break-words', className)}>{value}</span>
       <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
     </>
   );

@@ -31,9 +31,9 @@ export function InfographyCard(props: InfogrpahyCardProps) {
       )}
     >
       <div className='flex aspect-square max-h-[345px] w-full max-w-[345px] items-center justify-center'>
-        <img className='h-full w-full rounded-full object-fill object-center' src={props.infography.image} alt='' />
+        <img className='h-full w-full object-fill object-center' src={props.infography.image} alt='' />
       </div>
-      <div className='flex w-screen max-w-[500px] flex-[2] items-center'>
+      <div className='flex w-screen max-w-[500px] flex-[2] items-center px-4 lg:px-0'>
         <EditableText value={markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
       {props.isAdmin && <DeleteIcon infography={props.infography} onClick={props.onDelete} />}

@@ -9,16 +9,16 @@ export function MainSectionContent() {
 
   useEffect(() => {
     if (selectedStep) {
-      mainSectionState.fetchData(selectedStep.id);
+      mainSectionState.init(selectedStep.id);
     }
   }, [selectedStep?.id]);
 
   if (mainSectionState.loading) {
-    return <span>Loading...</span>;
+    return <span className='my-auto'>Loading...</span>;
   }
 
   if (!mainSectionState.step) {
-    return <span>Select a step to see its content</span>;
+    return <span className='my-auto'>Select a step to see its content</span>;
   }
 
   return <StepTypeSelector step={mainSectionState.step} />;
