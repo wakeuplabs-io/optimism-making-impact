@@ -1,20 +1,20 @@
 import { z } from 'zod';
 
 export const createInfogrpahyBodySchema = z.object({
-  markdown: z.string().min(1),
-  image: z.string().min(1),
-  stepId: z.number().min(1),
+  markdown: z.string(),
+  image: z.string(),
+  stepId: z.number(),
 });
 
 export const updateInfogrpahyBodySchema = z.object({
-  markdown: z.string().min(1).optional(),
-  image: z.string().min(1).optional(),
+  markdown: z.string().optional(),
+  image: z.string().optional(),
 });
 
 export const bulkUpdateInfogrpahyBodySchema = z.array(
   z.object({
     id: z.number(),
-    markdown: z.string().min(1).optional(),
-    image: z.string().min(1).optional(),
+    markdown: z.string().optional(),
+    image: z.string().optional(),
   }),
 );
