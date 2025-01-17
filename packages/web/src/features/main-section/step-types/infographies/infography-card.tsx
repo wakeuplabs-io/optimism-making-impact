@@ -1,5 +1,6 @@
 import { ActionButton } from '@/components/action-button';
 import { EditableText } from '@/components/editable-text';
+import { ImageWithDefault } from '@/components/image-with-default';
 import { Modal } from '@/components/modal';
 import { cn } from '@/lib/utils';
 import { Infography } from '@/types/infographies';
@@ -28,7 +29,11 @@ export function InfographyCard(props: InfogrpahyCardProps) {
       )}
     >
       <div className='flex aspect-square max-h-[345px] w-full max-w-[345px] items-center justify-center'>
-        <img className='h-full w-full object-fill object-center' src={props.infography.image} alt='' />
+        <ImageWithDefault
+          className='h-full w-full rounded-full object-fill object-center'
+          src={props.infography.image}
+          defaultImgClassname='rounded-full'
+        />
       </div>
       <div className='flex w-screen max-w-[500px] flex-[2] items-center px-4 lg:px-0'>
         <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
