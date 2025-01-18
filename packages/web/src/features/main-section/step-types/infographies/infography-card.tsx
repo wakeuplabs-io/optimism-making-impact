@@ -5,6 +5,8 @@ import { DeleteInfogrpahyModal } from '@/features/main-section/step-types/infogr
 import { EditInfogrpahyImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
 import { cn } from '@/lib/utils';
 import { Infography } from '@/types/infographies';
+import { Pencil } from 'lucide-react';
+import { useState } from 'react';
 
 interface InfogrpahyCardProps {
   infography: Infography;
@@ -16,6 +18,7 @@ interface InfogrpahyCardProps {
 }
 
 export function InfographyCard(props: InfogrpahyCardProps) {
+  const [editImgModalOpen, setEditImgModalOpen] = useState(false);
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.onChangeText?.(props.infography.id, e.target.value);
   };
@@ -32,8 +35,8 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         overlayClassName='rounded-full bg-black bg-opacity-50'
         className='flex aspect-square max-h-[345px] w-full max-w-[345px] items-center justify-center rounded-full'
         overlayContent={
-          <div className='flex h-full w-full cursor-pointer items-center justify-center'>
-            <EditInfogrpahyImageModal infography={props.infography} onClick={props.onEditImage} />
+          <div className='flex h-full w-full cursor-pointer items-center justify-center' onClick={() => setEditImgModalOpen(true)}>
+            <Pencil className='text-white hover:text-gray-400' />
           </div>
         }
       >
@@ -47,6 +50,14 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
       {props.isAdmin && <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />}
+      {editImgModalOpen && (
+        <EditInfogrpahyImageModal
+          infography={props.infography}
+          onClick={props.onEditImage}
+          open={editImgModalOpen}
+          onClose={() => setEditImgModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
