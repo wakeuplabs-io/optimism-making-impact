@@ -1,5 +1,5 @@
 import { ActionButton } from '@/components/action-button';
-import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-button';
+import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-modal';
 import { InfographyCard } from '@/features/main-section/step-types/infographies/infography-card';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
