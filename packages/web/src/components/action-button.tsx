@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   icon?: React.ReactNode;
   className?: string;
@@ -10,10 +10,15 @@ interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 export function ActionButton({ label, icon, variant = 'primary', className, ...props }: ActionButtonProps) {
   return (
     <button
-      className={cn('flex h-[46px] w-fit min-w-40 flex-row items-center justify-center gap-2 rounded-full bg-primary', className, {
-        'bg-primary': variant === 'primary',
-        'bg-[#10111A]': variant === 'secondary',
-      })}
+      className={cn(
+        'flex h-[46px] w-fit min-w-40 flex-row items-center justify-center gap-2 rounded-full bg-primary transition-all duration-500 ease-in-out hover:opacity-80',
+        className,
+        {
+          'bg-primary': variant === 'primary',
+          'bg-[#10111A]': variant === 'secondary',
+          'bg-gray-400': props.disabled,
+        },
+      )}
       {...props}
     >
       {icon && <div className='text-white-high'>{icon}</div>}
