@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -19,13 +18,12 @@ export function isValidUrl(url: unknown) {
  * @returns A promise that resolves to `true` if the URL is a valid image, otherwise `false`.
  */
 export async function isValidImageUrl(url: string): Promise<boolean> {
-  try {
-    const response = await axios.head(url, { timeout: 5000 });
-    const contentType = response.headers['content-type'];
-    return contentType?.startsWith('image/') ?? false;
-  } catch {
-    return false;
-  }
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true); // If the image loads successfully, it is a valid image
+    img.onerror = () => resolve(false); // If an error occurs while loading, it's not a valid image
+    img.src = url; // Trigger the loading of the image
+  });
 }
 
 export function capitalizeFirst(string: string) {
