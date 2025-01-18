@@ -4,6 +4,7 @@ import { InfographyCard } from '@/features/main-section/step-types/infographies/
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteStep } from '@/types';
+import isEqual from 'lodash.isequal';
 import { Save } from 'lucide-react';
 
 interface InfogrpahyStepProps {
@@ -16,12 +17,19 @@ export function InfographyStep(props: InfogrpahyStepProps) {
   const addInfography = useMainSectionStore((state) => state.addInfography);
   const bulkEditInfogrpahies = useMainSectionStore((state) => state.bulkEditInfogrpahies);
   const editInfogrpahy = useMainSectionStore((state) => state.editInfogrpahy);
+  const step = useMainSectionStore((state) => state.step);
+  const stepInitialState = useMainSectionStore((state) => state.stepInitialState);
 
   return (
     <div className='flex w-full max-w-[1000px] flex-col gap-4'>
       {isAdmin && (
         <div className='flex w-full justify-end gap-2'>
-          <ActionButton label='Save' icon={<Save />} onClick={() => bulkEditInfogrpahies(props.step.infographies)} />
+          <ActionButton
+            label='Save'
+            icon={<Save />}
+            disabled={isEqual(step, stepInitialState)}
+            onClick={() => bulkEditInfogrpahies(props.step.infographies)}
+          />
           <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />
         </div>
       )}

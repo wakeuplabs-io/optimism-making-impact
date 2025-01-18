@@ -5,6 +5,7 @@ export interface MainSectionState {
   error: string | null;
   loading: boolean;
   step: CompleteStep | null;
+  stepInitialState: CompleteStep | null;
 }
 
 export interface MainSectionActions {

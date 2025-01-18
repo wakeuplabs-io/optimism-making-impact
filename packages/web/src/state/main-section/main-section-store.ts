@@ -12,6 +12,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   error: null,
   loading: true,
   step: null,
+  stepInitialState: null,
   init: async (stepId: number) => {
     set({ loading: true });
     await get().fetchData(stepId);
@@ -22,7 +23,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       const response = await StepsService.getOne(stepId);
       const step: Step = response.data;
 
-      set(() => ({ step }));
+      set(() => ({ step, stepInitialState: { ...step } }));
     } catch (error) {
       console.error(error);
       set({ error: "There's been an error fetching the step" });

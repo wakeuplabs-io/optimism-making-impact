@@ -16,7 +16,7 @@ export function ActionButton({ label, icon, variant = 'primary', className, ...p
         {
           'bg-primary': variant === 'primary',
           'bg-[#10111A]': variant === 'secondary',
-          'bg-gray-400': props.disabled,
+          'bg-gray-400 hover:opacity-100': props.disabled,
         },
       )}
       {...props}
