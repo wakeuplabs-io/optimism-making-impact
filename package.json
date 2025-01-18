@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "lint": "pnpm -r --parallel run lint",
+    "lint": "pnpm -r --aggregate-output run lint",
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
     "format": "pnpm -r --parallel run format",
