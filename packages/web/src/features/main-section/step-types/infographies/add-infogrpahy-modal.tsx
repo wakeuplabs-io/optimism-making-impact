@@ -1,4 +1,4 @@
-import { ActionButton } from '@/components/action-button';
+import { IconButton } from '@/components/icon-button';
 import { Modal } from '@/components/modal';
 import { TextInput } from '@/components/text-input';
 import { CreateInfographyBody } from '@/services/infogrpahies/schemas';
@@ -40,8 +40,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   return (
     <Modal
       title='Add step'
-      subtitle='Add step but longer text'
-      trigger={<ActionButton label='Add' variant='secondary' icon={<Plus />} />}
+      trigger={<IconButton variant='secondary' icon={<Plus />} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },

@@ -1,5 +1,5 @@
-import { ActionButton } from '@/components/action-button';
 import { AutoSaveIndicator } from '@/components/auto-save-indicator';
+import { IconButton } from '@/components/icon-button';
 import { AUTOSAVE_INTERVAL } from '@/config';
 import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-modal';
 import { InfographyCard } from '@/features/main-section/step-types/infographies/infography-card';
@@ -43,12 +43,7 @@ export function InfographyStep(props: InfogrpahyStepProps) {
       {isAdmin && (
         <div className='flex justify-end w-full gap-2'>
           <AutoSaveIndicator saving={saving} pending={!isStateUnchanged} />
-          <ActionButton
-            label='Save'
-            icon={<Save />}
-            disabled={isStateUnchanged}
-            onClick={() => saveInfogrpahies(props.step.infographies)}
-          />
+          <IconButton icon={<Save />} disabled={isStateUnchanged} onClick={() => saveInfogrpahies(props.step.infographies)} />
           <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />
         </div>
       )}
