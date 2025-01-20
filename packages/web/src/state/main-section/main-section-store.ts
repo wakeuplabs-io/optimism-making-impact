@@ -73,34 +73,30 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     }));
   },
   saveInfogrpahies: async (data: BulkUpdateInfographyBody) => {
-    const currentStep = get().step;
-    if (!currentStep) return;
+    try {
+      const currentStep = get().step;
+      if (!currentStep) return;
 
-    const stepId = currentStep.id;
+      set({ saving: true });
 
-    // TODO: remove optimistic update
+      const stepId = currentStep.id;
 
-    await optimisticUpdate({
-      getStateSlice: () => currentStep.infographies,
-      updateFn: (infographies) => infographies.map((infography) => ({ ...infography, ...data })),
-      setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies }, saving: true })),
-      apiCall: () => InfographiesService.updateBulk(data),
-      onError: (error) => {
-        const title = 'Failed to edit categories';
-        let description = 'Unknown error';
+      await InfographiesService.updateBulk(data);
+      await get().fetchData(stepId);
 
-        if (error instanceof AxiosError) {
-          description = error.response?.data.error.message;
-        }
+      toast({ title: 'Saved', description: 'Infographies updated successfully' });
+    } catch (error) {
+      const title = 'Failed to edit infographies';
+      let description = 'Unknown error';
 
-        toast({ title, description, variant: 'destructive' });
-      },
-      onSuccess: async () => {
-        await get().fetchData(stepId);
-        set({ saving: false });
-        toast({ title: 'Saved', description: 'Infographies updated successfully' });
-      },
-    });
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
+
+      toast({ title, description, variant: 'destructive' });
+    } finally {
+      set({ saving: false });
+    }
   },
   addInfography: async (data: CreateInfographyBody) => {
     const currentStep = get().step;
