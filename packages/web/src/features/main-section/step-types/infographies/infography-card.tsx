@@ -32,6 +32,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
       )}
     >
       <HoverOverlay
+        disabled={!props.isAdmin}
         overlayClassName='rounded-full bg-black bg-opacity-50'
         className='flex aspect-square max-h-[345px] w-full max-w-[345px] items-center justify-center rounded-full'
         overlayContent={
