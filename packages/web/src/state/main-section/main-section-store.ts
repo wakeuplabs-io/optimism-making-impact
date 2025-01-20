@@ -35,9 +35,28 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     const currentStep = get().step;
     if (!currentStep) return;
 
-    set((state) => ({
-      step: { ...state.step, infographies: state.step?.infographies.filter((infography) => infography.id !== infographyId) },
-    }));
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.infographies,
+      updateFn: (infographies) => infographies.filter((infography) => infography.id !== infographyId),
+      setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies } })),
+      apiCall: () => InfographiesService.deleteOne(infographyId),
+      onError: (error) => {
+        const title = 'Failed to delete infography';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+        toast({ title: 'Deleted', description: 'Infography deleted' });
+      },
+    });
   },
   editInfogrpahy: async (infographyId: number, data: UpdateInfographyBody) => {
     const infography = get().step?.infographies.find((infography) => infography.id === infographyId);
@@ -58,6 +77,8 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     if (!currentStep) return;
 
     const stepId = currentStep.id;
+
+    // TODO: remove optimistic update
 
     await optimisticUpdate({
       getStateSlice: () => currentStep.infographies,
