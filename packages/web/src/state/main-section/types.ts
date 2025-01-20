@@ -16,7 +16,7 @@ export interface MainSectionActions {
   addInfography: (data: CreateInfographyBody) => void;
   deleteInfogrpahy: (infographyId: number) => void;
   editInfogrpahy: (infographyId: number, data: UpdateInfographyBody) => void;
-  saveInfogrpahies: (data: BulkUpdateInfographyBody) => void;
+  saveInfographies: (data: BulkUpdateInfographyBody) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;

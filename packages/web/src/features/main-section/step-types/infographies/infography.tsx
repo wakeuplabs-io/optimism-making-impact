@@ -11,13 +11,13 @@ import { useMemo } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 export function InfographyStep() {
-  const { addInfography, saveInfogrpahies, step, stepInitialState, savingStatus } = useMainSectionStore((state) => state);
+  const { addInfography, saveInfographies, step, stepInitialState, savingStatus } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
   const isStateEqual = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
 
   useInterval(
     async () => {
-      if (step) saveInfogrpahies(step.infographies);
+      if (step) saveInfographies(step.infographies);
     },
     !isStateEqual ? AUTOSAVE_INTERVAL : null,
   );
@@ -35,7 +35,7 @@ export function InfographyStep() {
       {isAdmin && (
         <div className='flex justify-end w-full gap-2'>
           <AutoSaveIndicator status={savingStatus} />
-          <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfogrpahies(step.infographies)} />
+          <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
           <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
         </div>
       )}

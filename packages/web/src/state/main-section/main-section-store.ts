@@ -8,6 +8,7 @@ import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { Step } from '@/types';
 import { AxiosError } from 'axios';
+import isEqual from 'lodash.isequal';
 
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
@@ -60,20 +61,21 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     });
   },
   editInfogrpahy: async (infographyId: number, data: UpdateInfographyBody) => {
-    const infography = get().step?.infographies.find((infography) => infography.id === infographyId);
+    const step = get().step;
+    const stepInitialState = get().stepInitialState;
 
-    if (!infography) return;
+    if (!step || !stepInitialState) return;
 
-    set((state) => ({
-      step: {
-        ...state.step,
-        infographies: state.step?.infographies.map((infography) =>
-          infography.id === infographyId ? { ...infography, ...data } : infography,
-        ),
-      },
-    }));
+    const newStep = {
+      ...step,
+      infographies: step.infographies.map((infography) => (infography.id === infographyId ? { ...infography, ...data } : infography)),
+    };
+
+    const savingStatus = isEqual(newStep, stepInitialState) ? AutoSaveStatus.IDLE : AutoSaveStatus.UNSAVED;
+
+    set({ step: newStep, savingStatus });
   },
-  saveInfogrpahies: async (data: BulkUpdateInfographyBody) => {
+  saveInfographies: async (data: BulkUpdateInfographyBody) => {
     try {
       const currentStep = get().step;
       if (!currentStep) return;
