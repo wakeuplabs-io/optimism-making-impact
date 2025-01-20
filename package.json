@@ -9,7 +9,7 @@
     "format": "pnpm -r --parallel run format",
     "studio": "pnpm -r --parallel run studio",
     "ui:add": "pnpm --filter web ui:add",
-    "deploy:app:staging": "sst deploy --stage=staging --print-logs"
+    "deploy:app:staging": "sst install && sst deploy --stage=staging --print-logs"
   },
   "keywords": [],
   "author": "",
@@ -23,15 +23,15 @@
     "eslint-plugin-react": "7.37.2",
     "eslint-plugin-react-hooks": "5.1.0",
     "eslint-plugin-react-refresh": "0.4.16",
+    "prettier": "^3.4.2",
     "serverless": "4.4.16",
     "serverless-plugin-common-excludes": "4.0.0",
     "serverless-plugin-include-dependencies": "6.1.1",
-    "serverless-s3-sync": "3.4.0"
+    "serverless-s3-sync": "3.4.0",
+    "sst": "3.4.54"
   },
   "dependencies": {
     "dotenv": "16.4.7",
-    "prettier": "^3.4.2",
-    "sst": "3.4.54",
     "zod": "3.24.1"
   }
 }
