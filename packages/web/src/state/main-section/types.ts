@@ -1,10 +1,11 @@
+import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
   error: string | null;
   loading: boolean;
-  saving: boolean;
+  savingStatus: AutoSaveStatus;
   step: CompleteStep | null;
   stepInitialState: CompleteStep | null;
 }

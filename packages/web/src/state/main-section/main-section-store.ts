@@ -1,3 +1,4 @@
+import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
@@ -11,7 +12,7 @@ import { AxiosError } from 'axios';
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
   loading: true,
-  saving: false,
+  savingStatus: AutoSaveStatus.IDLE,
   step: null,
   stepInitialState: null,
   init: async (stepId: number) => {
@@ -77,7 +78,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       const currentStep = get().step;
       if (!currentStep) return;
 
-      set({ saving: true });
+      set({ savingStatus: AutoSaveStatus.SAVING });
 
       const stepId = currentStep.id;
 
@@ -95,7 +96,11 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
       toast({ title, description, variant: 'destructive' });
     } finally {
-      set({ saving: false });
+      set({ savingStatus: AutoSaveStatus.SAVED });
+
+      setTimeout(() => {
+        set({ savingStatus: AutoSaveStatus.IDLE });
+      }, 2000);
     }
   },
   addInfography: async (data: CreateInfographyBody) => {
