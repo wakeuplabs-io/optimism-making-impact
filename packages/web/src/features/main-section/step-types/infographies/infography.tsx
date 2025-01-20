@@ -7,32 +7,22 @@ import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import isEqual from 'lodash.isequal';
 import { Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 export function InfographyStep() {
-  const isAdmin = useUserStore((state) => state.isAdmin);
   const { deleteInfogrpahy, addInfography, saveInfogrpahies, editInfogrpahy, step, stepInitialState, saving } = useMainSectionStore(
     (state) => state,
   );
-  const isStateUnchanged = isEqual(step, stepInitialState);
-
-  const [isPlaying, setPlaying] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!isStateUnchanged) {
-      setPlaying(true);
-    } else {
-      setPlaying(false);
-    }
-  }, [isStateUnchanged]);
+  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isStateUnchanged = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
 
   useInterval(
     () => {
       if (step) saveInfogrpahies(step.infographies);
     },
     // Delay in milliseconds or null to stop it
-    isPlaying ? AUTOSAVE_INTERVAL : null,
+    !isStateUnchanged ? AUTOSAVE_INTERVAL : null,
   );
 
   if (!step) {
