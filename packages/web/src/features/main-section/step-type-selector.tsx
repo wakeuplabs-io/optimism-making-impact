@@ -10,7 +10,7 @@ interface StepTypeSelectorProps {
 export function StepTypeSelector(props: StepTypeSelectorProps) {
   switch (props.step.type) {
     case 'INFOGRAPHY':
-      return <InfographyStep step={props.step} />;
+      return <InfographyStep />;
     case 'ITEMS':
       return <ItemStep />;
     case 'CARD':

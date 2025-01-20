@@ -5,17 +5,12 @@ import { AddInfogrpahyButton } from '@/features/main-section/step-types/infograp
 import { InfographyCard } from '@/features/main-section/step-types/infographies/infography-card';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteStep } from '@/types';
 import isEqual from 'lodash.isequal';
 import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
-interface InfogrpahyStepProps {
-  step: CompleteStep;
-}
-
-export function InfographyStep(props: InfogrpahyStepProps) {
+export function InfographyStep() {
   const isAdmin = useUserStore((state) => state.isAdmin);
   const { deleteInfogrpahy, addInfography, saveInfogrpahies, editInfogrpahy, step, stepInitialState, saving } = useMainSectionStore(
     (state) => state,
@@ -33,21 +28,31 @@ export function InfographyStep(props: InfogrpahyStepProps) {
   }, [isStateUnchanged]);
 
   useInterval(
-    () => saveInfogrpahies(props.step.infographies),
+    () => {
+      if (step) saveInfogrpahies(step.infographies);
+    },
     // Delay in milliseconds or null to stop it
     isPlaying ? AUTOSAVE_INTERVAL : null,
   );
+
+  if (!step) {
+    return (
+      <div className='flex items-center justify-center w-full h-full gap-4'>
+        <span>Select a step</span>
+      </div>
+    );
+  }
 
   return (
     <div className='flex w-full max-w-[1000px] flex-col gap-4'>
       {isAdmin && (
         <div className='flex justify-end w-full gap-2'>
           <AutoSaveIndicator saving={saving} pending={!isStateUnchanged} />
-          <IconButton icon={<Save />} disabled={isStateUnchanged} onClick={() => saveInfogrpahies(props.step.infographies)} />
-          <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />
+          <IconButton icon={<Save />} disabled={isStateUnchanged} onClick={() => saveInfogrpahies(step.infographies)} />
+          <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
         </div>
       )}
-      {props.step.infographies.map((infography, order) => {
+      {step.infographies.map((infography, order) => {
         return (
           <InfographyCard
             infography={infography}
