@@ -12,15 +12,10 @@ export interface MainSectionState {
 export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
+  addInfography: (data: CreateInfographyBody) => void;
   deleteInfogrpahy: (infographyId: number) => void;
   editInfogrpahy: (infographyId: number, data: UpdateInfographyBody) => void;
-  bulkEditInfogrpahies: (data: BulkUpdateInfographyBody) => void;
-  addInfography: (data: CreateInfographyBody) => void;
-  // setSelectedRound: (roundId: number) => void;
-  // setSelectedCategoryId: (categoryId: number) => void;
-  // editRound: (roundId: number, data: Partial<Round>) => void;
-  // addCategory: (name: string, icon: string, roundId: number) => void;
-  // deleteCategory: (categoryId: number) => void;
+  saveInfogrpahies: (data: BulkUpdateInfographyBody) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;

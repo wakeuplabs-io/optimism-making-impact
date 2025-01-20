@@ -14,7 +14,7 @@ interface InfogrpahyCardProps {
   isAdmin?: boolean;
   onDelete?: (infographyId: number) => void;
   onChangeText?: (infographyId: number, markdown: string) => void;
-  onEditImage?: (infographyId: number, image: string) => void;
+  onChangeImage?: (infographyId: number, image: string) => void;
 }
 
 export function InfographyCard(props: InfogrpahyCardProps) {
@@ -50,10 +50,10 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
       {props.isAdmin && <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />}
-      {editImgModalOpen && (
+      {props.isAdmin && editImgModalOpen && (
         <EditInfogrpahyImageModal
           infography={props.infography}
-          onClick={props.onEditImage}
+          onClick={props.onChangeImage}
           open={editImgModalOpen}
           onClose={() => setEditImgModalOpen(false)}
         />

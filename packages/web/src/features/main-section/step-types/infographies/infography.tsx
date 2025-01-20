@@ -17,7 +17,7 @@ interface InfogrpahyStepProps {
 
 export function InfographyStep(props: InfogrpahyStepProps) {
   const isAdmin = useUserStore((state) => state.isAdmin);
-  const { deleteInfogrpahy, addInfography, bulkEditInfogrpahies, editInfogrpahy, step, stepInitialState, saving } = useMainSectionStore(
+  const { deleteInfogrpahy, addInfography, saveInfogrpahies, editInfogrpahy, step, stepInitialState, saving } = useMainSectionStore(
     (state) => state,
   );
   const isStateUnchanged = isEqual(step, stepInitialState);
@@ -33,7 +33,7 @@ export function InfographyStep(props: InfogrpahyStepProps) {
   }, [isStateUnchanged]);
 
   useInterval(
-    () => bulkEditInfogrpahies(props.step.infographies),
+    () => saveInfogrpahies(props.step.infographies),
     // Delay in milliseconds or null to stop it
     isPlaying ? AUTOSAVE_INTERVAL : null,
   );
@@ -42,12 +42,12 @@ export function InfographyStep(props: InfogrpahyStepProps) {
     <div className='flex w-full max-w-[1000px] flex-col gap-4'>
       {isAdmin && (
         <div className='flex justify-end w-full gap-2'>
-          <AutoSaveIndicator saving={saving} />
+          <AutoSaveIndicator saving={saving} pending={!isStateUnchanged} />
           <ActionButton
             label='Save'
             icon={<Save />}
             disabled={isStateUnchanged}
-            onClick={() => bulkEditInfogrpahies(props.step.infographies)}
+            onClick={() => saveInfogrpahies(props.step.infographies)}
           />
           <AddInfogrpahyButton onClick={addInfography} stepId={props.step.id} />
         </div>
@@ -61,7 +61,7 @@ export function InfographyStep(props: InfogrpahyStepProps) {
             isAdmin={isAdmin}
             onDelete={deleteInfogrpahy}
             onChangeText={(infographyId, markdown) => editInfogrpahy(infographyId, { markdown })}
-            onEditImage={(infographyId, image) => editInfogrpahy(infographyId, { image })}
+            onChangeImage={(infographyId, image) => editInfogrpahy(infographyId, { image })}
           />
         );
       })}
