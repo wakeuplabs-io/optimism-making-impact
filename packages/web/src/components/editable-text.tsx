@@ -1,3 +1,4 @@
+import { MarkdownText } from '@/components/markdown-text';
 import { cn } from '@/lib/utils';
 import { Pencil } from 'lucide-react';
 import React from 'react';
@@ -50,7 +51,7 @@ function Content({ value, isAdmin, editModeClassName, className, ...props }: Inf
 
   return (
     <>
-      <span className={cn('w-full items-center overflow-auto break-words', className)}>{value}</span>
+      <MarkdownText className={cn('w-full overflow-auto break-words', className)}>{value}</MarkdownText>
       <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
     </>
   );
