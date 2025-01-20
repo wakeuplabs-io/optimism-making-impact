@@ -2,7 +2,7 @@ import { AutoSaveIndicator } from '@/components/auto-save-indicator';
 import { IconButton } from '@/components/icon-button';
 import { AUTOSAVE_INTERVAL } from '@/config';
 import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-modal';
-import { InfographyCard } from '@/features/main-section/step-types/infographies/infography-card';
+import { InfographyList } from '@/features/main-section/step-types/infographies/infography-list';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import isEqual from 'lodash.isequal';
@@ -11,9 +11,7 @@ import { useMemo } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 export function InfographyStep() {
-  const { deleteInfogrpahy, addInfography, saveInfogrpahies, editInfogrpahy, step, stepInitialState, saving } = useMainSectionStore(
-    (state) => state,
-  );
+  const { addInfography, saveInfogrpahies, step, stepInitialState, saving } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
   const isStateUnchanged = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
 
@@ -42,19 +40,7 @@ export function InfographyStep() {
           <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
         </div>
       )}
-      {step.infographies.map((infography, order) => {
-        return (
-          <InfographyCard
-            infography={infography}
-            order={order}
-            key={`${infography.id}-${order}`}
-            isAdmin={isAdmin}
-            onDelete={deleteInfogrpahy}
-            onChangeText={(infographyId, markdown) => editInfogrpahy(infographyId, { markdown })}
-            onChangeImage={(infographyId, image) => editInfogrpahy(infographyId, { image })}
-          />
-        );
-      })}
+      <InfographyList infographies={step.infographies} />
     </div>
   );
 }
