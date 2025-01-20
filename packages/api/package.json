@@ -38,7 +38,7 @@
     "@types/morgan": "1.9.9",
     "eslint": "^9.6.0",
     "globals": "^15.8.0",
-    "prisma": "^6.1.0",
+    "prisma": "6.1.0",
     "rimraf": "5.0.5",
     "ts-patch": "3.1.2",
     "tsx": "4.11.0",
@@ -47,7 +47,7 @@
     "typescript-transform-paths": "3.4.7"
   },
   "dependencies": {
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "6.1.0",
     "cors": "2.8.5",
     "express": "4.19.2",
     "helmet": "7.1.0",
