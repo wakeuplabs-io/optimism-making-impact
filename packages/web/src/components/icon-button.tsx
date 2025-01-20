@@ -5,16 +5,16 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
   variant?: 'primary' | 'secondary';
 }
 
-export function IconButton({ icon, variant = 'primary', ...props }: IconButtonProps) {
+export function IconButton({ icon, variant = 'primary', className, ...props }: IconButtonProps) {
   return (
     <button
       className={cn(
-        'flex h-[45px] w-[45px] items-center justify-center rounded-full bg-[#14141A] text-white transition-all duration-500 ease-in-out hover:cursor-pointer hover:bg-primary',
+        'flex h-[45px] w-[45px] items-center justify-center rounded-full bg-[#14141A] text-white transition-all duration-500 ease-in-out hover:cursor-pointer disabled:cursor-default disabled:bg-gray-400 disabled:hover:opacity-100',
         {
-          'bg-primary': variant === 'primary',
-          'bg-[#10111A]': variant === 'secondary',
-          'bg-gray-400 hover:opacity-100': props.disabled,
+          'bg-primary hover:opacity-80': variant === 'primary',
+          'bg-[#10111A] hover:opacity-80': variant === 'secondary',
         },
+        className,
       )}
       {...props}
     >
