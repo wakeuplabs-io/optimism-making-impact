@@ -3,7 +3,7 @@ import { Round, RoundWithCategories } from '@/types';
 export interface SidebarState {
   error: string | null;
   rounds: RoundWithCategories[];
-  selectedRound: RoundWithCategories;
+  selectedRound: RoundWithCategories | null;
   selectedCategoryId: number;
 }
 

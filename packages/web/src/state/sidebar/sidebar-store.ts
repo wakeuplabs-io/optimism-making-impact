@@ -8,12 +8,10 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { Category, Round, RoundWithCategories } from '@/types';
 import { AxiosError } from 'axios';
 
-const placeHolderRound = { id: 1, name: 'Select', link1: '', link2: '', categories: [] };
-
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
   rounds: [],
-  selectedRound: placeHolderRound,
+  selectedRound: null,
   selectedCategoryId: 0,
   fetchData: async () => {
     const response = await RoundsService.getRounds();
@@ -21,7 +19,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
 
     let selectedRound = get().selectedRound;
 
-    if (selectedRound.name === placeHolderRound.name) {
+    if (!selectedRound) {
       selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
     }
 
@@ -66,8 +64,12 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   addCategory: async (name: string, icon: string, roundId: number) => {
     await optimisticUpdate({
-      getStateSlice: () => get().selectedRound.categories,
-      updateFn: (categories) => [...categories, { id: Date.now(), name, iconURL: icon, roundId }],
+      getStateSlice: () => get().selectedRound?.categories,
+      updateFn: (categories) => {
+        if (categories) {
+          return [...categories, { id: Date.now(), name, iconURL: icon, roundId }];
+        }
+      },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
       onError: (error) => {
@@ -110,8 +112,12 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   editCategory: async (categoryId: number, name: string) => {
     await optimisticUpdate({
-      getStateSlice: () => get().selectedRound.categories,
-      updateFn: (categories) => categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat)),
+      getStateSlice: () => get().selectedRound?.categories,
+      updateFn: (categories) => {
+        if (categories) {
+          return categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat));
+        }
+      },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.editOne(categoryId, name),
       onError: (error) => {
@@ -131,8 +137,8 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   },
   deleteCategory: async (categoryId: number) => {
     await optimisticUpdate({
-      getStateSlice: () => get().selectedRound.categories,
-      updateFn: (categories) => categories.filter((cat) => cat.id !== categoryId),
+      getStateSlice: () => get().selectedRound?.categories,
+      updateFn: (categories) => categories?.filter((cat) => cat.id !== categoryId),
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
       apiCall: () => CategoriesService.deleteOne(categoryId),
       onError: (error, rollbackState) => {

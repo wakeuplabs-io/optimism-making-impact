@@ -71,6 +71,7 @@ model Step {
   updatedAt DateTime @updatedAt
 
   @@unique([position, roundId])
+  @@unique([title, roundId])
 }
 
 model Infography {
@@ -81,7 +82,7 @@ model Infography {
   position Int
 
   stepId Int
-  step   Step @relation(fields: [stepId], references: [id])
+  step   Step @relation(fields: [stepId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -94,7 +95,7 @@ model Item {
   position Int
 
   stepId      Int
-  step        Step      @relation(fields: [stepId], references: [id])
+  step        Step      @relation(fields: [stepId], references: [id], onDelete: Cascade)
   attributeId Int
   attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
 
@@ -111,7 +112,7 @@ model Card {
   position Int
 
   stepId       Int
-  step         Step          @relation(fields: [stepId], references: [id])
+  step         Step          @relation(fields: [stepId], references: [id], onDelete: Cascade)
   attributeId  Int
   attribute    Attribute     @relation(fields: [attributeId], references: [id], onDelete: Cascade)
   cardKeywords CardKeyword[]

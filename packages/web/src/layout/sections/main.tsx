@@ -1,12 +1,11 @@
-import { useStepsStore } from '@/state';
+import { useStepsStore } from '@/state/steps/steps-store';
 
 export function MainSection() {
-  const selectedStepPosition = useStepsStore((state) => state.selectedStepPosition);
-  const steps = useStepsStore((state) => state.steps);
+  const selectedStep = useStepsStore((state) => state.selectedStep);
 
   return (
-    <main className='flex flex-1 items-center justify-center bg-red-100 p-4'>
-      <span>{JSON.stringify(steps[selectedStepPosition], null, 2)}</span>
+    <main className='flex flex-1 flex-col items-center justify-center gap-8 bg-red-100 p-4'>
+      <span>{JSON.stringify(selectedStep ?? 'no step selected', null, 2)}</span>
     </main>
   );
 }

@@ -4,11 +4,15 @@ import { SidebarLinkButton } from '@/components/sidebar-link-button';
 import { useSidebarStore, useUserStore } from '@/state';
 
 export default function LogosSection() {
-  const { selectedRound, editRound } = useSidebarStore((state) => state);
+  const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
+  if (!selectedRound) {
+    return null;
+  }
+
   return (
-    <div className='flex flex-col w-full gap-4'>
+    <div className='flex w-full flex-col gap-4'>
       <SidebarLinkButton
         src={VoteHere}
         link={selectedRound.link1}

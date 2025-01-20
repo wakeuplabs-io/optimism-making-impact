@@ -1,20 +1,20 @@
 import WakeUpLogo from '@/assets/wake-up-logo.png';
 import { ImageButton } from '@/components/image-button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { MOBILE_THRESHOLD, WAKEUP_URL } from '@/config';
+import { WAKEUP_URL } from '@/config';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { Logo } from '@/features/sidebar/components/logo';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { Rounds } from '@/features/sidebar/components/rounds';
+import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
-import { useWindowSize } from 'usehooks-ts';
 
 export function SidebarSection() {
-  const title = useSidebarStore((state) => state.selectedRound.name);
+  const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   return (
-    <SidebarContainer title={title}>
+    <SidebarContainer title={selectedRound?.name}>
       <SidebarContent />
     </SidebarContainer>
   );
@@ -26,8 +26,7 @@ interface SidebarContainerProps {
 }
 
 function SidebarContainer(props: SidebarContainerProps) {
-  const { width = 0 } = useWindowSize();
-  const isMobile = width < MOBILE_THRESHOLD;
+  const isMobile = useIsMobile();
 
   if (isMobile) {
     // Render as a Sheet on Mobile

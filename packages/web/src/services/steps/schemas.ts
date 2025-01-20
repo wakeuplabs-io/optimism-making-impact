@@ -1,0 +1,16 @@
+import { stepTypeSchema } from '@/types';
+import { z } from 'zod';
+
+export const createStepBodySchema = z.object({
+  title: z.string(),
+  icon: z.string(),
+  type: stepTypeSchema.optional(),
+  roundId: z.string().transform(Number),
+});
+export type CreateStepBody = z.infer<typeof createStepBodySchema>;
+
+export const updateStepBodySchema = z.object({
+  title: z.string().optional(),
+  icon: z.string().optional(),
+});
+export type UpdateStepBody = z.infer<typeof updateStepBodySchema>;
