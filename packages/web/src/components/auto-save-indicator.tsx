@@ -9,8 +9,8 @@ export function AutoSaveIndicator(props: AutoSaveIndicatorProps) {
   const text = props.saving ? 'Saving...' : props.pending ? 'Unsaved' : 'Autosaved';
 
   return (
-    <div className='flex items-center h-full gap-4'>
-      <span className='text-[#9E9E9E]'>{text}</span>
+    <div className='flex items-center h-full gap-3'>
+      <span className='text-[14px] text-[#9E9E9E]'>{text}</span>
       <AutosaveIcon />
     </div>
   );
