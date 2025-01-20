@@ -1,5 +1,6 @@
 import { IconButton } from '@/components/icon-button';
 import { Modal } from '@/components/modal';
+import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { CreateInfographyBody } from '@/services/infogrpahies/schemas';
 import { Plus, Save } from 'lucide-react';
@@ -23,7 +24,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   const [image, setImage] = useState('');
   const [markdown, setMarkdown] = useState('');
 
-  function handleMarkdownChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleMarkdownChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setMarkdown(event.target.value);
   }
 
@@ -47,7 +48,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
       ]}
     >
       <div className='grid gap-4 py-4'>
-        <TextInput name='markdown' value={markdown} onChange={handleMarkdownChange} placeholder='Content' />
+        <TextAreaInput name='markdown' rows={7} value={markdown} onChange={handleMarkdownChange} placeholder='Content' />
         <TextInput name='image' value={image} onChange={handleImageChange} placeholder='Image' />
       </div>
     </Modal>

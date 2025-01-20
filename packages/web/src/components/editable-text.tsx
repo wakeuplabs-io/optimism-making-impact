@@ -1,4 +1,5 @@
 import { MarkdownText } from '@/components/markdown-text';
+import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
 import { Pencil } from 'lucide-react';
 import React from 'react';
@@ -28,23 +29,17 @@ function Container(props: ContainerProps) {
 interface ContentProps extends React.HtmlHTMLAttributes<HTMLTextAreaElement> {
   value: string;
   isAdmin?: boolean;
-  editModeClassName?: string;
   className?: string;
 }
 
-function Content({ value, isAdmin, editModeClassName, className, ...props }: InfogrpahyCardProps) {
+function Content({ value, isAdmin, className, ...props }: InfogrpahyCardProps) {
   const [editMode, toggleEditMode] = useToggle(false);
 
   if (editMode && isAdmin) {
     return (
       <>
-        <textarea
-          rows={7}
-          className={cn('max-w-screen flex w-[500px] items-center overflow-auto break-words rounded border p-2', editModeClassName)}
-          value={value}
-          {...props}
-        />
-        {<EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />}
+        <TextAreaInput name='content' rows={7} value={value} {...props} />
+        <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
       </>
     );
   }
