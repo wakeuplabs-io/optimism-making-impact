@@ -11,6 +11,7 @@ import { AxiosError } from 'axios';
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
   loading: true,
+  saving: false,
   step: null,
   stepInitialState: null,
   init: async (stepId: number) => {
@@ -79,7 +80,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     await optimisticUpdate({
       getStateSlice: () => currentStep.infographies,
       updateFn: (infographies) => infographies.map((infography) => ({ ...infography, ...data })),
-      setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies } })),
+      setStateSlice: (infographies) => set((state) => ({ step: { ...state.step, infographies }, saving: true })),
       apiCall: () => InfographiesService.updateBulk(data),
       onError: (error) => {
         const title = 'Failed to edit categories';
@@ -93,6 +94,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
       onSuccess: async () => {
         await get().fetchData(stepId);
+        set({ saving: false });
         toast({ title: 'Saved', description: 'Infographies updated successfully' });
       },
     });

@@ -4,6 +4,7 @@ import { CompleteStep } from '@/types';
 export interface MainSectionState {
   error: string | null;
   loading: boolean;
+  saving: boolean;
   step: CompleteStep | null;
   stepInitialState: CompleteStep | null;
 }
