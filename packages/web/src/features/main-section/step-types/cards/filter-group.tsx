@@ -51,7 +51,7 @@ function FilterButton<T>({ label, selected, className, data, ...props }: FilterB
     <button
       {...props}
       className={cn(
-        'flex w-fit items-center justify-between gap-4 rounded-full px-2',
+        'flex w-fit items-center justify-between gap-4 rounded-full px-2 py-0.5',
         selected && 'border-1 border border-black',
         className,
       )}
