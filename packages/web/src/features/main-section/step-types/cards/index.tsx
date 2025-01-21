@@ -1,7 +1,9 @@
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
-import { CardFilters } from '@/features/main-section/step-types/cards/filters';
-import { cn } from '@/lib/utils';
+import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
+import { cn, extractUniqueKeywordsFromStep } from '@/lib/utils';
+import { useCardFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useEffect } from 'react';
 
 export function CardStep() {
   return (
@@ -17,6 +19,13 @@ function Container(props: { children: React.ReactNode; className?: string }) {
 
 function Content() {
   const { step } = useMainSectionStore((state) => state);
+  const { setKeywords, clear } = useCardFiltersStore((state) => state);
+
+  useEffect(() => {
+    if (!step) return;
+    setKeywords(extractUniqueKeywordsFromStep(step));
+    return () => clear();
+  }, [step]);
 
   if (!step) {
     return <div className='flex items-center justify-center w-full h-full'>Select a step</div>;
@@ -24,7 +33,7 @@ function Content() {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <CardFilters filters={['Filter 1', 'Filter 2', 'Filter 3']} />
+      <CardFilters />
       <CardList cards={step.cards} />
     </div>
   );

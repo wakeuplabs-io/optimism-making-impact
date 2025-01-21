@@ -1,4 +1,5 @@
 import { BADGE_COLORS } from '@/config';
+import { CompleteStep, Keyword } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -44,4 +45,14 @@ export function getRandomBadgeColor(input: string): string {
   const index = hash % BADGE_COLORS.length;
 
   return BADGE_COLORS[index];
+}
+
+export function extractUniqueKeywordsFromStep(step: CompleteStep): Keyword[] {
+  return step.cards
+    .flatMap((card) => card.keywords)
+    .reduce<Keyword[]>((acc, current) => {
+      if (!acc.some((item) => item.id === current.id)) acc.push(current);
+
+      return acc;
+    }, []);
 }

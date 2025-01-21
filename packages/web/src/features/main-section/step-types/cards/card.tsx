@@ -2,7 +2,7 @@ import { Badge } from '@/components/badge';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { MarkdownText } from '@/components/markdown-text';
 import { getRandomBadgeColor } from '@/lib/utils';
-import { CardStrengthEnum, CompleteCard, Keyword } from '@/types';
+import { CompleteCard, Keyword, StrengthEnum } from '@/types';
 
 interface CardProps {
   card: CompleteCard;
@@ -20,7 +20,7 @@ export function Card(props: CardProps) {
 
 interface CardTitleProps {
   title: string;
-  strength: CardStrengthEnum;
+  strength: StrengthEnum;
 }
 
 function CardTitle(props: CardTitleProps) {
@@ -34,15 +34,15 @@ function CardTitle(props: CardTitleProps) {
   );
 }
 
-function StrengthIndicator(props: { strength: CardStrengthEnum }) {
+function StrengthIndicator(props: { strength: StrengthEnum }) {
   switch (props.strength) {
-    case CardStrengthEnum.LOW:
+    case StrengthEnum.LOW:
       return <StrengthLowIcon size={26} />;
 
-    case CardStrengthEnum.MEDIUM:
+    case StrengthEnum.MEDIUM:
       return <StrengthMediumIcon size={26} />;
 
-    case CardStrengthEnum.HIGH:
+    case StrengthEnum.HIGH:
       return <StrengthHighIcon size={26} />;
 
     default:
