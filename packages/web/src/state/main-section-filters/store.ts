@@ -4,41 +4,27 @@ import { Keyword, strengthArray, StrengthEnum } from '@/types';
 
 export const useCardFiltersStore = createWithMiddlewares<CardFiltersStore>((set, get) => ({
   strengths: strengthArray,
-  selectedStreghts: [],
+  selectedStrengths: [],
   keywords: [],
   selectedKeywords: [],
   setKeywords: (keywords: Keyword[]) => set({ keywords }),
-  setSelectedStrengths: (strenghtFilter: StrengthEnum) => {
-    const currentStrengFilters = get().selectedStreghts;
-
-    let newStrengFilters: StrengthEnum[] = [];
-
-    if (currentStrengFilters.includes(strenghtFilter)) {
-      newStrengFilters = currentStrengFilters.filter((filter) => filter !== strenghtFilter);
-    } else {
-      newStrengFilters = [...currentStrengFilters, strenghtFilter];
-    }
-
-    set({ selectedStreghts: newStrengFilters });
+  setSelectedStrengths: (strength: StrengthEnum) => {
+    const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
+    set({ selectedStrengths });
   },
-  setSelectedKeywords: (keywordId: number) => {
-    const currentKeywordFilters = get().selectedKeywords;
-
-    let newKeywordFilters: number[] = [];
-
-    if (currentKeywordFilters.includes(keywordId)) {
-      newKeywordFilters = currentKeywordFilters.filter((filter) => filter !== keywordId);
-    } else {
-      newKeywordFilters = [...currentKeywordFilters, keywordId];
-    }
-
-    set({ selectedKeywords: newKeywordFilters });
+  setSelectedKeywords: (keyword: Keyword) => {
+    const selectedKeywords = toggleFilter(get().selectedKeywords, keyword);
+    set({ selectedKeywords });
   },
   clear() {
     set({
-      selectedStreghts: [],
+      selectedStrengths: [],
       selectedKeywords: [],
       keywords: [],
     });
   },
 }));
+
+function toggleFilter<T>(currentFilters: T[], filter: T): T[] {
+  return currentFilters.includes(filter) ? currentFilters.filter((current) => current !== filter) : [...currentFilters, filter];
+}

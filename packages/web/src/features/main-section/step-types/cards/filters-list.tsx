@@ -14,7 +14,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 function Content() {
-  const { strengths, selectedStreghts, setSelectedStrengths, keywords, selectedKeywords, setSelectedKeywords } = useCardFiltersStore(
+  const { strengths, selectedStrengths, setSelectedStrengths, keywords, selectedKeywords, setSelectedKeywords } = useCardFiltersStore(
     (state) => state,
   );
 
@@ -28,7 +28,7 @@ function Content() {
           title='Strength'
           filters={strengths.map((value) => ({
             label: value.toLowerCase(),
-            selected: selectedStreghts.includes(value),
+            selected: selectedStrengths.includes(value),
             onClick: setSelectedStrengths,
             data: value,
           }))}
@@ -37,9 +37,9 @@ function Content() {
           title='Keywords'
           filters={keywords.map((keyword) => ({
             label: keyword.value.toLowerCase(),
-            selected: selectedKeywords.includes(keyword.id),
+            selected: selectedKeywords.map(({ id }) => id).includes(keyword.id),
             onClick: setSelectedKeywords,
-            data: keyword.id,
+            data: keyword,
           }))}
         />
       </div>

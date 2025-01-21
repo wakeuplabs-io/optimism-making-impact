@@ -2,15 +2,15 @@ import { Keyword, StrengthEnum } from '@/types';
 
 export interface CardFiltersState {
   strengths: StrengthEnum[];
-  selectedStreghts: StrengthEnum[];
+  selectedStrengths: StrengthEnum[];
   keywords: Keyword[];
-  selectedKeywords: number[];
+  selectedKeywords: Keyword[];
 }
 
 export interface CardFiltersActions {
   setKeywords: (keywordFilters: Keyword[]) => void;
   setSelectedStrengths: (strenght: StrengthEnum) => void;
-  setSelectedKeywords: (keywordId: number) => void;
+  setSelectedKeywords: (keyword: Keyword) => void;
   clear: () => void;
 }
 
