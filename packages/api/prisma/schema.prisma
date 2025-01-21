@@ -111,11 +111,11 @@ model Card {
   strength CardStrength
   position Int
 
-  stepId       Int
-  step         Step          @relation(fields: [stepId], references: [id], onDelete: Cascade)
-  attributeId  Int
-  attribute    Attribute     @relation(fields: [attributeId], references: [id], onDelete: Cascade)
-  cardKeywords CardKeyword[]
+  stepId      Int
+  step        Step      @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  attributeId Int
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  keywords    Keyword[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -126,23 +126,10 @@ model Keyword {
 
   value String
 
-  cardKeywords CardKeyword[]
+  cards Card[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model CardKeyword {
-  cardId    Int
-  keywordId Int
-
-  card    Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
-  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([cardId, keywordId])
 }
 
 model Attribute {

@@ -1,12 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { CardStrength, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-async function main() {
-  const start = performance.now();
-  console.log('Seeding database...');
+const strengthArray: CardStrength[] = ['LOW', 'MEDIUM', 'HIGH'];
 
-  // Create Rounds
+async function seedRoundsAndCategories() {
+  console.log('Seeding rounds and categories...');
   const round1 = await prisma.round.create({
     data: {
       name: 'Round 1',
@@ -33,210 +32,115 @@ async function main() {
       link2: 'https://www.wakeuplabs.io/',
     },
   });
-  console.log(`Created 3 rounds`);
 
-  // Create Categories
   const categories = await Promise.all([
     prisma.category.create({
-      data: {
-        name: 'Technology',
-        icon: 'tech-icon.png',
-        roundId: round1.id,
-      },
+      data: { name: 'Technology', icon: 'tech-icon.png', roundId: round1.id },
     }),
     prisma.category.create({
-      data: {
-        name: 'Science',
-        icon: 'science-icon.png',
-        roundId: round1.id,
-      },
+      data: { name: 'Science', icon: 'science-icon.png', roundId: round1.id },
     }),
     prisma.category.create({
-      data: {
-        name: 'Mathematics',
-        icon: 'math-icon.png',
-        roundId: round2.id,
-      },
+      data: { name: 'Mathematics', icon: 'math-icon.png', roundId: round2.id },
     }),
     prisma.category.create({
-      data: {
-        name: 'Engineering',
-        icon: 'engineering-icon.png',
-        roundId: round2.id,
-      },
+      data: { name: 'Engineering', icon: 'engineering-icon.png', roundId: round2.id },
     }),
     prisma.category.create({
-      data: {
-        name: 'Arts',
-        icon: 'arts-icon.png',
-        roundId: round3.id,
-      },
+      data: { name: 'Arts', icon: 'arts-icon.png', roundId: round3.id },
     }),
     prisma.category.create({
-      data: {
-        name: 'History',
-        icon: 'history-icon.png',
-        roundId: round3.id,
-      },
+      data: { name: 'History', icon: 'history-icon.png', roundId: round3.id },
     }),
   ]);
-  console.log(`Created ${categories.length} categories`);
+  console.log('Created rounds and categories.');
+  return { round1, round2, round3, categories };
+}
 
-  // Create Attributes
+async function seedAttributes(categories) {
+  console.log('Seeding attributes...');
   const attributes = await Promise.all([
-    prisma.attribute.create({
-      data: {
-        value: 'Innovative',
-        categoryId: categories[0].id,
-      },
-    }),
-    prisma.attribute.create({
-      data: {
-        value: 'Reliable',
-        categoryId: categories[0].id,
-      },
-    }),
-    prisma.attribute.create({
-      data: {
-        value: 'Empirical',
-        categoryId: categories[1].id,
-      },
-    }),
-    prisma.attribute.create({
-      data: {
-        value: 'Analytical',
-        categoryId: categories[2].id,
-      },
-    }),
-    prisma.attribute.create({
-      data: {
-        value: 'Creative',
-        categoryId: categories[4].id,
-      },
-    }),
-    prisma.attribute.create({
-      data: {
-        value: 'Detailed',
-        categoryId: categories[5].id,
-      },
-    }),
+    prisma.attribute.create({ data: { value: 'Innovative', categoryId: categories[0].id } }),
+    prisma.attribute.create({ data: { value: 'Reliable', categoryId: categories[0].id } }),
+    prisma.attribute.create({ data: { value: 'Empirical', categoryId: categories[1].id } }),
+    prisma.attribute.create({ data: { value: 'Analytical', categoryId: categories[2].id } }),
+    prisma.attribute.create({ data: { value: 'Creative', categoryId: categories[4].id } }),
+    prisma.attribute.create({ data: { value: 'Detailed', categoryId: categories[5].id } }),
   ]);
-  console.log(`Created ${attributes.length} attributes`);
+  console.log(`Created ${attributes.length} attributes.`);
+  return attributes;
+}
 
-  // Create Steps
+async function seedKeywords() {
+  console.log('Seeding keywords...');
+  const keywords = await Promise.all([
+    prisma.keyword.create({ data: { value: 'Innovation' } }),
+    prisma.keyword.create({ data: { value: 'Creativity' } }),
+    prisma.keyword.create({ data: { value: 'Discovery' } }),
+    prisma.keyword.create({ data: { value: 'Reliability' } }),
+    prisma.keyword.create({ data: { value: 'Analysis' } }),
+  ]);
+  console.log(`Created ${keywords.length} keywords.`);
+  return keywords;
+}
+
+async function seedSteps(rounds) {
+  console.log('Seeding steps...');
+
   const steps = await Promise.all([
+    // Steps for Round 1
     prisma.step.create({
       data: {
-        title: 'Introduction to Technology',
+        title: '(In) Introduction to Technology',
         icon: 'intro-tech.png',
         position: 0,
         type: 'INFOGRAPHY',
-        roundId: round1.id,
+        roundId: rounds.round1.id,
       },
     }),
     prisma.step.create({
-      data: {
-        title: 'Advanced Technology',
-        icon: 'advanced-tech.png',
-        position: 1,
-        type: 'ITEMS',
-        roundId: round1.id,
-      },
+      data: { title: '(It) Advanced Technology', icon: 'advanced-tech.png', position: 1, type: 'ITEMS', roundId: rounds.round1.id },
     }),
     prisma.step.create({
-      data: {
-        title: 'Emerging Trends in Tech',
-        icon: 'emerging-tech.png',
-        position: 2,
-        type: 'CARD',
-        roundId: round1.id,
-      },
+      data: { title: '(C) Emerging Trends in Tech', icon: 'emerging-tech.png', position: 2, type: 'CARD', roundId: rounds.round1.id },
     }),
+
+    // Steps for Round 2
     prisma.step.create({
       data: {
-        title: 'Future of Technology',
-        icon: 'future-tech.png',
-        position: 3,
-        type: 'INFOGRAPHY',
-        roundId: round1.id,
-      },
-    }),
-    prisma.step.create({
-      data: {
-        title: 'Introduction to Mathematics',
+        title: '(In) Introduction to Mathematics',
         icon: 'intro-math.png',
         position: 0,
         type: 'INFOGRAPHY',
-        roundId: round2.id,
+        roundId: rounds.round2.id,
       },
     }),
     prisma.step.create({
-      data: {
-        title: 'Algebra Basics',
-        icon: 'algebra-basics.png',
-        position: 1,
-        type: 'ITEMS',
-        roundId: round2.id,
-      },
+      data: { title: '(It) Algebra Basics', icon: 'algebra-basics.png', position: 1, type: 'ITEMS', roundId: rounds.round2.id },
     }),
     prisma.step.create({
-      data: {
-        title: 'Geometry Essentials',
-        icon: 'geometry-essentials.png',
-        position: 2,
-        type: 'CARD',
-        roundId: round2.id,
-      },
+      data: { title: '(C) Geometry Essentials', icon: 'geometry-essentials.png', position: 2, type: 'CARD', roundId: rounds.round2.id },
+    }),
+
+    // Steps for Round 3
+    prisma.step.create({
+      data: { title: '(In) Introduction to Arts', icon: 'intro-arts.png', position: 0, type: 'INFOGRAPHY', roundId: rounds.round3.id },
     }),
     prisma.step.create({
-      data: {
-        title: 'Advanced Calculus',
-        icon: 'advanced-calculus.png',
-        position: 3,
-        type: 'INFOGRAPHY',
-        roundId: round2.id,
-      },
+      data: { title: '(It) Modern Art Movements', icon: 'modern-art.png', position: 1, type: 'ITEMS', roundId: rounds.round3.id },
     }),
     prisma.step.create({
-      data: {
-        title: 'Introduction to Arts',
-        icon: 'intro-arts.png',
-        position: 0,
-        type: 'INFOGRAPHY',
-        roundId: round3.id,
-      },
-    }),
-    prisma.step.create({
-      data: {
-        title: 'Modern Art Movements',
-        icon: 'modern-art.png',
-        position: 1,
-        type: 'ITEMS',
-        roundId: round3.id,
-      },
-    }),
-    prisma.step.create({
-      data: {
-        title: 'Classical Art Techniques',
-        icon: 'classical-art.png',
-        position: 2,
-        type: 'CARD',
-        roundId: round3.id,
-      },
-    }),
-    prisma.step.create({
-      data: {
-        title: 'Digital Art Revolution',
-        icon: 'digital-art.png',
-        position: 3,
-        type: 'INFOGRAPHY',
-        roundId: round3.id,
-      },
+      data: { title: '(C) Classical Art Techniques', icon: 'classical-art.png', position: 2, type: 'CARD', roundId: rounds.round3.id },
     }),
   ]);
-  console.log(`Created ${steps.length} steps`);
 
-  // Create Infographies
+  console.log(`Created ${steps.length} steps.`);
+  return steps;
+}
+
+async function seedInfographies(steps) {
+  console.log('Seeding infographies...');
+
   const infographies = await Promise.all([
     prisma.infography.create({
       data: {
@@ -262,177 +166,75 @@ async function main() {
           'Non ea reprehenderit fugiat ut mollit aute eu excepteur fugiat Lorem officia laborum. Nulla in do nostrud sint et ea magna qui do culpa. Lorem qui sunt eiusmod dolore aute. Culpa ad pariatur fugiat cillum est. Qui laborum irure veniam velit do laboris. Esse id sunt ad excepteur fugiat sint eiusmod eu occaecat ullamco sunt deserunt cillum. Amet sint eiusmod elit magna ad sint.',
         image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
         position: 0,
-        stepId: steps[11].id,
+        stepId: steps[3].id,
       },
     }),
     prisma.infography.create({
       data: {
         markdown:
-          'Nostrud aute velit ipsum ullamco ut laborum Lorem. Cupidatat velit mollit occaecat pariatur id sunt eiusmod non ullamco nulla eiusmod exercitation. Fugiat aliqua adipisicing commodo anim aute veniam excepteur sint duis id consectetur.',
-        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+          'Do duis sit officia ea labore mollit minim sint occaecat tempor non. Occaecat voluptate cillum deserunt est ad dolor. Laborum ea commodo ex sint excepteur commodo eu incididunt id exercitation qui nulla qui velit. Incididunt dolor adipisicing tempor consequat tempor aliquip ex. Elit et velit aliqua laborum esse. Duis adipisicing laboris eu aute ex sunt occaecat et quis adipisicing cillum eu pariatur.',
+        image: 'https://example.com/intro-math-infography-2.png',
         position: 1,
-        stepId: steps[11].id,
-      },
-    }),
-    prisma.infography.create({
-      data: {
-        markdown:
-          'Esse mollit esse duis nulla dolore labore incididunt non. Incididunt cillum ullamco exercitation minim laborum. Qui in dolor consequat nostrud. Quis ut enim magna eiusmod irure deserunt duis fugiat voluptate exercitation exercitation elit cillum mollit. Minim excepteur irure aliqua excepteur sit proident ex labore do laboris esse mollit culpa.',
-        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
-        position: 2,
-        stepId: steps[11].id,
-      },
-    }),
-    prisma.infography.create({
-      data: {
-        markdown:
-          'Quis duis eu nulla velit. Laborum consectetur excepteur in cupidatat. Id duis tempor voluptate esse mollit amet amet eu voluptate dolor commodo. Elit minim consectetur ex aliquip cillum minim anim. Dolor esse ad exercitation do velit minim ullamco consequat aliqua duis occaecat. Ut pariatur consequat sint reprehenderit adipisicing dolor dolor ut non consequat est dolore.',
-        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
-        position: 3,
-        stepId: steps[11].id,
-      },
-    }),
-    prisma.infography.create({
-      data: {
-        markdown:
-          'Sunt enim anim quis laborum quis minim in laborum dolore. Ea exercitation eiusmod commodo excepteur sit proident ipsum ut tempor anim reprehenderit exercitation amet consequat. Pariatur ut elit fugiat excepteur aute proident anim eiusmod elit amet. Quis ex nulla aliqua et dolore velit magna nulla enim sit aute ipsum.',
-        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
-        position: 4,
-        stepId: steps[11].id,
-      },
-    }),
-    prisma.infography.create({
-      data: {
-        markdown:
-          'Irure cillum velit elit pariatur est tempor laborum cillum ullamco ex ipsum. Tempor cupidatat ad ipsum aute laboris culpa velit ad laborum mollit et culpa cupidatat. Amet aute voluptate fugiat culpa minim occaecat do deserunt ea ullamco cupidatat amet. Do irure nisi commodo excepteur. Dolor anim aliquip duis consequat laboris.',
-        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
-        position: 5,
-        stepId: steps[11].id,
+        stepId: steps[3].id,
       },
     }),
   ]);
-  console.log(`Created ${infographies.length} infographies`);
 
-  // Create Items
-  const items = await Promise.all([
-    prisma.item.create({
-      data: {
-        markdown:
-          'Elit commodo cillum enim labore et incididunt sit aute deserunt dolore sunt dolor ex. Sunt nulla aute ipsum et cillum ex non enim. Amet deserunt excepteur sunt ipsum excepteur. Laborum exercitation voluptate reprehenderit consectetur. Aliqua cupidatat ipsum dolor non ex. In pariatur tempor minim tempor. Aute duis eiusmod ea excepteur esse quis.',
-        position: 0,
-        stepId: steps[1].id,
-        attributeId: attributes[2].id,
-      },
-    }),
-    prisma.item.create({
-      data: {
-        markdown:
-          'Nulla nulla aliqua nostrud et amet. Commodo adipisicing anim incididunt cillum veniam aliquip cillum. Ex eu excepteur in minim culpa sit id commodo. Proident cillum dolor nulla eu esse ipsum laborum eiusmod pariatur pariatur nisi incididunt. Mollit culpa deserunt incididunt consectetur ea sint ea ad aliqua anim cillum eu pariatur. Adipisicing quis exercitation duis ea amet duis.',
-        position: 1,
-        stepId: steps[1].id,
-        attributeId: attributes[2].id,
-      },
-    }),
-    prisma.item.create({
-      data: {
-        markdown:
-          'Adipisicing sit exercitation et sit adipisicing in pariatur aliquip voluptate nostrud voluptate proident incididunt. Lorem aliquip amet eiusmod Lorem officia voluptate in nostrud eu minim adipisicing ut reprehenderit. Laborum aute in est culpa incididunt nostrud. Cupidatat commodo aliquip eu voluptate anim culpa amet dolor laboris. Enim ipsum proident amet labore culpa proident deserunt.',
-        position: 0,
-        stepId: steps[9].id,
-        attributeId: attributes[4].id,
-      },
-    }),
-  ]);
-  console.log(`Created ${items.length} items`);
+  console.log(`Created ${infographies.length} infographies.`);
+  return infographies;
+}
 
-  // Create Cards
-  const cards = await Promise.all([
-    prisma.card.create({
-      data: {
-        title: 'Pythagorean Theorem',
-        markdown:
-          'Ex aute consequat commodo in aliqua laboris officia adipisicing do est voluptate. Magna in labore do anim non consequat aliquip eu elit ipsum ea quis. Fugiat laboris anim pariatur non duis irure eiusmod in officia proident ad do. Sit deserunt cillum id amet fugiat culpa occaecat. Laborum commodo deserunt exercitation nisi commodo esse labore cupidatat aute commodo duis consequat. Nostrud consequat aliqua aliqua amet voluptate aliquip incididunt aliquip.',
-        strength: 'HIGH',
-        position: 0,
-        stepId: steps[2].id,
-        attributeId: attributes[3].id,
-      },
-    }),
-    prisma.card.create({
-      data: {
-        title: 'Law of Gravity',
-        markdown:
-          'Id dolor ut cillum pariatur proident. Culpa irure eiusmod sunt in in minim et sint. Cillum Lorem ipsum dolore excepteur amet aute ut laboris. Eu enim ipsum laborum eiusmod amet. Laboris aute nulla veniam amet aute dolore laborum.',
-        strength: 'MEDIUM',
-        position: 1,
-        stepId: steps[2].id,
-        attributeId: attributes[2].id,
-      },
-    }),
-    prisma.card.create({
-      data: {
-        title: "Da Vinci's Perspective",
-        markdown:
-          'Aute in labore aliqua non cupidatat irure sit pariatur. Ut ut velit commodo quis ea eiusmod commodo id non nostrud. Labore fugiat non esse Lorem esse. Consectetur sit consequat minim excepteur est incididunt laborum velit laboris. Tempor labore anim Lorem eiusmod dolor exercitation veniam. Ullamco ipsum laboris est occaecat commodo consectetur sint ullamco tempor mollit enim cupidatat dolor. Aute irure nostrud Lorem nulla deserunt ex minim amet amet.',
-        strength: 'LOW',
-        position: 0,
-        stepId: steps[10].id,
-        attributeId: attributes[4].id,
-      },
-    }),
-  ]);
-  console.log(`Created ${cards.length} cards`);
+async function seedCardsForCardSteps() {
+  console.log('Populating CARD steps with cards...');
 
-  // Create Keywords and CardKeywords
-  const keywords = await Promise.all([
-    prisma.keyword.create({
-      data: {
-        value: 'Innovation',
-      },
-    }),
-    prisma.keyword.create({
-      data: {
-        value: 'Discovery',
-      },
-    }),
-    prisma.keyword.create({
-      data: {
-        value: 'Creativity',
-      },
-    }),
-  ]);
-  console.log(`Created ${keywords.length} keywords`);
+  const cardSteps = await prisma.step.findMany({ where: { type: 'CARD' } });
+  const attributes = await prisma.attribute.findMany();
+  const keywords = await prisma.keyword.findMany();
 
-  const cardKeywords = await Promise.all([
-    prisma.cardKeyword.create({
-      data: {
-        cardId: cards[0].id,
-        keywordId: keywords[0].id,
-      },
-    }),
-    prisma.cardKeyword.create({
-      data: {
-        cardId: cards[1].id,
-        keywordId: keywords[1].id,
-      },
-    }),
-    prisma.cardKeyword.create({
-      data: {
-        cardId: cards[2].id,
-        keywordId: keywords[2].id,
-      },
-    }),
-  ]);
-  console.log(`Created ${cardKeywords.length} cardKeywords`);
+  if (keywords.length < 2) {
+    console.error('Not enough keywords to assign to cards.');
+    return;
+  }
 
-  const end = performance.now();
-  console.log(`Seeding complete in ${Math.round(end - start)} ms`);
+  for (const step of cardSteps) {
+    const cards = await Promise.all(
+      Array.from({ length: 6 }, (_, i) => {
+        const keywordSet = keywords.slice(i % keywords.length, (i % keywords.length) + 2);
+        return prisma.card.create({
+          data: {
+            title: `Card ${i + 1} - ${step.title}`,
+            markdown: `Markdown content for Card ${i + 1} in step ${step.title}`,
+            strength: strengthArray[i % strengthArray.length],
+            position: i,
+            stepId: step.id,
+            attributeId: attributes[i % attributes.length].id,
+            keywords: {
+              connect: keywordSet.map((keyword) => ({ id: keyword.id })),
+            },
+          },
+        });
+      }),
+    );
+
+    console.log(`Created ${cards.length} cards for step: ${step.title}`);
+  }
+
+  console.log('Completed populating CARD steps.');
+}
+
+async function main() {
+  console.log('Seeding database...');
+  const rounds = await seedRoundsAndCategories();
+  await seedAttributes(rounds.categories);
+  await seedKeywords();
+  const steps = await seedSteps(rounds);
+  await seedInfographies(steps);
+  await seedCardsForCardSteps();
+  console.log('Seeding complete!');
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-  })
+  .catch((e) => console.error(e))
   .finally(async () => {
     await prisma.$disconnect();
   });

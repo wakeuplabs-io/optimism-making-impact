@@ -15,10 +15,8 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
     const step = await prisma.step.findUnique({
       where: { id: parsedParams.data.id },
       include: {
-        cards: true,
-        infographies: {
-          orderBy: { position: 'asc' },
-        },
+        cards: { orderBy: { position: 'asc' }, include: { attribute: true, keywords: true } },
+        infographies: { orderBy: { position: 'asc' } },
         items: true,
       },
     });

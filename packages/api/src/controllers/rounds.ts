@@ -31,7 +31,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
             include: {
               infographies: true,
               items: { include: { attribute: true } },
-              cards: { include: { attribute: true, cardKeywords: { include: { keyword: true } } } },
+              cards: { include: { attribute: true, keywords: true } },
             },
           },
         },
@@ -42,8 +42,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
           data: { name: 'Round 1', icon: '' },
         });
 
-        apiResponse.success(res, { message: 'Round created successfully', round: createdRound });
-        return;
+        return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
       }
 
       const nextRoundNumber = lastRound.id + 1;
@@ -118,21 +117,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
                 })),
               },
               cards: {
-                create: step.cards.map(({ title, markdown, position, strength, attribute, cardKeywords }) => ({
+                create: step.cards.map(({ title, markdown, position, strength, attribute, keywords }) => ({
                   title,
                   markdown,
                   position,
                   strength,
-                  attribute: {
-                    connect: { id: attribute.id },
-                  },
-                  cardKeywords: {
-                    create: cardKeywords.map(({ keyword }) => ({
-                      keyword: {
-                        connect: { id: keyword.id },
-                      },
-                    })),
-                  },
+                  attribute: { connect: { id: attribute.id } },
+                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id })) },
                 })),
               },
             },
