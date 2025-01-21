@@ -1,3 +1,4 @@
+import { completeCardSchema } from '@/types/cards';
 import { infographySchema } from '@/types/infographies';
 import { z } from 'zod';
 
@@ -26,5 +27,6 @@ export type Step = z.infer<typeof stepSchema>;
 
 export const completeStepSchema = stepSchema.extend({
   infographies: z.array(infographySchema),
+  cards: z.array(completeCardSchema),
 });
 export type CompleteStep = z.infer<typeof completeStepSchema>;
