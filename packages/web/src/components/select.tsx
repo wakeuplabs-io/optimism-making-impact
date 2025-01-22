@@ -7,18 +7,19 @@ interface SelectItem {
   label: string;
 }
 
-interface SelectProps {
+export interface SelectProps {
   items: SelectItem[];
   defaultValue?: string;
   placeholder?: string;
   onValueChange?: (value: string) => void;
   triggerClassName?: string;
   itemClassName?: string;
+  value?: string;
 }
 
 export function Select(props: SelectProps) {
   return (
-    <SelectComponent onValueChange={props.onValueChange} defaultValue={props.defaultValue}>
+    <SelectComponent onValueChange={props.onValueChange} defaultValue={props.defaultValue} value={props.value}>
       <SelectTrigger className={cn(props.triggerClassName)}>
         <SelectValue placeholder={props.placeholder} />
         <ChevronDown size={18} color='black' />
