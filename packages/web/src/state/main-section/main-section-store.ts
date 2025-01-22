@@ -1,5 +1,7 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
+import { CreateCardBody } from '@/services/cards/schemas';
+import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
 import { StepsService } from '@/services/steps/service';
@@ -121,5 +123,47 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     ];
 
     set({ step: { ...currentStep, infographies: newInfographies } });
+  },
+  addCard: (data: CreateCardBody) => {
+    const currentStep = get().step;
+    if (!currentStep) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.cards,
+      updateFn: (cards) => [
+        ...cards,
+        {
+          ...data,
+          id: Date.now(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          position: currentStep.cards.length,
+          attribute: currentStep.cards[currentStep.cards.length - 1].attribute,
+          keywords: data.keywords.map((keyword) => ({
+            id: Date.now(), // CHECK:
+            value: keyword.value,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          })),
+        },
+      ],
+      setStateSlice: (cards) => set((state) => ({ step: { ...state.step, cards } })),
+      apiCall: () => CardsService.create(data),
+      onError: (error) => {
+        const title = 'Failed to delete infography';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
   },
 }));
