@@ -1,9 +1,6 @@
-import { AddCardButton } from '@/features/main-section/step-types/cards/add-card-button';
 import { Card } from '@/features/main-section/step-types/cards/card';
 import { useFilteredCards } from '@/features/main-section/step-types/cards/use-filtered-cards';
-import { useUserStore } from '@/state';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteCard } from '@/types';
 
 interface CardListProps {
@@ -35,17 +32,17 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.isAdmin);
-  const addCard = useMainSectionStore((state) => state.addCard);
+  // const isAdmin = useUserStore((state) => state.isAdmin);
+  // const addCard = useMainSectionStore((state) => state.addCard);
 
   return (
-    <div className='flex flex-col items-center flex-1 gap-2 bg-blue-300'>
-      {isAdmin && (
-        <div className='flex justify-end w-full bg-blue-500'>
+    <div className='flex flex-col items-center flex-1 gap-2'>
+      {/* {isAdmin && (
+        <div className='flex justify-end w-full'>
           <AddCardButton stepId={props.stepId} onClick={addCard} />
         </div>
-      )}
-      <div className='flex flex-col flex-wrap items-center flex-1 gap-4 bg-blue-800 lg:flex-row'>
+      )} */}
+      <div className='flex flex-col flex-wrap items-center flex-1 gap-4 lg:flex-row'>
         {props.cards.map((card, i) => {
           return <Card card={card} key={`${card.id}-${i}`} />;
         })}
