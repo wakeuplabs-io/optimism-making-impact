@@ -5,11 +5,11 @@ import { NextFunction, Request, Response } from 'express';
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
     const rounds = await prisma.round.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { id: 'desc' },
       take: 10,
       include: {
         categories: {
-          orderBy: { createdAt: 'asc' },
+          orderBy: { id: 'asc' },
         },
       },
     });
