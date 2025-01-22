@@ -65,7 +65,7 @@ const TableHeader: ElementType<ClassAttributes<HTMLTableCellElement> & HTMLAttri
 export function MarkdownText(props: MarkdownTextProps) {
   return (
     <Markdown
-      className={cn(props.className)}
+      className={cn('overflow-auto break-words', props.className)}
       remarkPlugins={[remarkGfm]}
       components={{
         h1: H1,
