@@ -44,7 +44,7 @@ export async function seedSteps(prisma: PrismaClient, rounds: Round[]) {
 
     requiredSteps.forEach((step, index) => {
       stepsToSeed.push({
-        title: `${step.title} - Round ${round.id}`,
+        title: `${step.title}`,
         icon: step.icon,
         type: step.type,
         roundId: round.id,
