@@ -26,9 +26,6 @@ enum CardStrength {
 model Round {
   id Int @id @default(autoincrement())
 
-  name String
-  icon String
-
   link1 String? @default("")
   link2 String? @default("")
 
@@ -66,6 +63,8 @@ model Step {
   infographies Infography[]
   items        Item[]
   cards        Card[]
+  smartList    SmartList?   @relation(fields: [smartListId], references: [id])
+  smartListId  Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -141,6 +140,21 @@ model Attribute {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   items      Item[]
   cards      Card[]
+
+  smartList   SmartList @relation(fields: [smartListId], references: [id])
+  smartListId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SmartList {
+  id Int @id @default(autoincrement())
+
+  title String
+
+  attributes Attribute[]
+  steps      Step[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
