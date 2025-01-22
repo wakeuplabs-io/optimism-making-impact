@@ -56,3 +56,7 @@ export function extractUniqueKeywordsFromStep(step: CompleteStep): Keyword[] {
       return acc;
     }, []);
 }
+
+export function getRoundName(roundId: number) {
+  return `Round ${roundId}`;
+}
