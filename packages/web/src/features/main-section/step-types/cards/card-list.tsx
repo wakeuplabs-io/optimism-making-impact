@@ -42,7 +42,7 @@ function List(props: ListProps) {
           <AddCardButton stepId={props.stepId} onClick={addCard} />
         </div>
       )} */}
-      <div className='flex flex-col flex-wrap items-center flex-1 gap-4 lg:flex-row'>
+      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-4 lg:flex-row lg:items-start'>
         {props.cards.map((card, i) => {
           return <Card card={card} key={`${card.id}-${i}`} />;
         })}
