@@ -39,20 +39,17 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
       if (!lastRound) {
         const createdRound = await prisma.round.create({
-          data: { name: 'Round 1', icon: '' },
+          data: {},
         });
 
         return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
       }
 
-      const nextRoundNumber = lastRound.id + 1;
       const { categories, steps } = lastRound;
 
       // Step 1: Create Round with Basic Categories and Steps
       const newRound = await prisma.round.create({
         data: {
-          name: `Round ${nextRoundNumber}`,
-          icon: '',
           link1: lastRound.link1,
           link2: lastRound.link2,
           categories: {
@@ -84,8 +81,9 @@ async function create(req: Request, res: Response, next: NextFunction) {
             where: { id: newCategory.id },
             data: {
               attributes: {
-                create: category.attributes.map(({ value }) => ({
+                create: category.attributes.map(({ value, smartListId }) => ({
                   value,
+                  smartList: { connect: { id: smartListId } },
                 })),
               },
             },
