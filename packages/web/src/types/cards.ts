@@ -16,7 +16,7 @@ export const cardSchema = z.object({
   strength: z.nativeEnum(StrengthEnum),
   position: z.number(),
   stepId: z.number(),
-  attributeId: z.number(),
+  attributeId: z.number().nullable().optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });
@@ -24,7 +24,7 @@ export const cardSchema = z.object({
 export type Card = z.infer<typeof cardSchema>;
 
 export const completeCardSchema = cardSchema.extend({
-  attribute: attributeSchema,
+  attribute: attributeSchema.optional(),
   keywords: z.array(keywordSchema),
 });
 export type CompleteCard = z.infer<typeof completeCardSchema>;
