@@ -27,6 +27,12 @@ function AddCardModal(props: AddCardModalProps) {
   const [markdown, setMarkdown] = useState('');
   const [strength, setStrength] = useState(StrengthEnum.MEDIUM);
 
+  function clearForm() {
+    setMarkdown('');
+    setTitle('');
+    setStrength(StrengthEnum.MEDIUM);
+  }
+
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
   }
@@ -52,6 +58,7 @@ function AddCardModal(props: AddCardModalProps) {
 
   return (
     <Modal
+      onOpenChange={clearForm}
       title='Add card'
       trigger={<IconButton variant='secondary' icon={<Plus />} />}
       buttons={[

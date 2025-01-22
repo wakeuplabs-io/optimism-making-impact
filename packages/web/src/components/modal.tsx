@@ -9,31 +9,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { DialogProps } from '@radix-ui/react-dialog';
 import React from 'react';
 
-type ModalProps = {
+interface ModalProps extends DialogProps {
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
   children: React.ReactNode;
   buttons?: ModalActionButtonProps[];
-  open?: boolean;
-};
+}
 
-export function Modal(props: ModalProps) {
+export function Modal({ title, subtitle, trigger, buttons, children, ...props }: ModalProps) {
   return (
-    <Dialog open={props.open}>
-      <DialogTrigger asChild>{props.trigger}</DialogTrigger>
+    <Dialog {...props}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px]'>
-        <DialogHeader className='flex w-full items-center justify-center'>
-          {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
-          {props.subtitle && <DialogDescription className='text-center text-secondary'>{props.subtitle}</DialogDescription>}
+        <DialogHeader className='flex items-center justify-center w-full'>
+          {title && <DialogTitle className='text-lg text-center text-dark-low 2xl:text-xl'>{title}</DialogTitle>}
+          {subtitle && <DialogDescription className='text-center text-secondary'>{subtitle}</DialogDescription>}
         </DialogHeader>
-        <div className='w-full'>{props.children}</div>
-        {props.buttons?.length && (
+        <div className='w-full'>{children}</div>
+        {buttons?.length && (
           <DialogFooter className='mt-5'>
             <div className='flex gap-4'>
-              {props.buttons.map((button, i) => (
+              {buttons.map((button, i) => (
                 <ModalActionButton key={i} {...button} />
               ))}
             </div>
