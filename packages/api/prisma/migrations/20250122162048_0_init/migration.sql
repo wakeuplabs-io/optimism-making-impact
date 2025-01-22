@@ -62,7 +62,7 @@ CREATE TABLE "Item" (
     "markdown" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "stepId" INTEGER NOT NULL,
-    "attributeId" INTEGER NOT NULL,
+    "attributeId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -77,7 +77,7 @@ CREATE TABLE "Card" (
     "strength" "CardStrength" NOT NULL,
     "position" INTEGER NOT NULL,
     "stepId" INTEGER NOT NULL,
-    "attributeId" INTEGER NOT NULL,
+    "attributeId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

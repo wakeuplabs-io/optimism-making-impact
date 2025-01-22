@@ -112,7 +112,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
                   markdown,
                   position,
                   attribute: {
-                    connect: { id: attribute.id },
+                    connect: { id: attribute?.id },
                   },
                 })),
               },
@@ -122,7 +122,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
                   markdown,
                   position,
                   strength,
-                  attribute: { connect: { id: attribute.id } },
+                  attribute: { connect: { id: attribute?.id } },
                   keywords: { connect: keywords.map((keyword) => ({ id: keyword.id })) },
                 })),
               },
