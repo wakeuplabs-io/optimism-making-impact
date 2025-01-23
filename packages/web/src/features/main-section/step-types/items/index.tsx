@@ -24,7 +24,7 @@ function Content() {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <ItemFilters />
+      <ItemFilters smartList={step.smartList} stepId={step.id} />
       <ItemsList items={step.items} stepId={step.id} />
     </div>
   );

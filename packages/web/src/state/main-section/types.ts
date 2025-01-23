@@ -1,6 +1,7 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CreateCardBody } from '@/services/cards/schemas';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
+import { CreateSmartListBody } from '@/services/smart-lists/schemas';
 import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
@@ -19,6 +20,7 @@ export interface MainSectionActions {
   editInfogrpahy: (infographyId: number, data: UpdateInfographyBody) => void;
   saveInfographies: (data: BulkUpdateInfographyBody) => void;
   addCard: (data: CreateCardBody) => void;
+  createSmartList: (data: CreateSmartListBody) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;

@@ -1,15 +1,23 @@
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
+import { CreateSmartListModal } from '@/features/main-section/step-types/items/create-smart-list-modal';
 // TODO: move to a common place
 // import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { SmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
 
-export function ItemFilters() {
+interface ItemsFiltersProps {
+  stepId: number;
+  smartList?: SmartList;
+}
+
+export function ItemFilters(props: ItemsFiltersProps) {
   return (
     <Container>
-      <Content />
+      <Content {...props} />
     </Container>
   );
 }
@@ -40,7 +48,30 @@ function Container(props: { children: React.ReactNode }) {
   return <div className='flex w-[250px] min-w-[250px] p-2'>{props.children}</div>;
 }
 
-function Content() {
+interface ContentProps {
+  stepId: number;
+  smartList?: SmartList;
+}
+
+function Content(props: ContentProps) {
+  const { createSmartList } = useMainSectionStore((state) => state);
+  if (!props.smartList) {
+    return (
+      <div className='flex justify-center w-full'>
+        <CreateSmartListModal stepId={props.stepId} onClick={createSmartList} />
+      </div>
+    );
+  }
+
+  return <SmartListFilter smartList={props.smartList} stepId={props.stepId} />;
+}
+
+interface SmartListFilterProps {
+  stepId: number;
+  smartList: SmartList;
+}
+
+function SmartListFilter(props: SmartListFilterProps) {
   return (
     <div className='flex flex-col w-full'>
       <h2 className='text-[24px] font-[500]'>Filters</h2>
@@ -56,6 +87,7 @@ function Content() {
             data: keyword,
           }))}
         /> */}
+        <p>{JSON.stringify(props.smartList, null, 2)}</p>
       </div>
     </div>
   );
