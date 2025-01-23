@@ -24,4 +24,4 @@ class Service {
   }
 }
 
-export const SmartListsService = Service.getInstance(fetcher);
+export const AttributesService = Service.getInstance(fetcher);
