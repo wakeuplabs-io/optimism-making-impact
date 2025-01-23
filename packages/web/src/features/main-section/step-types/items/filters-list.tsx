@@ -69,12 +69,13 @@ function Content(props: ContentProps) {
     );
   }
 
-  return <SmartListFilter smartList={props.smartList} stepId={props.stepId} />;
+  return <SmartListFilter smartList={props.smartList} stepId={props.stepId} isAdmin={isAdmin} />;
 }
 
 interface SmartListFilterProps {
   stepId: number;
   smartList: CompleteSmartList;
+  isAdmin?: boolean;
 }
 
 function SmartListFilter(props: SmartListFilterProps) {
@@ -97,6 +98,7 @@ function SmartListFilter(props: SmartListFilterProps) {
             data: attr,
             prefixDot: attr.color,
           }))}
+          isAdmin={props.isAdmin}
         />
       </div>
     </div>
