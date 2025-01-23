@@ -2,7 +2,7 @@ import { completeCardSchema } from '@/types/cards';
 import { stepTypeSchema } from '@/types/common';
 import { infographySchema } from '@/types/infographies';
 import { completeItemSchema } from '@/types/items';
-import { smartListSchema } from '@/types/smart-lists';
+import { completeSmartListSchema } from '@/types/smart-lists';
 import { z } from 'zod';
 
 export const stepSchema = z.object({
@@ -23,6 +23,6 @@ export const completeStepSchema = stepSchema.extend({
   infographies: z.array(infographySchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
-  smartList: smartListSchema.optional(),
+  smartList: completeSmartListSchema.optional(),
 });
 export type CompleteStep = z.infer<typeof completeStepSchema>;

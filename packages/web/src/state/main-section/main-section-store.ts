@@ -1,5 +1,7 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
+import { CreateAttributeBody } from '@/services/attributes/schemas';
+import { AttributesService } from '@/services/attributes/service';
 import { CreateCardBody } from '@/services/cards/schemas';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
@@ -176,11 +178,37 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     optimisticUpdate({
       getStateSlice: () => currentStep.smartList,
-      updateFn: (smartList) => ({ ...smartList, ...data, id: Date.now() }),
+      updateFn: (smartList) => ({ attributes: [], ...smartList, ...data, id: Date.now() }),
       setStateSlice: (smartList) => set((state) => ({ step: { ...state.step, smartList } })),
       apiCall: () => SmartListsService.create(data),
       onError: (error) => {
         const title = 'Failed to create Smart List';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  addAttributeToSmartList: (data: CreateAttributeBody) => {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => ({ ...attributes, ...data, id: Date.now() }),
+      setStateSlice: (attributes) => ({ step: { ...currentStep, smartList: { ...currentStep.smartList, attributes } } }),
+      apiCall: () => AttributesService.create(data),
+      onError: (error) => {
+        const title = 'Failed to create attribute';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {
