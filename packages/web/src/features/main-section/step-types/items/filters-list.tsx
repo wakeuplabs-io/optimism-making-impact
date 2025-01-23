@@ -1,5 +1,7 @@
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
+import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
+import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { CreateSmartListModal } from '@/features/main-section/step-types/items/create-smart-list-modal';
 // TODO: move to a common place
 // import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
@@ -7,12 +9,13 @@ import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { SmartList } from '@/types/smart-lists';
+import { Attribute } from '@/types';
+import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
 
 interface ItemsFiltersProps {
   stepId: number;
-  smartList?: SmartList;
+  smartList?: CompleteSmartList;
 }
 
 export function ItemFilters(props: ItemsFiltersProps) {
@@ -51,7 +54,7 @@ function Container(props: { children: React.ReactNode }) {
 
 interface ContentProps {
   stepId: number;
-  smartList?: SmartList;
+  smartList?: CompleteSmartList;
 }
 
 function Content(props: ContentProps) {
@@ -73,26 +76,30 @@ function Content(props: ContentProps) {
 
 interface SmartListFilterProps {
   stepId: number;
-  smartList: SmartList;
+  smartList: CompleteSmartList;
 }
 
 function SmartListFilter(props: SmartListFilterProps) {
+  const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   return (
     <div className='flex w-full flex-col'>
-      <h2 className='h-12 text-[20px] font-[500]'>Filters</h2>
+      <div className='flex h-12 items-center justify-between'>
+        <h2 className='text-[20px] font-[500]'>Filters</h2>
+        <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />
+      </div>
       <hr className='border-[#D9D9D9]' />
 
       <div className='flex flex-col gap-8'>
-        {/* <FilterGroup
-          title='Keywords'
-          filters={keywords.map((keyword) => ({
-            label: keyword.value.toLowerCase(),
-            selected: selectedKeywords.map(({ id }) => id).includes(keyword.id),
-            onClick: setSelectedKeywords,
-            data: keyword,
+        <FilterGroup<Attribute>
+          className='mt-4'
+          filters={props.smartList.attributes.map((attr) => ({
+            label: attr.value.toLowerCase(),
+            selected: false,
+            onClick: (a) => console.log('🎈 ', a),
+            data: attr,
+            prefixDot: attr.color,
           }))}
-        /> */}
-        <p>{JSON.stringify(props.smartList, null, 2)}</p>
+        />
       </div>
     </div>
   );
