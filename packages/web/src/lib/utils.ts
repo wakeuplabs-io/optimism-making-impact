@@ -1,5 +1,5 @@
-import { BADGE_COLORS } from '@/config';
-import { CompleteStep, Keyword } from '@/types';
+import { BADGE_COLORS, COLOR_MAP } from '@/config';
+import { Color, CompleteStep, Keyword } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -59,4 +59,8 @@ export function extractUniqueKeywordsFromStep(step: CompleteStep): Keyword[] {
 
 export function getRoundName(roundId: number) {
   return `Round ${roundId}`;
+}
+
+export function getColor(color: Color): string {
+  return COLOR_MAP[color];
 }

@@ -1,3 +1,4 @@
+import { COLORS_OPTIONS } from './helpers';
 import { Attribute, Category, PrismaClient, SmartList } from '@prisma/client';
 
 const attributeValues = [
@@ -20,11 +21,13 @@ export async function seedAttributes(prisma: PrismaClient, smartLists: Array<Sma
     // For each smart list, create 5 attributes with category-like values
     for (let i = 0; i < 5; i++) {
       const category = categories[i % categories.length]; // Dynamically assign categories (loop through if necessary)
+      const color = COLORS_OPTIONS[i % COLORS_OPTIONS.length]; // Dynamically assign categories (loop through if necessary)
 
       attributesData.push({
         value: attributeValues[i % attributeValues.length], // Short, category-like value
         categoryId: category.id, // Use dynamic category ID
         smartListId: smartList.id, // Assign the attribute to the smart list
+        color,
       });
     }
   }

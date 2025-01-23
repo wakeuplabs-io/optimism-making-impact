@@ -22,6 +22,19 @@ enum CardStrength {
   HIGH
 }
 
+enum Color {
+  RED
+  PINK
+  PURPLE
+  YELLOW
+  TAN
+  ORANGE
+  GREEN
+  LIGHTBLUE
+  BLUE
+  DARKBLUE
+}
+
 // Models
 model Round {
   id Int @id @default(autoincrement())
@@ -92,6 +105,7 @@ model Item {
 
   markdown String
   position Int
+  color    Color  @default(LIGHTBLUE)
 
   stepId      Int
   step        Step       @relation(fields: [stepId], references: [id], onDelete: Cascade)
@@ -135,6 +149,7 @@ model Attribute {
   id Int @id @default(autoincrement())
 
   value String
+  color Color  @default(LIGHTBLUE)
 
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)

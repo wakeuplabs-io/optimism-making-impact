@@ -4,6 +4,9 @@ CREATE TYPE "StepType" AS ENUM ('INFOGRAPHY', 'ITEMS', 'CARD');
 -- CreateEnum
 CREATE TYPE "CardStrength" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
 
+-- CreateEnum
+CREATE TYPE "Color" AS ENUM ('RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE', 'GREEN', 'LIGHTBLUE', 'BLUE', 'DARKBLUE');
+
 -- CreateTable
 CREATE TABLE "Round" (
     "id" SERIAL NOT NULL,
@@ -60,6 +63,7 @@ CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
+    "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
     "stepId" INTEGER NOT NULL,
     "attributeId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -97,6 +101,7 @@ CREATE TABLE "Keyword" (
 CREATE TABLE "Attribute" (
     "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
+    "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
     "categoryId" INTEGER NOT NULL,
     "smartListId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
