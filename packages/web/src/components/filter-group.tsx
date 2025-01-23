@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Color } from '@/types';
-import { X } from 'lucide-react';
+import { Pencil, X } from 'lucide-react';
 import { ComponentProps } from 'react';
 
 interface Filter<T> {
@@ -15,6 +15,7 @@ interface FilterGroupProps<T> {
   title?: string;
   filters: Filter<T>[];
   className?: string;
+  isAdmin?: boolean;
 }
 
 export function FilterGroup<T>(props: FilterGroupProps<T>) {
@@ -30,6 +31,7 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
             selected={filter.selected}
             onClick={filter.onClick}
             prefixDot={filter.prefixDot}
+            isAdmin={props.isAdmin}
           />
         ))}
       </div>
@@ -43,6 +45,7 @@ interface FilterButtonProps<T> extends Omit<ComponentProps<'button'>, 'onClick'>
   data: T; // Data payload associated with this button.
   onClick?: (data: T) => void; // Callback when the button is clicked.
   prefixDot?: Color | undefined;
+  isAdmin?: boolean;
 }
 
 function FilterButton<T>({ label, selected, className, data, onClick, prefixDot, ...props }: FilterButtonProps<T>) {
@@ -53,18 +56,32 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
   }
 
   return (
-    <button
-      {...props}
-      className={cn(
-        'flex w-fit items-center justify-between gap-4 rounded-full px-2 py-0.5',
-        selected && 'border-1 border border-black',
-        className,
+    <div className='flex items-center justify-between overflow-hidden'>
+      <button
+        {...props}
+        className={cn(
+          'flex w-fit items-center justify-start gap-2 rounded-full px-2 py-0.5',
+          selected && 'border-1 border border-black',
+          className,
+        )}
+        onClick={handleClick}
+      >
+        {prefixDot && <div className='h-2 w-2 rounded-full' style={{ backgroundColor: prefixDot }} />}
+        <span
+          className={cn(
+            'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
+            selected && 'font-bold',
+          )}
+        >
+          {label}
+        </span>
+        {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
+      </button>
+      {props.isAdmin && (
+        <button>
+          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+        </button>
       )}
-      onClick={handleClick}
-    >
-      {prefixDot && <div className='h-2 w-2 rounded-full' style={{ backgroundColor: prefixDot }} />}
-      <span className={cn('text-[14px] font-[400] capitalize hover:underline', selected && 'font-bold')}>{label}</span>
-      {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
-    </button>
+    </div>
   );
 }
