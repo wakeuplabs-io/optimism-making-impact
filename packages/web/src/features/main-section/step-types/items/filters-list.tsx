@@ -1,10 +1,8 @@
+import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { CreateSmartListModal } from '@/features/main-section/step-types/items/create-smart-list-modal';
-// TODO: move to a common place
-// import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';

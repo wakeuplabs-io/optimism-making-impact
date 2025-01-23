@@ -1,6 +1,6 @@
+import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
 import { useMemo } from 'react';
