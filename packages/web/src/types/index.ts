@@ -1,27 +1,9 @@
 export * from './attributes';
 export * from './cards';
+export * from './categories';
+export * from './common';
 export * from './infographies';
 export * from './items';
 export * from './keywords';
+export * from './rounds';
 export * from './steps';
-
-// TODO: use prisma to keep in sync
-export type Round = {
-  id: number;
-  link1: string;
-  link2: string;
-};
-
-export type RoundWithCategories = {
-  id: number;
-  link1: string;
-  link2: string;
-  categories: Category[];
-};
-
-export type Category = {
-  id: number;
-  roundId: number;
-  name: string;
-  icon?: string;
-};
