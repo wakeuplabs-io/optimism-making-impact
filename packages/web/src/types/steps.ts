@@ -1,5 +1,6 @@
 import { completeCardSchema } from '@/types/cards';
 import { infographySchema } from '@/types/infographies';
+import { completeItemSchema } from '@/types/items';
 import { z } from 'zod';
 
 // TODO: single source of truth
@@ -28,5 +29,6 @@ export type Step = z.infer<typeof stepSchema>;
 export const completeStepSchema = stepSchema.extend({
   infographies: z.array(infographySchema),
   cards: z.array(completeCardSchema),
+  items: z.array(completeItemSchema),
 });
 export type CompleteStep = z.infer<typeof completeStepSchema>;

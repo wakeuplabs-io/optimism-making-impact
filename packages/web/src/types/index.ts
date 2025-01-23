@@ -1,6 +1,7 @@
 export * from './attributes';
 export * from './cards';
 export * from './infographies';
+export * from './items';
 export * from './keywords';
 export * from './steps';
 
