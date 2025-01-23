@@ -4,6 +4,7 @@ import { CreateSmartListModal } from '@/features/main-section/step-types/items/c
 // TODO: move to a common place
 // import { FilterGroup } from '@/features/main-section/step-types/cards/filter-group';
 import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useUserStore } from '@/state';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { SmartList } from '@/types/smart-lists';
@@ -55,9 +56,13 @@ interface ContentProps {
 
 function Content(props: ContentProps) {
   const { createSmartList } = useMainSectionStore((state) => state);
+  const isAdmin = useUserStore((state) => state.isAdmin);
+
   if (!props.smartList) {
+    if (!isAdmin) return null;
     return (
       <div className='flex justify-center w-full'>
+        {/* TODO: DELETE: when i create a step of type items it should already have a smart list (selected or associated) */}
         <CreateSmartListModal stepId={props.stepId} onClick={createSmartList} />
       </div>
     );
