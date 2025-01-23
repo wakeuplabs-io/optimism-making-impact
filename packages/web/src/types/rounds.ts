@@ -1,15 +1,18 @@
-import { Category } from '@/types';
+import { categorySchema } from '@/types/categories';
+import { stepSchema } from '@/types/steps';
+import { z } from 'zod';
 
-// TODO: use prisma to keep in sync
-export type Round = {
-  id: number;
-  link1: string;
-  link2: string;
-};
+export const roundSchema = z.object({
+  id: z.number(),
+  link1: z.string().optional().default(''),
+  link2: z.string().optional().default(''),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
+});
+export type Round = z.infer<typeof roundSchema>;
 
-export type RoundWithCategories = {
-  id: number;
-  link1: string;
-  link2: string;
-  categories: Category[];
-};
+export const completeRoundSchema = roundSchema.extend({
+  categories: z.array(categorySchema),
+  steps: z.array(stepSchema),
+});
+export type CompleteRound = z.infer<typeof completeRoundSchema>;
