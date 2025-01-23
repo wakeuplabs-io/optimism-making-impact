@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn, getColor } from '@/lib/utils';
 import { Color } from '@/types';
 import { Pencil, X } from 'lucide-react';
 import { ComponentProps } from 'react';
@@ -66,7 +66,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         )}
         onClick={handleClick}
       >
-        {prefixDot && <div className='h-2 w-2 rounded-full' style={{ backgroundColor: prefixDot }} />}
+        {prefixDot && <div className='h-2 w-2 rounded-full' style={{ backgroundColor: getColor(prefixDot) }} />}
         <span
           className={cn(
             'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
