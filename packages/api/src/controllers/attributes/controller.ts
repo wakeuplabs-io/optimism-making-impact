@@ -1,6 +1,7 @@
 import { createAttributeSchema } from '@/controllers/attributes/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
+import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
 
 async function create(req: Request, res: Response, next: NextFunction) {
@@ -9,7 +10,14 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    apiResponse.success(res, parsed.data, 201);
+    const attribute = await prisma.attribute.create({
+      data: {
+        ...parsed.data,
+        categoryId: 1, // HARDCODED:
+      },
+    });
+
+    apiResponse.success(res, attribute, 201);
   } catch (error) {
     next(error);
   }
