@@ -37,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
+      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -61,7 +61,7 @@ function Content(props: ContentProps) {
   if (!props.smartList) {
     if (!isAdmin) return null;
     return (
-      <div className='flex justify-center w-full'>
+      <div className='flex w-full justify-center'>
         {/* TODO: DELETE: when i create a step of type items it should already have a smart list (selected or associated) */}
         <CreateSmartListModal stepId={props.stepId} onClick={createSmartList} />
       </div>
@@ -78,9 +78,9 @@ interface SmartListFilterProps {
 
 function SmartListFilter(props: SmartListFilterProps) {
   return (
-    <div className='flex flex-col w-full'>
-      <h2 className='text-[24px] font-[500]'>Filters</h2>
-      <hr className='my-5 border-[#D9D9D9]' />
+    <div className='flex w-full flex-col'>
+      <h2 className='h-12 text-[20px] font-[500]'>Filters</h2>
+      <hr className='border-[#D9D9D9]' />
 
       <div className='flex flex-col gap-8'>
         {/* <FilterGroup

@@ -28,13 +28,14 @@ interface ListProps {
 
 function List(props: ListProps) {
   return (
-    <div className='flex flex-1 flex-col'>
+    <div className='flex flex-1 flex-col p-2'>
+      <h2 className='h-12 text-[20px] font-[500]'>Questions you can ask</h2>
       <div className='flex w-full flex-col gap-4'>
         {props.items.map((item, i) => (
           <React.Fragment key={`${item.id}-${i}`}>
-            {i === 0 && <hr className='border-t border-gray-300' />}
+            {i === 0 && <hr className='border-t border-[#D9D9D9]' />}
             <Item item={item} />
-            <hr className='border-t border-gray-300' />
+            <hr className='border-t border-[#D9D9D9]' />
           </React.Fragment>
         ))}
       </div>
