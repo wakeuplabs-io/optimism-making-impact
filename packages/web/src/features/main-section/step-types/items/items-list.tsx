@@ -1,5 +1,6 @@
 import Item from '@/features/main-section/step-types/items/item';
 import { CompleteItem } from '@/types/items';
+import React from 'react';
 
 interface ItemsListProps {
   items: CompleteItem[];
@@ -14,7 +15,7 @@ export function ItemsList(props: ItemsListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex items-center justify-center w-full h-full'>
+    <div className='flex h-full w-full items-center justify-center'>
       <p>No item matches applied filters</p>
     </div>
   );
@@ -27,11 +28,15 @@ interface ListProps {
 
 function List(props: ListProps) {
   return (
-    <div className='flex flex-col flex-1'>
-      <div className='flex flex-col w-full gap-4'>
-        {props.items.map((item, i) => {
-          return <Item item={item} key={`${item.id}-${i}`} />;
-        })}
+    <div className='flex flex-1 flex-col'>
+      <div className='flex w-full flex-col gap-4'>
+        {props.items.map((item, i) => (
+          <React.Fragment key={`${item.id}-${i}`}>
+            {i === 0 && <hr className='border-t border-gray-300' />}
+            <Item item={item} />
+            <hr className='border-t border-gray-300' />
+          </React.Fragment>
+        ))}
       </div>
     </div>
   );
