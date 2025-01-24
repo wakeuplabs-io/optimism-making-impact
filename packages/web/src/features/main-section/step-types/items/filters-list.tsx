@@ -83,7 +83,7 @@ function SmartListFilter(props: SmartListFilterProps) {
     <div className='flex flex-col w-full'>
       <div className='flex items-center justify-between h-12'>
         <h2 className='text-[20px] font-[500]'>Filters</h2>
-        <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />
+        {props.isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
       </div>
       <hr className='border-[#D9D9D9]' />
 
