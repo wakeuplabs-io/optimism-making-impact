@@ -1,13 +1,39 @@
-import { createBodySchema, idParamsSchema, roundIdParamsSchema, updateBodySchema } from '@/controllers/steps/schemas.js';
+import { createStepBodySchema, getAllStepsQueryParms, updateStepBodySchema } from '@/controllers/steps/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-async function getByRoundId(req: Request, res: Response, next: NextFunction) {
+async function getOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = roundIdParamsSchema.safeParse(req.params);
+    const parsedParams = idParamsSchema.safeParse(req.params);
+
+    if (!parsedParams.success) throw ApiError.badRequest();
+
+    const step = await prisma.step.findUnique({
+      where: { id: parsedParams.data.id },
+      include: {
+        cards: true,
+        infographies: {
+          orderBy: { position: 'asc' },
+        },
+        items: true,
+      },
+    });
+
+    if (!step) throw ApiError.notFound();
+
+    apiResponse.success(res, step);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getAll(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsed = getAllStepsQueryParms.safeParse(req.query);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -23,7 +49,7 @@ async function getByRoundId(req: Request, res: Response, next: NextFunction) {
 }
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = createBodySchema.safeParse(req.body);
+    const parsed = createStepBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -47,7 +73,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
-    const parsedBody = updateBodySchema.safeParse(req.body);
+    const parsedBody = updateStepBodySchema.safeParse(req.body);
 
     if (!parsedBody.success || !parsedId.success) throw ApiError.badRequest();
 
@@ -98,7 +124,8 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 }
 
 export const stepsController = {
-  getByRoundId,
+  getOne,
+  getAll,
   create,
   update,
   deleteOne,

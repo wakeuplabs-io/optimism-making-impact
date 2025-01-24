@@ -1,6 +1,6 @@
 import { Toaster } from '@/components/ui/toaster';
 import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
-import { MainSection } from '@/layout/sections/main';
+import { MainSectionLayout } from '@/layout/sections/main';
 import { SidebarSection } from '@/layout/sections/sidebar';
 import { StepsSection } from '@/layout/sections/steps';
 import { useSidebarStore } from '@/state';
@@ -38,7 +38,7 @@ function Index() {
       <SidebarSection />
       <div className='flex flex-1 flex-col-reverse overflow-hidden lg:flex-col'>
         <StepsSection />
-        <MainSection />
+        <MainSectionLayout />
       </div>
       <Toaster />
       {import.meta.env.DEV && <IsAdminIndicator />}

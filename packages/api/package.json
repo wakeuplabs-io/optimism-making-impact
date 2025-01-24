@@ -21,8 +21,7 @@
     "prisma:db:seed:staging": "dotenv -e .env.staging -- prisma db seed",
     "studio": "dotenv -e .env.local -- prisma studio",
     "lint": "tsc --noEmit && eslint .",
-    "format": "prettier --write .",
-    "reset": "pnpm prisma:reset:dev && pnpm prisma:push:dev && pnpm prisma:db:seed:dev"
+    "format": "prettier --write ."
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

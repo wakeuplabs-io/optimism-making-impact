@@ -240,25 +240,73 @@ async function main() {
   const infographies = await Promise.all([
     prisma.infography.create({
       data: {
-        markdown: 'Understanding the basics of technology through visuals.',
-        image: 'tech-basics.png',
-        position: 1, // TODO: make it zero-based
+        markdown:
+          'Incididunt est fugiat commodo nostrud enim fugiat duis laborum veniam eiusmod velit quis. Ex non sunt est deserunt. Ipsum magna pariatur officia do est sit fugiat pariatur adipisicing adipisicing labore nostrud sint. Quis laboris cupidatat Lorem nostrud minim reprehenderit nisi cillum pariatur exercitation ut excepteur reprehenderit. Cillum Lorem id commodo occaecat incididunt tempor proident labore consequat magna in. Proident dolor sit laborum aute nulla cupidatat nulla. Est velit quis consequat pariatur aliqua nisi deserunt cillum deserunt irure aliquip Lorem cillum dolore.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 0,
         stepId: steps[0].id,
       },
     }),
     prisma.infography.create({
       data: {
-        markdown: 'Explore advanced concepts in science.',
-        image: 'science-advanced.png',
-        position: 2, // TODO: make it zero-based
+        markdown:
+          'Commodo adipisicing id minim cupidatat id magna cupidatat laborum excepteur. Quis laborum consectetur ipsum magna enim in. Mollit consectetur culpa velit proident ipsum aliqua proident ut aliquip labore sint incididunt. Reprehenderit fugiat tempor nisi cillum excepteur id culpa Lorem aute anim cillum incididunt dolor nisi. Mollit non anim aliquip eiusmod culpa occaecat consequat commodo esse nostrud. Ad id cillum in exercitation eiusmod esse eu occaecat.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 1,
         stepId: steps[0].id,
       },
     }),
     prisma.infography.create({
       data: {
-        markdown: 'Principles of mechanical engineering.',
-        image: 'mechanical.png',
-        position: 1, // TODO: make it zero-based
+        markdown:
+          'Non ea reprehenderit fugiat ut mollit aute eu excepteur fugiat Lorem officia laborum. Nulla in do nostrud sint et ea magna qui do culpa. Lorem qui sunt eiusmod dolore aute. Culpa ad pariatur fugiat cillum est. Qui laborum irure veniam velit do laboris. Esse id sunt ad excepteur fugiat sint eiusmod eu occaecat ullamco sunt deserunt cillum. Amet sint eiusmod elit magna ad sint.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 0,
+        stepId: steps[11].id,
+      },
+    }),
+    prisma.infography.create({
+      data: {
+        markdown:
+          'Nostrud aute velit ipsum ullamco ut laborum Lorem. Cupidatat velit mollit occaecat pariatur id sunt eiusmod non ullamco nulla eiusmod exercitation. Fugiat aliqua adipisicing commodo anim aute veniam excepteur sint duis id consectetur.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 1,
+        stepId: steps[11].id,
+      },
+    }),
+    prisma.infography.create({
+      data: {
+        markdown:
+          'Esse mollit esse duis nulla dolore labore incididunt non. Incididunt cillum ullamco exercitation minim laborum. Qui in dolor consequat nostrud. Quis ut enim magna eiusmod irure deserunt duis fugiat voluptate exercitation exercitation elit cillum mollit. Minim excepteur irure aliqua excepteur sit proident ex labore do laboris esse mollit culpa.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 2,
+        stepId: steps[11].id,
+      },
+    }),
+    prisma.infography.create({
+      data: {
+        markdown:
+          'Quis duis eu nulla velit. Laborum consectetur excepteur in cupidatat. Id duis tempor voluptate esse mollit amet amet eu voluptate dolor commodo. Elit minim consectetur ex aliquip cillum minim anim. Dolor esse ad exercitation do velit minim ullamco consequat aliqua duis occaecat. Ut pariatur consequat sint reprehenderit adipisicing dolor dolor ut non consequat est dolore.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 3,
+        stepId: steps[11].id,
+      },
+    }),
+    prisma.infography.create({
+      data: {
+        markdown:
+          'Sunt enim anim quis laborum quis minim in laborum dolore. Ea exercitation eiusmod commodo excepteur sit proident ipsum ut tempor anim reprehenderit exercitation amet consequat. Pariatur ut elit fugiat excepteur aute proident anim eiusmod elit amet. Quis ex nulla aliqua et dolore velit magna nulla enim sit aute ipsum.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 4,
+        stepId: steps[11].id,
+      },
+    }),
+    prisma.infography.create({
+      data: {
+        markdown:
+          'Irure cillum velit elit pariatur est tempor laborum cillum ullamco ex ipsum. Tempor cupidatat ad ipsum aute laboris culpa velit ad laborum mollit et culpa cupidatat. Amet aute voluptate fugiat culpa minim occaecat do deserunt ea ullamco cupidatat amet. Do irure nisi commodo excepteur. Dolor anim aliquip duis consequat laboris.',
+        image: 'https://www.datocms-assets.com/132613/1724440968-creditgreenpeace-greatbearrainforest-spruceinterior-2.jpg?w=1200',
+        position: 5,
         stepId: steps[11].id,
       },
     }),
@@ -269,24 +317,27 @@ async function main() {
   const items = await Promise.all([
     prisma.item.create({
       data: {
-        markdown: 'Core principles of physics.',
-        position: 1, // TODO: make it zero-based
+        markdown:
+          'Elit commodo cillum enim labore et incididunt sit aute deserunt dolore sunt dolor ex. Sunt nulla aute ipsum et cillum ex non enim. Amet deserunt excepteur sunt ipsum excepteur. Laborum exercitation voluptate reprehenderit consectetur. Aliqua cupidatat ipsum dolor non ex. In pariatur tempor minim tempor. Aute duis eiusmod ea excepteur esse quis.',
+        position: 0,
         stepId: steps[1].id,
         attributeId: attributes[2].id,
       },
     }),
     prisma.item.create({
       data: {
-        markdown: 'Chemistry in everyday life.',
-        position: 2, // TODO: make it zero-based
+        markdown:
+          'Nulla nulla aliqua nostrud et amet. Commodo adipisicing anim incididunt cillum veniam aliquip cillum. Ex eu excepteur in minim culpa sit id commodo. Proident cillum dolor nulla eu esse ipsum laborum eiusmod pariatur pariatur nisi incididunt. Mollit culpa deserunt incididunt consectetur ea sint ea ad aliqua anim cillum eu pariatur. Adipisicing quis exercitation duis ea amet duis.',
+        position: 1,
         stepId: steps[1].id,
         attributeId: attributes[2].id,
       },
     }),
     prisma.item.create({
       data: {
-        markdown: 'Renaissance art techniques.',
-        position: 1, // TODO: make it zero-based
+        markdown:
+          'Adipisicing sit exercitation et sit adipisicing in pariatur aliquip voluptate nostrud voluptate proident incididunt. Lorem aliquip amet eiusmod Lorem officia voluptate in nostrud eu minim adipisicing ut reprehenderit. Laborum aute in est culpa incididunt nostrud. Cupidatat commodo aliquip eu voluptate anim culpa amet dolor laboris. Enim ipsum proident amet labore culpa proident deserunt.',
+        position: 0,
         stepId: steps[9].id,
         attributeId: attributes[4].id,
       },
@@ -299,9 +350,10 @@ async function main() {
     prisma.card.create({
       data: {
         title: 'Pythagorean Theorem',
-        markdown: 'A fundamental theorem in mathematics.',
+        markdown:
+          'Ex aute consequat commodo in aliqua laboris officia adipisicing do est voluptate. Magna in labore do anim non consequat aliquip eu elit ipsum ea quis. Fugiat laboris anim pariatur non duis irure eiusmod in officia proident ad do. Sit deserunt cillum id amet fugiat culpa occaecat. Laborum commodo deserunt exercitation nisi commodo esse labore cupidatat aute commodo duis consequat. Nostrud consequat aliqua aliqua amet voluptate aliquip incididunt aliquip.',
         strength: 'HIGH',
-        position: 1, // TODO: make it zero-based
+        position: 0,
         stepId: steps[2].id,
         attributeId: attributes[3].id,
       },
@@ -309,9 +361,10 @@ async function main() {
     prisma.card.create({
       data: {
         title: 'Law of Gravity',
-        markdown: 'An essential concept in physics.',
+        markdown:
+          'Id dolor ut cillum pariatur proident. Culpa irure eiusmod sunt in in minim et sint. Cillum Lorem ipsum dolore excepteur amet aute ut laboris. Eu enim ipsum laborum eiusmod amet. Laboris aute nulla veniam amet aute dolore laborum.',
         strength: 'MEDIUM',
-        position: 2, // TODO: make it zero-based
+        position: 1,
         stepId: steps[2].id,
         attributeId: attributes[2].id,
       },
@@ -319,9 +372,10 @@ async function main() {
     prisma.card.create({
       data: {
         title: "Da Vinci's Perspective",
-        markdown: "Insights into Da Vinci's techniques.",
+        markdown:
+          'Aute in labore aliqua non cupidatat irure sit pariatur. Ut ut velit commodo quis ea eiusmod commodo id non nostrud. Labore fugiat non esse Lorem esse. Consectetur sit consequat minim excepteur est incididunt laborum velit laboris. Tempor labore anim Lorem eiusmod dolor exercitation veniam. Ullamco ipsum laboris est occaecat commodo consectetur sint ullamco tempor mollit enim cupidatat dolor. Aute irure nostrud Lorem nulla deserunt ex minim amet amet.',
         strength: 'LOW',
-        position: 1, // TODO: make it zero-based
+        position: 0,
         stepId: steps[10].id,
         attributeId: attributes[4].id,
       },

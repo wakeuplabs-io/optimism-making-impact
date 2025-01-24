@@ -1,4 +1,5 @@
-import { z } from 'zod';
+export * from './infographies';
+export * from './steps';
 
 // TODO: use prisma to keep in sync
 export type Round = {
@@ -24,21 +25,3 @@ export type Category = {
   name: string;
   icon?: string;
 };
-
-export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const;
-export const stepTypeSchema = z.enum(stepTypes);
-export type StepType = z.infer<typeof stepTypeSchema>;
-
-export const stepSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  icon: z.string(),
-  position: z.number(), // Zero-based
-  type: stepTypeSchema,
-  roundId: z.number(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-});
-export const stepArraySchema = z.array(stepSchema);
-
-export type Step = z.infer<typeof stepSchema>;

@@ -19,8 +19,12 @@ export class StepsServiceClass {
     return StepsServiceClass.instance;
   }
 
+  async getOne(stepId: number) {
+    return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data);
+  }
+
   async getByRoundId(roundId: number) {
-    return this.fetcher.get(stepsEndpoint + `/${roundId}`).then((res) => res.data);
+    return this.fetcher.get(stepsEndpoint + `?roundId=${roundId}`).then((res) => res.data);
   }
 
   async create(data: CreateStepBody) {
