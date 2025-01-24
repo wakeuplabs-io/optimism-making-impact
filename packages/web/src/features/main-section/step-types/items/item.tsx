@@ -6,7 +6,7 @@ interface ItemProps {
 }
 
 export default function Item(props: ItemProps) {
-  const color = getColor(props.item.color);
+  const color = getColor(props.item.attribute.color);
   return (
     <div className='flex items-start gap-3'>
       <div className={cn('mt-2 h-2 w-2 rounded-full')} style={{ backgroundColor: color }} />

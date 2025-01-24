@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const createItemSchema = z.object({
   markdown: z.string(),
   stepId: z.number(),
-  attributeId: z.number().optional(),
+  attributeId: z.number(),
 });
 
 export const updateItemSchema = z.object({

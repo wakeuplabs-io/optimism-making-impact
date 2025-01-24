@@ -18,7 +18,10 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
       include: {
         cards: { orderBy: { position: 'asc' }, include: { attribute: true, keywords: true } },
         infographies: { orderBy: { position: 'asc' } },
-        items: true,
+        items: {
+          include: { attribute: true },
+          orderBy: { position: 'asc' },
+        },
         smartList: {
           include: {
             attributes: {

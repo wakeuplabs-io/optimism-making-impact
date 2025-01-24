@@ -21,8 +21,8 @@ export async function seedDatabase() {
   const steps = await seedSteps(prisma, rounds);
   await seedInfographics(prisma, steps);
   await seedCards(prisma, steps, keywords);
-  await seedItems(prisma, steps);
   await seedAttributes(prisma, smartLists, categories);
+  await seedItems(prisma, steps);
 
   // TODO: realtionships
 

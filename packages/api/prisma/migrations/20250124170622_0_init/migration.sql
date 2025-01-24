@@ -63,9 +63,8 @@ CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
-    "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
     "stepId" INTEGER NOT NULL,
-    "attributeId" INTEGER,
+    "attributeId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -41,6 +41,7 @@ function AddModal(props: AddSmartListModalProps) {
   }
 
   function handleSubmit() {
+    if (!attributeId) return;
     props.onClick({ markdown, attributeId, stepId: props.stepId });
 
     clearForm();

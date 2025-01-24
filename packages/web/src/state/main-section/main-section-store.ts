@@ -12,7 +12,7 @@ import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Color, Step } from '@/types';
+import { Step } from '@/types';
 import { AxiosError } from 'axios';
 import isEqual from 'lodash.isequal';
 
@@ -229,9 +229,16 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     const stepId = currentStep.id;
 
+    const selectedAttribute = currentStep.smartList.attributes.find((attribute) => attribute.id === data.attributeId)!;
+
+    if (!selectedAttribute) return;
+
     optimisticUpdate({
       getStateSlice: () => currentStep.items,
-      updateFn: (items) => [...items, { ...data, id: Date.now(), position: Date.now(), stepId: currentStep.id, color: Color.PINK }],
+      updateFn: (items) => [
+        ...items,
+        { ...data, id: Date.now(), position: Date.now(), stepId: currentStep.id, attribute: selectedAttribute },
+      ],
       setStateSlice: (items) => set({ step: { ...currentStep, items } }),
       apiCall: () => ItemsService.create(data),
       onError: (error) => {
