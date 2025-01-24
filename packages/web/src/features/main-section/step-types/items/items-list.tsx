@@ -9,8 +9,6 @@ interface ItemsListProps {
 }
 
 export function ItemsList(props: ItemsListProps) {
-  if (!props.items.length) return <EmptyState />;
-
   return <List {...props} />;
 }
 
@@ -31,17 +29,20 @@ interface ListProps {
 function List(props: ListProps) {
   return (
     <div className='flex flex-col flex-1 p-2'>
-      <div className='flex items-center h-12'>
+      <div className='mb-4 flex h-12 items-center border-b border-[#D9D9D9]'>
         <h2 className='text-[20px] font-[500]'>{props.title}</h2>
       </div>
       <div className='flex flex-col w-full gap-4'>
-        {props.items.map((item, i) => (
-          <React.Fragment key={`${item.id}-${i}`}>
-            {i === 0 && <hr className='border-t border-[#D9D9D9]' />}
-            <Item item={item} />
-            <hr className='border-t border-[#D9D9D9]' />
-          </React.Fragment>
-        ))}
+        {props.items.length === 0 ? (
+          <EmptyState />
+        ) : (
+          props.items.map((item, i) => (
+            <React.Fragment key={`${item.id}-${i}`}>
+              <Item item={item} />
+              <hr className='border-t border-[#D9D9D9]' />
+            </React.Fragment>
+          ))
+        )}
       </div>
     </div>
   );
