@@ -3,6 +3,7 @@ import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import { StepType } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -58,18 +59,35 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastStep = await prisma.step.findFirst({
-      where: { roundId: parsed.data.roundId },
-      orderBy: { position: 'desc' },
+    const result = await prisma.$transaction(async (prisma) => {
+      const lastStep = await prisma.step.findFirst({
+        where: { roundId: parsed.data.roundId },
+        orderBy: { position: 'desc' },
+        select: { position: true },
+      });
+
+      const position = lastStep ? lastStep.position + 1 : 0;
+
+      const created = await prisma.step.create({
+        data: { ...parsed.data, position },
+      });
+
+      const isItemType = parsed.data.type === StepType.ITEMS;
+      if (isItemType) {
+        await prisma.smartList.create({
+          data: {
+            title: 'Smart List',
+            steps: {
+              connect: { id: created.id },
+            },
+          },
+        });
+      }
+
+      return created;
     });
 
-    const position = lastStep ? lastStep.position + 1 : 0;
-
-    const created = await prisma.step.create({
-      data: { ...parsed.data, position },
-    });
-
-    apiResponse.success(res, created, StatusCodes.CREATED);
+    apiResponse.success(res, result, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

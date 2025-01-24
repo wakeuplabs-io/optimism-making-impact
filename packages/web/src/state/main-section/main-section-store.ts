@@ -6,8 +6,6 @@ import { CreateCardBody } from '@/services/cards/schemas';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
-import { CreateSmartListBody } from '@/services/smart-lists/schemas';
-import { SmartListsService } from '@/services/smart-lists/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
@@ -170,32 +168,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
-  createSmartList: (data: CreateSmartListBody) => {
-    const currentStep = get().step;
-    if (!currentStep) return;
 
-    const stepId = currentStep.id;
-
-    optimisticUpdate({
-      getStateSlice: () => currentStep.smartList,
-      updateFn: (smartList) => ({ attributes: [], ...smartList, ...data, id: Date.now() }),
-      setStateSlice: (smartList) => set((state) => ({ step: { ...state.step, smartList } })),
-      apiCall: () => SmartListsService.create(data),
-      onError: (error) => {
-        const title = 'Failed to create Smart List';
-        let description = 'Unknown error';
-
-        if (error instanceof AxiosError) {
-          description = error.response?.data.error.message;
-        }
-
-        toast({ title, description, variant: 'destructive' });
-      },
-      onSuccess: async () => {
-        await get().fetchData(stepId);
-      },
-    });
-  },
   addAttributeToSmartList: (data: CreateAttributeBody) => {
     const currentStep = get().step;
     if (!currentStep || !currentStep.smartList) return;

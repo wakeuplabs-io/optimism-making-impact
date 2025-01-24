@@ -2,7 +2,6 @@ import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
-import { CreateSmartListModal } from '@/features/main-section/step-types/items/create-smart-list-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
@@ -57,15 +56,12 @@ interface ContentProps {
 }
 
 function Content(props: ContentProps) {
-  const { createSmartList } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   if (!props.smartList) {
-    if (!isAdmin) return null;
     return (
       <div className='flex justify-center w-full'>
-        {/* TODO: DELETE: when i create a step of type items it should already have a smart list (selected or associated) */}
-        <CreateSmartListModal stepId={props.stepId} onClick={createSmartList} />
+        <span>There is no Smart List for this step</span>
       </div>
     );
   }
