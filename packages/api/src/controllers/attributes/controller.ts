@@ -1,4 +1,4 @@
-import { createAttributeSchema } from '@/controllers/attributes/schemas.js';
+import { createAttributeSchema, updateAttributeSchema } from '@/controllers/attributes/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
@@ -23,6 +23,24 @@ async function create(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function update(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsed = updateAttributeSchema.safeParse(req.body);
+
+    if (!parsed.success) throw ApiError.badRequest();
+
+    const attribute = await prisma.attribute.update({
+      where: { id: parsed.data.id },
+      data: parsed.data,
+    });
+
+    apiResponse.success(res, attribute, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const attributesController = {
   create,
+  update,
 };

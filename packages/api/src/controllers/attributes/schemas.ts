@@ -6,3 +6,9 @@ export const createAttributeSchema = z.object({
   color: z.nativeEnum(Color).optional(),
   smartListId: z.number(),
 });
+
+export const updateAttributeSchema = z.object({
+  id: z.number(),
+  value: z.string().optional(),
+  color: z.nativeEnum(Color).optional(),
+});
