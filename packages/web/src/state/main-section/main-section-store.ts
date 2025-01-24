@@ -6,11 +6,13 @@ import { CreateCardBody } from '@/services/cards/schemas';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
+import { CreateItemBody } from '@/services/items/schemas';
+import { ItemsService } from '@/services/items/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Step } from '@/types';
+import { Color, Step } from '@/types';
 import { AxiosError } from 'axios';
 import isEqual from 'lodash.isequal';
 
@@ -208,6 +210,32 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       apiCall: () => AttributesService.update(data),
       onError: (error) => {
         const title = 'Failed to update attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  addItem(data: CreateItemBody) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.items,
+      updateFn: (items) => [...items, { ...data, id: Date.now(), position: Date.now(), stepId: currentStep.id, color: Color.PINK }],
+      setStateSlice: (items) => set({ step: { ...currentStep, items } }),
+      apiCall: () => ItemsService.create(data),
+      onError: (error) => {
+        const title = 'Failed to create item';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {
