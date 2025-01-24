@@ -1,0 +1,7 @@
+import { itemsController } from '@/controllers/items/controller.js';
+import { Router } from 'express';
+
+export const itemsRouter = Router();
+
+itemsRouter.post('/', itemsController.create);
+itemsRouter.put('/', itemsController.update);
