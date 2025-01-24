@@ -97,6 +97,7 @@ function SmartListFilter(props: SmartListFilterProps) {
             data: attr,
             prefixDot: attr.color,
             editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
+            tooltipText: attr.description,
           }))}
           isAdmin={props.isAdmin}
         />

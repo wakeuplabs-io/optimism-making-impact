@@ -1,6 +1,7 @@
 import { IconButton } from '@/components/icon-button';
 import { ColorSelectInput } from '@/components/inputs/color-select-input';
 import { Modal } from '@/components/modal';
+import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { CreateAttributeBody } from '@/services/attributes/schemas';
 import { Color } from '@/types';
@@ -24,6 +25,7 @@ interface AddSmartListModalProps {
 // TODO: rename
 function AddSmartListModal(props: AddSmartListModalProps) {
   const [value, setValue] = useState('');
+  const [description, setDescription] = useState('');
   const [color, setColor] = useState(Color.LIGHTBLUE);
 
   function clearForm() {
@@ -33,9 +35,12 @@ function AddSmartListModal(props: AddSmartListModalProps) {
   function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
   }
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setDescription(event.target.value);
+  }
 
   function handleSubmit() {
-    props.onClick({ smartListId: props.smartListId, value, color });
+    props.onClick({ smartListId: props.smartListId, value, color, description });
 
     clearForm();
   }
@@ -52,6 +57,7 @@ function AddSmartListModal(props: AddSmartListModalProps) {
     >
       <div className='grid gap-4 py-4'>
         <TextInput name='title' value={value} onChange={handleValueChange} placeholder='Title' />
+        <TextAreaInput name='description' value={description} onChange={handleDescriptionChange} placeholder='Description' />
         <ColorSelectInput selected={color} onChange={setColor} />
       </div>
     </Modal>

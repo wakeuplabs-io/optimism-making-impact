@@ -101,6 +101,7 @@ CREATE TABLE "Keyword" (
 CREATE TABLE "Attribute" (
     "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
     "categoryId" INTEGER NOT NULL,
     "smartListId" INTEGER NOT NULL,

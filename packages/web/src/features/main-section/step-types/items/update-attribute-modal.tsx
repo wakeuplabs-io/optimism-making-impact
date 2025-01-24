@@ -1,5 +1,6 @@
 import { ColorSelectInput } from '@/components/inputs/color-select-input';
 import { Modal } from '@/components/modal';
+import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { UpdateAttributeBody } from '@/services/attributes/schemas';
 import { Attribute } from '@/types';
@@ -22,14 +23,18 @@ interface UpdateModalProps {
 
 function UpdateModal(props: UpdateModalProps) {
   const [value, setValue] = useState(props.attribute.value);
+  const [description, setDescription] = useState(props.attribute.description);
   const [color, setColor] = useState(props.attribute.color);
 
   function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
   }
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    setDescription(event.target.value);
+  }
 
   function handleSubmit() {
-    props.onClick({ id: props.attribute.id, value, color });
+    props.onClick({ id: props.attribute.id, value, color, description });
   }
 
   return (
@@ -47,6 +52,7 @@ function UpdateModal(props: UpdateModalProps) {
     >
       <div className='grid gap-4 py-4'>
         <TextInput name='title' value={value} onChange={handleValueChange} placeholder='Title' />
+        <TextAreaInput name='description' value={description} onChange={handleDescriptionChange} placeholder='Description' />
         <ColorSelectInput selected={color} onChange={setColor} />
       </div>
     </Modal>
