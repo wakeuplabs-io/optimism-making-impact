@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateAttributeBody } from '@/services/attributes/schemas';
+import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
 import { AxiosInstance } from 'axios';
 
 const attributesEndpoint = '/attributes';
@@ -21,6 +21,10 @@ class Service {
 
   async create(data: CreateAttributeBody) {
     return this.fetcher.post(attributesEndpoint, data).then((res) => res.data);
+  }
+
+  async update(data: UpdateAttributeBody) {
+    return this.fetcher.put(attributesEndpoint, data).then((res) => res.data);
   }
 }
 
