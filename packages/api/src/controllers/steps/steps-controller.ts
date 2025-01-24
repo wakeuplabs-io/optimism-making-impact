@@ -20,7 +20,9 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
         items: true,
         smartList: {
           include: {
-            attributes: true,
+            attributes: {
+              orderBy: { id: 'asc' },
+            },
           },
         },
       },
