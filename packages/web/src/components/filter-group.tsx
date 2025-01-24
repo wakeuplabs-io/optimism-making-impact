@@ -1,6 +1,6 @@
 import { cn, getColor } from '@/lib/utils';
 import { Color } from '@/types';
-import { Pencil, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { ComponentProps } from 'react';
 
 interface Filter<T> {
@@ -9,6 +9,7 @@ interface Filter<T> {
   selected: boolean;
   onClick?: (data: T) => void;
   prefixDot?: Color | undefined;
+  editComponent?: React.ReactNode;
 }
 
 interface FilterGroupProps<T> {
@@ -32,6 +33,7 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
             onClick={filter.onClick}
             prefixDot={filter.prefixDot}
             isAdmin={props.isAdmin}
+            editComponent={filter.editComponent}
           />
         ))}
       </div>
@@ -46,6 +48,7 @@ interface FilterButtonProps<T> extends Omit<ComponentProps<'button'>, 'onClick'>
   onClick?: (data: T) => void; // Callback when the button is clicked.
   prefixDot?: Color | undefined;
   isAdmin?: boolean;
+  editComponent?: React.ReactNode;
 }
 
 function FilterButton<T>({ label, selected, className, data, onClick, prefixDot, ...props }: FilterButtonProps<T>) {
@@ -66,7 +69,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         )}
         onClick={handleClick}
       >
-        {prefixDot && <div className='h-2 w-2 rounded-full' style={{ backgroundColor: getColor(prefixDot) }} />}
+        {prefixDot && <div className='w-2 h-2 rounded-full' style={{ backgroundColor: getColor(prefixDot) }} />}
         <span
           className={cn(
             'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
@@ -77,11 +80,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         </span>
         {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
       </button>
-      {props.isAdmin && (
-        <button>
-          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
-        </button>
-      )}
+      {props.isAdmin && props.editComponent}
     </div>
   );
 }

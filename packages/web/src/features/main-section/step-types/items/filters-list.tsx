@@ -3,6 +3,7 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { CreateSmartListModal } from '@/features/main-section/step-types/items/create-smart-list-modal';
+import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
 import { useCardFiltersStore } from '@/state/main-section-filters/store';
@@ -38,7 +39,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
+      <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -62,7 +63,7 @@ function Content(props: ContentProps) {
   if (!props.smartList) {
     if (!isAdmin) return null;
     return (
-      <div className='flex w-full justify-center'>
+      <div className='flex justify-center w-full'>
         {/* TODO: DELETE: when i create a step of type items it should already have a smart list (selected or associated) */}
         <CreateSmartListModal stepId={props.stepId} onClick={createSmartList} />
       </div>
@@ -80,9 +81,11 @@ interface SmartListFilterProps {
 
 function SmartListFilter(props: SmartListFilterProps) {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
+  const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
+
   return (
-    <div className='flex w-full flex-col'>
-      <div className='flex h-12 items-center justify-between'>
+    <div className='flex flex-col w-full'>
+      <div className='flex items-center justify-between h-12'>
         <h2 className='text-[20px] font-[500]'>Filters</h2>
         <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />
       </div>
@@ -97,6 +100,7 @@ function SmartListFilter(props: SmartListFilterProps) {
             onClick: (a) => console.log('🎈 ', a),
             data: attr,
             prefixDot: attr.color,
+            editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
           }))}
           isAdmin={props.isAdmin}
         />

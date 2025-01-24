@@ -21,6 +21,7 @@ interface AddSmartListModalProps {
   onClick: (data: CreateAttributeBody) => void;
 }
 
+// TODO: rename
 function AddSmartListModal(props: AddSmartListModalProps) {
   const [value, setValue] = useState('');
   const [color, setColor] = useState(Color.LIGHTBLUE);

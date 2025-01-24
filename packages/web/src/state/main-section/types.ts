@@ -1,5 +1,5 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
-import { CreateAttributeBody } from '@/services/attributes/schemas';
+import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
 import { CreateCardBody } from '@/services/cards/schemas';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { CreateSmartListBody } from '@/services/smart-lists/schemas';
@@ -23,6 +23,7 @@ export interface MainSectionActions {
   addCard: (data: CreateCardBody) => void;
   createSmartList: (data: CreateSmartListBody) => void;
   addAttributeToSmartList: (data: CreateAttributeBody) => void;
+  updateAttribute: (data: UpdateAttributeBody) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;

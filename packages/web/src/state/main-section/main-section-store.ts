@@ -204,11 +204,37 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     optimisticUpdate({
       getStateSlice: () => currentStep.smartList!.attributes,
-      updateFn: (attributes) => ({ ...attributes, ...data, id: Date.now() }),
-      setStateSlice: (attributes) => ({ step: { ...currentStep, smartList: { ...currentStep.smartList, attributes } } }),
+      updateFn: (attributes) => [...attributes, { ...data, id: Date.now(), categoryId: 1 }],
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
       apiCall: () => AttributesService.create(data),
       onError: (error) => {
         const title = 'Failed to create attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  updateAttribute(data) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => attributes.map((attribute) => (attribute.id === data.id ? { ...attribute, ...data } : attribute)),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      apiCall: () => AttributesService.update(data),
+      onError: (error) => {
+        const title = 'Failed to update attribute';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {
