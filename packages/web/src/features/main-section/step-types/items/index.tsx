@@ -19,13 +19,13 @@ function Content() {
   const { step } = useMainSectionStore((state) => state);
 
   if (!step) {
-    return <div className='flex h-full w-full items-center justify-center'>Select a step</div>;
+    return <div className='flex items-center justify-center w-full h-full'>Select a step</div>;
   }
 
   return (
     <div className='flex flex-col lg:flex-row'>
       <ItemFilters smartList={step.smartList} stepId={step.id} />
-      <ItemsList items={step.items} stepId={step.id} />
+      <ItemsList items={step.items} stepId={step.id} title={step.title} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import React from 'react';
 interface ItemsListProps {
   items: CompleteItem[];
   stepId: number;
+  title: string;
 }
 
 export function ItemsList(props: ItemsListProps) {
@@ -15,7 +16,7 @@ export function ItemsList(props: ItemsListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex h-full w-full items-center justify-center'>
+    <div className='flex items-center justify-center w-full h-full'>
       <p>No item matches applied filters</p>
     </div>
   );
@@ -24,15 +25,16 @@ function EmptyState() {
 interface ListProps {
   items: CompleteItem[];
   stepId: number;
+  title: string;
 }
 
 function List(props: ListProps) {
   return (
-    <div className='flex flex-1 flex-col p-2'>
-      <div className='flex h-12 items-center'>
-        <h2 className='text-[20px] font-[500]'>Questions you can ask</h2>
+    <div className='flex flex-col flex-1 p-2'>
+      <div className='flex items-center h-12'>
+        <h2 className='text-[20px] font-[500]'>{props.title}</h2>
       </div>
-      <div className='flex w-full flex-col gap-4'>
+      <div className='flex flex-col w-full gap-4'>
         {props.items.map((item, i) => (
           <React.Fragment key={`${item.id}-${i}`}>
             {i === 0 && <hr className='border-t border-[#D9D9D9]' />}
