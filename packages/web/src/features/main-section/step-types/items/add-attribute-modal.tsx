@@ -8,28 +8,20 @@ import { Color } from '@/types';
 import { Plus, Save } from 'lucide-react';
 import { useState } from 'react';
 
-interface AddAttributeButtonProps {
+interface AddAttributeModalProps {
   smartListId: number;
   onClick: (data: CreateAttributeBody) => void;
 }
 
-export function AddAttributeModal(props: AddAttributeButtonProps) {
-  return <AddSmartListModal {...props} />;
-}
-
-interface AddSmartListModalProps {
-  smartListId: number;
-  onClick: (data: CreateAttributeBody) => void;
-}
-
-// TODO: rename
-function AddSmartListModal(props: AddSmartListModalProps) {
+export function AddAttributeModal(props: AddAttributeModalProps) {
   const [value, setValue] = useState('');
   const [description, setDescription] = useState('');
-  const [color, setColor] = useState(Color.LIGHTBLUE);
+  const [color, setColor] = useState(Color.RED);
 
   function clearForm() {
     setValue('');
+    setDescription('');
+    setColor(Color.RED);
   }
 
   function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
