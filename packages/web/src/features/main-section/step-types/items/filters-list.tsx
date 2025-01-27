@@ -6,7 +6,7 @@ import { DeleteAttributeModal } from '@/features/main-section/step-types/items/d
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
-import { useCardFiltersStore } from '@/state/main-section-filters/store';
+import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Attribute } from '@/types';
 import { CompleteSmartList } from '@/types/smart-lists';
@@ -27,7 +27,7 @@ export function ItemFilters(props: ItemsFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths, selectedAttributes } = useCardFiltersStore((state) => state);
+  const { selectedKeywords, selectedStrengths, selectedAttributes } = useFiltersStore((state) => state);
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -39,7 +39,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
+      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[300px]'>
           {props.children}
@@ -58,35 +58,24 @@ interface ContentProps {
 
 function Content(props: ContentProps) {
   const isAdmin = useUserStore((state) => state.isAdmin);
+  const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
+  const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
+  const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
+  const { selectedAttributes, setSelectedAttributes } = useFiltersStore((state) => state);
 
   if (!props.smartList) {
     return (
-      <div className='flex justify-center w-full'>
+      <div className='flex w-full justify-center'>
         <span>There is no Smart List for this step</span>
       </div>
     );
   }
 
-  return <SmartListFilter smartList={props.smartList} stepId={props.stepId} isAdmin={isAdmin} />;
-}
-
-interface SmartListFilterProps {
-  stepId: number;
-  smartList: CompleteSmartList;
-  isAdmin?: boolean;
-}
-
-function SmartListFilter(props: SmartListFilterProps) {
-  const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
-  const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
-  const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
-  const { selectedAttributes, setSelectedAttributes } = useCardFiltersStore((state) => state);
-
   return (
-    <div className='flex flex-col w-full'>
-      <div className='flex items-center justify-between h-12'>
+    <div className='flex w-full flex-col'>
+      <div className='flex h-12 items-center justify-between'>
         <h2 className='text-[20px] font-[500]'>Filters</h2>
-        {props.isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
+        {isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
       </div>
       <hr className='border-[#D9D9D9]' />
 
@@ -104,7 +93,7 @@ function SmartListFilter(props: SmartListFilterProps) {
             deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
             tooltipText: attr.description,
           }))}
-          isAdmin={props.isAdmin}
+          isAdmin={isAdmin}
         />
       </div>
     </div>

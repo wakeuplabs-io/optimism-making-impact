@@ -1,8 +1,8 @@
-import { useFilteredCards } from '@/features/main-section/step-types/cards/use-filtered-cards';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
-import Item from '@/features/main-section/step-types/items/item';
+import { Item } from '@/features/main-section/step-types/items/item';
+import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useUserStore } from '@/state';
-import { useCardFiltersStore } from '@/state/main-section-filters/store';
+import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Attribute } from '@/types';
 import { CompleteItem } from '@/types/items';
@@ -16,11 +16,11 @@ interface ItemsListProps {
 }
 
 export function ItemsList(props: ItemsListProps) {
-  const { selectedStrengths, selectedKeywords, selectedAttributes } = useCardFiltersStore((state) => state);
+  const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const filteredItems = useFilteredCards({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
+  const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
 
   return (
     <div className='flex flex-col flex-1 p-2'>

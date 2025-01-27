@@ -1,3 +1,4 @@
+import { ColorDot } from '@/components/color-dot';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
 import { TextInput } from '@/components/text-input';
@@ -32,7 +33,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
 
   return (
     <Modal
-      title='Edit attribute'
+      title='Edit item'
       trigger={
         <button>
           <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
@@ -48,7 +49,15 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
         {attributes && (
           <SelectInput
             name='attributeId'
-            items={attributes.map((a) => ({ value: a.id.toString(), label: a.value }))}
+            items={attributes.map((a) => ({
+              value: a.id.toString(),
+              label: (
+                <div className='flex items-center gap-2'>
+                  <ColorDot color={a.color} />
+                  <span>{a.value}</span>
+                </div>
+              ),
+            }))}
             onValueChange={handleAttributeChange}
             value={attributeId.toString()}
             placeholder='Select an attribute'

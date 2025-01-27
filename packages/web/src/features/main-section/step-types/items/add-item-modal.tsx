@@ -1,3 +1,4 @@
+import { ColorDot } from '@/components/color-dot';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
@@ -61,7 +62,15 @@ function AddModal(props: AddSmartListModalProps) {
         <TextInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' />
         <SelectInput
           name='attributeId'
-          items={props.attributes.map((a) => ({ value: a.id.toString(), label: a.value }))}
+          items={props.attributes.map((a) => ({
+            value: a.id.toString(),
+            label: (
+              <div className='flex items-center gap-2'>
+                <ColorDot color={a.color} />
+                <span>{a.value}</span>
+              </div>
+            ),
+          }))}
           onValueChange={handleAttributeChange}
           placeholder='Select an attribute'
         />

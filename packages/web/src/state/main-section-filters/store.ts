@@ -1,14 +1,18 @@
-import { CardFiltersStore } from '@/state/main-section-filters/types';
+import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { Keyword, strengthArray, StrengthEnum } from '@/types';
 
-export const useCardFiltersStore = createWithMiddlewares<CardFiltersStore>((set, get) => ({
-  strengths: strengthArray,
+const initialFilters = {
   selectedStrengths: [],
-  keywords: [],
   selectedKeywords: [],
-  attributes: [],
   selectedAttributes: [],
+  keywords: [],
+  attributes: [],
+};
+
+export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) => ({
+  ...initialFilters,
+  strengths: strengthArray,
   setKeywords: (keywords: Keyword[]) => set({ keywords }),
   setSelectedStrengths: (strength: StrengthEnum) => {
     const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
@@ -23,12 +27,7 @@ export const useCardFiltersStore = createWithMiddlewares<CardFiltersStore>((set,
     set({ selectedAttributes });
   },
   clear() {
-    set({
-      selectedStrengths: [],
-      selectedKeywords: [],
-      selectedAttributes: [],
-      keywords: [],
-    });
+    set(initialFilters);
   },
 }));
 

@@ -2,7 +2,7 @@ import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-is-mobile';
-import { useCardFiltersStore } from '@/state/main-section-filters/store';
+import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMemo } from 'react';
 
 export function CardFilters() {
@@ -15,7 +15,7 @@ export function CardFilters() {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths } = useCardFiltersStore((state) => state);
+  const { selectedKeywords, selectedStrengths } = useFiltersStore((state) => state);
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -40,7 +40,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 function Content() {
-  const { strengths, selectedStrengths, setSelectedStrengths, keywords, selectedKeywords, setSelectedKeywords } = useCardFiltersStore(
+  const { strengths, selectedStrengths, setSelectedStrengths, keywords, selectedKeywords, setSelectedKeywords } = useFiltersStore(
     (state) => state,
   );
 

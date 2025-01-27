@@ -3,19 +3,29 @@ import { useMemo } from 'react';
 
 type Data = CompleteCard | CompleteItem;
 
-type UseFilteredCardsProps<T extends Data> = {
+type UseFilteredDataProps<T extends Data> = {
   data: T[];
   selectedStrengths: StrengthEnum[];
   selectedKeywords: Keyword[];
   selectedAttributes: Attribute[];
 };
 
-export const useFilteredCards = <T extends Data>({
+/**
+ * Filters a list of data based on selected strengths, keywords, and attributes.
+ *
+ * @template T - The type of data being filtered, which extends either CompleteCard or CompleteItem.
+ * @param {T[]} data - The array of data items to be filtered.
+ * @param {StrengthEnum[]} selectedStrengths - The selected strengths to filter by.
+ * @param {Keyword[]} selectedKeywords - The selected keywords to filter by.
+ * @param {Attribute[]} selectedAttributes - The selected attributes to filter by.
+ * @returns {T[]} - The filtered array of data items that match the selected criteria.
+ */
+export const useFilteredData = <T extends Data>({
   data,
   selectedStrengths,
   selectedKeywords,
   selectedAttributes,
-}: UseFilteredCardsProps<T>): T[] => {
+}: UseFilteredDataProps<T>): T[] => {
   const filtered = useMemo(() => {
     if (!selectedStrengths.length && !selectedKeywords.length && !selectedAttributes.length) return data;
 
