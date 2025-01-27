@@ -34,8 +34,8 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
     <Modal
       title='Edit attribute'
       trigger={
-        <button className='self-center'>
-          <Pencil size={14} className='self-center stroke-[#4E4E4E] hover:stroke-black' />
+        <button>
+          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
         </button>
       }
       buttons={[

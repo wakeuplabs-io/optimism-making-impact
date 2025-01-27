@@ -11,10 +11,17 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
+    const lastItem = await prisma.item.findFirst({
+      where: { stepId: parsed.data.stepId },
+      orderBy: { position: 'desc' },
+    });
+
+    const position = lastItem ? lastItem.position + 1 : 0;
+
     const attribute = await prisma.item.create({
       data: {
         ...parsed.data,
-        position: 0,
+        position,
       },
     });
 
@@ -42,7 +49,24 @@ async function update(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsedParams = idParamsSchema.safeParse(req.params);
+
+    if (!parsedParams.success) throw ApiError.badRequest();
+
+    const deleted = await prisma.item.delete({
+      where: { id: parsedParams.data.id },
+    });
+
+    apiResponse.success(res, deleted, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const itemsController = {
   create,
   update,
+  deleteOne,
 };

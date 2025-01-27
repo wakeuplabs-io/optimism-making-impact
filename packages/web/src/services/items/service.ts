@@ -26,6 +26,10 @@ class Service {
   async update(itemId: number, data: UpdateItemBody) {
     return this.fetcher.put(itemsEndpoint + `/${itemId}`, data).then((res) => res.data);
   }
+
+  async deleteOne(itemId: number) {
+    return this.fetcher.delete(itemsEndpoint + `/${itemId}`).then((res) => res.data);
+  }
 }
 
 export const ItemsService = Service.getInstance(fetcher);

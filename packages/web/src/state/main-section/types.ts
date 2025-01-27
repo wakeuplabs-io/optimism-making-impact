@@ -26,6 +26,7 @@ export interface MainSectionActions {
   deleteAttribute: (attributeId: number) => void;
   addItem: (data: CreateItemBody) => void;
   updateItem: (itemId: number, data: UpdateItemBody) => void;
+  deleteItem: (itemId: number) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;

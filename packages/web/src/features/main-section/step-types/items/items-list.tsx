@@ -36,6 +36,7 @@ function List(props: ListProps) {
   const isAdmin = useUserStore((state) => state.isAdmin);
   const addItem = useMainSectionStore((state) => state.addItem);
   const updateItem = useMainSectionStore((state) => state.updateItem);
+  const deleteItem = useMainSectionStore((state) => state.deleteItem);
 
   return (
     <div className='flex flex-col flex-1 p-2'>
@@ -49,7 +50,7 @@ function List(props: ListProps) {
         ) : (
           props.items.map((item, i) => (
             <React.Fragment key={`${item.id}-${i}`}>
-              <Item item={item} isAdmin={isAdmin} onEdit={updateItem} />
+              <Item item={item} isAdmin={isAdmin} onEdit={updateItem} onDelete={deleteItem} />
               <hr className='border-t border-[#D9D9D9]' />
             </React.Fragment>
           ))
