@@ -1,27 +1,50 @@
-import { CompleteCard, Keyword, StrengthEnum } from '@/types';
+import { Attribute, CompleteCard, CompleteItem, Keyword, StrengthEnum } from '@/types';
 import { useMemo } from 'react';
 
-type UseFilteredCardsProps = {
-  cards: CompleteCard[];
+type Data = CompleteCard | CompleteItem;
+
+type UseFilteredCardsProps<T extends Data> = {
+  data: T[];
   selectedStrengths: StrengthEnum[];
   selectedKeywords: Keyword[];
+  selectedAttributes: Attribute[];
 };
 
-export const useFilteredCards = ({ cards, selectedStrengths, selectedKeywords }: UseFilteredCardsProps) => {
+export const useFilteredCards = <T extends Data>({
+  data,
+  selectedStrengths,
+  selectedKeywords,
+  selectedAttributes,
+}: UseFilteredCardsProps<T>): T[] => {
   const filtered = useMemo(() => {
-    if (!selectedStrengths.length && !selectedKeywords.length) return cards;
+    if (!selectedStrengths.length && !selectedKeywords.length && !selectedAttributes.length) return data;
 
-    return cards.filter((card) => filterByStrength(card, selectedStrengths) && filterByKeywords(card, selectedKeywords));
-  }, [cards, selectedStrengths, selectedKeywords]);
+    return data.filter(
+      (card) =>
+        filterByStrength(card, selectedStrengths) &&
+        filterByKeywords(card, selectedKeywords) &&
+        filterByAttributes(card, selectedAttributes),
+    );
+  }, [data, selectedStrengths, selectedKeywords, selectedAttributes]);
 
   return filtered;
 };
 
 // Helpers
-function filterByStrength(card: CompleteCard, selectedStrengths: StrengthEnum[]) {
-  return !selectedStrengths.length || selectedStrengths.includes(card.strength);
+function filterByStrength(data: Data, selectedStrengths: StrengthEnum[]): boolean {
+  if ('strength' in data) {
+    return !selectedStrengths.length || selectedStrengths.includes(data.strength);
+  }
+  return true;
 }
 
-function filterByKeywords(card: CompleteCard, selectedKeywords: Keyword[]) {
-  return !selectedKeywords.length || card.keywords.some(({ id }) => selectedKeywords.some((keyword) => keyword.id === id));
+function filterByKeywords(data: Data, selectedKeywords: Keyword[]): boolean {
+  if ('keywords' in data) {
+    return !selectedKeywords.length || data.keywords.some(({ id }) => selectedKeywords.some((keyword) => keyword.id === id));
+  }
+  return true;
+}
+
+function filterByAttributes(data: Data, selectedAttributes: Attribute[]): boolean {
+  return !selectedAttributes.length || selectedAttributes.some(({ id }) => data.attribute?.id === id);
 }

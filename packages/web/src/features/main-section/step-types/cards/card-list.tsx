@@ -9,9 +9,9 @@ interface CardListProps {
 }
 
 export function CardList(props: CardListProps) {
-  const { selectedStrengths, selectedKeywords } = useCardFiltersStore((state) => state);
+  const { selectedStrengths, selectedKeywords, selectedAttributes } = useCardFiltersStore((state) => state);
 
-  const filteredCards = useFilteredCards({ cards: props.cards, selectedStrengths, selectedKeywords });
+  const filteredCards = useFilteredCards({ data: props.cards, selectedStrengths, selectedKeywords, selectedAttributes });
 
   if (!filteredCards.length) return <EmptyState />;
 

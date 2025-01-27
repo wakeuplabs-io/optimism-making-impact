@@ -1,7 +1,9 @@
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
 import { cn } from '@/lib/utils';
+import { useCardFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useEffect } from 'react';
 
 export function ItemsStep() {
   return (
@@ -17,6 +19,11 @@ function Container(props: { children: React.ReactNode; className?: string }) {
 
 function Content() {
   const { step } = useMainSectionStore((state) => state);
+  const clear = useCardFiltersStore((state) => state.clear);
+
+  useEffect(() => {
+    return () => clear();
+  }, [step]);
 
   if (!step) {
     return <div className='flex items-center justify-center w-full h-full'>Select a step</div>;

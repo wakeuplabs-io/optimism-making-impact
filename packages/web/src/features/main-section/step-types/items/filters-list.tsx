@@ -27,11 +27,11 @@ export function ItemFilters(props: ItemsFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths } = useCardFiltersStore((state) => state);
+  const { selectedKeywords, selectedStrengths, selectedAttributes } = useCardFiltersStore((state) => state);
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
-    const numberOfFilters = selectedKeywords.length + selectedStrengths.length;
+    const numberOfFilters = selectedKeywords.length + selectedStrengths.length + selectedAttributes.length;
     if (numberOfFilters === 0) return 'All';
     if (numberOfFilters === 1) return `${numberOfFilters} Filter`;
     return `${numberOfFilters} Filters`;
@@ -80,6 +80,7 @@ function SmartListFilter(props: SmartListFilterProps) {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
+  const { selectedAttributes, setSelectedAttributes } = useCardFiltersStore((state) => state);
 
   return (
     <div className='flex flex-col w-full'>
@@ -94,8 +95,8 @@ function SmartListFilter(props: SmartListFilterProps) {
           className='mt-4'
           filters={props.smartList.attributes.map((attr) => ({
             label: attr.value.toLowerCase(),
-            selected: false,
-            onClick: (a) => console.log('🎈 ', a), // TODO: filtering
+            selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
+            onClick: setSelectedAttributes,
             data: attr,
             prefixDot: attr.color,
             editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,

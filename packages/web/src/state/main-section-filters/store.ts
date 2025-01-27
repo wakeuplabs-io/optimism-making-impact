@@ -7,6 +7,8 @@ export const useCardFiltersStore = createWithMiddlewares<CardFiltersStore>((set,
   selectedStrengths: [],
   keywords: [],
   selectedKeywords: [],
+  attributes: [],
+  selectedAttributes: [],
   setKeywords: (keywords: Keyword[]) => set({ keywords }),
   setSelectedStrengths: (strength: StrengthEnum) => {
     const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
@@ -16,10 +18,15 @@ export const useCardFiltersStore = createWithMiddlewares<CardFiltersStore>((set,
     const selectedKeywords = toggleFilter(get().selectedKeywords, keyword);
     set({ selectedKeywords });
   },
+  setSelectedAttributes(attribute) {
+    const selectedAttributes = toggleFilter(get().selectedAttributes, attribute);
+    set({ selectedAttributes });
+  },
   clear() {
     set({
       selectedStrengths: [],
       selectedKeywords: [],
+      selectedAttributes: [],
       keywords: [],
     });
   },
