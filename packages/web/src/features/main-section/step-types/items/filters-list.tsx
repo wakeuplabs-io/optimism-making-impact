@@ -2,6 +2,7 @@ import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
+import { DeleteAttributeModal } from '@/features/main-section/step-types/items/delete-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
@@ -40,7 +41,7 @@ function Container(props: { children: React.ReactNode }) {
     return (
       <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
         <span>{menuText}</span>
-        <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
+        <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[300px]'>
           {props.children}
         </SideMenu>
       </div>
@@ -78,6 +79,7 @@ interface SmartListFilterProps {
 function SmartListFilter(props: SmartListFilterProps) {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
+  const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
 
   return (
     <div className='flex flex-col w-full'>
@@ -93,10 +95,11 @@ function SmartListFilter(props: SmartListFilterProps) {
           filters={props.smartList.attributes.map((attr) => ({
             label: attr.value.toLowerCase(),
             selected: false,
-            onClick: (a) => console.log('🎈 ', a),
+            onClick: (a) => console.log('🎈 ', a), // TODO: filtering
             data: attr,
             prefixDot: attr.color,
             editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
+            deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
             tooltipText: attr.description,
           }))}
           isAdmin={props.isAdmin}

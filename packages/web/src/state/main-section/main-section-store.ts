@@ -223,6 +223,32 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
+  deleteAttribute(attributeId: number) {
+    const currentStep = get().step;
+    if (!currentStep) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => attributes.filter((attribute) => attribute.id !== attributeId),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      apiCall: () => AttributesService.deleteOne(attributeId),
+      onError: (error) => {
+        const title = 'Failed to delete attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
   addItem(data: CreateItemBody) {
     const currentStep = get().step;
     if (!currentStep || !currentStep.smartList) return;

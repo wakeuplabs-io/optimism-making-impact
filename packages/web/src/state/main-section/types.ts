@@ -23,6 +23,7 @@ export interface MainSectionActions {
   addCard: (data: CreateCardBody) => void;
   addAttributeToSmartList: (data: CreateAttributeBody) => void;
   updateAttribute: (data: UpdateAttributeBody) => void;
+  deleteAttribute: (attributeId: number) => void;
   addItem: (data: CreateItemBody) => void;
 }
 

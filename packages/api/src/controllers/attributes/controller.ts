@@ -2,6 +2,7 @@ import { createAttributeSchema, updateAttributeSchema } from '@/controllers/attr
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
 
 async function create(req: Request, res: Response, next: NextFunction) {
@@ -40,7 +41,24 @@ async function update(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsed = idParamsSchema.safeParse(req.params);
+
+    if (!parsed.success) throw ApiError.badRequest();
+
+    const deleted = await prisma.attribute.delete({
+      where: { id: parsed.data.id },
+    });
+
+    apiResponse.success(res, deleted, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const attributesController = {
   create,
   update,
+  deleteOne,
 };

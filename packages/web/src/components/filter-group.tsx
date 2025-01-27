@@ -11,6 +11,7 @@ interface Filter<T> {
   onClick?: (data: T) => void;
   prefixDot?: Color | undefined;
   editComponent?: React.ReactNode;
+  deleteComponent?: React.ReactNode;
   tooltipText?: string;
 }
 
@@ -26,20 +27,33 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
     <div className={cn('flex flex-col gap-2', props.className)}>
       {props.title && <h3 className='text-[16px] font-[400] text-[#68778D]'>{props.title}</h3>}
       <div className='flex flex-col gap-1'>
-        {props.filters.map((filter, i) => (
-          <FilterButton
-            key={`${filter.label}-${i}`}
-            label={filter.label}
-            data={filter.data}
-            selected={filter.selected}
-            onClick={filter.onClick}
-            prefixDot={filter.prefixDot}
-            isAdmin={props.isAdmin}
-            editComponent={filter.editComponent}
-            tooltipText={filter.tooltipText}
-          />
-        ))}
+        {props.filters.length === 0 ? (
+          <EmptyState />
+        ) : (
+          props.filters.map((filter, i) => (
+            <FilterButton
+              key={`${filter.label}-${i}`}
+              label={filter.label}
+              data={filter.data}
+              selected={filter.selected}
+              onClick={filter.onClick}
+              prefixDot={filter.prefixDot}
+              isAdmin={props.isAdmin}
+              editComponent={filter.editComponent}
+              tooltipText={filter.tooltipText}
+              deleteComponent={filter.deleteComponent}
+            />
+          ))
+        )}
       </div>
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className='text-sm text-center'>
+      <span>No filters available</span>
     </div>
   );
 }
@@ -52,6 +66,7 @@ interface FilterButtonProps<T> extends Omit<ComponentProps<'button'>, 'onClick'>
   prefixDot?: Color | undefined;
   isAdmin?: boolean;
   editComponent?: React.ReactNode;
+  deleteComponent?: React.ReactNode;
   tooltipText?: string;
 }
 
@@ -85,7 +100,12 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
         {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
       </button>
-      {props.isAdmin && props.editComponent}
+      {props.isAdmin && (
+        <div className='flex items-center gap-1'>
+          {props.editComponent}
+          {props.deleteComponent}
+        </div>
+      )}
     </div>
   );
 }

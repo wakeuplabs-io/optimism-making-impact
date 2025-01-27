@@ -26,6 +26,10 @@ class Service {
   async update(data: UpdateAttributeBody) {
     return this.fetcher.put(attributesEndpoint, data).then((res) => res.data);
   }
+
+  async deleteOne(attributeId: number) {
+    return this.fetcher.delete(attributesEndpoint + `/${attributeId}`).then((res) => res.data);
+  }
 }
 
 export const AttributesService = Service.getInstance(fetcher);
