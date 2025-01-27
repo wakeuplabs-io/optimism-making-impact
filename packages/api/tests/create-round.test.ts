@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/lib/prisma/instance.js';
 import { expect, test } from 'vitest';
-
-const prisma = new PrismaClient();
 
 test('Seeded rounds should be 3', async () => {
   const rounds = await prisma.round.findMany();
