@@ -24,8 +24,6 @@ export async function seedDatabase() {
   await seedAttributes(prisma, smartLists, categories);
   await seedItems(prisma, steps);
 
-  // TODO: realtionships
-
   console.log('Seeding complete!');
 }
 

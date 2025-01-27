@@ -21,6 +21,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 }
 
 async function create(req: Request, res: Response, next: NextFunction) {
+  // TODO: split into smaller units and create unit tests
   try {
     await prisma.$transaction(async (prisma) => {
       const lastRound = await prisma.round.findFirst({
@@ -81,8 +82,9 @@ async function create(req: Request, res: Response, next: NextFunction) {
             where: { id: newCategory.id },
             data: {
               attributes: {
-                create: category.attributes.map(({ value, smartListId }) => ({
+                create: category.attributes.map(({ value, smartListId, description }) => ({
                   value,
+                  description,
                   smartList: { connect: { id: smartListId } },
                 })),
               },
@@ -106,22 +108,22 @@ async function create(req: Request, res: Response, next: NextFunction) {
                 })),
               },
               items: {
-                create: step.items.map(({ markdown, position, attribute }) => ({
+                create: step.items.map(({ markdown, position, attributeId }) => ({
                   markdown,
                   position,
                   attribute: {
-                    connect: { id: attribute?.id },
+                    connect: { id: attributeId || undefined },
                   },
                 })),
               },
               cards: {
-                create: step.cards.map(({ title, markdown, position, strength, attribute, keywords }) => ({
+                create: step.cards.map(({ title, markdown, position, strength, attributeId, keywords }) => ({
                   title,
                   markdown,
                   position,
                   strength,
-                  attribute: { connect: { id: attribute?.id } },
-                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id })) },
+                  attribute: { connect: { id: attributeId } },
+                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id || undefined })) },
                 })),
               },
             },
