@@ -19,7 +19,7 @@ export function ItemsList(props: ItemsListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex h-full w-full items-center justify-center'>
+    <div className='flex items-center justify-center w-full h-full'>
       <p>No item matches applied filters</p>
     </div>
   );
@@ -35,19 +35,21 @@ interface ListProps {
 function List(props: ListProps) {
   const isAdmin = useUserStore((state) => state.isAdmin);
   const addItem = useMainSectionStore((state) => state.addItem);
+  const updateItem = useMainSectionStore((state) => state.updateItem);
+
   return (
-    <div className='flex flex-1 flex-col p-2'>
+    <div className='flex flex-col flex-1 p-2'>
       <div className='mb-4 flex h-12 items-center justify-between border-b border-[#D9D9D9]'>
         <h2 className='text-[20px] font-[500]'>{props.title}</h2>
         {isAdmin && props.attributes && <AddItemModal stepId={props.stepId} onClick={addItem} attributes={props.attributes} />}
       </div>
-      <div className='flex w-full flex-col gap-4'>
+      <div className='flex flex-col w-full gap-4'>
         {props.items.length === 0 ? (
           <EmptyState />
         ) : (
           props.items.map((item, i) => (
             <React.Fragment key={`${item.id}-${i}`}>
-              <Item item={item} />
+              <Item item={item} isAdmin={isAdmin} onEdit={updateItem} />
               <hr className='border-t border-[#D9D9D9]' />
             </React.Fragment>
           ))

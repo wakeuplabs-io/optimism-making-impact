@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateItemBody } from '@/services/items/schemas';
+import { CreateItemBody, UpdateItemBody } from '@/services/items/schemas';
 import { AxiosInstance } from 'axios';
 
 const itemsEndpoint = '/items';
@@ -21,6 +21,10 @@ class Service {
 
   async create(data: CreateItemBody) {
     return this.fetcher.post(itemsEndpoint, data).then((res) => res.data);
+  }
+
+  async update(itemId: number, data: UpdateItemBody) {
+    return this.fetcher.put(itemsEndpoint + `/${itemId}`, data).then((res) => res.data);
   }
 }
 

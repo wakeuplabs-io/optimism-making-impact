@@ -8,7 +8,6 @@ export const createItemSchema = z.object({
 export type CreateItemBody = z.infer<typeof createItemSchema>;
 
 export const updateItemSchema = z.object({
-  id: z.number(),
   markdown: z.string().optional(),
   attributeId: z.number().optional(),
 });

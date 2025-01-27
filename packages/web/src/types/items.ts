@@ -6,7 +6,7 @@ export const itemSchema = z.object({
   markdown: z.string(),
   position: z.number(),
   stepId: z.number(),
-  attributeId: z.number().nullable().optional(),
+  attributeId: z.number(),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
 });

@@ -4,4 +4,4 @@ import { Router } from 'express';
 export const itemsRouter = Router();
 
 itemsRouter.post('/', itemsController.create);
-itemsRouter.put('/', itemsController.update);
+itemsRouter.put('/:id', itemsController.update);

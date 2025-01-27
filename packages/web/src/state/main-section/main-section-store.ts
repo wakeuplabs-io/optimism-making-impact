@@ -282,4 +282,30 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
+  updateItem(itemId, data) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.items,
+      updateFn: (items) => items.map((item) => (item.id === itemId ? { ...item, ...data } : item)),
+      setStateSlice: (items) => set({ step: { ...currentStep, items } }),
+      apiCall: () => ItemsService.update(itemId, data),
+      onError: (error) => {
+        const title = 'Failed to edit item';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
 }));

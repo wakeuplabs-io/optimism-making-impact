@@ -2,7 +2,7 @@ import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
 import { CreateCardBody } from '@/services/cards/schemas';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
-import { CreateItemBody } from '@/services/items/schemas';
+import { CreateItemBody, UpdateItemBody } from '@/services/items/schemas';
 import { CompleteStep } from '@/types';
 
 export interface MainSectionState {
@@ -25,6 +25,7 @@ export interface MainSectionActions {
   updateAttribute: (data: UpdateAttributeBody) => void;
   deleteAttribute: (attributeId: number) => void;
   addItem: (data: CreateItemBody) => void;
+  updateItem: (itemId: number, data: UpdateItemBody) => void;
 }
 
 export type MainSectionStore = MainSectionState & MainSectionActions;
