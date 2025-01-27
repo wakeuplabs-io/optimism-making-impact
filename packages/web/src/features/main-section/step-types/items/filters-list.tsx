@@ -93,6 +93,7 @@ function SmartListFilter(props: SmartListFilterProps) {
       <div className='flex flex-col gap-8'>
         <FilterGroup<Attribute>
           className='mt-4'
+          // title={props.smartList.title} TODO: add title
           filters={props.smartList.attributes.map((attr) => ({
             label: attr.value.toLowerCase(),
             selected: selectedAttributes.map(({ id }) => id).includes(attr.id),

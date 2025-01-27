@@ -79,7 +79,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       if (isItemType) {
         await prisma.smartList.create({
           data: {
-            title: 'Smart List',
+            title: 'Smart List', // TODO: recive in the body
             steps: {
               connect: { id: created.id },
             },
