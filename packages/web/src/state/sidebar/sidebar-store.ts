@@ -54,8 +54,10 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
 
         toast({ title, description, variant: 'destructive' });
       },
-      onSuccess: () => {
+      onSuccess: async () => {
         get().fetchData();
+
+        toast({ title: 'New round created', description: 'Successfully created new round from last one', variant: 'default' });
       },
     });
   },
