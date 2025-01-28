@@ -1,3 +1,4 @@
+import { createBasicRound, duplicateCategoryAttributes, duplicateStepContent, fetchLastRound } from '@/controllers/helpers.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
@@ -20,116 +21,26 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function create(req: Request, res: Response, next: NextFunction) {
-  // TODO: split into smaller units and create unit tests
+async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     await prisma.$transaction(async (prisma) => {
-      const lastRound = await prisma.round.findFirst({
-        orderBy: { createdAt: 'desc' },
-        include: {
-          categories: { include: { attributes: true } },
-          steps: {
-            include: {
-              infographies: true,
-              items: { include: { attribute: true } },
-              cards: { include: { attribute: true, keywords: true } },
-            },
-          },
-        },
-      });
+      // Step 1: Fetch the last round
+      const lastRound = await fetchLastRound();
 
+      // CASE: First round creation
       if (!lastRound) {
-        const createdRound = await prisma.round.create({
-          data: {},
-        });
-
+        const createdRound = await prisma.round.create({ data: {} });
         return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
       }
 
-      const { categories, steps } = lastRound;
+      // Step 2: Create a new round with basic categories and steps
+      const newRound = await createBasicRound(lastRound);
 
-      // Step 1: Create Round with Basic Categories and Steps
-      const newRound = await prisma.round.create({
-        data: {
-          link1: lastRound.link1,
-          link2: lastRound.link2,
-          categories: {
-            create: categories.map(({ name, icon }) => ({
-              name,
-              icon,
-            })),
-          },
-          steps: {
-            create: steps.map(({ title, icon, position, type }) => ({
-              title,
-              icon,
-              position,
-              type,
-            })),
-          },
-        },
-        include: {
-          categories: true,
-          steps: true,
-        },
-      });
+      // Step 3: Duplicate categories and their attributes
+      await duplicateCategoryAttributes(lastRound.categories, newRound);
 
-      // Step 2: Update Categories with Attributes
-      await Promise.all(
-        categories.map(async (category, index) => {
-          const newCategory = newRound.categories[index];
-          await prisma.category.update({
-            where: { id: newCategory.id },
-            data: {
-              attributes: {
-                create: category.attributes.map(({ value, smartListId, description }) => ({
-                  value,
-                  description,
-                  smartList: { connect: { id: smartListId } },
-                })),
-              },
-            },
-          });
-        }),
-      );
-
-      // Step 3: Update Steps with Infographies, Items, and Cards
-      await Promise.all(
-        steps.map(async (step, index) => {
-          const newStep = newRound.steps[index];
-          await prisma.step.update({
-            where: { id: newStep.id },
-            data: {
-              infographies: {
-                create: step.infographies.map(({ markdown, image, position }) => ({
-                  markdown,
-                  image,
-                  position,
-                })),
-              },
-              items: {
-                create: step.items.map(({ markdown, position, attributeId }) => ({
-                  markdown,
-                  position,
-                  attribute: {
-                    connect: { id: attributeId || undefined },
-                  },
-                })),
-              },
-              cards: {
-                create: step.cards.map(({ title, markdown, position, strength, attributeId, keywords }) => ({
-                  title,
-                  markdown,
-                  position,
-                  strength,
-                  attribute: { connect: { id: attributeId } },
-                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id || undefined })) },
-                })),
-              },
-            },
-          });
-        }),
-      );
+      // Step 4: Duplicate steps and their associated content
+      await duplicateStepContent(lastRound.steps, newRound);
 
       apiResponse.success(res, { message: 'Round created successfully', data: newRound }, 201);
     });
