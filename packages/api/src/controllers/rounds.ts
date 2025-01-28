@@ -1,4 +1,4 @@
-import { createBasicRound, duplicateCategoryAttributes, duplicateStepContent, fetchLastRound } from '@/controllers/helpers.js';
+import { duplicateRound, fetchLastCompleteRound } from '@/controllers/duplicate-round.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
@@ -25,7 +25,7 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
   try {
     await prisma.$transaction(async (prisma) => {
       // Step 1: Fetch the last round
-      const lastRound = await fetchLastRound();
+      const lastRound = await fetchLastCompleteRound();
 
       // CASE: First round creation
       if (!lastRound) {
@@ -33,16 +33,9 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
         return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
       }
 
-      // Step 2: Create a new round with basic categories and steps
-      const newRound = await createBasicRound(lastRound);
+      await duplicateRound(lastRound);
 
-      // Step 3: Duplicate categories and their attributes
-      await duplicateCategoryAttributes(lastRound.categories, newRound);
-
-      // Step 4: Duplicate steps and their associated content
-      await duplicateStepContent(lastRound.steps, newRound);
-
-      apiResponse.success(res, { message: 'Round created successfully', data: newRound }, 201);
+      apiResponse.success(res, { message: 'Round created successfully' }, 201);
     });
   } catch (error) {
     next(error);
