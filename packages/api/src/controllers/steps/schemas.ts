@@ -10,6 +10,7 @@ export const createStepBodySchema = z.object({
   icon: z.string(),
   type: z.nativeEnum(StepType).default(StepType.INFOGRAPHY),
   roundId: z.number().min(1),
+  smartListId: z.number().optional(),
 });
 
 export const updateStepBodySchema = z.object({

@@ -6,6 +6,7 @@ export const createStepBodySchema = z.object({
   icon: z.string(),
   type: stepTypeSchema.optional(),
   roundId: z.string().transform(Number),
+  smartListId: z.number().optional(),
 });
 export type CreateStepBody = z.infer<typeof createStepBodySchema>;
 
