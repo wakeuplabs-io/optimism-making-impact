@@ -1,12 +1,11 @@
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
-import { Input } from '@/components/ui/input';
+import { TextInput } from '@/components/text-input';
 import { capitalizeFirst } from '@/lib/utils';
 import { SmartListsService } from '@/services/smart-lists/service';
 import { CreateStepBody } from '@/services/steps/schemas';
 import { StepType, stepTypes } from '@/types';
-import { Label } from '@radix-ui/react-label';
 import { Plus, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -83,33 +82,9 @@ export function AddStepModal(props: AddStepModalProps) {
         { label: 'Save', variant: 'primary', disabled: false, icon: <Save />, onClick: handleSubmit },
       ]}
     >
-      <div className='grid gap-4 py-4'>
-        <div>
-          <Label htmlFor='name' className='sr-only'>
-            Title
-          </Label>
-          <Input
-            id='name'
-            name='name'
-            value={title}
-            onChange={handleTitleChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Title'
-          />
-        </div>
-        <div>
-          <Label htmlFor='icon' className='sr-only'>
-            Icon
-          </Label>
-          <Input
-            id='icon'
-            name='icon'
-            value={icon}
-            onChange={handleIconChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Icon'
-          />
-        </div>
+      <div className='flex flex-col gap-4'>
+        <TextInput name='Title' placeholder='Title' value={title} onChange={handleTitleChange} />
+        <TextInput name='Icon' placeholder='Icon' value={icon} onChange={handleIconChange} />
         <SelectInput name='Type' items={options} onValueChange={handleTypeChange} value={type} />
         {type === 'CARD' && (
           <SelectInput
