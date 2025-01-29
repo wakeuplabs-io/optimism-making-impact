@@ -11,13 +11,11 @@ async function getByRoundId(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const stepsIds: number[] = (
-      await prisma.step.findMany({
-        where: { roundId: parsed.data.id },
-      })
-    )
-      .map((step) => step.smartListId)
-      .filter((a) => a !== null);
+    const steps = await prisma.step.findMany({
+      where: { roundId: parsed.data.id },
+    });
+
+    const stepsIds: number[] = steps.map((step) => step.smartListId).filter((id): id is number => id !== null);
 
     const smartLists = await prisma.smartList.findMany({
       where: { id: { in: stepsIds } },
