@@ -1,4 +1,7 @@
+export * from './attributes';
+export * from './cards';
 export * from './infographies';
+export * from './keywords';
 export * from './steps';
 
 // TODO: use prisma to keep in sync

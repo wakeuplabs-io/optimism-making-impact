@@ -1,6 +1,6 @@
 import WakeUpLogo from '@/assets/wake-up-logo.png';
 import { ImageButton } from '@/components/image-button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { SideMenu } from '@/components/side-menu';
 import { WAKEUP_URL } from '@/config';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { Logo } from '@/features/sidebar/components/logo';
@@ -31,15 +31,10 @@ function SidebarContainer(props: SidebarContainerProps) {
   if (isMobile) {
     // Render as a Sheet on Mobile
     return (
-      <nav className='flex h-28 w-full items-center justify-start gap-4 p-3 lg:static'>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Menu className='text-black' />
-          </SheetTrigger>
-          <SheetContent side='left' className='w-[320px]'>
-            {props.children}
-          </SheetContent>
-        </Sheet>
+      <nav className='flex items-center justify-start w-full gap-4 p-3 h-28 lg:static'>
+        <SideMenu trigger={<Menu className='text-black' />} description='Sidebar' side='left' className='w-[320px]' triggerAsChild>
+          {props.children}
+        </SideMenu>
         <span>{props.title}</span>
       </nav>
     );
