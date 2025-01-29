@@ -1,6 +1,7 @@
 import { ActionButton } from '@/components/action-button';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { Modal } from '@/components/modal';
+import { StepButtonState } from '@/components/step-button/helpers';
 import { Input } from '@/components/ui/input';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { cn } from '@/lib/utils';
@@ -10,8 +11,6 @@ import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
 import { Pencil, Save, Trash, X } from 'lucide-react';
 import { useState } from 'react';
-
-type StepButtonState = 'past' | 'active' | 'coming';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   state: StepButtonState;
@@ -63,6 +62,7 @@ interface DeleteIconProps {
   onClick?: (stepId: number) => void;
 }
 
+// TODO: move to features folder
 function DeleteIcon(props: DeleteIconProps) {
   return (
     <Modal title='Delete step' trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}>
@@ -82,6 +82,7 @@ interface EditIconProps {
   onClick?: (stepId: number, data: UpdateStepBody) => void;
 }
 
+// TODO: move to features folder
 function EditIcon(props: EditIconProps) {
   const [title, setTitle] = useState(props.step.title);
   const [icon, setIcon] = useState(props.step.icon);
