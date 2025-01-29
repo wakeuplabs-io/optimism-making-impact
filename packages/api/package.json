@@ -8,7 +8,7 @@
     "build": "rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
     "dev": "pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
-    "pretest": "dotenv -e .env.test -- pnpm prisma migrate reset --force --skip-seed",
+    "pretest": "dotenv -e .env.test -- pnpm prisma migrate reset --force",
     "test": "dotenv -e .env.test -- vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",

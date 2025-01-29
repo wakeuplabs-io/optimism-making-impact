@@ -7,8 +7,7 @@ Before running tests, ensure you have a **PostgreSQL database** running and prop
 ```ini
 DB_URL=<url for your db>
 DB_URL_NON_POOLING=<direct url for your db> # Direct connection to the database. Used for migrations.
-
-POSTGRES_PASSWORD=
+POSTGRES_PASSWORD=<your-password>
 ```
 
 ## Running Tests
@@ -19,7 +18,7 @@ To run tests, simply execute the following command from this directory:
 pnpm test
 ```
 
-This will automatically reset the database, apply migrations, and execute the test suite.
+This will automatically reset the database, apply migrations, seed the database and execute the test suite.
 
 ## Notes
 
