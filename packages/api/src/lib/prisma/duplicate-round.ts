@@ -5,28 +5,6 @@ import { CompleteStep } from '@/types/entities/step.js';
 import { Category, Round, SmartList } from '@prisma/client';
 
 /**
- * Fetches the most recent round (including categories, steps, attributes, smart lists, infographies, items, and cards).
- * @returns The most recent round.
- * @throws If no round exists.
- */
-export async function fetchLastCompleteRound(): Promise<CompleteRound> {
-  return prisma.round.findFirstOrThrow({
-    orderBy: { id: 'desc' },
-    include: {
-      categories: { include: { attributes: true } },
-      steps: {
-        include: {
-          smartList: { include: { attributes: true } },
-          infographies: true,
-          items: { include: { attribute: true } },
-          cards: { include: { attribute: true, keywords: true } },
-        },
-      },
-    },
-  });
-}
-
-/**
  * Duplicates the given round and its associated categories, steps, smart lists, keywords, and attributes.
  * Returns the newly created round, categories, steps, and smart lists.
  * @param lastRound The round to duplicate.
@@ -41,19 +19,6 @@ export async function duplicateRound(lastRound: CompleteRound): Promise<number> 
 
   return newRound.id;
 }
-
-// --------------------------------------------------------
-// Fetch the Last Round (DONE)
-// If No Round Exists Create a New Round empty (DONE)
-// Create a New Round from previous (DONE)
-// Create Categories (DONE)
-// Duplicate Smart Lists (DONE)
-// Create Attributes for Categories (TODO:)
-// Create New Steps (DONE)
-// Duplicate Keywords (DONE)
-// Populate Steps with Infographies, Items, Cards (DONE)
-// -----------------------------
-// --------------------------------------------------------
 
 async function createRound(prevRound: Round): Promise<Round> {
   return prisma.round.create({

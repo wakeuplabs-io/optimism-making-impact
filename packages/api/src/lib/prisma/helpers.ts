@@ -11,13 +11,23 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound> {
   return prisma.round.findUniqueOrThrow({
     where: { id: roundId },
     include: {
-      categories: { include: { attributes: true } },
+      categories: { include: { attributes: true }, orderBy: { id: 'asc' } },
       steps: {
+        orderBy: { position: 'asc' },
         include: {
-          smartList: { include: { attributes: true } },
-          infographies: true,
-          items: { include: { attribute: true } },
-          cards: { include: { attribute: true, keywords: true } },
+          smartList: {
+            include: {
+              attributes: {
+                orderBy: { id: 'asc' },
+              },
+            },
+          },
+          infographies: { orderBy: { position: 'asc' } },
+          items: {
+            include: { attribute: true },
+            orderBy: { position: 'asc' },
+          },
+          cards: { orderBy: { position: 'asc' }, include: { attribute: true, keywords: true } },
         },
       },
     },
@@ -29,19 +39,8 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound> {
  * @returns The most recent round.
  * @throws If no round exists.
  */
-export async function fetchLastCompleteRound(): Promise<CompleteRound> {
-  return prisma.round.findFirstOrThrow({
-    orderBy: { id: 'desc' },
-    include: {
-      categories: { include: { attributes: true } },
-      steps: {
-        include: {
-          smartList: { include: { attributes: true } },
-          infographies: true,
-          items: { include: { attribute: true } },
-          cards: { include: { attribute: true, keywords: true } },
-        },
-      },
-    },
-  });
+export async function getLastCompleteRound(): Promise<CompleteRound> {
+  const lastRoundId = await prisma.round.findFirstOrThrow({ orderBy: { id: 'desc' }, select: { id: true } });
+
+  return getCompleteRound(lastRoundId.id);
 }

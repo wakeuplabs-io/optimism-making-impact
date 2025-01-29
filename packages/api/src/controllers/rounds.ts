@@ -1,5 +1,6 @@
-import { duplicateRound, fetchLastCompleteRound } from '@/controllers/duplicate-round.js';
 import { apiResponse } from '@/lib/api-response/index.js';
+import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
+import { getLastCompleteRound } from '@/lib/prisma/helpers.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
 
@@ -24,10 +25,9 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     await prisma.$transaction(async (prisma) => {
-      // Step 1: Fetch the last round
-      const lastRound = await fetchLastCompleteRound();
+      const lastRound = await getLastCompleteRound();
 
-      // CASE: First round creation
+      // First round creation
       if (!lastRound) {
         const createdRound = await prisma.round.create({ data: {} });
         return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
