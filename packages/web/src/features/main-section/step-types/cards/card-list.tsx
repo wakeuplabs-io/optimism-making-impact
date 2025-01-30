@@ -1,6 +1,7 @@
-import { AddCardButton } from '@/features/main-section/step-types/cards/add-card-button';
+import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { Card } from '@/features/main-section/step-types/cards/card';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
+import { extractUniqueKeywordsFromCards } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -43,7 +44,7 @@ function List(props: ListProps) {
       {isAdmin && (
         // TODO: move above filters
         <div className='flex w-full justify-end'>
-          <AddCardButton stepId={props.stepId} onClick={addCard} />
+          <AddCardModal stepId={props.stepId} onClick={addCard} keywords={extractUniqueKeywordsFromCards(props.cards)} />
         </div>
       )}
       <div className='flex w-full flex-1 flex-col flex-wrap items-center gap-4 lg:flex-row lg:items-start'>

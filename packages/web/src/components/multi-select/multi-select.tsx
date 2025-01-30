@@ -19,6 +19,7 @@ interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement>
   asChild?: boolean;
   className?: string;
   containerClassName?: string;
+  selectAllEnabled?: boolean;
 }
 
 export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
@@ -144,10 +145,10 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                       className='w-full rounded-md text-sm underline hover:bg-accent'
                       onClick={(e) => {
                         e.stopPropagation();
-                        const newOption = { label: searchTerm, value: searchTerm.toLowerCase() };
+                        const newOption = { label: searchTerm, value: searchTerm };
                         onValueChange([...selectedValues, newOption.value]);
                         setSelectedValues([...selectedValues, newOption.value]);
-                        setSearchTerm(''); // Clear the search bar
+                        setSearchTerm('');
                         setIsPopoverOpen(false);
                       }}
                     >
@@ -158,17 +159,19 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   )}
                 </CommandEmpty>
                 <CommandGroup>
-                  <CommandItem key='all' onSelect={toggleAll} className='cursor-pointer'>
-                    <div
-                      className={cn(
-                        'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                        selectedValues.length === options.length ? 'text-primary-foreground bg-primary' : 'opacity-50 [&_svg]:invisible',
-                      )}
-                    >
-                      <CheckIcon className='h-4 w-4' />
-                    </div>
-                    <span>(Select All)</span>
-                  </CommandItem>
+                  {props.selectAllEnabled && (
+                    <CommandItem key='all' onSelect={toggleAll} className='cursor-pointer'>
+                      <div
+                        className={cn(
+                          'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                          selectedValues.length === options.length ? 'text-primary-foreground bg-primary' : 'opacity-50 [&_svg]:invisible',
+                        )}
+                      >
+                        <CheckIcon className='h-4 w-4' />
+                      </div>
+                      <span>(Select All)</span>
+                    </CommandItem>
+                  )}
                   {options.map((option) => {
                     const isSelected = selectedValues.includes(option.value);
                     return (
@@ -179,7 +182,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                             isSelected ? 'text-primary-foreground bg-primary' : 'opacity-50 [&_svg]:invisible',
                           )}
                         >
-                          <CheckIcon className='h-4 w-4' />
+                          <CheckIcon className='h-4 w-4 text-white' />
                         </div>
                         <span>{option.label}</span>
                       </CommandItem>

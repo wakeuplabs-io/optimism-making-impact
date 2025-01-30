@@ -141,15 +141,11 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
         {
           ...data,
           id: Date.now(),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
           position: currentStep.cards.length,
           attribute: currentStep.cards[currentStep.cards.length - 1].attribute,
           keywords: data.keywords.map((keyword) => ({
-            id: Date.now(), // CHECK:
+            id: Date.now(),
             value: keyword.value,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
           })),
         },
       ],

@@ -1,6 +1,6 @@
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
-import { cn, extractUniqueKeywordsFromStep } from '@/lib/utils';
+import { cn, extractUniqueKeywordsFromCards } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useEffect } from 'react';
@@ -23,12 +23,12 @@ function Content() {
 
   useEffect(() => {
     if (!step) return;
-    setKeywords(extractUniqueKeywordsFromStep(step));
+    setKeywords(extractUniqueKeywordsFromCards(step.cards));
     return () => clear();
   }, [step]);
 
   if (!step) {
-    return <div className='flex h-full w-full items-center justify-center'>Select a step</div>;
+    return <div className='flex items-center justify-center w-full h-full'>Select a step</div>;
   }
 
   return (

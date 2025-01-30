@@ -8,7 +8,7 @@ export const createCardBodySchema = z.object({
   stepId: z.number(),
   attributeId: z.number().optional(),
   keywords: z
-    .array(z.object({ value: z.string(), id: z.number() }))
+    .array(z.object({ value: z.string(), id: z.number().optional() }))
     .optional()
     .default([]),
 });
