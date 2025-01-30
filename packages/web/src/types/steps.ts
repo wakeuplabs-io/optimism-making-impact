@@ -8,6 +8,7 @@ import { z } from 'zod';
 export const stepSchema = z.object({
   id: z.number(),
   title: z.string(),
+  description: z.string(),
   icon: z.string(),
   position: z.number(), // Zero-based
   type: stepTypeSchema,

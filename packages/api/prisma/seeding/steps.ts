@@ -1,17 +1,25 @@
-import { PrismaClient, Round, Step, StepType } from '@prisma/client';
+import { Prisma, PrismaClient, Round, StepType } from '@prisma/client';
 
 // Hardcoded steps data
 const stepsData = [
   { title: '(IN) Introduction', icon: 'https://www.example.com/step1-icon', type: StepType.INFOGRAPHY },
-  { title: '(IT) Checklist', icon: 'https://www.example.com/step2-icon', type: StepType.ITEMS },
+  {
+    title: '(IT) Checklist',
+    icon: 'https://www.example.com/step2-icon',
+    type: StepType.ITEMS,
+    description: 'Check items to understand the concept',
+  },
   { title: '(CA) Priority Cards', icon: 'https://www.example.com/step3-icon', type: StepType.CARD },
-
   { title: '(IN) Overview', icon: 'https://www.example.com/step4-icon', type: StepType.INFOGRAPHY },
-  { title: '(IT) Inventory', icon: 'https://www.example.com/step5-icon', type: StepType.ITEMS },
+  { title: '(IT) Inventory', icon: 'https://www.example.com/step5-icon', type: StepType.ITEMS, description: 'Add items to your inventory' },
   { title: '(CA) Visual Cards', icon: 'https://www.example.com/step6-icon', type: StepType.CARD },
-
   { title: '(IN) Deep Dive', icon: 'https://www.example.com/step7-icon', type: StepType.INFOGRAPHY },
-  { title: '(IT) Checkout Items', icon: 'https://www.example.com/step8-icon', type: StepType.ITEMS },
+  {
+    title: '(IT) Checkout Items',
+    icon: 'https://www.example.com/step8-icon',
+    type: StepType.ITEMS,
+    description: 'Check out items you have added',
+  },
   { title: '(CA) Information Cards', icon: 'https://www.example.com/step9-icon', type: StepType.CARD },
 ];
 
@@ -27,7 +35,7 @@ export async function seedSteps(prisma: PrismaClient, rounds: Round[]) {
     throw new Error('No rounds found to assign steps!');
   }
 
-  const stepsToSeed: Omit<Step, 'id' | 'createdAt' | 'updatedAt'>[] = [];
+  const stepsToSeed: Prisma.StepCreateManyInput[] = [];
 
   // Initialize indexes to cycle through steps
   let infographyIndex = 0;
@@ -44,12 +52,13 @@ export async function seedSteps(prisma: PrismaClient, rounds: Round[]) {
 
     requiredSteps.forEach((step, index) => {
       stepsToSeed.push({
-        title: `${step.title}`,
+        title: step.title,
         icon: step.icon,
         type: step.type,
         roundId: round.id,
         position: index, // Use index for ordering within the round
         smartListId: null,
+        description: step.description,
       });
     });
 

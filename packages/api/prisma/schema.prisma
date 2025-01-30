@@ -66,10 +66,11 @@ model Category {
 model Step {
   id Int @id @default(autoincrement())
 
-  title    String
-  icon     String
-  position Int
-  type     StepType
+  title       String
+  description String?  @default("")
+  icon        String
+  position    Int
+  type        StepType
 
   roundId      Int
   round        Round        @relation(fields: [roundId], references: [id])

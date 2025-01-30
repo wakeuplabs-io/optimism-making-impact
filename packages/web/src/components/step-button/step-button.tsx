@@ -39,15 +39,15 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
         { 'w-[45px] justify-center p-5 px-0 py-0': isMobile },
       )}
     >
-      <div className='flex max-w-full items-center gap-2'>
+      <div className='flex items-center max-w-full gap-2'>
         <div>
           <IconWithDefault src={props.step.icon} />
         </div>
 
-        {!isMobile && <div className='flex-1 truncate text-left'>{props.step.title}</div>}
+        {!isMobile && <div className='flex-1 text-left truncate'>{props.step.title}</div>}
 
         {showActionIcons && (
-          <div className='ml-1 flex gap-4'>
+          <div className='flex gap-4 ml-1'>
             <DeleteIcon step={props.step} onClick={onDelete} />
             <EditIcon step={props.step} onClick={onEdit} />
           </div>
@@ -96,8 +96,8 @@ function EditIcon(props: EditIconProps) {
   }
 
   return (
-    <Modal title='Edit category' trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
-      <span>Edit {props.step.title} category?</span>
+    <Modal title='Edit step' trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
+      <span>Edit {props.step.title} step?</span>
 
       <div className='grid gap-4 py-4'>
         <div>
