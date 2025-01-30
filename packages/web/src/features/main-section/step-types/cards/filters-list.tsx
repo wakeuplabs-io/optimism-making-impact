@@ -3,12 +3,17 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useFiltersStore } from '@/state/main-section-filters/store';
+import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
 
-export function CardFilters() {
+interface CardFiltersProps {
+  smartList?: CompleteSmartList;
+}
+
+export function CardFilters(props: CardFiltersProps) {
   return (
     <Container>
-      <Content />
+      <Content {...props} />
     </Container>
   );
 }
@@ -39,10 +44,21 @@ function Container(props: { children: React.ReactNode }) {
   return <div className='flex w-[250px] min-w-[250px] p-2'>{props.children}</div>;
 }
 
-function Content() {
-  const { strengths, selectedStrengths, setSelectedStrengths, keywords, selectedKeywords, setSelectedKeywords } = useFiltersStore(
-    (state) => state,
-  );
+interface ContentProps {
+  smartList?: CompleteSmartList;
+}
+
+function Content(props: ContentProps) {
+  const {
+    strengths,
+    selectedStrengths,
+    setSelectedStrengths,
+    keywords,
+    selectedKeywords,
+    setSelectedKeywords,
+    selectedAttributes,
+    setSelectedAttributes,
+  } = useFiltersStore((state) => state);
 
   return (
     <div className='flex w-full flex-col'>
@@ -50,6 +66,19 @@ function Content() {
       <hr className='border-[#D9D9D9]' />
 
       <div className='flex flex-col gap-8'>
+        {props.smartList && (
+          <FilterGroup
+            className='mt-4'
+            filters={props.smartList.attributes.map((attr) => ({
+              label: attr.value.toLowerCase(),
+              selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
+              onClick: setSelectedAttributes,
+              data: attr,
+              prefixDot: attr.color,
+              tooltipText: attr.description,
+            }))}
+          />
+        )}
         <FilterGroup
           title='Strength'
           filters={strengths.map((value) => ({

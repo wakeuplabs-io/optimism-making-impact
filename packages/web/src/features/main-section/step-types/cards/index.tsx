@@ -33,7 +33,7 @@ function Content() {
 
   return (
     <div className='flex flex-col lg:flex-row'>
-      <CardFilters />
+      <CardFilters smartList={step.smartList} />
       <CardList cards={step.cards} stepId={step.id} />
     </div>
   );
