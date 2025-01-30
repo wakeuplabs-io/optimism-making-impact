@@ -1,14 +1,11 @@
-import { ActionButton } from '@/components/action-button';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { Modal } from '@/components/modal';
 import { StepButtonState } from '@/components/step-button/helpers';
-import { Input } from '@/components/ui/input';
+import { TextInput } from '@/components/text-input';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { cn } from '@/lib/utils';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { Label } from '@radix-ui/react-label';
 import { Pencil, Save, Trash, X } from 'lucide-react';
 import { useState } from 'react';
 
@@ -62,17 +59,17 @@ interface DeleteIconProps {
   onClick?: (stepId: number) => void;
 }
 
-// TODO: move to features folder
 function DeleteIcon(props: DeleteIconProps) {
   return (
-    <Modal title='Delete step' trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}>
+    <Modal
+      title='Delete step'
+      trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}
+      buttons={[
+        { label: 'Cancel', variant: 'secondary', closeOnClick: true },
+        { label: 'Delete', variant: 'primary', icon: <Trash />, onClick: () => props.onClick?.(props.step.id) },
+      ]}
+    >
       <span>Are you sure you want to delete {props.step.title} step?</span>
-      <div className='flex gap-4'>
-        <DialogClose asChild>
-          <ActionButton label='Cancel' variant='secondary' />
-        </DialogClose>
-        <ActionButton icon={<Trash />} label='Delete' variant='primary' onClick={() => props.onClick?.(props.step.id)} />
-      </div>
     </Modal>
   );
 }
@@ -86,6 +83,7 @@ interface EditIconProps {
 function EditIcon(props: EditIconProps) {
   const [title, setTitle] = useState(props.step.title);
   const [icon, setIcon] = useState(props.step.icon);
+  const [description, setDescription] = useState(props.step.description);
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
@@ -95,46 +93,25 @@ function EditIcon(props: EditIconProps) {
     setIcon(event.target.value);
   }
 
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setDescription(event.target.value);
+  }
+
   return (
-    <Modal title='Edit step' trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}>
+    <Modal
+      title='Edit step'
+      trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
+      buttons={[
+        { label: 'Cancel', variant: 'secondary', onClick: () => {} },
+        { label: 'Save', variant: 'primary', onClick: () => props.onClick?.(props.step.id, { title, icon, description }), icon: <Save /> },
+      ]}
+    >
       <span>Edit {props.step.title} step?</span>
 
       <div className='grid gap-4 py-4'>
-        <div>
-          <Label htmlFor='name' className='sr-only'>
-            Title
-          </Label>
-          <Input
-            id='name'
-            name='name'
-            value={title}
-            onChange={handleTitleChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Title'
-          />
-        </div>
-        <div>
-          <Label htmlFor='icon' className='sr-only'>
-            Icon
-          </Label>
-          <Input
-            id='icon'
-            name='icon'
-            value={icon}
-            onChange={handleIconChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Icon'
-          />
-        </div>
-      </div>
-
-      <div className='flex gap-4'>
-        <DialogClose asChild>
-          <ActionButton label='Cancel' variant='secondary' />
-        </DialogClose>
-        <DialogClose asChild>
-          <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(props.step.id, { icon, title })} />
-        </DialogClose>
+        <TextInput name='Title' value={title} onChange={handleTitleChange} />
+        <TextInput name='Icon' value={icon} onChange={handleIconChange} />
+        {props.step.type === 'ITEMS' && <TextInput name='Description' value={description} onChange={handleDescriptionChange} />}
       </div>
     </Modal>
   );
