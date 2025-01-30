@@ -59,7 +59,7 @@ function AddCardModal(props: AddCardModalProps) {
   return (
     <Modal
       onOpenChange={clearForm}
-      title='Add card'
+      title='New card'
       trigger={<IconButton variant='secondary' icon={<Plus />} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
@@ -67,18 +67,18 @@ function AddCardModal(props: AddCardModalProps) {
       ]}
     >
       <div className='grid gap-4 py-4'>
-        <TextInput name='title' value={title} onChange={handleTitleChange} placeholder='Card title' />
-        <TextAreaInput name='markdown' rows={7} value={markdown} onChange={handleMarkdownChange} placeholder='Card content' />
-        {/* TODO: add select input for attributes */}
         <SelectInput
-          value={strength}
+          placeholder='Select Strength'
           name='strength'
           items={strengthOptions}
           triggerClassName='capitalize'
           itemClassName='capitalize'
           onValueChange={handleStrengthChange}
         />
-        {/* TODO: keywords */}
+        {/* TODO: add select input for attributes */}
+        <TextInput name='title' value={title} onChange={handleTitleChange} placeholder='Title' />
+        <TextAreaInput name='markdown' rows={3} value={markdown} onChange={handleMarkdownChange} placeholder='Text' />
+        {/* TODO: keywords (nos falta el flujo de creacion de keywords) */}
       </div>
     </Modal>
   );
