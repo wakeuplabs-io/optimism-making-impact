@@ -107,9 +107,9 @@ model Item {
   position Int
 
   stepId      Int
-  step        Step      @relation(fields: [stepId], references: [id], onDelete: Cascade)
-  attributeId Int
-  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  step        Step       @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  attributeId Int?
+  attribute   Attribute? @relation(fields: [attributeId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
