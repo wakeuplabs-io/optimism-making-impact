@@ -127,6 +127,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            id='multiselect-popover-content'
             className='border border-input p-0'
             style={{ width: `${popoverWidth}px` }}
             align='start'
