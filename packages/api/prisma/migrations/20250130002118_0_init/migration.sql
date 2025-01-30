@@ -111,7 +111,6 @@ CREATE TABLE "Attribute" (
 );
 
 -- CreateTable
-<<<<<<<< HEAD:packages/api/prisma/migrations/20250124170622_0_init/migration.sql
 CREATE TABLE "SmartList" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
@@ -122,8 +121,6 @@ CREATE TABLE "SmartList" (
 );
 
 -- CreateTable
-========
->>>>>>>> main:packages/api/prisma/migrations/20250122162048_0_init/migration.sql
 CREATE TABLE "_CardToKeyword" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
@@ -168,12 +165,9 @@ ALTER TABLE "Card" ADD CONSTRAINT "Card_attributeId_fkey" FOREIGN KEY ("attribut
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:packages/api/prisma/migrations/20250124170622_0_init/migration.sql
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-========
->>>>>>>> main:packages/api/prisma/migrations/20250122162048_0_init/migration.sql
 ALTER TABLE "_CardToKeyword" ADD CONSTRAINT "_CardToKeyword_A_fkey" FOREIGN KEY ("A") REFERENCES "Card"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey

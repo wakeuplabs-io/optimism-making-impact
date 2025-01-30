@@ -6,7 +6,10 @@
   "scripts": {
     "postinstall": "prisma generate",
     "build": "rimraf dist && pnpm prisma:generate && tspc",
-    "dev": "pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
+    "dev": "docker compose up -d dev-db && pnpm prisma:migrate:deploy:dev && pnpm prisma:generate:dev && dotenv -e .env.local -- tsx watch src/app.ts",
+    "pretest": "docker compose up -d test-db && timeout /t 2 && dotenv -e .env.test -- pnpm prisma migrate reset --force",
+    "test": "dotenv -e .env.test -- vitest",
+    "posttest": "docker-compose stop test-db",
     "start": "node dist/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
