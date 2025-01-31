@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { CheckIcon, ChevronDown, XCircle, XIcon } from 'lucide-react';
+import { CheckIcon, ChevronDown, X, XIcon } from 'lucide-react';
 import * as React from 'react';
 
 interface MultiSelectProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -110,19 +110,19 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
                   <div className='flex items-center justify-between gap-1'>
                     <XIcon
-                      className='mx-2 h-4 cursor-pointer text-muted-foreground'
+                      className='mx-2 cursor-pointer text-input'
                       onClick={(event) => {
                         event.stopPropagation();
                         handleClear();
                       }}
                     />
-                    <ChevronDown className='h-4 cursor-pointer text-muted-foreground' />
+                    <ChevronDown size={18} className='text-input' />
                   </div>
                 </div>
               ) : (
                 <div className='mx-auto flex w-full items-center justify-between'>
-                  <span className='mx-3 text-sm font-[400]'>{placeholder}</span>
-                  <ChevronDown className='mx-2 h-4 cursor-pointer text-muted-foreground' />
+                  <span className='mx-3 text-sm font-[400] text-input'>{placeholder}</span>
+                  <ChevronDown size={18} className='mx-2 cursor-pointer text-input' />
                 </div>
               )}
             </Button>
@@ -206,13 +206,13 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             </Command>
           </PopoverContent>
         </Popover>
-        <div className='flex flex-wrap gap-1'>
+        <div className='flex w-[400px] flex-wrap gap-1'>
           {selectedValues.length > 0 && (
             <>
               {selectedValues.slice(0, maxCount).map((value) => {
                 const option = options.find((o) => o.value === value);
                 return (
-                  <SelectedBardge
+                  <SelectedBadge
                     key={value}
                     label={option?.label ?? value}
                     onClick={() => {
@@ -224,7 +224,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             </>
           )}
           {selectedValues.length > maxCount && (
-            <SelectedBardge
+            <SelectedBadge
               label={`+ ${selectedValues.length - maxCount} more`}
               onClick={() => {
                 clearExtraOptions();
@@ -244,12 +244,13 @@ interface SelectedBadge {
   onClick: () => void;
 }
 
-function SelectedBardge(props: SelectedBadge) {
+function SelectedBadge(props: SelectedBadge) {
   return (
-    <Badge className={cn('border-1 border border-input bg-transparent text-foreground hover:bg-transparent')}>
+    <Badge className={cn('border-1 flex gap-2 border border-input bg-transparent text-foreground hover:bg-transparent')}>
       <span>{props.label}</span>
-      <XCircle
-        className='ml-2 h-4 w-4 cursor-pointer'
+      <X
+        size={14}
+        className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black'
         onClick={(e) => {
           e.stopPropagation();
           props.onClick();
