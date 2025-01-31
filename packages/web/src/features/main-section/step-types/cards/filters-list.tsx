@@ -71,7 +71,7 @@ function Content(props: ContentProps) {
     <div className='flex w-full flex-col'>
       {isAdmin && (
         <div className='mb-8'>
-          <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} />
+          <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} attributes={props.smartList?.attributes} />
         </div>
       )}
 
