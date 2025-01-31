@@ -22,7 +22,7 @@ export function Select(props: SelectProps) {
     <SelectComponent onValueChange={props.onValueChange} defaultValue={props.defaultValue} value={props.value}>
       <SelectTrigger className={cn(props.triggerClassName)}>
         <SelectValue placeholder={props.placeholder} />
-        <ChevronDown size={18} color='black' />
+        <ChevronDown size={18} className='text-input' />
       </SelectTrigger>
       <SelectContent>
         {props.items.map((item) => (
