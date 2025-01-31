@@ -1,5 +1,5 @@
-import { getButtonState } from '@/components/step-button/helpers';
-import { StepButton } from '@/components/step-button/step-button';
+import { getButtonState } from '@/features/step-section/step-button/helpers';
+import { StepButton } from '@/features/step-section/step-button/step-button';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 
