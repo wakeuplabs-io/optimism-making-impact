@@ -1,13 +1,17 @@
 import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
+import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
 
 interface CardFiltersProps {
   smartList?: CompleteSmartList;
+  stepId: number;
 }
 
 export function CardFilters(props: CardFiltersProps) {
@@ -46,6 +50,7 @@ function Container(props: { children: React.ReactNode }) {
 
 interface ContentProps {
   smartList?: CompleteSmartList;
+  stepId: number;
 }
 
 function Content(props: ContentProps) {
@@ -59,9 +64,17 @@ function Content(props: ContentProps) {
     selectedAttributes,
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
+  const addCard = useMainSectionStore((state) => state.addCard);
+  const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (
     <div className='flex w-full flex-col'>
+      {isAdmin && (
+        <div className='mb-8'>
+          <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} />
+        </div>
+      )}
+
       <h2 className='h-12 text-[20px] font-[500]'>Filters</h2>
       <hr className='border-[#D9D9D9]' />
 

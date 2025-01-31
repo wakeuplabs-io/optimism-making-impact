@@ -1,4 +1,4 @@
-import { IconButton } from '@/components/icon-button';
+import { ActionButton } from '@/components/action-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
 import { MultiSelect } from '@/components/multi-select/multi-select';
@@ -68,7 +68,7 @@ export function AddCardModal(props: AddCardModalProps) {
     <Modal
       onOpenChange={clearForm}
       title='New card'
-      trigger={<IconButton variant='secondary' icon={<Plus />} />}
+      trigger={<ActionButton label='Add card' variant='secondary' icon={<Plus />} className='w-full' />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
