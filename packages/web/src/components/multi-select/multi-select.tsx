@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { CheckIcon, ChevronDown, X, XIcon } from 'lucide-react';
@@ -63,7 +63,8 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       onValueChange([]);
     };
 
-    const handleTogglePopover = () => {
+    const handleTogglePopover = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
       setIsPopoverOpen((prev) => !prev);
     };
 
@@ -98,7 +99,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
               {...props}
               onClick={handleTogglePopover}
               className={cn(
-                'flex h-auto min-h-9 w-full items-center justify-between rounded-md border border-input bg-inherit p-1 [&_svg]:pointer-events-auto',
+                'flex h-auto min-h-9 w-full items-center justify-between rounded-md border border-input bg-inherit p-1 shadow-none [&_svg]:pointer-events-auto',
                 className,
               )}
             >
@@ -160,7 +161,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 </CommandEmpty>
                 <CommandGroup>
                   {props.selectAllEnabled && (
-                    <CommandItem key='all' onSelect={toggleAll} className='cursor-pointer'>
+                    <CommandItem key='all' onSelect={toggleAll} className='cursor-pointer data-[selected=true]:bg-background'>
                       <div
                         className={cn(
                           'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
@@ -175,7 +176,12 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   {options.map((option) => {
                     const isSelected = selectedValues.includes(option.value);
                     return (
-                      <CommandItem key={option.value} onSelect={() => toggleOption(option.value)} className='cursor-pointer'>
+                      <CommandItem
+                        key={option.value}
+                        onSelect={() => toggleOption(option.value)}
+                        className='cursor-pointer data-[selected=true]:bg-background data-[selected=true]:hover:bg-accent'
+                        data-selected={isSelected}
+                      >
                         <div
                           className={cn(
                             'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
@@ -189,15 +195,20 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                     );
                   })}
                 </CommandGroup>
-                <CommandSeparator />
                 <CommandGroup>
                   <div className='flex items-center justify-between'>
                     {selectedValues.length > 0 && (
-                      <CommandItem onSelect={handleClear} className='flex-1 cursor-pointer justify-center'>
+                      <CommandItem
+                        onSelect={handleClear}
+                        className='flex-1 cursor-pointer justify-center data-[selected=true]:bg-background'
+                      >
                         Clear
                       </CommandItem>
                     )}
-                    <CommandItem onSelect={() => setIsPopoverOpen(false)} className='max-w-full flex-1 cursor-pointer justify-center'>
+                    <CommandItem
+                      onSelect={() => setIsPopoverOpen(false)}
+                      className='max-w-full flex-1 cursor-pointer justify-center data-[selected=true]:bg-background'
+                    >
                       Close
                     </CommandItem>
                   </div>
