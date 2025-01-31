@@ -69,6 +69,7 @@ function Content(props: ContentProps) {
         {props.smartList && (
           <FilterGroup
             className='mt-4'
+            title={props.smartList.title}
             filters={props.smartList.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               selected: selectedAttributes.map(({ id }) => id).includes(attr.id),

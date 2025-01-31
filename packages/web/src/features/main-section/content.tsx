@@ -8,10 +8,8 @@ export function MainSectionContent() {
   const mainSectionState = useMainSectionStore((state) => state);
 
   useEffect(() => {
-    if (selectedStep) {
-      mainSectionState.init(selectedStep.id);
-    }
-  }, [selectedStep?.id]);
+    if (selectedStep) mainSectionState.init(selectedStep.id);
+  }, [selectedStep]);
 
   if (mainSectionState.loading) {
     return <span className='my-auto'>Loading...</span>;
