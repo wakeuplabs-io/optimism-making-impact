@@ -7,14 +7,17 @@ import { Logo } from '@/features/sidebar/components/logo';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { Rounds } from '@/features/sidebar/components/rounds';
 import { useIsMobile } from '@/hooks/use-is-mobile';
+import { getRoundName } from '@/lib/utils';
 import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
 
 export function SidebarSection() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
+  const roundName = selectedRound?.id ? getRoundName(selectedRound.id) : '';
+
   return (
-    <SidebarContainer title={selectedRound?.name}>
+    <SidebarContainer title={roundName}>
       <SidebarContent />
     </SidebarContainer>
   );

@@ -1,9 +1,9 @@
-import { Round, RoundWithCategories } from '@/types';
+import { CompleteRound, Round } from '@/types';
 
 export interface SidebarState {
   error: string | null;
-  rounds: RoundWithCategories[];
-  selectedRound: RoundWithCategories | null;
+  rounds: CompleteRound[];
+  selectedRound: CompleteRound | null;
   selectedCategoryId: number;
 }
 

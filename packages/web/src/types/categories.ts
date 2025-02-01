@@ -1,0 +1,17 @@
+import { attributeSchema } from '@/types/attributes';
+import { z } from 'zod';
+
+export const categorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  icon: z.string(),
+  roundId: z.number(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
+});
+export type Category = z.infer<typeof categorySchema>;
+
+export const completeCategorySchema = categorySchema.extend({
+  attributes: z.array(attributeSchema),
+});
+export type CompleteCategory = z.infer<typeof completeCategorySchema>;

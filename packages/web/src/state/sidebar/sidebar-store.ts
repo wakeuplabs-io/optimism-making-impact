@@ -5,7 +5,7 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Category, Round, RoundWithCategories } from '@/types';
+import { Category, CompleteRound, Round } from '@/types';
 import { AxiosError } from 'axios';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
@@ -15,7 +15,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   selectedCategoryId: 0,
   fetchData: async () => {
     const response = await RoundsService.getRounds();
-    const rounds: RoundWithCategories[] = response.data.rounds;
+    const rounds: CompleteRound[] = response.data.rounds;
 
     let selectedRound = get().selectedRound;
 
@@ -67,7 +67,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       getStateSlice: () => get().selectedRound?.categories,
       updateFn: (categories) => {
         if (categories) {
-          return [...categories, { id: Date.now(), name, iconURL: icon, roundId }];
+          return [...categories, { id: Date.now(), name, icon: icon, roundId }];
         }
       },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),

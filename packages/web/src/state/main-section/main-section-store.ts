@@ -1,9 +1,13 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
+import { CreateAttributeBody } from '@/services/attributes/schemas';
+import { AttributesService } from '@/services/attributes/service';
 import { CreateCardBody } from '@/services/cards/schemas';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
+import { CreateItemBody } from '@/services/items/schemas';
+import { ItemsService } from '@/services/items/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
@@ -153,6 +157,170 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       apiCall: () => CardsService.create(data),
       onError: (error) => {
         const title = 'Failed to delete infography';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+
+  addAttributeToSmartList: (data: CreateAttributeBody) => {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => [...attributes, { ...data, id: Date.now(), categoryId: 1 }],
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      apiCall: () => AttributesService.create(data),
+      onError: (error) => {
+        const title = 'Failed to create attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  updateAttribute(data) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => attributes.map((attribute) => (attribute.id === data.id ? { ...attribute, ...data } : attribute)),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      apiCall: () => AttributesService.update(data),
+      onError: (error) => {
+        const title = 'Failed to update attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  deleteAttribute(attributeId: number) {
+    const currentStep = get().step;
+    if (!currentStep) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.smartList!.attributes,
+      updateFn: (attributes) => attributes.filter((attribute) => attribute.id !== attributeId),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      apiCall: () => AttributesService.deleteOne(attributeId),
+      onError: (error) => {
+        const title = 'Failed to delete attribute';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  addItem(data: CreateItemBody) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    const selectedAttribute = currentStep.smartList.attributes.find((attribute) => attribute.id === data.attributeId)!;
+
+    if (!selectedAttribute) return;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.items,
+      updateFn: (items) => [
+        ...items,
+        { ...data, id: Date.now(), position: Date.now(), stepId: currentStep.id, attribute: selectedAttribute },
+      ],
+      setStateSlice: (items) => set({ step: { ...currentStep, items } }),
+      apiCall: () => ItemsService.create(data),
+      onError: (error) => {
+        const title = 'Failed to create item';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  updateItem(itemId, data) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.items,
+      updateFn: (items) => items.map((item) => (item.id === itemId ? { ...item, ...data } : item)),
+      setStateSlice: (items) => set({ step: { ...currentStep, items } }),
+      apiCall: () => ItemsService.update(itemId, data),
+      onError: (error) => {
+        const title = 'Failed to edit item';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  deleteItem(itemId) {
+    const currentStep = get().step;
+    if (!currentStep || !currentStep.smartList) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.items,
+      updateFn: (items) => items.filter((item) => item.id !== itemId),
+      setStateSlice: (items) => set({ step: { ...currentStep, items } }),
+      apiCall: () => ItemsService.deleteOne(itemId),
+      onError: (error) => {
+        const title = 'Failed to delete item';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {

@@ -1,11 +1,14 @@
+import { Color } from '@/types';
 import { z } from 'zod';
 
 export const attributeSchema = z.object({
   id: z.number(),
   value: z.string(),
+  description: z.string(),
   categoryId: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  color: z.nativeEnum(Color),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 // Type inference from the schema

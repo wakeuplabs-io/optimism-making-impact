@@ -1,6 +1,6 @@
 import { Card } from '@/features/main-section/step-types/cards/card';
-import { useFilteredCards } from '@/features/main-section/step-types/cards/use-filtered-cards';
-import { useCardFiltersStore } from '@/state/main-section-filters/store';
+import { useFilteredData } from '@/features/main-section/use-filtered-data';
+import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteCard } from '@/types';
 
 interface CardListProps {
@@ -9,9 +9,9 @@ interface CardListProps {
 }
 
 export function CardList(props: CardListProps) {
-  const { selectedStrengths, selectedKeywords } = useCardFiltersStore((state) => state);
+  const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
 
-  const filteredCards = useFilteredCards({ cards: props.cards, selectedStrengths, selectedKeywords });
+  const filteredCards = useFilteredData({ data: props.cards, selectedStrengths, selectedKeywords, selectedAttributes });
 
   if (!filteredCards.length) return <EmptyState />;
 

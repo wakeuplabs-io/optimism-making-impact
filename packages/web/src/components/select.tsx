@@ -1,10 +1,10 @@
-import { Select as SelectComponent, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select as SelectComponent, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 
 interface SelectItem {
   value: string;
-  label: string;
+  label: string | React.ReactNode;
 }
 
 export interface SelectProps {
@@ -25,13 +25,11 @@ export function Select(props: SelectProps) {
         <ChevronDown size={18} color='black' />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          {props.items.map((item) => (
-            <SelectItem key={item.value} value={item.value} className={cn('focus:bg-[#B8B8B8]', props.itemClassName)}>
-              {item.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
+        {props.items.map((item) => (
+          <SelectItem key={item.value} value={item.value} className={cn('focus:bg-[#B8B8B8]', props.itemClassName)}>
+            {item.label}
+          </SelectItem>
+        ))}
       </SelectContent>
     </SelectComponent>
   );

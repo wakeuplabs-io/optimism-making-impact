@@ -22,12 +22,22 @@ enum CardStrength {
   HIGH
 }
 
+enum Color {
+  RED
+  PINK
+  PURPLE
+  YELLOW
+  TAN
+  ORANGE
+  GREEN
+  LIGHTBLUE
+  BLUE
+  DARKBLUE
+}
+
 // Models
 model Round {
   id Int @id @default(autoincrement())
-
-  name String
-  icon String
 
   link1 String? @default("")
   link2 String? @default("")
@@ -66,6 +76,8 @@ model Step {
   infographies Infography[]
   items        Item[]
   cards        Card[]
+  smartList    SmartList?   @relation(fields: [smartListId], references: [id])
+  smartListId  Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -135,12 +147,29 @@ model Keyword {
 model Attribute {
   id Int @id @default(autoincrement())
 
-  value String
+  value       String
+  description String
+  color       Color  @default(LIGHTBLUE)
 
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   items      Item[]
   cards      Card[]
+
+  smartList   SmartList @relation(fields: [smartListId], references: [id])
+  smartListId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SmartList {
+  id Int @id @default(autoincrement())
+
+  title String
+
+  attributes Attribute[]
+  steps      Step[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

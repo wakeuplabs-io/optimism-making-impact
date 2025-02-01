@@ -5,11 +5,11 @@ import { NextFunction, Request, Response } from 'express';
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
     const rounds = await prisma.round.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { id: 'desc' },
       take: 10,
       include: {
         categories: {
-          orderBy: { createdAt: 'asc' },
+          orderBy: { id: 'asc' },
         },
       },
     });
@@ -21,6 +21,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 }
 
 async function create(req: Request, res: Response, next: NextFunction) {
+  // TODO: split into smaller units and create unit tests
   try {
     await prisma.$transaction(async (prisma) => {
       const lastRound = await prisma.round.findFirst({
@@ -39,20 +40,17 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
       if (!lastRound) {
         const createdRound = await prisma.round.create({
-          data: { name: 'Round 1', icon: '' },
+          data: {},
         });
 
         return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
       }
 
-      const nextRoundNumber = lastRound.id + 1;
       const { categories, steps } = lastRound;
 
       // Step 1: Create Round with Basic Categories and Steps
       const newRound = await prisma.round.create({
         data: {
-          name: `Round ${nextRoundNumber}`,
-          icon: '',
           link1: lastRound.link1,
           link2: lastRound.link2,
           categories: {
@@ -84,8 +82,10 @@ async function create(req: Request, res: Response, next: NextFunction) {
             where: { id: newCategory.id },
             data: {
               attributes: {
-                create: category.attributes.map(({ value }) => ({
+                create: category.attributes.map(({ value, smartListId, description }) => ({
                   value,
+                  description,
+                  smartList: { connect: { id: smartListId } },
                 })),
               },
             },
@@ -108,22 +108,22 @@ async function create(req: Request, res: Response, next: NextFunction) {
                 })),
               },
               items: {
-                create: step.items.map(({ markdown, position, attribute }) => ({
+                create: step.items.map(({ markdown, position, attributeId }) => ({
                   markdown,
                   position,
                   attribute: {
-                    connect: { id: attribute?.id },
+                    connect: { id: attributeId || undefined },
                   },
                 })),
               },
               cards: {
-                create: step.cards.map(({ title, markdown, position, strength, attribute, keywords }) => ({
+                create: step.cards.map(({ title, markdown, position, strength, attributeId, keywords }) => ({
                   title,
                   markdown,
                   position,
                   strength,
-                  attribute: { connect: { id: attribute?.id } },
-                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id })) },
+                  attribute: { connect: { id: attributeId } },
+                  keywords: { connect: keywords.map((keyword) => ({ id: keyword.id || undefined })) },
                 })),
               },
             },
