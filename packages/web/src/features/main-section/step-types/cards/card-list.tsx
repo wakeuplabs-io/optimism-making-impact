@@ -36,7 +36,7 @@ function List(props: ListProps) {
     <div className='flex flex-1 flex-col items-center gap-2'>
       <div className='flex w-full flex-1 flex-col flex-wrap items-center gap-4 lg:flex-row lg:items-start'>
         {props.cards.map((card, i) => {
-          return <Card card={card} key={`${card.id}-${i}`} />;
+          return <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />;
         })}
       </div>
     </div>

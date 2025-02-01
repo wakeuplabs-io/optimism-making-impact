@@ -2,7 +2,7 @@ import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
 import { CreateAttributeBody } from '@/services/attributes/schemas';
 import { AttributesService } from '@/services/attributes/service';
-import { CreateCardBody } from '@/services/cards/schemas';
+import { CreateCardBody, UpdateCardBody } from '@/services/cards/schemas';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
@@ -152,7 +152,39 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       setStateSlice: (cards) => set((state) => ({ step: { ...state.step, cards } })),
       apiCall: () => CardsService.create(data),
       onError: (error) => {
-        const title = 'Failed to delete infography';
+        const title = 'Failed to create card';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+      },
+    });
+  },
+  editCard: (cardId: number, data: UpdateCardBody) => {
+    const currentStep = get().step;
+    if (!currentStep) return;
+
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.cards,
+      updateFn: (cards) => {
+        const keywords = data.keywords.map((keyword) => ({ ...keyword, id: Date.now() }));
+
+        return cards.map((card) => (card.id === cardId ? { ...card, ...data, keywords } : card));
+      },
+      setStateSlice: (cards) => {
+        set((state) => ({ step: { ...state.step, cards } }));
+      },
+      apiCall: () => CardsService.update(cardId, data),
+      onError: (error) => {
+        const title = 'Failed to edit card';
         let description = 'Unknown error';
 
         if (error instanceof AxiosError) {

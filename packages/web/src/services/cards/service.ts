@@ -1,11 +1,11 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateCardBody } from '@/services/cards/schemas';
+import { CreateCardBody, UpdateCardBody } from '@/services/cards/schemas';
 import { AxiosInstance } from 'axios';
 
 const cardsEndpoint = '/cards';
 
-export class CardsServiceClass {
-  private static instance: CardsServiceClass;
+class Service {
+  private static instance: Service;
   private fetcher: AxiosInstance;
 
   constructor(fetcher: AxiosInstance) {
@@ -13,15 +13,19 @@ export class CardsServiceClass {
   }
 
   static getInstance(fetcher: AxiosInstance) {
-    if (!CardsServiceClass.instance) {
-      CardsServiceClass.instance = new CardsServiceClass(fetcher);
+    if (!Service.instance) {
+      Service.instance = new Service(fetcher);
     }
-    return CardsServiceClass.instance;
+    return Service.instance;
   }
 
   async create(data: CreateCardBody) {
     return this.fetcher.post(cardsEndpoint, data).then((res) => res.data);
   }
+
+  async update(cardId: number, data: UpdateCardBody) {
+    return this.fetcher.put(cardsEndpoint + `/${cardId}`, data).then((res) => res.data);
+  }
 }
 
-export const CardsService = CardsServiceClass.getInstance(fetcher);
+export const CardsService = Service.getInstance(fetcher);
