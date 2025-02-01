@@ -26,6 +26,10 @@ class Service {
   async update(cardId: number, data: UpdateCardBody) {
     return this.fetcher.put(cardsEndpoint + `/${cardId}`, data).then((res) => res.data);
   }
+
+  async deleteOne(cardId: number) {
+    return this.fetcher.delete(cardsEndpoint + `/${cardId}`).then((res) => res.data);
+  }
 }
 
 export const CardsService = Service.getInstance(fetcher);

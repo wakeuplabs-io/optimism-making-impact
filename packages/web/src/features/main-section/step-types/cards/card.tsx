@@ -1,6 +1,7 @@
 import { Badge } from '@/components/badge';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { MarkdownText } from '@/components/markdown-text';
+import { DeleteCardButton } from '@/features/main-section/step-types/cards/delete-card-button';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
@@ -35,6 +36,8 @@ interface CardTitleProps {
 
 function CardTitle(props: CardTitleProps) {
   const editCard = useMainSectionStore((state) => state.editCard);
+  const deleteCard = useMainSectionStore((state) => state.deleteCard);
+
   return (
     <div className='flex max-w-full items-center gap-4'>
       <p
@@ -44,15 +47,12 @@ function CardTitle(props: CardTitleProps) {
         {props.card.title}
       </p>
       <StrengthIndicator strength={props.card.strength} />
-      {props.isAdmin && <EditCardModal stepId={props.stepId} keywords={props.keywords} card={props.card} onClick={editCard} />}
-      {/* {props.isAdmin && (
-        <EditCardModal2
-          stepId={props.stepId}
-          keywords={props.keywords}
-          card={props.card}
-          onClick={editCard}
-        />
-      )} */}
+      {props.isAdmin && (
+        <>
+          <EditCardModal stepId={props.stepId} keywords={props.keywords} card={props.card} onClick={editCard} />
+          <DeleteCardButton card={props.card} onClick={deleteCard} />
+        </>
+      )}
     </div>
   );
 }

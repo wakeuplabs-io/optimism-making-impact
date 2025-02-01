@@ -22,6 +22,7 @@ export interface MainSectionActions {
   saveInfographies: (data: BulkUpdateInfographyBody) => void;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;
+  deleteCard: (cardId: number) => void;
   addAttributeToSmartList: (data: CreateAttributeBody) => void;
   updateAttribute: (data: UpdateAttributeBody) => void;
   deleteAttribute: (attributeId: number) => void;

@@ -75,7 +75,24 @@ async function update(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsedId = idParamsSchema.safeParse(req.params);
+
+    if (!parsedId.success) throw ApiError.badRequest();
+
+    const deleted = await prisma.card.delete({
+      where: { id: parsedId.data.id },
+    });
+
+    apiResponse.success(res, deleted, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const cardsController = {
   create,
   update,
+  deleteOne,
 };

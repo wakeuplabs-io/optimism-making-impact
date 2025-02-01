@@ -198,7 +198,33 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
+  deleteCard: async (cardId: number) => {
+    const currentStep = get().step;
+    if (!currentStep) return;
 
+    const stepId = currentStep.id;
+
+    optimisticUpdate({
+      getStateSlice: () => currentStep.cards,
+      updateFn: (cards) => cards.filter((card) => card.id !== cardId),
+      setStateSlice: (cards) => set((state) => ({ step: { ...state.step, cards } })),
+      apiCall: () => CardsService.deleteOne(cardId),
+      onError: (error) => {
+        const title = 'Failed to delete card';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        await get().fetchData(stepId);
+        toast({ title: 'Deleted', description: 'Card deleted' });
+      },
+    });
+  },
   addAttributeToSmartList: (data: CreateAttributeBody) => {
     const currentStep = get().step;
     if (!currentStep || !currentStep.smartList) return;
