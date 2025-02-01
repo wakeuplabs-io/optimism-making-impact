@@ -68,10 +68,10 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex justify-center gap-2'>
-      {props.keywords.map((keyword) => {
+    <div className='flex w-full flex-wrap justify-start gap-2'>
+      {props.keywords.map((keyword, i) => {
         return (
-          <Badge key={keyword.id} backgroundColor={getRandomBadgeColor(keyword.value)}>
+          <Badge key={`${keyword.id}-${i}`} backgroundColor={getRandomBadgeColor(keyword.value)} className='w-[45%] truncate text-center'>
             {keyword.value}
           </Badge>
         );
