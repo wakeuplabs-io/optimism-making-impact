@@ -1,18 +1,18 @@
 import { ColorDot } from '@/components/color-dot';
+import { FormModal } from '@/components/form-modal';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
-import { Modal } from '@/components/modal';
 import { MultiSelect } from '@/components/multi-select/multi-select';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { UpdateCardBody } from '@/services/cards/schemas';
 import { Attribute, CompleteCard, Keyword, strengthArray, StrengthEnum } from '@/types';
-import { Save } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 
-interface AddCardModalProps {
+interface EditCardModalProps {
   stepId: number;
   onClick?: (cardId: number, data: UpdateCardBody) => void;
   keywords: Keyword[];
@@ -20,15 +20,26 @@ interface AddCardModalProps {
   card: CompleteCard;
 }
 
-export function EditCardModal(props: AddCardModalProps) {
-  const [title, setTitle] = useState(props.card.title);
-  const [markdown, setMarkdown] = useState(props.card.markdown);
-  const [strength, setStrength] = useState(props.card.strength);
-  const [attributeId, setAttributeId] = useState<number>(props.card.attributeId || dontAssignOption.value);
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(props.card.keywords.map((k) => k.value));
+export interface EditCardFormData {
+  title: string;
+  markdown: string;
+  strength: StrengthEnum;
+  attributeId: number;
+  keywords: string[];
+}
 
+const strengthOptions = strengthArray.map((item) => ({
+  label: item.toLowerCase(),
+  value: item,
+}));
+
+export function EditCardModal(props: EditCardModalProps) {
   const keywordsOptions = useMemo(
-    () => props.keywords.map((keyword) => ({ value: keyword.value, label: keyword.value })),
+    () =>
+      props.keywords.map((keyword) => ({
+        value: keyword.value,
+        label: keyword.value,
+      })),
     [props.keywords],
   );
 
@@ -53,87 +64,118 @@ export function EditCardModal(props: AddCardModalProps) {
     return options;
   }, [props.attributes]);
 
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
-  }
+  const defaultValues: EditCardFormData = {
+    title: props.card.title,
+    markdown: props.card.markdown,
+    strength: props.card.strength,
+    attributeId: props.card.attributeId || dontAssignOption.value,
+    keywords: props.card.keywords.map((k) => k.value),
+  };
 
-  function handleMarkdownChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setMarkdown(event.target.value);
-  }
-  function handleStrengthChange(value: string) {
-    setStrength(value as StrengthEnum);
-  }
-  function handleAttributeChange(value: string) {
-    setAttributeId(+value);
-  }
-  function handleKeywordsChange(value: string[]) {
-    setSelectedKeywords(value);
-  }
-
-  function handleSubmit() {
-    const selectedKeywordsValueAndId = selectedKeywords.map((value) => {
+  function handleSubmit(data: EditCardFormData) {
+    const selectedKeywordsValueAndId = data.keywords.map((value) => {
       const keyword = props.keywords.find((keyword) => keyword.value === value);
       return { value, id: keyword?.id };
     });
 
     props.onClick?.(props.card.id, {
-      title,
-      markdown,
+      title: data.title,
+      markdown: data.markdown,
       keywords: selectedKeywordsValueAndId,
-      strength,
-      attributeId: attributeId < 1 ? undefined : attributeId,
+      strength: data.strength,
+      attributeId: data.attributeId < 1 ? undefined : data.attributeId,
     });
-    setTitle('');
-    setMarkdown('');
   }
 
   return (
-    <Modal
+    <FormModal<EditCardFormData>
       title='Edit card'
       trigger={<EditIcon />}
-      buttons={[
-        { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
       contentProps={{
         onPointerDownOutside: (e) => {
           if (document.getElementById('multiselect-popover-content')) e.preventDefault();
         },
       }}
     >
-      <div className='grid gap-4 py-4'>
-        <SelectInput
-          placeholder='Select Strength'
-          name='strength'
-          items={strengthOptions}
-          triggerClassName='capitalize'
-          itemClassName='capitalize'
-          onValueChange={handleStrengthChange}
-          value={strength}
-        />
-        <SelectInput
-          placeholder='Select Smart List Filter'
-          name='attribute'
-          items={attributeOptions}
-          triggerClassName='capitalize'
-          itemClassName='capitalize'
-          onValueChange={handleAttributeChange}
-          disabled={attributeOptions.length === 0}
-          value={attributeId.toString()}
-        />
-        <TextInput name='title' value={title} onChange={handleTitleChange} placeholder='Title' />
-        <TextAreaInput name='markdown' rows={3} value={markdown} onChange={handleMarkdownChange} placeholder='Text' />
-        <MultiSelect
-          options={keywordsOptions}
-          onValueChange={handleKeywordsChange}
-          value={selectedKeywords}
-          defaultValue={selectedKeywords}
-          placeholder='Keywords connected'
-          maxCount={3}
-        />
-      </div>
-    </Modal>
+      <FormFields attributeOptions={attributeOptions} keywordsOptions={keywordsOptions} defaultValues={defaultValues} />
+    </FormModal>
   );
 }
 
-const strengthOptions = strengthArray.map((item) => ({ label: item.toLowerCase(), value: item }));
+interface FormFieldsProps {
+  attributeOptions: { value: string; label: React.ReactNode }[];
+  keywordsOptions: { value: string; label: string }[];
+  defaultValues: EditCardFormData;
+}
+
+// The inner form fields use react-hook-form's context.
+// We use Controller for inputs that work as controlled components.
+function FormFields({ attributeOptions, keywordsOptions, defaultValues }: FormFieldsProps) {
+  const { control } = useFormContext<EditCardFormData>();
+
+  return (
+    <div className='grid w-full gap-4 py-4'>
+      <Controller
+        name='strength'
+        control={control}
+        defaultValue={defaultValues.strength}
+        render={({ field }) => (
+          <SelectInput
+            placeholder='Select Strength'
+            name='strength'
+            items={strengthOptions}
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
+            onValueChange={field.onChange}
+            value={field.value}
+          />
+        )}
+      />
+      <Controller
+        name='attributeId'
+        control={control}
+        defaultValue={defaultValues.attributeId}
+        render={({ field }) => (
+          <SelectInput
+            placeholder='Select Smart List Filter'
+            name='attribute'
+            items={attributeOptions}
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
+            onValueChange={(val) => field.onChange(Number(val))}
+            disabled={attributeOptions.length === 0}
+            value={String(field.value)}
+          />
+        )}
+      />
+      <Controller
+        name='title'
+        control={control}
+        defaultValue={defaultValues.title}
+        render={({ field }) => <TextInput {...field} placeholder='Title' />}
+      />
+      <Controller
+        name='markdown'
+        control={control}
+        defaultValue={defaultValues.markdown}
+        render={({ field }) => <TextAreaInput {...field} rows={4} placeholder='Text' />}
+      />
+      <Controller
+        name='keywords'
+        control={control}
+        defaultValue={defaultValues.keywords}
+        render={({ field }) => (
+          <MultiSelect
+            options={keywordsOptions}
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            placeholder='Keywords connected'
+            maxCount={3}
+          />
+        )}
+      />
+    </div>
+  );
+}
