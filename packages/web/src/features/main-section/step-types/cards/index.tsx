@@ -19,11 +19,12 @@ function Container(props: { children: React.ReactNode; className?: string }) {
 
 function Content() {
   const { step } = useMainSectionStore((state) => state);
-  const { setKeywords, clear } = useFiltersStore((state) => state);
+  const { setKeywords, clear, setAttributes } = useFiltersStore((state) => state);
 
   useEffect(() => {
     if (!step) return;
     setKeywords(extractUniqueKeywordsFromCards(step.cards));
+    setAttributes(step.smartList?.attributes || []);
     return () => clear();
   }, [step]);
 

@@ -11,6 +11,7 @@ export interface FiltersState {
 
 export interface FiltersActions {
   setKeywords: (keywordFilters: Keyword[]) => void;
+  setAttributes: (attributeFilters: Attribute[]) => void;
   setSelectedStrengths: (strenght: StrengthEnum) => void;
   setSelectedKeywords: (keyword: Keyword) => void;
   setSelectedAttributes: (attribute: Attribute) => void;
