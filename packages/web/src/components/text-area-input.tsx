@@ -8,18 +8,25 @@ interface TextAreaInputModalProps extends React.TextareaHTMLAttributes<HTMLTextA
 export function TextAreaInput(props: TextAreaInputModalProps) {
   const { name } = props;
 
+  function resize(event: React.FormEvent<HTMLTextAreaElement>) {
+    const textarea = event.currentTarget;
+    textarea.style.height = 'auto'; // Reset height
+    textarea.style.height = `${textarea.scrollHeight}px`; // Adjust height dynamically
+  }
+
   return (
-    <div className='flex flex-col gap-1.5'>
+    <>
       <Label htmlFor={name} className='sr-only'>
         <span>{name}</span>
       </Label>
       <textarea
         className={cn(
-          'max-w-screen flex w-[500px] items-center overflow-auto break-words rounded border border-input p-2 text-sm',
+          'max-w-screen w-full items-center overflow-auto break-words rounded border border-input bg-inherit p-2 text-sm',
           props.className,
         )}
+        onInput={resize}
         {...props}
       />
-    </div>
+    </>
   );
 }
