@@ -25,21 +25,25 @@ describe('Duplicate round', async () => {
       expect(category.icon).toBe(originalCategory.icon);
       expect(category.id).not.toBe(originalCategory.id);
       expect(category.roundId).toBe(duplicatedRound.id);
+      expect(category.steps.length).toBe(originalCategory.steps.length);
     });
   });
 
   test('Steps, infographics, items, cards, and keywords should be duplicated correctly', () => {
-    expect(duplicatedRound.steps.length).toBe(originalRound.steps.length);
-    duplicatedRound.steps.forEach((step, index) => {
-      const originalStep = originalRound.steps[index];
+    const originalSteps = originalRound.categories.flatMap((category) => category.steps);
+    const duplicatedSteps = duplicatedRound.categories.flatMap((category) => category.steps);
+
+    expect(duplicatedSteps.length).toBe(originalSteps.length);
+
+    duplicatedSteps.forEach((step, index) => {
+      const originalStep = originalSteps[index];
 
       expect(step.title).toBe(originalStep.title);
       expect(step.icon).toBe(originalStep.icon);
       expect(step.position).toBe(originalStep.position);
       expect(step.type).toBe(originalStep.type);
       expect(step.id).not.toBe(originalStep.id);
-      expect(step.roundId).toBe(duplicatedRound.id);
-
+      expect(step.categoryId).not.toBe(originalStep.categoryId);
       // Infographics
       expect(step.infographies.length).toBe(originalStep.infographies.length);
       step.infographies.forEach((infography, i) => {
@@ -84,8 +88,11 @@ describe('Duplicate round', async () => {
   });
 
   test('Smart lists and their attributes should be duplicated correctly', () => {
-    duplicatedRound.steps.forEach((step, index) => {
-      const originalStep = originalRound.steps[index];
+    const originalSteps = originalRound.categories.flatMap((category) => category.steps);
+    const duplicatedSteps = duplicatedRound.categories.flatMap((category) => category.steps);
+
+    duplicatedSteps.forEach((step, index) => {
+      const originalStep = originalSteps[index];
 
       if (step.smartList) {
         expect(originalStep.smartList).toBeDefined();

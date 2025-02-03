@@ -2,7 +2,7 @@ import { StepType } from '@prisma/client';
 import { z } from 'zod';
 
 export const getAllStepsQueryParms = z.object({
-  roundId: z.string().transform(Number).optional(),
+  categoryId: z.string().transform(Number).optional(),
 });
 
 export const createStepBodySchema = z.object({
@@ -10,7 +10,7 @@ export const createStepBodySchema = z.object({
   description: z.string().optional(),
   icon: z.string(),
   type: z.nativeEnum(StepType).default(StepType.INFOGRAPHY),
-  roundId: z.number().min(1),
+  categoryId: z.number().min(1),
   smartListId: z.number().optional(),
 });
 

@@ -11,11 +11,19 @@ async function getByRoundId(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const steps = await prisma.step.findMany({
+    const categories = await prisma.category.findMany({
       where: { roundId: parsed.data.id },
+      include: {
+        steps: {
+          select: {
+            smartListId: true,
+          },
+        },
+      },
     });
 
-    const stepsIds: number[] = steps.map((step) => step.smartListId).filter((id): id is number => id !== null);
+    const smartlistIds = categories.flatMap((cat) => cat.steps.map((step) => step.smartListId));
+    const stepsIds: number[] = smartlistIds.filter((id): id is number => id !== null);
 
     const smartLists = await prisma.smartList.findMany({
       where: { id: { in: stepsIds } },

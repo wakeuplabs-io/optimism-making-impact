@@ -43,7 +43,6 @@ model Round {
   link2 String? @default("")
 
   categories Category[]
-  steps      Step[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -58,6 +57,7 @@ model Category {
   roundId    Int
   round      Round       @relation(fields: [roundId], references: [id])
   attributes Attribute[]
+  steps      Step[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -72,8 +72,9 @@ model Step {
   position    Int
   type        StepType
 
-  roundId      Int
-  round        Round        @relation(fields: [roundId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
   infographies Infography[]
   items        Item[]
   cards        Card[]
@@ -83,8 +84,8 @@ model Step {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([position, roundId])
-  @@unique([title, roundId])
+  @@unique([position, categoryId])
+  @@unique([title, categoryId])
 }
 
 model Infography {
