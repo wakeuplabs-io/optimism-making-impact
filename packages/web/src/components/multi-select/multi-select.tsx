@@ -132,7 +132,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
           <PopoverContent
             id='multiselect-popover-content'
             className='border border-input p-0'
-            style={{ width: `${popoverWidth}px` }}
+            style={{ width: `min(${popoverWidth}px, 90vw)` }}
             align='start'
             onEscapeKeyDown={() => setIsPopoverOpen(false)}
             asChild
@@ -218,7 +218,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             </Command>
           </PopoverContent>
         </Popover>
-        <div className='flex w-[400px] flex-wrap gap-1'>
+        <div className='flex w-full flex-wrap gap-1' style={{ width: `min(${popoverWidth}px, 90vw)` }}>
           {selectedValues.length > 0 && (
             <>
               {selectedValues.slice(0, maxCount).map((value) => {
