@@ -1,7 +1,6 @@
 import { Badge } from '@/components/badge';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { MarkdownText } from '@/components/markdown-text';
-import { DeleteCardButton } from '@/features/main-section/step-types/cards/delete-card-button';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
@@ -48,10 +47,7 @@ function CardTitle(props: CardTitleProps) {
       </p>
       <StrengthIndicator strength={props.card.strength} />
       {props.isAdmin && (
-        <>
-          <EditCardModal stepId={props.stepId} keywords={props.keywords} card={props.card} onClick={editCard} />
-          <DeleteCardButton card={props.card} onClick={deleteCard} />
-        </>
+        <EditCardModal stepId={props.stepId} keywords={props.keywords} card={props.card} onSave={editCard} onDelete={deleteCard} />
       )}
     </div>
   );
