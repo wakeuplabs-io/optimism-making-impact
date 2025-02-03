@@ -6,17 +6,17 @@ import { useEffect } from 'react';
 
 export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
-  const selectedRound = useSidebarStore((state) => state.selectedRound);
+  const selectedCategoryId = useSidebarStore((state) => state.selectedCategoryId);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   useEffect(() => {
-    if (selectedRound) {
-      stepsState.fetchByRoundId(selectedRound.id);
+    if (selectedCategoryId) {
+      stepsState.fetchByCategoryId(selectedCategoryId);
     }
-  }, [selectedRound]);
+  }, [selectedCategoryId]);
 
-  if (!selectedRound) {
-    return <p>Select a round to see the steps</p>;
+  if (!selectedCategoryId) {
+    return <p>Select a category to see the steps</p>;
   }
 
   if (stepsState.error) {
@@ -33,7 +33,7 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {isAdmin && <AddStepModal roundId={selectedRound.id} onClick={stepsState.addStep} />}
+      {isAdmin && <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />}
     </div>
   );
 }

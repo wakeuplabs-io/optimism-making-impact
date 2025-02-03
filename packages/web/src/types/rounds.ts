@@ -1,5 +1,4 @@
 import { categorySchema } from '@/types/categories';
-import { stepSchema } from '@/types/steps';
 import { z } from 'zod';
 
 export const roundSchema = z.object({
@@ -13,6 +12,5 @@ export type Round = z.infer<typeof roundSchema>;
 
 export const completeRoundSchema = roundSchema.extend({
   categories: z.array(categorySchema),
-  steps: z.array(stepSchema),
 });
 export type CompleteRound = z.infer<typeof completeRoundSchema>;

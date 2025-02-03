@@ -25,14 +25,14 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
 
     const categories: Category[] = selectedRound.categories;
 
-    set(() => ({ rounds, selectedRound, categories }));
+    set(() => ({ rounds, selectedRound, categories, selectedCategoryId: categories[0].id }));
   },
   setSelectedRound: (roundId: number) => {
     const selectedRound = get().rounds.find((round) => round.id === roundId);
 
     if (selectedRound) {
       const categories = selectedRound.categories;
-      set(() => ({ selectedRound, categories }));
+      set(() => ({ selectedRound, categories, selectedCategoryId: categories[0].id }));
       router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
     }
   },
