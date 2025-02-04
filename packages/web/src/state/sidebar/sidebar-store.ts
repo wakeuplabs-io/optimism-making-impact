@@ -5,27 +5,30 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Category, CompleteRound, Round } from '@/types';
+import { CompleteRound, Round } from '@/types';
 import { AxiosError } from 'axios';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
   rounds: [],
   selectedRound: null,
-  selectedCategoryId: 0,
+  selectedCategoryId: -1,
   fetchData: async () => {
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
 
     let selectedRound = get().selectedRound;
 
-    if (!selectedRound) {
-      selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
-    }
+    if (!selectedRound) selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
 
-    const categories: Category[] = selectedRound.categories;
+    const select = rounds.find((round) => round.id === selectedRound.id);
 
-    set(() => ({ rounds, selectedRound, categories, selectedCategoryId: categories[0].id }));
+    set(() => ({
+      rounds,
+      selectedRound: select,
+      categories: select?.categories,
+      selectedCategoryId: get().selectedCategoryId < 0 ? select?.categories[0].id : get().selectedCategoryId,
+    }));
   },
   setSelectedRound: (roundId: number) => {
     const selectedRound = get().rounds.find((round) => round.id === roundId);

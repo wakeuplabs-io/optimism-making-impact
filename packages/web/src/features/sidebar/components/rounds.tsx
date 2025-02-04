@@ -1,15 +1,9 @@
-import { AddNewContent } from '@/components/add-new-content';
-import { DropdownMenu } from '@/features/sidebar/components/dropdown-menu';
-import { useSidebarStore, useUserStore } from '@/state';
+import { RoundsSelect } from '@/features/sidebar/components/dropdown-menu';
 
 export function Rounds() {
-  const roundsState = useSidebarStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdmin);
-
   return (
-    <div className="grid gap-2">
-      <DropdownMenu />
-      {isAdmin && <AddNewContent buttonText="Add new round" addNewContent={roundsState.addRound} />}
+    <div className='grid gap-2'>
+      <RoundsSelect />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export function CategoryButton(props: CategoryButtonProps) {
   return (
     <button
       className={cn(
-        `group flex w-full items-center justify-between gap-1 rounded-[10px] px-4 py-2 text-secondary shadow-none hover:bg-[#B8B8B8] hover:text-dark-high`,
+        `group flex w-full items-center justify-between gap-1 rounded-[10px] px-4 py-2 text-secondary shadow-none hover:bg-[#F1F4F9] hover:text-dark-high`,
         props.isActive && 'text-dark-high',
       )}
       onClick={props.onClick}
@@ -31,7 +31,7 @@ export function CategoryButton(props: CategoryButtonProps) {
         <div className='h-[22px] w-[22px]'>
           <IconWithDefault src={props.category.icon ?? ''} />
         </div>
-        <span className='overflow-hidden truncate whitespace-nowrap text-sm font-semibold leading-5 2xl:text-base'>
+        <span className='overflow-hidden truncate whitespace-nowrap text-[16px] font-semibold leading-5 2xl:text-base'>
           {props.category.name}
         </span>
       </div>
