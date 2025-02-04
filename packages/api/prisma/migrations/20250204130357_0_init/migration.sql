@@ -38,11 +38,7 @@ CREATE TABLE "Step" (
     "icon" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,
-<<<<<<<< HEAD:packages/api/prisma/migrations/20250203160442_0_init/migration.sql
     "categoryId" INTEGER NOT NULL,
-========
-    "roundId" INTEGER NOT NULL,
->>>>>>>> main:packages/api/prisma/migrations/20250204122727_0_init/migration.sql
     "smartListId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -132,12 +128,6 @@ CREATE TABLE "_CardToKeyword" (
 
     CONSTRAINT "_CardToKeyword_AB_pkey" PRIMARY KEY ("A","B")
 );
-<<<<<<<< HEAD:packages/api/prisma/migrations/20250203160442_0_init/migration.sql
-========
-
--- CreateIndex
-CREATE UNIQUE INDEX "Step_position_roundId_key" ON "Step"("position", "roundId");
->>>>>>>> main:packages/api/prisma/migrations/20250204122727_0_init/migration.sql
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Step_position_categoryId_key" ON "Step"("position", "categoryId");
@@ -148,17 +138,11 @@ CREATE UNIQUE INDEX "Step_title_categoryId_key" ON "Step"("title", "categoryId")
 -- CreateIndex
 CREATE INDEX "_CardToKeyword_B_index" ON "_CardToKeyword"("B");
 
--- CreateIndex
-CREATE INDEX "_CardToKeyword_B_index" ON "_CardToKeyword"("B");
-
 -- AddForeignKey
 ALTER TABLE "Category" ADD CONSTRAINT "Category_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Step" ADD CONSTRAINT "Step_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Step" ADD CONSTRAINT "Step_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Step" ADD CONSTRAINT "Step_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
