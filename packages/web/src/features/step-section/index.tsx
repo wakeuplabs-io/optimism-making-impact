@@ -24,7 +24,7 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className='flex max-w-full flex-1 items-center justify-between gap-4 overflow-hidden'>
+    <div className='flex items-center justify-between flex-1 max-w-full gap-4 overflow-hidden'>
       <StepsList
         steps={stepsState.steps}
         selectedStep={stepsState.selectedStep}

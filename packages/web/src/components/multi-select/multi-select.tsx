@@ -105,7 +105,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
               )}
             >
               {selectedValues.length > 0 ? (
-                <div className='flex w-full items-center justify-between px-2'>
+                <div className='flex items-center justify-between w-full px-2'>
                   <div className='flex w-full'>
                     <span className='text-sm font-[400]'> {selectedValues.length} selected</span>
                   </div>
@@ -122,7 +122,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   </div>
                 </div>
               ) : (
-                <div className='mx-auto flex w-full items-center justify-between'>
+                <div className='flex items-center justify-between w-full mx-auto'>
                   <span className='mx-3 text-sm font-[400] text-input'>{placeholder}</span>
                   <ChevronDown size={18} className='mx-2 cursor-pointer text-input' />
                 </div>
@@ -131,7 +131,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
           </PopoverTrigger>
           <PopoverContent
             id='multiselect-popover-content'
-            className='pointer-events-auto border border-input p-0'
+            className='p-0 border pointer-events-auto border-input'
             style={{ width: `min(${popoverWidth}px, 90vw)` }}
             align='start'
             onEscapeKeyDown={() => setIsPopoverOpen(false)}
@@ -144,7 +144,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 <CommandEmpty>
                   {searchTerm ? (
                     <button
-                      className='w-full rounded-md text-sm underline hover:bg-accent'
+                      className='w-full text-sm underline rounded-md hover:bg-accent'
                       onClick={(e) => {
                         e.stopPropagation();
                         const newOption = { label: searchTerm, value: searchTerm };
@@ -169,7 +169,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                           selectedValues.length === options.length ? 'text-primary-foreground bg-primary' : 'opacity-50 [&_svg]:invisible',
                         )}
                       >
-                        <CheckIcon className='h-4 w-4' />
+                        <CheckIcon className='w-4 h-4' />
                       </div>
                       <span>(Select All)</span>
                     </CommandItem>
@@ -189,7 +189,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                             isSelected ? 'text-primary-foreground bg-primary' : 'opacity-50 [&_svg]:invisible',
                           )}
                         >
-                          <CheckIcon className='h-4 w-4 text-white' />
+                          <CheckIcon className='w-4 h-4 text-white' />
                         </div>
                         <span>{option.label}</span>
                       </CommandItem>
@@ -218,7 +218,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             </Command>
           </PopoverContent>
         </Popover>
-        <div className='flex w-full flex-wrap gap-1' style={{ width: `min(${popoverWidth}px, 90vw)` }}>
+        <div className='flex flex-wrap w-full gap-1' style={{ width: `min(${popoverWidth}px, 90vw)` }}>
           {selectedValues.length > 0 && (
             <>
               {selectedValues.slice(0, maxCount).map((value) => {

@@ -34,8 +34,8 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
         <button aria-label='Open modal'>{props.trigger}</button>
       </DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px]' {...contentProps}>
-        <DialogHeader className='flex w-full items-center justify-center'>
-          {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
+        <DialogHeader className='flex items-center justify-center w-full'>
+          {props.title && <DialogTitle className='text-lg text-center text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
           {props.subtitle && <DialogDescription className='text-center text-secondary'>{props.subtitle}</DialogDescription>}
         </DialogHeader>
         <div className='w-full'>{props.children}</div>

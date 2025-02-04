@@ -1,6 +1,6 @@
 import { CardStep } from '@/features/main-section/step-types/cards';
 import { InfographyStep } from '@/features/main-section/step-types/infographies/infography';
-import { ItemsStep } from '@/features/main-section/step-types/items';
+import { ItemsStep } from '@/features/main-section/step-types/items/index';
 import { CompleteStep } from '@/types';
 
 interface StepTypeSelectorProps {

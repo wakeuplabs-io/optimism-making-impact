@@ -53,7 +53,7 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-center text-sm'>
+    <div className='text-sm text-center'>
       <span>No filters available</span>
     </div>
   );
@@ -100,7 +100,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
       {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
       {props.isAdmin && (
-        <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+        <div className='flex items-center gap-1 ml-auto' onClick={(e) => e.stopPropagation()}>
           {props.editComponent}
           {props.deleteComponent}
         </div>
