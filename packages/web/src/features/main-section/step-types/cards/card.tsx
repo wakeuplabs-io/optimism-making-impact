@@ -39,7 +39,7 @@ function CardTitle(props: CardTitleProps) {
   const deleteCard = useMainSectionStore((state) => state.deleteCard);
 
   return (
-    <div className='flex max-w-full items-center gap-4'>
+    <div className='flex items-center max-w-full gap-4'>
       <p
         className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-[18px] font-[400] leading-[22px]'
         title={props.card.title}
