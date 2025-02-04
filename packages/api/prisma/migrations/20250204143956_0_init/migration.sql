@@ -91,6 +91,7 @@ CREATE TABLE "Card" (
 CREATE TABLE "Keyword" (
     "id" SERIAL NOT NULL,
     "value" TEXT NOT NULL,
+    "stepId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -136,6 +137,9 @@ CREATE UNIQUE INDEX "Step_position_categoryId_key" ON "Step"("position", "catego
 CREATE UNIQUE INDEX "Step_title_categoryId_key" ON "Step"("title", "categoryId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Keyword_value_stepId_key" ON "Keyword"("value", "stepId");
+
+-- CreateIndex
 CREATE INDEX "_CardToKeyword_B_index" ON "_CardToKeyword"("B");
 
 -- AddForeignKey
@@ -161,6 +165,9 @@ ALTER TABLE "Card" ADD CONSTRAINT "Card_stepId_fkey" FOREIGN KEY ("stepId") REFE
 
 -- AddForeignKey
 ALTER TABLE "Card" ADD CONSTRAINT "Card_attributeId_fkey" FOREIGN KEY ("attributeId") REFERENCES "Attribute"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Keyword" ADD CONSTRAINT "Keyword_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;

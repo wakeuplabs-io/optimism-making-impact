@@ -44,18 +44,26 @@ describe('Duplicate round', async () => {
       expect(step.type).toBe(originalStep.type);
       expect(step.id).not.toBe(originalStep.id);
       expect(step.categoryId).not.toBe(originalStep.categoryId);
+
       // Infographics
       expect(step.infographies.length).toBe(originalStep.infographies.length);
       step.infographies.forEach((infography, i) => {
         expect(infography.markdown).toBe(originalStep.infographies[i].markdown);
         expect(infography.image).toBe(originalStep.infographies[i].image);
         expect(infography.position).toBe(originalStep.infographies[i].position);
-        expect(infography.id).not.toBe(originalStep.infographies[i].id);
         expect(infography.stepId).toBe(step.id);
+        expect(infography.id).not.toBe(originalStep.infographies[i].id);
       });
 
       // Items
       expect(step.items.length).toBe(originalStep.items.length);
+      step.items.forEach((item, i) => {
+        expect(item.markdown).toBe(originalStep.items[i].markdown);
+        expect(item.position).toBe(originalStep.items[i].position);
+        expect(item.id).not.toBe(originalStep.items[i].id);
+        expect(item.stepId).toBe(step.id);
+        expect(item.attributeId).not.toBe(originalStep.items[i].attributeId);
+      });
 
       // Cards and keywords
       expect(step.cards.length).toBe(originalStep.cards.length);
@@ -74,15 +82,6 @@ describe('Duplicate round', async () => {
           expect(keyword.value).toBe(originalCard.keywords[k].value);
           expect(keyword.id).not.toBe(originalCard.keywords[k].id);
         });
-      });
-
-      // Items
-      step.items.forEach((item, i) => {
-        expect(item.markdown).toBe(originalStep.items[i].markdown);
-        expect(item.position).toBe(originalStep.items[i].position);
-        expect(item.id).not.toBe(originalStep.items[i].id);
-        expect(item.stepId).toBe(step.id);
-        expect(item.attributeId).not.toBe(originalStep.items[i].attributeId);
       });
     });
   });
