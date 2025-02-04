@@ -29,11 +29,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
     if (!parsed.success) throw ApiError.badRequest();
 
     await prisma.category.create({
-      data: {
-        name: parsed.data.title,
-        icon: parsed.data.icon,
-        roundId: parsed.data.roundId,
-      },
+      data: parsed.data,
     });
 
     apiResponse.success(res, { message: 'Category created successfully.' }, 201);
@@ -51,10 +47,7 @@ async function editOne(req: Request, res: Response, next: NextFunction) {
 
     const edited = await prisma.category.update({
       where: { id: parsedParams.data.id },
-      data: {
-        name: parsedBody.data.title,
-        icon: parsedBody.data.icon,
-      },
+      data: parsedBody.data,
     });
 
     apiResponse.success(res, edited, 201);

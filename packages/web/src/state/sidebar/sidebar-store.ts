@@ -76,7 +76,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         }
       },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
-      apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
+      apiCall: () => CategoriesService.createOne({ name, icon, roundId }),
       onError: (error) => {
         const title = 'Failed to add category';
         let description = 'Unknown error';

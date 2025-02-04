@@ -5,12 +5,12 @@ export const getAllCategoriesSchema = z.object({
 });
 
 export const createCategoryBodySchema = z.object({
-  title: z.string(),
+  name: z.string(),
   icon: z.string(),
-  roundId: z.string().transform(Number),
+  roundId: z.number(),
 });
 
 export const editCategoryBodySchema = z.object({
-  title: z.string().optional(),
+  name: z.string().optional(),
   icon: z.string().optional(),
 });
