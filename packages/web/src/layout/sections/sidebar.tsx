@@ -45,7 +45,7 @@ function SidebarContainer(props: SidebarContainerProps) {
   if (isMobile) {
     // Render as a Sheet on Mobile
     return (
-      <nav className='flex h-28 w-full items-center justify-start gap-4 p-3 lg:static'>
+      <nav className='flex items-center justify-start w-full gap-4 p-3 h-28 lg:static'>
         <SideMenu
           trigger={<Menu className='text-black' />}
           description='Sidebar'
@@ -78,17 +78,19 @@ function SidebarContent(props: SidebarContentProps) {
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (
-    <div className='flex flex-col gap-6'>
-      <div className='mb-10 flex justify-center'>
+    <div className='flex flex-col gap-10'>
+      <div className='flex justify-center mb-5'>
         <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
       </div>
-      <Rounds />
-      {isAdmin && (
-        <div className='flex w-full justify-around gap-1'>
-          <CreateRoundModal onSave={addRound} />
-          <AddCategoryModal roundId={props.round.id} onSave={addCategory} />
-        </div>
-      )}
+      <div className='flex flex-col gap-4'>
+        <Rounds />
+        {isAdmin && (
+          <div className='flex justify-around w-full gap-1'>
+            <CreateRoundModal onSave={addRound} />
+            <AddCategoryModal roundId={props.round.id} onSave={addCategory} />
+          </div>
+        )}
+      </div>
       <CategoryList />
       <LogosSection />
       <a href={WAKEUP_URL} target='_blank' rel='noreferrer' className='mt-8'>
