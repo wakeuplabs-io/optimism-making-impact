@@ -3,4 +3,4 @@ import { Router } from 'express';
 
 export const smartListsRouter = Router();
 
-smartListsRouter.get('/by-category/:id', smartListsController.getByRoundId);
+smartListsRouter.get('/by-category/:id', smartListsController.getByCategoryId);

@@ -38,5 +38,5 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
 }
 
 export const smartListsController = {
-  getByRoundId: getByCategoryId,
+  getByCategoryId,
 };
