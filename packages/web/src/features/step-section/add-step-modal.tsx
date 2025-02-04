@@ -32,7 +32,7 @@ export function AddStepModal(props: AddStepModalProps) {
     if (!open) {
       clear();
     } else {
-      SmartListsService.getByRoundId(props.categoryId).then((res) => {
+      SmartListsService.getByCategoryId(props.categoryId).then((res) => {
         const smartListsOptions = res.smartLists.map((smartList) => ({ label: smartList.title, value: smartList.id.toString() }));
         setSmartListsOptions([emptySmartListOption, ...smartListsOptions]);
       });

@@ -5,13 +5,13 @@ import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-async function getByRoundId(req: Request, res: Response, next: NextFunction) {
+async function getByCategoryId(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = idParamsSchema.safeParse(req.params);
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const categories = await prisma.category.findMany({
+    const category = await prisma.category.findFirst({
       where: { roundId: parsed.data.id },
       include: {
         steps: {
@@ -22,7 +22,9 @@ async function getByRoundId(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    const smartlistIds = categories.flatMap((cat) => cat.steps.map((step) => step.smartListId));
+    if (!category) throw new ApiError(404, 'Category not found.');
+
+    const smartlistIds = category.steps.map((step) => step.smartListId);
     const stepsIds: number[] = smartlistIds.filter((id): id is number => id !== null);
 
     const smartLists = await prisma.smartList.findMany({
@@ -36,5 +38,5 @@ async function getByRoundId(req: Request, res: Response, next: NextFunction) {
 }
 
 export const smartListsController = {
-  getByRoundId,
+  getByRoundId: getByCategoryId,
 };
