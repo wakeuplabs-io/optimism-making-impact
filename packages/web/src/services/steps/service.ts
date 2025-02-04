@@ -23,8 +23,8 @@ export class StepsServiceClass {
     return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data);
   }
 
-  async getByRoundId(roundId: number) {
-    return this.fetcher.get(stepsEndpoint + `?roundId=${roundId}`).then((res) => res.data);
+  async getByCategoryId(categoryId: number) {
+    return this.fetcher.get(stepsEndpoint + `?categoryId=${categoryId}`).then((res) => res.data);
   }
 
   async create(data: CreateStepBody) {

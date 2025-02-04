@@ -12,7 +12,7 @@ export const stepSchema = z.object({
   icon: z.string(),
   position: z.number(), // Zero-based
   type: stepTypeSchema,
-  roundId: z.number(),
+  categoryId: z.number(),
   smartListId: z.number().nullable().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

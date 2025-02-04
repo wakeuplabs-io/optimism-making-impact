@@ -2,7 +2,7 @@ import { fetcher } from '@/lib/fetcher';
 import { SmartList } from '@/types/smart-lists';
 import { AxiosInstance } from 'axios';
 
-const attributesEndpoint = '/smart-lists';
+const smartListsEndpoint = '/smart-lists';
 
 class Service {
   private static instance: Service;
@@ -19,8 +19,8 @@ class Service {
     return Service.instance;
   }
 
-  async getByRoundId(roundId: number): Promise<{ smartLists: SmartList[] }> {
-    return this.fetcher.get(attributesEndpoint + `/by-round/${roundId}`).then((res) => res.data.data);
+  async getByCategoryId(categoryId: number): Promise<{ smartLists: SmartList[] }> {
+    return this.fetcher.get(smartListsEndpoint + `/by-category/${categoryId}`).then((res) => res.data.data);
   }
 }
 

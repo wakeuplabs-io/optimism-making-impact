@@ -17,9 +17,9 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
     if (!selectedStep) return;
     set(() => ({ selectedStep }));
   },
-  fetchByRoundId: async (roundId: number) => {
+  fetchByCategoryId: async (categoryId: number) => {
     try {
-      const { data } = await StepsService.getByRoundId(roundId);
+      const { data } = await StepsService.getByCategoryId(categoryId);
 
       const parsedSteps = stepArraySchema.parse(data.steps);
 
@@ -41,7 +41,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               ...lastStep,
               ...data,
               id: lastStep.id,
-              type: data.type ?? 'INFOGRAPHY',
+              type: data.type,
               position: lastStep.position + 1,
               description: data.description ?? '',
             },
@@ -54,7 +54,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               id: 1,
               position: 0,
               description: data.description ?? '',
-              type: data.type ?? 'INFOGRAPHY',
+              type: data.type,
               smartListId: data.smartListId ?? null,
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
@@ -77,7 +77,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().fetchByRoundId(roundId);
+        get().fetchByCategoryId(roundId);
       },
     });
   },
@@ -98,12 +98,12 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().fetchByRoundId(get().steps[0].roundId);
+        get().fetchByCategoryId(get().steps[0].categoryId);
       },
     });
   },
   deleteStep: async (stepId: number) => {
-    const roundId = get().steps[0].roundId;
+    const categoryId = get().steps[0].categoryId;
 
     await optimisticUpdate({
       getStateSlice: () => get().steps,
@@ -121,7 +121,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
-        get().fetchByRoundId(roundId);
+        get().fetchByCategoryId(categoryId);
       },
     });
   },

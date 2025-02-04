@@ -7,6 +7,7 @@ import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { UpdateCardBody } from '@/services/cards/schemas';
 import { Attribute, CompleteCard, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Trash } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -14,7 +15,8 @@ const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 
 interface EditCardModalProps {
   stepId: number;
-  onClick?: (cardId: number, data: UpdateCardBody) => void;
+  onSave?: (cardId: number, data: UpdateCardBody) => void;
+  onDelete?: (cardId: number) => void;
   keywords: Keyword[];
   attributes?: Attribute[];
   card: CompleteCard;
@@ -78,7 +80,7 @@ export function EditCardModal(props: EditCardModalProps) {
       return { value, id: keyword?.id };
     });
 
-    props.onClick?.(props.card.id, {
+    props.onSave?.(props.card.id, {
       title: data.title,
       markdown: data.markdown,
       keywords: selectedKeywordsValueAndId,
@@ -92,6 +94,9 @@ export function EditCardModal(props: EditCardModalProps) {
       title='Edit card'
       trigger={<EditIcon />}
       onSubmit={handleSubmit}
+      cancelButtonIcon={<Trash />}
+      cancelButtonText='Delete'
+      onCancel={() => props.onDelete?.(props.card.id)}
       defaultValues={defaultValues}
       contentProps={{
         onPointerDownOutside: (e) => {

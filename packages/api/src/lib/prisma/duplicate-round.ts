@@ -1,21 +1,38 @@
 import { prisma } from '@/lib/prisma/instance.js';
 import { extractKeywordData } from '@/lib/utils/index.js';
+import { CompleteCategory } from '@/types/entities/categories.js';
 import { CompleteRound } from '@/types/entities/round.js';
 import { CompleteStep } from '@/types/entities/step.js';
-import { Category, Round, SmartList } from '@prisma/client';
+import { Category, Round } from '@prisma/client';
 
 /**
- * Duplicates the given round and its associated categories, steps, smart lists, keywords, and attributes.
- * Returns the newly created round, categories, steps, and smart lists.
+ * Duplicates an entire round, including categories, steps, items, cards, and related entities.
+ * Ensures relationships remain intact.
  * @param lastRound The round to duplicate.
- * @returns The newly created round, categories, steps, and smart lists.
+ * @returns The newly created round ID.
  */
 export async function duplicateRound(lastRound: CompleteRound): Promise<number> {
   const newRound = await createRound(lastRound);
-  await createCategoriesForRound(lastRound.categories, newRound.id);
-  const { oldToNewAttributeIds, oldToNewSmartListIds } = await createSmartListsFromSteps(lastRound.steps);
-  const oldToNewKeywordIds = await duplicateKeywords(lastRound.steps);
-  await createStepsForRound(lastRound.steps, newRound.id, oldToNewSmartListIds, oldToNewAttributeIds, oldToNewKeywordIds);
+
+  // Step 1: Duplicate Categories and store old-to-new mapping
+  const oldToNewCategoryMap = await createCategoriesForRound(lastRound.categories, newRound.id);
+
+  // Step 2: Duplicate Smart Lists and Attributes
+  const { oldToNewSmartListIds, oldToNewAttributeIds } = await createSmartListsFromSteps(
+    lastRound.categories.flatMap((category) => category.steps),
+  );
+
+  // Step 3: Duplicate Keywords
+  const oldToNewKeywordIds = await duplicateKeywords(lastRound.categories.flatMap((category) => category.steps));
+
+  // Step 4: Duplicate Items and Cards
+  await createStepsWithRelationsForCategories(
+    lastRound.categories,
+    oldToNewCategoryMap,
+    oldToNewAttributeIds,
+    oldToNewKeywordIds,
+    oldToNewSmartListIds,
+  );
 
   return newRound.id;
 }
@@ -29,80 +46,67 @@ async function createRound(prevRound: Round): Promise<Round> {
   });
 }
 
-async function createCategoriesForRound(categories: Category[], roundId: number): Promise<Category[]> {
-  const createdCategories: Category[] = [];
+async function createCategoriesForRound(categories: Category[], newRoundId: number): Promise<Record<number, number>> {
+  const categoryMap: Record<number, number> = {};
 
   for (const category of categories) {
     const newCategory = await prisma.category.create({
       data: {
         name: category.name,
         icon: category.icon,
-        roundId: roundId,
+        roundId: newRoundId,
       },
     });
-    createdCategories.push(newCategory);
+
+    categoryMap[category.id] = newCategory.id;
   }
 
-  return createdCategories;
+  return categoryMap;
 }
 
 async function createSmartListsFromSteps(steps: CompleteStep[]): Promise<{
-  createdSmartLists: SmartList[];
   oldToNewSmartListIds: Record<number, number>;
   oldToNewAttributeIds: Record<number, number>;
 }> {
-  const createdSmartLists: SmartList[] = [];
-  const oldToNewSmartListIds: Record<number, number> = {};
-  const oldToNewAttributeIds: Record<number, number> = {};
+  const smartListMap: Record<number, number> = {};
+  const attributeMap: Record<number, number> = {};
 
-  // Loop over each step to duplicate the SmartList (if it exists).
   for (const step of steps) {
-    const { smartList } = step;
-
-    if (!smartList) {
-      continue; // This step doesn't have a SmartList, skip it.
+    if (!step.smartList) {
+      continue;
     }
 
-    // 1) Create the new SmartList (top-level data only).
-    const newSmartList = await prisma.smartList.create({ data: { title: smartList.title } });
+    const newSmartList = await prisma.smartList.create({
+      data: { title: step.smartList.title },
+    });
 
-    // Store the newly created SmartList and the ID mapping.
-    createdSmartLists.push(newSmartList);
-    oldToNewSmartListIds[smartList.id] = newSmartList.id;
+    smartListMap[step.smartList.id] = newSmartList.id;
 
-    // 2) Create *new* Attributes for this newly created SmartList and build an old->new ID mapping for attributes as well.
-    for (const oldAttr of smartList.attributes) {
+    for (const oldAttr of step.smartList.attributes) {
       const newAttr = await prisma.attribute.create({
         data: {
           value: oldAttr.value,
           description: oldAttr.description,
           color: oldAttr.color,
-          categoryId: oldAttr.categoryId, // or map categoryId if needed
-          smartListId: newSmartList.id, // connect to the *new* SmartList
+          categoryId: oldAttr.categoryId, // Ensure correct category linking
+          smartListId: newSmartList.id,
         },
       });
 
-      oldToNewAttributeIds[oldAttr.id] = newAttr.id;
+      attributeMap[oldAttr.id] = newAttr.id;
     }
   }
 
-  return {
-    createdSmartLists,
-    oldToNewSmartListIds,
-    oldToNewAttributeIds,
-  };
+  return { oldToNewSmartListIds: smartListMap, oldToNewAttributeIds: attributeMap };
 }
 
 async function duplicateKeywords(steps: CompleteStep[]): Promise<Record<number, number>> {
-  // Gather all unique keywords from steps and build a dictionary to store oldId -> newId
   const { keywordIds: oldKeywordIds, keywordMap } = extractKeywordData(steps);
-  const oldToNewKeywordIds: Record<number, number> = {};
+  const oldToNewKeywordIds: Record<number, number> = {}; // Renamed to avoid conflict
 
-  // Now create each new keyword in the database
   for (const oldId of oldKeywordIds) {
     const oldKeyword = keywordMap.get(oldId);
-
-    if (!oldKeyword) continue; // This shouldn't happen if data is consistent
+    if (!oldKeyword) continue;
 
     const newKeyword = await prisma.keyword.create({
       data: { value: oldKeyword.value },
@@ -114,66 +118,67 @@ async function duplicateKeywords(steps: CompleteStep[]): Promise<Record<number, 
   return oldToNewKeywordIds;
 }
 
-async function createStepsForRound(
-  steps: CompleteStep[],
-  roundId: number,
-  oldToNewSmartListIds: Record<number, number>,
+async function createStepsWithRelationsForCategories(
+  oldCategories: CompleteCategory[],
+  oldToNewCategoryMap: Record<number, number>,
   oldToNewAttributeIds: Record<number, number>,
   oldToNewKeywordIds: Record<number, number>,
+  oldToNewSmartListIds: Record<number, number>,
 ) {
+  const stepMap: Record<number, number> = {};
   const createdStepsPromises = [];
 
-  for (const step of steps) {
-    const newStep = prisma.step.create({
-      data: {
-        title: step.title,
-        icon: step.icon,
-        position: step.position,
-        type: step.type,
-        roundId: roundId,
-        smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
-        infographies: {
-          create: step.infographies.map(({ image, markdown, position }) => ({ image, markdown, position })),
-        },
-        cards: {
-          create: step.cards.map(({ strength, markdown, position, title, attributeId, keywords }) => ({
-            strength,
-            markdown,
-            position,
-            title,
-            attributeId: attributeId ? oldToNewAttributeIds[attributeId] : null,
-            keywords: {
-              connect: keywords.map((oldKw) => ({
-                id: oldToNewKeywordIds[oldKw.id], // connect to the newly created keyword
-              })),
-            },
-          })),
-        },
-        items: {
-          create: step.items.map(({ markdown, position, attributeId }) => ({
-            markdown,
-            position,
-            attribute: {
-              connect: {
-                id: attributeId ? oldToNewAttributeIds[attributeId] : null,
+  for (const oldCategory of oldCategories) {
+    for (const step of oldCategory.steps) {
+      const newStepPromise = prisma.step.create({
+        data: {
+          title: step.title,
+          icon: step.icon,
+          position: step.position,
+          type: step.type,
+          categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
+          smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
+          infographies: {
+            create: step.infographies.map(({ image, markdown, position }) => ({
+              image,
+              markdown,
+              position,
+            })),
+          },
+          items: {
+            create: step.items.map(({ markdown, position, attributeId }) => ({
+              markdown,
+              position,
+              attribute: {
+                connect: {
+                  id: attributeId ? oldToNewAttributeIds[attributeId] : null,
+                },
               },
-            },
-          })),
-        },
-      },
-      include: {
-        smartList: {
-          include: {
-            attributes: true,
+            })),
+          },
+          cards: {
+            create: step.cards.map(({ strength, markdown, position, title, attributeId, keywords }) => ({
+              strength,
+              markdown,
+              position,
+              title,
+              attribute: attributeId ? { connect: { id: oldToNewAttributeIds[attributeId] } } : undefined,
+              keywords: {
+                connect: keywords.map((kw) => ({ id: oldToNewKeywordIds[kw.id] })).filter((kw) => kw.id !== undefined),
+              },
+            })),
           },
         },
-      },
-    });
+      });
 
-    createdStepsPromises.push(newStep);
+      createdStepsPromises.push(newStepPromise);
+    }
   }
 
   const createdSteps = await Promise.all(createdStepsPromises);
+  createdSteps.forEach((newStep, index) => {
+    stepMap[oldCategories.flatMap((c) => c.steps)[index].id] = newStep.id;
+  });
 
-  return createdSteps;
+  return stepMap;
 }

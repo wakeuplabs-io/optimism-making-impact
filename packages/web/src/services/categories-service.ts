@@ -27,14 +27,14 @@ class CategoriesServiceClass {
     return this.fetcher.get(categoriesEndpoint + `?roundId=${roundId}`).then((res) => res.data);
   }
 
-  async createOne(data: { title: string; iconURL: string; roundId: number }) {
+  async createOne(data: { name: string; icon: string; roundId: number }) {
     return this.fetcher.post('/categories', {
       ...data,
     });
   }
 
-  async editOne(id: number, name: string) {
-    return this.fetcher.put(`/categories/${id}`, { id, name });
+  async editOne(id: number, name: string, icon: string) {
+    return this.fetcher.put(`/categories/${id}`, { name, icon });
   }
 
   async deleteOne(categoryId: number) {

@@ -1,4 +1,5 @@
 import { attributeSchema } from '@/types/attributes';
+import { stepSchema } from '@/types/steps';
 import { z } from 'zod';
 
 export const categorySchema = z.object({
@@ -13,5 +14,6 @@ export type Category = z.infer<typeof categorySchema>;
 
 export const completeCategorySchema = categorySchema.extend({
   attributes: z.array(attributeSchema),
+  steps: z.array(stepSchema),
 });
 export type CompleteCategory = z.infer<typeof completeCategorySchema>;

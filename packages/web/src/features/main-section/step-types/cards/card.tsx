@@ -1,13 +1,12 @@
 import { Badge } from '@/components/badge';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { MarkdownText } from '@/components/markdown-text';
-import { DeleteCardButton } from '@/features/main-section/step-types/cards/delete-card-button';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteCard, Keyword, StrengthEnum } from '@/types';
+import { Attribute, CompleteCard, Keyword, StrengthEnum } from '@/types';
 
 interface CardProps {
   card: CompleteCard;
@@ -15,12 +14,12 @@ interface CardProps {
 }
 
 export function Card(props: CardProps) {
-  const { keywords } = useFiltersStore((state) => state);
+  const { keywords, attributes } = useFiltersStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (
     <div className='0 flex h-fit min-h-[320px] w-[320px] flex-col gap-4 rounded-2xl bg-white p-4'>
-      <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} />
+      <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
     </div>
@@ -32,6 +31,7 @@ interface CardTitleProps {
   stepId: number;
   isAdmin: boolean;
   keywords: Keyword[];
+  atributes: Attribute[];
 }
 
 function CardTitle(props: CardTitleProps) {
@@ -48,10 +48,14 @@ function CardTitle(props: CardTitleProps) {
       </p>
       <StrengthIndicator strength={props.card.strength} />
       {props.isAdmin && (
-        <>
-          <EditCardModal stepId={props.stepId} keywords={props.keywords} card={props.card} onClick={editCard} />
-          <DeleteCardButton card={props.card} onClick={deleteCard} />
-        </>
+        <EditCardModal
+          stepId={props.stepId}
+          keywords={props.keywords}
+          card={props.card}
+          onSave={editCard}
+          onDelete={deleteCard}
+          attributes={props.atributes}
+        />
       )}
     </div>
   );

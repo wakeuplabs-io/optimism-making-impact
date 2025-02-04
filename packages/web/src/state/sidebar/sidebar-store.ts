@@ -5,34 +5,37 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Category, CompleteRound, Round } from '@/types';
+import { CompleteRound, Round } from '@/types';
 import { AxiosError } from 'axios';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
   rounds: [],
   selectedRound: null,
-  selectedCategoryId: 0,
+  selectedCategoryId: -1,
   fetchData: async () => {
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
 
     let selectedRound = get().selectedRound;
 
-    if (!selectedRound) {
-      selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
-    }
+    if (!selectedRound) selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
 
-    const categories: Category[] = selectedRound.categories;
+    const select = rounds.find((round) => round.id === selectedRound.id);
 
-    set(() => ({ rounds, selectedRound, categories }));
+    set(() => ({
+      rounds,
+      selectedRound: select,
+      categories: select?.categories,
+      selectedCategoryId: get().selectedCategoryId < 0 ? select?.categories[0].id : get().selectedCategoryId,
+    }));
   },
   setSelectedRound: (roundId: number) => {
     const selectedRound = get().rounds.find((round) => round.id === roundId);
 
     if (selectedRound) {
       const categories = selectedRound.categories;
-      set(() => ({ selectedRound, categories }));
+      set(() => ({ selectedRound, categories, selectedCategoryId: categories[0].id }));
       router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
     }
   },
@@ -73,7 +76,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         }
       },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
-      apiCall: () => CategoriesService.createOne({ title: name, iconURL: icon, roundId }),
+      apiCall: () => CategoriesService.createOne({ name, icon, roundId }),
       onError: (error) => {
         const title = 'Failed to add category';
         let description = 'Unknown error';
@@ -112,16 +115,17 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       },
     });
   },
-  editCategory: async (categoryId: number, name: string) => {
+  editCategory: async (name: string, icon: string) => {
+    const selectedCategoryId = get().selectedCategoryId;
     await optimisticUpdate({
       getStateSlice: () => get().selectedRound?.categories,
       updateFn: (categories) => {
         if (categories) {
-          return categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat));
+          return categories.map((cat) => (cat.id === selectedCategoryId ? { ...cat, name, icon } : cat));
         }
       },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
-      apiCall: () => CategoriesService.editOne(categoryId, name),
+      apiCall: () => CategoriesService.editOne(selectedCategoryId, name, icon),
       onError: (error) => {
         const title = 'Failed to update category';
         let description = 'Unknown error';

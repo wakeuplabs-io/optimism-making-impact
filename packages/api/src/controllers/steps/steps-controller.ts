@@ -47,7 +47,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
     if (!parsed.success) throw ApiError.badRequest();
 
     const steps = await prisma.step.findMany({
-      where: { roundId: parsed.data.roundId },
+      where: { categoryId: parsed.data.categoryId },
       orderBy: { position: 'asc' },
     });
 
@@ -64,7 +64,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     const result = await prisma.$transaction(async (prisma) => {
       const lastStep = await prisma.step.findFirst({
-        where: { roundId: parsed.data.roundId },
+        where: { categoryId: parsed.data.categoryId },
         orderBy: { position: 'desc' },
         select: { position: true },
       });
@@ -140,7 +140,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
       // Get all remaining steps ordered by position
       const remainingSteps = await prisma.step.findMany({
-        where: { roundId: deleted.roundId },
+        where: { categoryId: deleted.categoryId },
         orderBy: { position: 'asc' },
       });
 

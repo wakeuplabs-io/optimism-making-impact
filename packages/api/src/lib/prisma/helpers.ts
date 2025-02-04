@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma/instance.js';
 import { CompleteRound } from '@/types/entities/round.js';
 
 /**
- * Fetches a complete round from the database, including all associated categories, steps, smart lists, infographies, items, cards, attributes, and keywords.
+ * Fetches a complete round from the database, including all associated categories, steps, smart lists, infographics, items, cards, attributes, and keywords.
  * @param {number} roundId - The ID of the round to fetch.
  * @returns {Promise<CompleteRound>} A promise that resolves to the fetched round.
  * @throws {Prisma.PrismaClientKnownRequestError} If the round does not exist.
@@ -11,23 +11,19 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound> {
   return prisma.round.findUniqueOrThrow({
     where: { id: roundId },
     include: {
-      categories: { include: { attributes: true }, orderBy: { id: 'asc' } },
-      steps: {
-        orderBy: { position: 'asc' },
+      categories: {
+        orderBy: { id: 'asc' },
         include: {
-          smartList: {
+          attributes: true,
+          steps: {
+            orderBy: { position: 'asc' },
             include: {
-              attributes: {
-                orderBy: { id: 'asc' },
-              },
+              infographies: { orderBy: { position: 'asc' } },
+              items: { include: { attribute: true }, orderBy: { position: 'asc' } },
+              cards: { include: { attribute: true, keywords: true }, orderBy: { position: 'asc' } },
+              smartList: { include: { attributes: true } },
             },
           },
-          infographies: { orderBy: { position: 'asc' } },
-          items: {
-            include: { attribute: true },
-            orderBy: { position: 'asc' },
-          },
-          cards: { orderBy: { position: 'asc' }, include: { attribute: true, keywords: true } },
         },
       },
     },
@@ -35,7 +31,7 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound> {
 }
 
 /**
- * Fetches the most recent round (including categories, steps, attributes, smart lists, infographies, items, and cards).
+ * Fetches the most recent round (including categories, steps, attributes, smart lists, infographics, items, and cards).
  * @returns The most recent round.
  * @throws If no round exists.
  */

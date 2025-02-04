@@ -1,7 +1,4 @@
-import { AddNewContent } from '@/components/add-new-content';
 import { CategoryButton } from '@/components/category-button';
-import { Modal } from '@/components/modal';
-import { NewCategoryForm } from '@/features/sidebar/components/new-category-form';
 import { useSidebarStore, useUserStore } from '@/state';
 
 export function CategoryList() {
@@ -32,11 +29,6 @@ export function CategoryList() {
           </li>
         ))}
       </ul>
-      {isAdmin && (
-        <Modal title='New Category' subtitle='Click save when you are done.' trigger={<AddNewContent buttonText='New category' />}>
-          <NewCategoryForm />
-        </Modal>
-      )}
     </>
   );
 }

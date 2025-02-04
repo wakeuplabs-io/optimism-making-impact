@@ -1,6 +1,6 @@
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
 
 const initialFilters = {
   selectedStrengths: [],
@@ -14,6 +14,7 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
   ...initialFilters,
   strengths: strengthArray,
   setKeywords: (keywords: Keyword[]) => set({ keywords }),
+  setAttributes: (attributes: Attribute[]) => set({ attributes }),
   setSelectedStrengths: (strength: StrengthEnum) => {
     const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
     set({ selectedStrengths });

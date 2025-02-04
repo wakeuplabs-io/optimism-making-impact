@@ -8,6 +8,7 @@ interface FormModalProps<TFormValues extends FieldValues> {
   subtitle?: string;
   trigger?: React.ReactNode;
   onSubmit: SubmitHandler<TFormValues>;
+  onCancel?: () => void;
   defaultValues?: DefaultValues<TFormValues>;
   children: React.ReactNode;
   submitButtonText?: string;
@@ -33,7 +34,14 @@ export function FormModal<TFormValues extends FieldValues>({
 
   const buttons = React.useMemo<ModalActionButtonProps[]>(
     () => [
-      { type: 'button', variant: 'secondary', label: cancelButtonText, closeOnClick: true, icon: props.cancelButtonIcon },
+      {
+        type: 'button',
+        variant: 'secondary',
+        label: cancelButtonText,
+        closeOnClick: true,
+        icon: props.cancelButtonIcon,
+        onClick: () => props.onCancel?.(),
+      },
       { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, icon: submitButtonIcon, form: formId },
     ],
     [],

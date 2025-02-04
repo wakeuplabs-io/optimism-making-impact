@@ -16,8 +16,8 @@ const options = stepTypes.map((type) => ({
 const emptySmartListOption = { label: 'None', value: '0' };
 
 interface AddStepModalProps {
-  roundId: number;
-  onClick?: (roundId: number, data: CreateStepBody) => void;
+  categoryId: number;
+  onClick?: (categoryId: number, data: CreateStepBody) => void;
 }
 
 export function AddStepModal(props: AddStepModalProps) {
@@ -32,7 +32,7 @@ export function AddStepModal(props: AddStepModalProps) {
     if (!open) {
       clear();
     } else {
-      SmartListsService.getByRoundId(props.roundId).then((res) => {
+      SmartListsService.getByCategoryId(props.categoryId).then((res) => {
         const smartListsOptions = res.smartLists.map((smartList) => ({ label: smartList.title, value: smartList.id.toString() }));
         setSmartListsOptions([emptySmartListOption, ...smartListsOptions]);
       });
@@ -70,11 +70,11 @@ export function AddStepModal(props: AddStepModalProps) {
 
     const shouldAddSmartList = type === 'CARD' && selectedSmartListId !== null && selectedSmartListId !== 0;
 
-    props.onClick?.(props.roundId, {
+    props.onClick?.(props.categoryId, {
       title,
       icon,
       type: selectedType,
-      roundId: props.roundId,
+      categoryId: props.categoryId,
       smartListId: shouldAddSmartList ? selectedSmartListId : undefined,
       description: selectedType === 'ITEMS' ? description : undefined,
     });

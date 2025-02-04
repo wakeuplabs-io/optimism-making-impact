@@ -9,7 +9,7 @@ interface StepsState {
 }
 
 interface StepsActions {
-  fetchByRoundId: (roundId: number) => void;
+  fetchByCategoryId: (categoryId: number) => void;
   setSelectedStep: (position: number) => void;
   addStep: (roundId: number, data: CreateStepBody) => void;
   editStep: (stepId: number, data: UpdateStepBody) => void;
