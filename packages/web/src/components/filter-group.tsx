@@ -79,35 +79,33 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
   }
 
   return (
-    <div className='flex items-center justify-between overflow-hidden'>
-      <button
-        {...props}
+    <button
+      {...props}
+      className={cn(
+        'flex w-full items-center justify-start gap-2 rounded-full px-2 py-0.5',
+        selected && 'border-1 border border-black',
+        className,
+      )}
+      onClick={handleClick}
+    >
+      {prefixDot && <ColorDot color={prefixDot} />}
+      <span
         className={cn(
-          'flex w-fit items-center justify-start gap-2 rounded-full px-2 py-0.5',
-          selected && 'border-1 border border-black',
-          className,
+          'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
+          selected && 'font-bold',
         )}
-        onClick={handleClick}
       >
-        {prefixDot && <ColorDot color={prefixDot} />}
-        <span
-          className={cn(
-            'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
-            selected && 'font-bold',
-          )}
-        >
-          {label}
-        </span>
-        {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
-        {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
-      </button>
+        {label}
+      </span>
+      {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
+      {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
       {props.isAdmin && (
-        <div className='flex items-center gap-1'>
+        <div className='flex items-center gap-1 ml-auto' onClick={(e) => e.stopPropagation()}>
           {props.editComponent}
           {props.deleteComponent}
         </div>
       )}
-    </div>
+    </button>
   );
 }
 

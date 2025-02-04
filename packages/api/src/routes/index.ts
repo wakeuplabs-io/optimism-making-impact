@@ -4,6 +4,7 @@ import { categoriesRouter } from '@/routes/categories/route.js';
 import { infographiesRouter } from '@/routes/infographies/route.js';
 import { itemsRouter } from '@/routes/items/route.js';
 import { roundsRouter } from '@/routes/rounds/route.js';
+import { smartListsRouter } from '@/routes/smart-lists/route.js';
 import { stepsRouter } from '@/routes/steps/route.js';
 import { testRouter } from '@/routes/test/route.js';
 import { Router } from 'express';
@@ -16,6 +17,7 @@ router.use('/categories', categoriesRouter);
 router.use('/infographies', infographiesRouter);
 router.use('/items', itemsRouter);
 router.use('/rounds', roundsRouter);
+router.use('/smart-lists', smartListsRouter);
 router.use('/steps', stepsRouter);
 
 router.use('/test', testRouter);

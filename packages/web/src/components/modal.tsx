@@ -48,7 +48,7 @@ interface ModalActionButtonProps extends ActionButtonProps {
   closeOnClick?: boolean;
 }
 
-function ModalActionButton({ closeOnClick, ...props }: ModalActionButtonProps) {
+function ModalActionButton({ closeOnClick = true, ...props }: ModalActionButtonProps) {
   if (!closeOnClick) {
     return <ActionButton {...props} />;
   }

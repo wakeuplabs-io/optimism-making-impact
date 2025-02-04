@@ -44,6 +44,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               id: 1,
               position: 0,
               type: data.type ?? 'INFOGRAPHY',
+              smartListId: data.smartListId ?? null,
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
             },
