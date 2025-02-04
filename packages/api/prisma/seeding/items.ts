@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { Item, PrismaClient, Step, StepType } from '@prisma/client';
+import { PrismaClient, Step, StepType } from '@prisma/client';
 
 const itemsData = [
   { markdown: 'The first and most well-known cryptocurrency.' },
@@ -11,51 +11,77 @@ const itemsData = [
   { markdown: 'A platform for building decentralized applications and custom blockchain networks.' },
 ];
 
-export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
-  console.log('Seeding items...');
+const attributeValues = [
+  { value: 'Cryptocurrency', description: 'Digital or virtual currency secured by cryptography.' },
+  { value: 'Smart Contracts', description: 'Self-executing contracts with the terms of the agreement directly written into code.' },
+  { value: 'Decentralized Exchange', description: 'A peer-to-peer marketplace for trading cryptocurrencies without intermediaries.' },
+  { value: 'Oracle Network', description: 'A service that connects blockchain smart contracts with real-world data.' },
+  { value: 'Lending Protocol', description: 'Platforms that enable users to borrow or lend cryptocurrencies.' },
+  {
+    value: 'Blockchain Interoperability',
+    description: 'The ability of different blockchain networks to exchange data and interact seamlessly.',
+  },
+  { value: 'Decentralized Application', description: 'Applications that run on a blockchain network, providing decentralized services.' },
+];
 
-  const itemsToCreate: Array<Omit<Item, 'id' | 'createdAt' | 'updatedAt'>> = [];
-  let colorIndex = 0;
+export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
+  console.log('Seeding items with smart lists and attributes...');
 
   for (const step of steps) {
-    if (step.type !== StepType.ITEMS || !step.smartListId) continue;
+    if (step.type !== StepType.ITEMS) continue;
 
-    // Fetch attributes belonging to the step's SmartList
-    const attributes = await prisma.attribute.findMany({
-      where: {
-        smartListId: step.smartListId,
+    // Create a new SmartList for the step
+    const smartList = await prisma.smartList.create({
+      data: {
+        title: `SmartList for Step ${step.id}`,
+        steps: { connect: { id: step.id } },
       },
     });
 
-    if (!attributes.length) {
-      console.warn(`No attributes found for SmartList ${step.smartListId}, skipping step ${step.id}.`);
-      continue;
-    }
+    // Select a random subset of 5 attributes
+    const shuffledAttributes = attributeValues.sort(() => 0.5 - Math.random()).slice(0, 5);
+    const shuffledColors = COLORS_OPTIONS.sort(() => 0.5 - Math.random());
+
+    // Create attributes linked to the new SmartList with sequentially assigned shuffled colors
+    await prisma.attribute.createMany({
+      data: shuffledAttributes.map((attr, index) => ({
+        value: attr.value,
+        description: attr.description,
+        color: shuffledColors[index % shuffledColors.length], // Assign different colors in shuffled order
+        smartListId: smartList.id,
+        categoryId: 1, // Placeholder category, adjust as needed
+      })),
+    });
+
+    // Fetch the created attributes
+    const createdAttributes = await prisma.attribute.findMany({
+      where: { smartListId: smartList.id },
+    });
 
     let position = 0;
 
+    // Create items and link them to attributes
     for (const itemData of itemsData) {
-      // Assign attributes cyclically from the filtered list
-      const attribute = attributes[position % attributes.length];
+      const attribute = createdAttributes[position % createdAttributes.length];
 
-      itemsToCreate.push({
-        markdown: itemData.markdown,
-        position: position++, // Increment position within each step
-        stepId: step.id,
-        attributeId: attribute.id, // Assign a valid attribute
-        color: COLORS_OPTIONS[colorIndex % COLORS_OPTIONS.length], // Assign a color cyclically
+      await prisma.item.create({
+        data: {
+          markdown: itemData.markdown,
+          position: position++,
+          stepId: step.id,
+          attributeId: attribute.id,
+        },
       });
-
-      colorIndex++;
     }
   }
 
-  const { count } = await prisma.item.createMany({
-    data: itemsToCreate,
-    skipDuplicates: true,
-  });
+  const totalSmartLists = await prisma.smartList.count();
+  const totalAttributes = await prisma.attribute.count();
+  const totalItems = await prisma.item.count();
 
-  console.log(`Seeding complete! A total of ${count} items were seeded.`);
+  console.log('Seeding items with smart lists and attributes completed');
 
-  return await prisma.item.findMany();
+  console.log(`${totalSmartLists} smart lists seeded successfully!`);
+  console.log(`${totalAttributes} attributes seeded successfully!`);
+  console.log(`${totalItems} items seeded successfully!`);
 }

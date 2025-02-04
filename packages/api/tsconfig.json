@@ -14,5 +14,5 @@
     },
     "plugins": [{ "transform": "typescript-transform-paths" }]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "tests"]
 }
