@@ -1,30 +1,31 @@
-import { ActionButton } from '@/components/action-button';
 import { ColorDot } from '@/components/color-dot';
+import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
 import { MultiSelect } from '@/components/multi-select/multi-select';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
-import { CreateCardBody } from '@/services/cards/schemas';
-import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
-import { Plus, Save } from 'lucide-react';
+import { UpdateCardBody } from '@/services/cards/schemas';
+import { Attribute, CompleteCard, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Save } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 
 interface AddCardModalProps {
   stepId: number;
-  onClick?: (data: CreateCardBody) => void;
+  onClick?: (cardId: number, data: UpdateCardBody) => void;
   keywords: Keyword[];
   attributes?: Attribute[];
+  card: CompleteCard;
 }
 
-export function AddCardModal(props: AddCardModalProps) {
-  const [title, setTitle] = useState('');
-  const [markdown, setMarkdown] = useState('');
-  const [strength, setStrength] = useState(StrengthEnum.MEDIUM);
-  const [attributeId, setAttributeId] = useState<number>(dontAssignOption.value);
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+export function EditCardModal(props: AddCardModalProps) {
+  const [title, setTitle] = useState(props.card.title);
+  const [markdown, setMarkdown] = useState(props.card.markdown);
+  const [strength, setStrength] = useState(props.card.strength);
+  const [attributeId, setAttributeId] = useState<number>(props.card.attributeId || dontAssignOption.value);
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(props.card.keywords.map((k) => k.value));
 
   const keywordsOptions = useMemo(
     () => props.keywords.map((keyword) => ({ value: keyword.value, label: keyword.value })),
@@ -52,13 +53,6 @@ export function AddCardModal(props: AddCardModalProps) {
     return options;
   }, [props.attributes]);
 
-  function clearForm() {
-    setMarkdown('');
-    setTitle('');
-    setStrength(StrengthEnum.MEDIUM);
-    setSelectedKeywords([]);
-  }
-
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
   }
@@ -82,10 +76,9 @@ export function AddCardModal(props: AddCardModalProps) {
       return { value, id: keyword?.id };
     });
 
-    props.onClick?.({
+    props.onClick?.(props.card.id, {
       title,
       markdown,
-      stepId: props.stepId,
       keywords: selectedKeywordsValueAndId,
       strength,
       attributeId: attributeId < 1 ? undefined : attributeId,
@@ -96,9 +89,8 @@ export function AddCardModal(props: AddCardModalProps) {
 
   return (
     <Modal
-      onOpenChange={clearForm}
-      title='New card'
-      trigger={<ActionButton label='Add card' variant='secondary' icon={<Plus />} className='w-full' />}
+      title='Edit card'
+      trigger={<EditIcon />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
@@ -117,6 +109,7 @@ export function AddCardModal(props: AddCardModalProps) {
           triggerClassName='capitalize'
           itemClassName='capitalize'
           onValueChange={handleStrengthChange}
+          value={strength}
         />
         <SelectInput
           placeholder='Select Smart List Filter'
@@ -126,6 +119,7 @@ export function AddCardModal(props: AddCardModalProps) {
           itemClassName='capitalize'
           onValueChange={handleAttributeChange}
           disabled={attributeOptions.length === 0}
+          value={attributeId.toString()}
         />
         <TextInput name='title' value={title} onChange={handleTitleChange} placeholder='Title' />
         <TextAreaInput name='markdown' rows={3} value={markdown} onChange={handleMarkdownChange} placeholder='Text' />
@@ -133,6 +127,7 @@ export function AddCardModal(props: AddCardModalProps) {
           options={keywordsOptions}
           onValueChange={handleKeywordsChange}
           value={selectedKeywords}
+          defaultValue={selectedKeywords}
           placeholder='Keywords connected'
           maxCount={3}
         />

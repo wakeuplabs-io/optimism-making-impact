@@ -16,7 +16,7 @@ export function ItemsStep() {
   if (!step) {
     return (
       <div className={cn('flex h-full w-full flex-col gap-4')}>
-        <div className='flex h-full w-full items-center justify-center'>Select a step</div>
+        <div className='flex items-center justify-center w-full h-full'>Select a step</div>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export function ItemsStep() {
     <div className={cn('flex h-full w-full flex-col gap-4')}>
       <div className='flex flex-col lg:flex-row'>
         <ItemFilters smartList={step.smartList} stepId={step.id} />
-        <ItemsList items={step.items} stepId={step.id} title={step.title} attributes={step.smartList?.attributes} />
+        <ItemsList items={step.items} stepId={step.id} title={step.description} attributes={step.smartList?.attributes} />
       </div>
     </div>
   );

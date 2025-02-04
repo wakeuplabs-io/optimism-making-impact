@@ -7,6 +7,7 @@ export const getAllStepsQueryParms = z.object({
 
 export const createStepBodySchema = z.object({
   title: z.string(),
+  description: z.string().optional(),
   icon: z.string(),
   type: z.nativeEnum(StepType).default(StepType.INFOGRAPHY),
   roundId: z.number().min(1),
@@ -15,5 +16,6 @@ export const createStepBodySchema = z.object({
 
 export const updateStepBodySchema = z.object({
   title: z.string().optional(),
+  description: z.string().optional(),
   icon: z.string().optional(),
 });

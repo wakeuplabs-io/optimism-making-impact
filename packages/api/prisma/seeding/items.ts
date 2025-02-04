@@ -33,7 +33,7 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
     // Create a new SmartList for the step
     const smartList = await prisma.smartList.create({
       data: {
-        title: `SmartList for Step ${step.id}`,
+        title: step.title,
         steps: { connect: { id: step.id } },
       },
     });

@@ -34,6 +34,7 @@ CREATE TABLE "Category" (
 CREATE TABLE "Step" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "description" TEXT DEFAULT '',
     "icon" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,

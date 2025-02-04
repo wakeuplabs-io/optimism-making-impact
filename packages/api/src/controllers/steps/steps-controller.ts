@@ -79,7 +79,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       if (isItemType) {
         await prisma.smartList.create({
           data: {
-            title: 'Smart List', // TODO: recive in the body
+            title: parsed.data.title,
             steps: {
               connect: { id: created.id },
             },
@@ -103,12 +103,24 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     if (!parsedBody.success || !parsedId.success) throw ApiError.badRequest();
 
-    const updated = await prisma.step.update({
-      where: { id: parsedId.data.id },
-      data: parsedBody.data,
+    const result = await prisma.$transaction(async (prisma) => {
+      const updated = await prisma.step.update({
+        where: { id: parsedId.data.id },
+        data: parsedBody.data,
+        select: { smartList: true },
+      });
+
+      if (updated.smartList) {
+        await prisma.smartList.update({
+          where: { id: updated.smartList.id },
+          data: { title: parsedBody.data.title },
+        });
+      }
+
+      return updated;
     });
 
-    apiResponse.success(res, updated);
+    apiResponse.success(res, result, 201);
   } catch (error) {
     next(error);
   }

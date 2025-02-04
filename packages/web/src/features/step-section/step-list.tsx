@@ -1,5 +1,5 @@
-import { getButtonState } from '@/components/step-button/helpers';
-import { StepButton } from '@/components/step-button/step-button';
+import { getButtonState } from '@/features/step-section/step-button/helpers';
+import { StepButton } from '@/features/step-section/step-button/step-button';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 
@@ -15,14 +15,14 @@ interface StepsListProps {
 export function StepsList(props: StepsListProps) {
   if (props.steps.length === 0) {
     return (
-      <div className='flex max-w-full flex-1 justify-center overflow-hidden'>
+      <div className='flex justify-center flex-1 max-w-full overflow-hidden'>
         <span>There are no steps for this round.</span>
       </div>
     );
   }
 
   return (
-    <div className='flex max-w-full flex-1 justify-between overflow-hidden'>
+    <div className='flex justify-between flex-1 max-w-full overflow-hidden'>
       {props.steps.map((step) => {
         const buttonState = getButtonState(step, props.selectedStep);
 

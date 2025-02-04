@@ -1,5 +1,5 @@
 import { BADGE_COLORS, COLOR_MAP } from '@/config';
-import { Color, CompleteStep, Keyword } from '@/types';
+import { Color, CompleteCard, Keyword } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -47,8 +47,8 @@ export function getRandomBadgeColor(input: string): string {
   return BADGE_COLORS[index];
 }
 
-export function extractUniqueKeywordsFromStep(step: CompleteStep): Keyword[] {
-  return step.cards
+export function extractUniqueKeywordsFromCards(cards: CompleteCard[]): Keyword[] {
+  return cards
     .flatMap((card) => card.keywords)
     .reduce<Keyword[]>((acc, current) => {
       if (!acc.some((item) => item.id === current.id)) acc.push(current);

@@ -11,8 +11,6 @@ export const cardSchema = z.object({
   position: z.number(),
   stepId: z.number(),
   attributeId: z.number().nullable().optional(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
 });
 export type Card = z.infer<typeof cardSchema>;
 

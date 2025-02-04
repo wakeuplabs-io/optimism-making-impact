@@ -26,6 +26,7 @@ export function AddStepModal(props: AddStepModalProps) {
   const [type, setType] = useState<string>(options[0].value);
   const [smartListsOptions, setSmartListsOptions] = useState<{ label: string; value: string }[]>([]);
   const [selectedSmartListId, setSelectedSmartListId] = useState<number | null>(null);
+  const [description, setDescription] = useState('');
 
   function handleOpenChange(open: boolean) {
     if (!open) {
@@ -60,6 +61,9 @@ export function AddStepModal(props: AddStepModalProps) {
   function handleSmartListChange(value: string) {
     setSelectedSmartListId(+value);
   }
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setDescription(event.target.value);
+  }
 
   function handleSubmit() {
     const selectedType = type as StepType;
@@ -72,6 +76,7 @@ export function AddStepModal(props: AddStepModalProps) {
       type: selectedType,
       roundId: props.roundId,
       smartListId: shouldAddSmartList ? selectedSmartListId : undefined,
+      description: selectedType === 'ITEMS' ? description : undefined,
     });
     clear();
   }
@@ -94,6 +99,9 @@ export function AddStepModal(props: AddStepModalProps) {
         <SelectInput name='Type' items={options} onValueChange={handleTypeChange} value={type} />
         {type === 'CARD' && (
           <SelectInput name='Smart List' items={smartListsOptions} onValueChange={handleSmartListChange} placeholder='Select Smart List' />
+        )}
+        {type === 'ITEMS' && (
+          <TextInput name='Description' placeholder='Description' value={description} onChange={handleDescriptionChange} />
         )}
       </div>
     </Modal>

@@ -35,7 +35,17 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
       updateFn: (steps) => {
         if (steps.length > 0) {
           const lastStep = steps[steps.length - 1];
-          return [...steps, { ...lastStep, ...data, id: lastStep.id, type: data.type ?? 'INFOGRAPHY', position: lastStep.position + 1 }];
+          return [
+            ...steps,
+            {
+              ...lastStep,
+              ...data,
+              id: lastStep.id,
+              type: data.type ?? 'INFOGRAPHY',
+              position: lastStep.position + 1,
+              description: data.description ?? '',
+            },
+          ];
         } else {
           return [
             ...steps,
@@ -43,6 +53,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               ...data,
               id: 1,
               position: 0,
+              description: data.description ?? '',
               type: data.type ?? 'INFOGRAPHY',
               smartListId: data.smartListId ?? null,
               createdAt: new Date().toISOString(),

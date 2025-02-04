@@ -18,13 +18,14 @@ interface ModalProps extends DialogProps {
   trigger?: React.ReactNode;
   children: React.ReactNode;
   buttons?: ModalActionButtonProps[];
+  contentProps?: React.ComponentProps<typeof DialogContent>;
 }
 
 export function Modal({ title, subtitle, trigger, buttons, children, ...props }: ModalProps) {
   return (
     <Dialog {...props}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px]'>
+      <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px]' {...props.contentProps}>
         <DialogHeader className='flex items-center justify-center w-full'>
           {title && <DialogTitle className='text-lg text-center text-dark-low 2xl:text-xl'>{title}</DialogTitle>}
           {subtitle && <DialogDescription className='text-center text-secondary'>{subtitle}</DialogDescription>}
