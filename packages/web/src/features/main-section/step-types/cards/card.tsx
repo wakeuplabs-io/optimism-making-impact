@@ -1,6 +1,6 @@
-import { Badge } from '@/components/badge';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { MarkdownText } from '@/components/markdown-text';
+import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
@@ -95,10 +95,14 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex justify-center gap-2'>
+    <div className='flex flex-wrap justify-start w-full gap-2'>
       {props.keywords.map((keyword, i) => {
         return (
-          <Badge key={`${keyword.id} - ${i}`} backgroundColor={getRandomBadgeColor(keyword.value)}>
+          <Badge
+            key={`${keyword.id}-${i}`}
+            style={{ backgroundColor: getRandomBadgeColor(keyword.value) }}
+            className='inline-block w-[45%] truncate rounded-full px-6 py-1 text-center'
+          >
             {keyword.value}
           </Badge>
         );
