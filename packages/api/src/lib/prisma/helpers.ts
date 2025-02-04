@@ -12,6 +12,7 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound> {
     where: { id: roundId },
     include: {
       categories: {
+        orderBy: { id: 'asc' },
         include: {
           attributes: true,
           steps: {
