@@ -155,7 +155,7 @@ async function createStepsForRound(
             position,
             attribute: {
               connect: {
-                id: oldToNewAttributeIds[attributeId],
+                id: attributeId ? oldToNewAttributeIds[attributeId] : null,
               },
             },
           })),
