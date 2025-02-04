@@ -1,16 +1,13 @@
+import { createCategoryBodySchema, editCategoryBodySchema, getAllCategoriesSchema } from '@/controllers/categories/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
-import { z } from 'zod';
-
-const getAllQuerySchema = z.object({
-  roundId: z.string().transform(Number).optional(),
-});
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = getAllQuerySchema.safeParse(req.query);
+    const parsed = getAllCategoriesSchema.safeParse(req.query);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -27,13 +24,15 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
-    const { title, iconURL, roundId } = req.body; // TODO: validate input
+    const parsed = createCategoryBodySchema.safeParse(req.body);
+
+    if (!parsed.success) throw ApiError.badRequest();
 
     await prisma.category.create({
       data: {
-        name: title,
-        icon: iconURL,
-        roundId: Number(roundId),
+        name: parsed.data.title,
+        icon: parsed.data.icon,
+        roundId: parsed.data.roundId,
       },
     });
 
@@ -45,16 +44,20 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
 async function editOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id, name } = req.body; // TODO: validate input
+    const parsedParams = idParamsSchema.safeParse(req.params);
+    const parsedBody = editCategoryBodySchema.safeParse(req.body);
+
+    if (!parsedBody.success || !parsedParams.success) throw ApiError.badRequest();
 
     const edited = await prisma.category.update({
-      where: { id: Number(id) },
+      where: { id: parsedParams.data.id },
       data: {
-        name,
+        name: parsedBody.data.title,
+        icon: parsedBody.data.icon,
       },
     });
 
-    apiResponse.success(res, { message: 'Category edited.', data: edited }, 201);
+    apiResponse.success(res, edited, 201);
   } catch (error) {
     next(error);
   }
@@ -62,10 +65,12 @@ async function editOne(req: Request, res: Response, next: NextFunction) {
 
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params; // TODO: validate input
+    const parsedParams = idParamsSchema.safeParse(req.params);
+
+    if (!parsedParams.success) throw ApiError.badRequest();
 
     const deleted = await prisma.category.delete({
-      where: { id: Number(id) },
+      where: { id: parsedParams.data.id },
     });
 
     apiResponse.success(res, { message: 'Category deleted.', data: deleted }, 201);

@@ -33,8 +33,8 @@ class CategoriesServiceClass {
     });
   }
 
-  async editOne(id: number, name: string) {
-    return this.fetcher.put(`/categories/${id}`, { id, name });
+  async editOne(id: number, name: string, icon: string) {
+    return this.fetcher.put(`/categories/${id}`, { id, name, icon });
   }
 
   async deleteOne(categoryId: number) {

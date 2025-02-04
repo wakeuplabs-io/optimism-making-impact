@@ -1,4 +1,4 @@
-import { categoriesController } from '@/controllers/categories.js';
+import { categoriesController } from '@/controllers/categories/controller.js';
 import { Router } from 'express';
 
 export const categoriesRouter = Router();

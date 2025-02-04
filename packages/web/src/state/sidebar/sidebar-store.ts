@@ -115,16 +115,17 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       },
     });
   },
-  editCategory: async (categoryId: number, name: string) => {
+  editCategory: async (name: string, icon: string) => {
+    const selectedCategoryId = get().selectedCategoryId;
     await optimisticUpdate({
       getStateSlice: () => get().selectedRound?.categories,
       updateFn: (categories) => {
         if (categories) {
-          return categories.map((cat) => (cat.id === categoryId ? { ...cat, name } : cat));
+          return categories.map((cat) => (cat.id === selectedCategoryId ? { ...cat, name, icon } : cat));
         }
       },
       setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
-      apiCall: () => CategoriesService.editOne(categoryId, name),
+      apiCall: () => CategoriesService.editOne(selectedCategoryId, name, icon),
       onError: (error) => {
         const title = 'Failed to update category';
         let description = 'Unknown error';
