@@ -25,8 +25,8 @@ export function Modal({ title, subtitle, trigger, buttons, children, ...props }:
     <Dialog {...props}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px]'>
-        <DialogHeader className='flex w-full items-center justify-center'>
-          {title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{title}</DialogTitle>}
+        <DialogHeader className='flex items-center justify-center w-full'>
+          {title && <DialogTitle className='text-lg text-center text-dark-low 2xl:text-xl'>{title}</DialogTitle>}
           {subtitle && <DialogDescription className='text-center text-secondary'>{subtitle}</DialogDescription>}
         </DialogHeader>
         <div className='w-full'>{children}</div>
