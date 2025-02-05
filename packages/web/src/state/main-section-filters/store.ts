@@ -3,7 +3,7 @@ import { KeywordsService } from '@/services/keywords/service';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Attribute, Keyword, Strength, strengthArray } from '@/types';
 import { AxiosError } from 'axios';
 
 const initialFilters = {
@@ -27,8 +27,8 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
     }
   },
   setAttributes: (attributes: Attribute[]) => set({ attributes }),
-  setSelectedStrengths: (strength: StrengthEnum) => {
-    const selectedStrengths = toggleEnumFilter(get().selectedStrengths, strength);
+  setSelectedStrengths: (strength: Strength) => {
+    const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
     set({ selectedStrengths });
   },
   setSelectedKeywords: (keyword: Keyword) => {
@@ -64,10 +64,6 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
     set(initialFilters);
   },
 }));
-
-function toggleEnumFilter<T>(currentFilters: T[], filter: T): T[] {
-  return currentFilters.includes(filter) ? currentFilters.filter((current) => current !== filter) : [...currentFilters, filter];
-}
 
 function toggleFilter<T extends { id: number }>(currentFilters: T[], filter: T): T[] {
   const isSelected = currentFilters.some((current) => current.id === filter.id);

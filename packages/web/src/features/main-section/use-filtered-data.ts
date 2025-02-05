@@ -1,11 +1,11 @@
-import { Attribute, CompleteCard, CompleteItem, Keyword, StrengthEnum } from '@/types';
+import { Attribute, CompleteCard, CompleteItem, Keyword, Strength } from '@/types';
 import { useMemo } from 'react';
 
 type Data = CompleteCard | CompleteItem;
 
 type UseFilteredDataProps<T extends Data> = {
   data: T[];
-  selectedStrengths: StrengthEnum[];
+  selectedStrengths: Strength[];
   selectedKeywords: Keyword[];
   selectedAttributes: Attribute[];
 };
@@ -15,7 +15,7 @@ type UseFilteredDataProps<T extends Data> = {
  *
  * @template T - The type of data being filtered, which extends either CompleteCard or CompleteItem.
  * @param {T[]} data - The array of data items to be filtered.
- * @param {StrengthEnum[]} selectedStrengths - The selected strengths to filter by.
+ * @param {StrengthFilter[]} selectedStrengths - The selected strengths to filter by.
  * @param {Keyword[]} selectedKeywords - The selected keywords to filter by.
  * @param {Attribute[]} selectedAttributes - The selected attributes to filter by.
  * @returns {T[]} - The filtered array of data items that match the selected criteria.
@@ -41,9 +41,9 @@ export const useFilteredData = <T extends Data>({
 };
 
 // Helpers
-function filterByStrength(data: Data, selectedStrengths: StrengthEnum[]): boolean {
+function filterByStrength(data: Data, selectedStrengths: Strength[]): boolean {
   if ('strength' in data) {
-    return !selectedStrengths.length || selectedStrengths.includes(data.strength);
+    return !selectedStrengths.length || selectedStrengths.map((strength) => strength.value).includes(data.strength);
   }
   return true;
 }

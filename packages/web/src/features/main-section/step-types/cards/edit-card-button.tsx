@@ -30,10 +30,7 @@ export interface EditCardFormData {
   keywords: string[];
 }
 
-const strengthOptions = strengthArray.map((item) => ({
-  label: item.toLowerCase(),
-  value: item,
-}));
+const strengthOptions = strengthArray.map(({ value }) => ({ label: value.toLowerCase(), value }));
 
 export function EditCardModal(props: EditCardModalProps) {
   const keywordsOptions = useMemo(

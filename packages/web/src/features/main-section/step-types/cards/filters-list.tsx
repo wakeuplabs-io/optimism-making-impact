@@ -97,11 +97,11 @@ function Content(props: ContentProps) {
         )}
         <FilterGroup
           title='Strength'
-          filters={strengths.map((value) => ({
-            label: value.toLowerCase(),
-            selected: selectedStrengths.includes(value),
+          filters={strengths.map((strength) => ({
+            label: strength.value.toLowerCase(),
+            selected: selectedStrengths.includes(strength),
             onClick: setSelectedStrengths,
-            data: value,
+            data: strength,
           }))}
         />
         <FilterGroup

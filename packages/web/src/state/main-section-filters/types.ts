@@ -1,8 +1,8 @@
-import { Attribute, Keyword, StrengthEnum } from '@/types';
+import { Attribute, Keyword, Strength } from '@/types';
 
 export interface FiltersState {
-  strengths: StrengthEnum[];
-  selectedStrengths: StrengthEnum[];
+  strengths: Strength[];
+  selectedStrengths: Strength[];
   keywords: Keyword[];
   selectedKeywords: Keyword[];
   attributes: Attribute[];
@@ -12,7 +12,7 @@ export interface FiltersState {
 export interface FiltersActions {
   setKeywords: (stepId: number) => void;
   setAttributes: (attributeFilters: Attribute[]) => void;
-  setSelectedStrengths: (strenght: StrengthEnum) => void;
+  setSelectedStrengths: (strenght: Strength) => void;
   setSelectedKeywords: (keyword: Keyword) => void;
   setSelectedAttributes: (attribute: Attribute) => void;
   deleteKeyword: (keywordId: number) => void;

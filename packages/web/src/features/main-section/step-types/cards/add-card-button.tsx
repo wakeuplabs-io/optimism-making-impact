@@ -141,4 +141,4 @@ export function AddCardModal(props: AddCardModalProps) {
   );
 }
 
-const strengthOptions = strengthArray.map((item) => ({ label: item.toLowerCase(), value: item }));
+const strengthOptions = strengthArray.map(({ value }) => ({ label: value.toLowerCase(), value }));
