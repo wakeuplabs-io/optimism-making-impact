@@ -21,11 +21,11 @@ export default $config({
   },
   async run() {
     //cognito pool
-    const userPool = new sst.aws.CognitoUserPool('op-making-impact-user-pool');
+    const userPool = new sst.aws.CognitoUserPool('user-pool');
     const GoogleClientId = new sst.Secret('GOOGLE_CLIENT_ID');
     const GoogleClientSecret = new sst.Secret('GOOGLE_CLIENT_SECRET');
 
-    userPool.addIdentityProvider('Google', {
+    const provider = userPool.addIdentityProvider('Google', {
       type: 'google',
       details: {
         authorize_scopes: 'email profile',
@@ -39,7 +39,14 @@ export default $config({
       },
     });
 
-    userPool.addClient('op-making-impact-web-client');
+    const userPoolDomain = new aws.cognito.UserPoolDomain('op-making-impact-userpool-domain', {
+      domain: `op-making-impact-${$app.stage}`,
+      userPoolId: userPool.id,
+    });
+
+    userPool.addClient('op-making-impact-web-client', {
+      providers: [provider.providerName],
+    });
 
     const functionHandler = new sst.aws.Function('functionHandler', {
       url: true,
@@ -80,6 +87,8 @@ export default $config({
     return {
       api: apiGateway.url,
       ui: ui.url,
+      userPool: userPool.id,
+      userPoolDomain: userPoolDomain.domain,
     };
   },
 });
