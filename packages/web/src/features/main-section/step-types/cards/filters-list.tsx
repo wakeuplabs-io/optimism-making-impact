@@ -110,7 +110,15 @@ function Content(props: ContentProps) {
             selected: selectedKeywords.map(({ id }) => id).includes(keyword.id),
             onClick: setSelectedKeywords,
             data: keyword,
-            deleteComponent: <DeleteKeywordButton keyword={keyword} onClick={deleteKeyword} />,
+            deleteComponent: (
+              <DeleteKeywordButton
+                keyword={keyword}
+                onClick={(keywordId) => {
+                  deleteKeyword(keywordId);
+                  setSelectedKeywords(keyword);
+                }}
+              />
+            ),
           }))}
           isAdmin={isAdmin}
         />
