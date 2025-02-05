@@ -1,31 +1,23 @@
-import { toast } from '@/hooks/use-toast';
-import { KeywordsService } from '@/services/keywords/service';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Attribute, Keyword, Strength, strengthArray } from '@/types';
 
-const initialFilters = {
+const initialSelectedFilters = {
   selectedStrengths: [],
   selectedKeywords: [],
   selectedAttributes: [],
-  keywords: [],
-  attributes: [],
 };
 
 export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) => ({
-  ...initialFilters,
+  ...initialSelectedFilters,
+  keywords: [],
+  attributes: [],
   strengths: strengthArray,
-  setKeywords: async (stepId: number) => {
-    try {
-      const response = await KeywordsService.getByStepId(stepId);
-      set({ keywords: response.data.keywords });
-    } catch (error) {
-      console.error(error);
-      toast({ title: 'Failed to fetch keywords', description: 'Please try again', variant: 'destructive' });
-    }
+  setKeywords: (keywords: Keyword[]) => {
+    set({ keywords });
   },
   setAttributes: (attributes: Attribute[]) => set({ attributes }),
-  setSelectedStrengths: (strength: StrengthEnum) => {
+  setSelectedStrengths: (strength: Strength) => {
     const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
     set({ selectedStrengths });
   },
@@ -37,11 +29,13 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
     const selectedAttributes = toggleFilter(get().selectedAttributes, attribute);
     set({ selectedAttributes });
   },
-  clear() {
-    set(initialFilters);
+  clearSelectedFilters() {
+    set(initialSelectedFilters);
   },
 }));
 
-function toggleFilter<T>(currentFilters: T[], filter: T): T[] {
-  return currentFilters.includes(filter) ? currentFilters.filter((current) => current !== filter) : [...currentFilters, filter];
+function toggleFilter<T extends { id: number }>(currentFilters: T[], filter: T): T[] {
+  const isSelected = currentFilters.some((current) => current.id === filter.id);
+
+  return isSelected ? currentFilters.filter((current) => current.id !== filter.id) : [...currentFilters, filter];
 }

@@ -21,6 +21,23 @@ async function getByStepId(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsed = idParamsSchema.safeParse(req.params);
+
+    if (!parsed.success) throw ApiError.badRequest();
+
+    const deleted = await prisma.keyword.delete({
+      where: { id: parsed.data.id },
+    });
+
+    apiResponse.success(res, deleted, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const keywordsController = {
   getByStepId,
+  deleteOne,
 };

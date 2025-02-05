@@ -2,6 +2,7 @@ import { completeCardSchema } from '@/types/cards';
 import { stepTypeSchema } from '@/types/common';
 import { infographySchema } from '@/types/infographies';
 import { completeItemSchema } from '@/types/items';
+import { keywordSchema } from '@/types/keywords';
 import { completeSmartListSchema } from '@/types/smart-lists';
 import { z } from 'zod';
 
@@ -25,5 +26,6 @@ export const completeStepSchema = stepSchema.extend({
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
   smartList: completeSmartListSchema.optional(),
+  keywords: z.array(keywordSchema),
 });
 export type CompleteStep = z.infer<typeof completeStepSchema>;

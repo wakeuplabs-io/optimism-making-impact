@@ -29,6 +29,7 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
             },
           },
         },
+        keywords: { orderBy: { value: 'asc' } },
       },
     });
 

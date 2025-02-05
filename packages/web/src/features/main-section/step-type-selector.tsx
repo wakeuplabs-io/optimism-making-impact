@@ -12,7 +12,7 @@ export function StepTypeSelector(props: StepTypeSelectorProps) {
     case 'INFOGRAPHY':
       return <InfographyStep />;
     case 'ITEMS':
-      return <ItemsStep />;
+      return <ItemsStep {...props} />;
     case 'CARD':
       return <CardStep {...props} />;
 

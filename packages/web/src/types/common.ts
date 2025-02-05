@@ -14,7 +14,12 @@ export enum StrengthEnum {
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
 }
-export const strengthArray = [StrengthEnum.LOW, StrengthEnum.MEDIUM, StrengthEnum.HIGH];
+export type Strength = { id: number; value: StrengthEnum };
+export const strengthArray = [
+  { id: 1, value: StrengthEnum.LOW },
+  { id: 2, value: StrengthEnum.MEDIUM },
+  { id: 3, value: StrengthEnum.HIGH },
+];
 
 export enum Color {
   RED = 'RED',
