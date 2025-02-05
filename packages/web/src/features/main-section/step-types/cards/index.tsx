@@ -1,41 +1,32 @@
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
-import { cn, extractUniqueKeywordsFromCards } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { CompleteStep } from '@/types';
 import { useEffect } from 'react';
 
-export function CardStep() {
-  return (
-    <Container>
-      <Content />
-    </Container>
-  );
+interface CardStepProps {
+  step: CompleteStep;
 }
 
-function Container(props: { children: React.ReactNode; className?: string }) {
-  return <div className={cn('flex h-full w-full flex-col gap-4', props.className)}>{props.children}</div>;
-}
-
-function Content() {
-  const { step } = useMainSectionStore((state) => state);
+export function CardStep(props: CardStepProps) {
   const { setKeywords, clear, setAttributes } = useFiltersStore((state) => state);
 
   useEffect(() => {
-    if (!step) return;
-    setKeywords(extractUniqueKeywordsFromCards(step.cards));
-    setAttributes(step.smartList?.attributes || []);
     return () => clear();
-  }, [step]);
+  }, []);
 
-  if (!step) {
-    return <div className='flex items-center justify-center w-full h-full'>Select a step</div>;
-  }
+  useEffect(() => {
+    setKeywords(props.step.id);
+    setAttributes(props.step.smartList?.attributes || []);
+  }, [props.step.id, props.step.cards]);
 
   return (
-    <div className='flex flex-col lg:flex-row'>
-      <CardFilters smartList={step.smartList} stepId={step.id} />
-      <CardList cards={step.cards} stepId={step.id} />
+    <div className={cn('flex h-full w-full flex-col gap-4')}>
+      <div className='flex flex-col lg:flex-row'>
+        <CardFilters smartList={props.step.smartList} stepId={props.step.id} />
+        <CardList cards={props.step.cards} stepId={props.step.id} />
+      </div>
     </div>
   );
 }
