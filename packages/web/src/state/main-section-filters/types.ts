@@ -15,6 +15,7 @@ export interface FiltersActions {
   setSelectedStrengths: (strenght: StrengthEnum) => void;
   setSelectedKeywords: (keyword: Keyword) => void;
   setSelectedAttributes: (attribute: Attribute) => void;
+  deleteKeyword: (keywordId: number) => void;
   clear: () => void;
 }
 

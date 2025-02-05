@@ -21,6 +21,31 @@ async function getByStepId(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function deleteOne(req: Request, res: Response, next: NextFunction) {
+  try {
+    const parsed = idParamsSchema.safeParse(req.params);
+
+    if (!parsed.success) throw ApiError.badRequest();
+
+    const card = await prisma.card.findFirst({
+      where: {
+        keywords: { some: { id: parsed.data.id } },
+      },
+    });
+
+    if (card) throw new ApiError(400, 'Keyword is in use.');
+
+    const deleted = await prisma.keyword.delete({
+      where: { id: parsed.data.id },
+    });
+
+    apiResponse.success(res, deleted, StatusCodes.OK);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const keywordsController = {
   getByStepId,
+  deleteOne,
 };

@@ -2,6 +2,7 @@ import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
+import { DeleteKeywordButton } from '@/features/main-section/step-types/cards/delete-keyword-button';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
@@ -36,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
+      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -63,12 +64,13 @@ function Content(props: ContentProps) {
     setSelectedKeywords,
     selectedAttributes,
     setSelectedAttributes,
+    deleteKeyword,
   } = useFiltersStore((state) => state);
   const addCard = useMainSectionStore((state) => state.addCard);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       {isAdmin && (
         <div className='mb-8'>
           <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} attributes={props.smartList?.attributes} />
@@ -109,7 +111,9 @@ function Content(props: ContentProps) {
             selected: selectedKeywords.map(({ id }) => id).includes(keyword.id),
             onClick: setSelectedKeywords,
             data: keyword,
+            deleteComponent: <DeleteKeywordButton keyword={keyword} onClick={deleteKeyword} />,
           }))}
+          isAdmin={isAdmin}
         />
       </div>
     </div>

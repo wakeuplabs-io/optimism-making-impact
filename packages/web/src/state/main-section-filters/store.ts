@@ -2,7 +2,9 @@ import { toast } from '@/hooks/use-toast';
 import { KeywordsService } from '@/services/keywords/service';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
+import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { AxiosError } from 'axios';
 
 const initialFilters = {
   selectedStrengths: [],
@@ -26,7 +28,7 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
   },
   setAttributes: (attributes: Attribute[]) => set({ attributes }),
   setSelectedStrengths: (strength: StrengthEnum) => {
-    const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
+    const selectedStrengths = toggleEnumFilter(get().selectedStrengths, strength);
     set({ selectedStrengths });
   },
   setSelectedKeywords: (keyword: Keyword) => {
@@ -37,11 +39,38 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
     const selectedAttributes = toggleFilter(get().selectedAttributes, attribute);
     set({ selectedAttributes });
   },
+  deleteKeyword(keywordId: number) {
+    optimisticUpdate({
+      getStateSlice: () => get().keywords,
+      updateFn: (keywords) => keywords.filter((keyword) => keyword.id !== keywordId),
+      setStateSlice: (keywords) => set({ keywords }),
+      apiCall: () => KeywordsService.deleteOne(keywordId),
+      onError: (error) => {
+        const title = 'Failed to delete keyword';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
+      },
+      onSuccess: async () => {
+        toast({ title: 'Keyword deleted', description: 'Keyword deleted successfully' });
+      },
+    });
+  },
   clear() {
     set(initialFilters);
   },
 }));
 
-function toggleFilter<T>(currentFilters: T[], filter: T): T[] {
+function toggleEnumFilter<T>(currentFilters: T[], filter: T): T[] {
   return currentFilters.includes(filter) ? currentFilters.filter((current) => current !== filter) : [...currentFilters, filter];
+}
+
+function toggleFilter<T extends { id: number }>(currentFilters: T[], filter: T): T[] {
+  const isSelected = currentFilters.some((current) => current.id === filter.id);
+
+  return isSelected ? currentFilters.filter((current) => current.id !== filter.id) : [...currentFilters, filter];
 }
