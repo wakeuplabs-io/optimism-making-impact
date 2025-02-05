@@ -86,6 +86,7 @@ export function EditCardModal(props: EditCardModalProps) {
       keywords: selectedKeywordsValueAndId,
       strength: data.strength,
       attributeId: data.attributeId < 1 ? undefined : data.attributeId,
+      stepId: props.stepId,
     });
   }
 

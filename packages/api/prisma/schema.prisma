@@ -80,6 +80,7 @@ model Step {
   cards        Card[]
   smartList    SmartList?   @relation(fields: [smartListId], references: [id])
   smartListId  Int?
+  keywords     Keyword[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -142,8 +143,13 @@ model Keyword {
 
   cards Card[]
 
+  Step   Step @relation(fields: [stepId], references: [id])
+  stepId Int
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([value, stepId])
 }
 
 model Attribute {

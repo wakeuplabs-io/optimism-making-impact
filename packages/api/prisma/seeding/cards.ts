@@ -1,4 +1,5 @@
-import { Card, CardStrength, Keyword, PrismaClient, Step, StepType } from '@prisma/client';
+import { selectTwoItems } from './helpers';
+import { Card, CardStrength, PrismaClient, Step, StepType } from '@prisma/client';
 
 const cardsData = [
   {
@@ -33,24 +34,33 @@ const cardsData = [
   },
 ];
 
-export async function seedCards(
-  prisma: PrismaClient,
-  steps: Array<Step>,
-  keywords: Array<Keyword>, // Receive keywords as parameter
-) {
+export const keywords = [
+  'Innovation',
+  'Technology',
+  'Efficiency',
+  'Sustainability',
+  'Productivity',
+  'Collaboration',
+  'Optimization',
+  'Strategy',
+  'Scalability',
+  'Automation',
+  'Data Analysis',
+  'Machine Learning',
+  'Blockchain',
+  'Cloud Computing',
+];
+
+export async function seedCards(prisma: PrismaClient, steps: Array<Step>) {
   console.log('Seeding cards...');
 
   const createdCards: Array<Card> = [];
-
-  // Keep track of the current keyword index
-  let keywordIndex = 0;
 
   for (const step of steps) {
     if (step.type !== StepType.CARD) continue; // Only create cards for CARD type steps
 
     for (let i = 0; i < 5; i++) {
-      // Assign sequential pairs of keywords to each card
-      const selectedKeywords = keywords.slice(keywordIndex, keywordIndex + 2); // Get 2 keywords at a time
+      const thisCardKeywords = selectTwoItems(keywords);
 
       const card = await prisma.card.create({
         data: {
@@ -60,15 +70,15 @@ export async function seedCards(
           position: i,
           stepId: step.id,
           keywords: {
-            connect: selectedKeywords.map((keyword) => ({ id: keyword.id })), // Connect the selected keywords
+            connectOrCreate: thisCardKeywords.map((keyword) => ({
+              where: { value_stepId: { value: keyword, stepId: step.id } },
+              create: { value: keyword, stepId: step.id },
+            })),
           },
         },
       });
 
       createdCards.push(card);
-
-      // Increment the keyword index by 2 to move to the next pair
-      keywordIndex += 2;
     }
   }
 

@@ -33,7 +33,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
         position: lastCardPosition,
         keywords: {
           connect: keywordsWithId.map(({ id }) => ({ id })),
-          create: newKeywords.map(({ value }) => ({ value })),
+          create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
         },
       },
     });
@@ -64,7 +64,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
         keywords: {
           set: [],
           connect: keywordsWithId.map(({ id }) => ({ id })),
-          create: newKeywords.map(({ value }) => ({ value })),
+          create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
         },
       },
     });

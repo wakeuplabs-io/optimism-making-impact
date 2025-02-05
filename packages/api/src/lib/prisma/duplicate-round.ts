@@ -1,5 +1,4 @@
 import { prisma } from '@/lib/prisma/instance.js';
-import { extractKeywordData } from '@/lib/utils/index.js';
 import { CompleteCategory } from '@/types/entities/categories.js';
 import { CompleteRound } from '@/types/entities/round.js';
 import { CompleteStep } from '@/types/entities/step.js';
@@ -22,17 +21,8 @@ export async function duplicateRound(lastRound: CompleteRound): Promise<number> 
     lastRound.categories.flatMap((category) => category.steps),
   );
 
-  // Step 3: Duplicate Keywords
-  const oldToNewKeywordIds = await duplicateKeywords(lastRound.categories.flatMap((category) => category.steps));
-
-  // Step 4: Duplicate Items and Cards
-  await createStepsWithRelationsForCategories(
-    lastRound.categories,
-    oldToNewCategoryMap,
-    oldToNewAttributeIds,
-    oldToNewKeywordIds,
-    oldToNewSmartListIds,
-  );
+  // Step 3: Duplicate Items and Cards and infographics
+  await createStepsWithRelationsForCategories(lastRound.categories, oldToNewCategoryMap, oldToNewAttributeIds, oldToNewSmartListIds);
 
   return newRound.id;
 }
@@ -100,84 +90,70 @@ async function createSmartListsFromSteps(steps: CompleteStep[]): Promise<{
   return { oldToNewSmartListIds: smartListMap, oldToNewAttributeIds: attributeMap };
 }
 
-async function duplicateKeywords(steps: CompleteStep[]): Promise<Record<number, number>> {
-  const { keywordIds: oldKeywordIds, keywordMap } = extractKeywordData(steps);
-  const oldToNewKeywordIds: Record<number, number> = {}; // Renamed to avoid conflict
-
-  for (const oldId of oldKeywordIds) {
-    const oldKeyword = keywordMap.get(oldId);
-    if (!oldKeyword) continue;
-
-    const newKeyword = await prisma.keyword.create({
-      data: { value: oldKeyword.value },
-    });
-
-    oldToNewKeywordIds[oldId] = newKeyword.id;
-  }
-
-  return oldToNewKeywordIds;
-}
-
 async function createStepsWithRelationsForCategories(
   oldCategories: CompleteCategory[],
   oldToNewCategoryMap: Record<number, number>,
   oldToNewAttributeIds: Record<number, number>,
-  oldToNewKeywordIds: Record<number, number>,
   oldToNewSmartListIds: Record<number, number>,
 ) {
-  const stepMap: Record<number, number> = {};
-  const createdStepsPromises = [];
+  const stepMap: Record<number, number> = [];
 
-  for (const oldCategory of oldCategories) {
-    for (const step of oldCategory.steps) {
-      const newStepPromise = prisma.step.create({
-        data: {
-          title: step.title,
-          icon: step.icon,
-          position: step.position,
-          type: step.type,
-          categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
-          smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
-          infographies: {
-            create: step.infographies.map(({ image, markdown, position }) => ({
-              image,
-              markdown,
-              position,
-            })),
-          },
-          items: {
-            create: step.items.map(({ markdown, position, attributeId }) => ({
-              markdown,
-              position,
-              attribute: {
-                connect: {
-                  id: attributeId ? oldToNewAttributeIds[attributeId] : null,
+  await prisma.$transaction(async (tx) => {
+    for (const oldCategory of oldCategories) {
+      for (const step of oldCategory.steps) {
+        const newStep = await tx.step.create({
+          data: {
+            title: step.title,
+            icon: step.icon,
+            position: step.position,
+            type: step.type,
+            categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
+            smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
+            infographies: {
+              create: step.infographies.map(({ image, markdown, position }) => ({
+                image,
+                markdown,
+                position,
+              })),
+            },
+            items: {
+              create: step.items.map(({ markdown, position, attributeId }) => ({
+                markdown,
+                position,
+                attribute: {
+                  connect: {
+                    id: attributeId ? oldToNewAttributeIds[attributeId] : null,
+                  },
                 },
-              },
-            })),
+              })),
+            },
           },
-          cards: {
-            create: step.cards.map(({ strength, markdown, position, title, attributeId, keywords }) => ({
-              strength,
-              markdown,
-              position,
-              title,
-              attribute: attributeId ? { connect: { id: oldToNewAttributeIds[attributeId] } } : undefined,
-              keywords: {
-                connect: keywords.map((kw) => ({ id: oldToNewKeywordIds[kw.id] })).filter((kw) => kw.id !== undefined),
-              },
-            })),
-          },
-        },
-      });
+        });
 
-      createdStepsPromises.push(newStepPromise);
+        await tx.step.update({
+          where: { id: newStep.id },
+          data: {
+            cards: {
+              create: step.cards.map(({ strength, markdown, position, title, attributeId, keywords }) => ({
+                strength,
+                markdown,
+                position,
+                title,
+                attribute: attributeId ? { connect: { id: oldToNewAttributeIds[attributeId] } } : undefined,
+                keywords: {
+                  connectOrCreate: keywords.map((kw) => ({
+                    where: { value_stepId: { value: kw.value, stepId: newStep.id } },
+                    create: { value: kw.value, stepId: newStep.id },
+                  })),
+                },
+              })),
+            },
+          },
+        });
+
+        stepMap[step.id] = newStep.id;
+      }
     }
-  }
-
-  const createdSteps = await Promise.all(createdStepsPromises);
-  createdSteps.forEach((newStep, index) => {
-    stepMap[oldCategories.flatMap((c) => c.steps)[index].id] = newStep.id;
   });
 
   return stepMap;
