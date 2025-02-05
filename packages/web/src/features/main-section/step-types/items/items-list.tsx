@@ -17,7 +17,7 @@ interface ItemsListProps {
 
 export function ItemsList(props: ItemsListProps) {
   const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
   const addItem = useMainSectionStore((state) => state.addItem);
 
   const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });

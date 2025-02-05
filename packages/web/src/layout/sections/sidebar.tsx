@@ -76,7 +76,7 @@ interface SidebarContentProps {
 function SidebarContent(props: SidebarContentProps) {
   const addCategory = useSidebarStore((state) => state.addCategory);
   const addRound = useSidebarStore((state) => state.addRound);
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
 
   return (
     <div className='flex flex-col gap-10'>

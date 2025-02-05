@@ -3,7 +3,7 @@ import { useSidebarStore, useUserStore } from '@/state';
 
 export function CategoryList() {
   const sidebarState = useSidebarStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
 
   function handleCategoryClick(categoryId: number) {
     sidebarState.setSelectedCategoryId(categoryId);

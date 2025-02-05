@@ -1,33 +1,17 @@
-import { signInWithRedirect, getCurrentUser, AuthUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
-import { useEffect, useState } from 'react';
+import { useUserStore } from '@/state';
+import { signInWithRedirect, signOut } from 'aws-amplify/auth';
 
 export const AuthSection = () => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const { isLoading, user } = useUserStore((state) => state);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const session = await fetchAuthSession({ forceRefresh: true });
-        if (!session.tokens) {
-          console.log('no session');
-          return;
-        }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-        console.log(session);
-        const user = await getCurrentUser();
-        setUser(user);
-      } catch (error) {
-        console.log(error);
-        setUser(null);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  return user ? (
+  return user.authToken ? (
     <div>
-      <p>hello ${user.username}</p>
+      <p className='font-bold'>Welcome {user.userName}</p>
+      <br />
       <button onClick={() => signOut()}>Log Out</button>
     </div>
   ) : (

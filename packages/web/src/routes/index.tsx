@@ -3,7 +3,7 @@ import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
 import { MainSectionLayout } from '@/layout/sections/main';
 import { SidebarSection } from '@/layout/sections/sidebar';
 import { StepsSection } from '@/layout/sections/steps';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore, useUserStore } from '@/state';
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { z } from 'zod';
@@ -29,6 +29,7 @@ function Index() {
   useEffect(() => {
     (async () => {
       await useSidebarStore.getState().fetchData();
+      await useUserStore.getState().fetchAuth();
       if (search.roundId) useSidebarStore.getState().setSelectedRound(search.roundId);
     })();
   }, []);
