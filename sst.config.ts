@@ -44,7 +44,7 @@ export default $config({
       userPoolId: userPool.id,
     });
 
-    userPool.addClient('op-making-impact-web-client', {
+    const userPoolClient = userPool.addClient('op-making-impact-web-client', {
       providers: [provider.providerName],
     });
 
@@ -89,6 +89,7 @@ export default $config({
       ui: ui.url,
       userPool: userPool.id,
       userPoolDomain: userPoolDomain.domain,
+      userPoolClientId: userPoolClient.id,
     };
   },
 });

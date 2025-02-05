@@ -22,6 +22,7 @@
     "@tanstack/react-router": "1.95.6",
     "@tanstack/router-devtools": "1.95.6",
     "@tanstack/router-plugin": "1.95.6",
+    "aws-amplify": "^6.12.3",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

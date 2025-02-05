@@ -4,6 +4,7 @@ import { ImageButton } from '@/components/image-button';
 import { SideMenu } from '@/components/side-menu';
 import { WAKEUP_URL } from '@/config';
 import { AddCategoryModal } from '@/features/sidebar/components/add-category-modal';
+import { AuthSection } from '@/features/sidebar/components/auth-section';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { CreateRoundModal } from '@/features/sidebar/components/create-round-modal';
 import LogosSection from '@/features/sidebar/components/logos-section';
@@ -93,6 +94,7 @@ function SidebarContent(props: SidebarContentProps) {
       </div>
       <CategoryList />
       <LogosSection />
+      <AuthSection />
       <a href={WAKEUP_URL} target='_blank' rel='noreferrer' className='mt-8'>
         <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
       </a>
