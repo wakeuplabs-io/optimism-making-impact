@@ -73,7 +73,7 @@ model Step {
   type        StepType
 
   categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id])
 
   infographies Infography[]
   items        Item[]
@@ -97,7 +97,7 @@ model Infography {
   position Int
 
   stepId Int
-  step   Step @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  step   Step @relation(fields: [stepId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -110,9 +110,9 @@ model Item {
   position Int
 
   stepId      Int
-  step        Step       @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  step        Step       @relation(fields: [stepId], references: [id])
   attributeId Int?
-  attribute   Attribute? @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  attribute   Attribute? @relation(fields: [attributeId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,9 +127,9 @@ model Card {
   position Int
 
   stepId      Int
-  step        Step       @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  step        Step       @relation(fields: [stepId], references: [id])
   attributeId Int?
-  attribute   Attribute? @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  attribute   Attribute? @relation(fields: [attributeId], references: [id])
   keywords    Keyword[]
 
   createdAt DateTime @default(now())
@@ -160,7 +160,7 @@ model Attribute {
   color       Color  @default(LIGHTBLUE)
 
   categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id])
   items      Item[]
   cards      Card[]
 
