@@ -20,6 +20,27 @@ export default $config({
     };
   },
   async run() {
+    //cognito pool
+    const userPool = new sst.aws.CognitoUserPool('op-making-impact-user-pool');
+    const GoogleClientId = new sst.Secret('GOOGLE_CLIENT_ID');
+    const GoogleClientSecret = new sst.Secret('GOOGLE_CLIENT_SECRET');
+
+    userPool.addIdentityProvider('Google', {
+      type: 'google',
+      details: {
+        authorize_scopes: 'email profile',
+        client_id: GoogleClientId.value,
+        client_secret: GoogleClientSecret.value,
+      },
+      attributes: {
+        email: 'email',
+        name: 'name',
+        username: 'sub',
+      },
+    });
+
+    userPool.addClient('op-making-impact-web-client');
+
     const functionHandler = new sst.aws.Function('functionHandler', {
       url: true,
       handler: 'packages/api/src/app.handler',
