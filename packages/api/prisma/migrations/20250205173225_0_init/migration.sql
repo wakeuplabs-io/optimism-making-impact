@@ -170,11 +170,7 @@ ALTER TABLE "Card" ADD CONSTRAINT "Card_attributeId_fkey" FOREIGN KEY ("attribut
 ALTER TABLE "Keyword" ADD CONSTRAINT "Keyword_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:packages/api/prisma/migrations/20250205105807_0_init/migration.sql
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-========
-ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
->>>>>>>> main:packages/api/prisma/migrations/20250204143956_0_init/migration.sql
 
 -- AddForeignKey
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
