@@ -8,7 +8,7 @@ function notFound() {
   throw ApiError.notFound();
 }
 
-export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
+export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction): void {
   console.error(err);
 
   let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
@@ -22,6 +22,10 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
   } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       message = `Unique constraint failed on the fields: ${err.meta?.target}`;
+    }
+    if (err.code === 'P2003' && req.method === 'DELETE') {
+      const modelName = err.meta?.modelName && typeof err.meta.modelName === 'string' ? err.meta.modelName : 'record';
+      message = `Can't delete ${modelName.toLowerCase()} before deleting its related records.`;
     }
     statusCode = StatusCodes.BAD_REQUEST;
   } else if (
