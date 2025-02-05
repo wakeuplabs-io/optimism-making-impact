@@ -46,6 +46,12 @@ export default $config({
 
     const userPoolClient = userPool.addClient('op-making-impact-web-client', {
       providers: [provider.providerName],
+      transform: {
+        client: {
+          callbackUrls: ['http://localhost:5173'],
+          logoutUrls: ['http://localhost:5173'],
+        },
+      },
     });
 
     const functionHandler = new sst.aws.Function('functionHandler', {
