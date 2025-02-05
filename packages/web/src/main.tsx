@@ -16,7 +16,7 @@ Amplify.configure({
           scopes: ['openid', 'email', 'profile'],
           redirectSignIn: ['http://localhost:5173'], // Your app's redirect URL
           redirectSignOut: ['http://localhost:5173'], // Your app's redirect URL
-          responseType: 'token',
+          responseType: 'code',
         },
       },
     },

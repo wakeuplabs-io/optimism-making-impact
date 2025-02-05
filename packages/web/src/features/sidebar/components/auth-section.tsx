@@ -1,25 +1,20 @@
-import { signInWithRedirect, getCurrentUser, AuthUser, fetchAuthSession } from 'aws-amplify/auth';
+import { signInWithRedirect, getCurrentUser, AuthUser, fetchAuthSession, signOut } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
 
 export const AuthSection = () => {
   const [user, setUser] = useState<AuthUser | null>(null);
 
-  const handleSignIn = async () => {
-    const result = await signInWithRedirect({ provider: 'Google' });
-    console.log('Auth result', result);
-  };
-
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const session = await fetchAuthSession();
-        if (!session) {
+        const session = await fetchAuthSession({ forceRefresh: true });
+        if (!session.tokens) {
           console.log('no session');
           return;
         }
+
+        console.log(session);
         const user = await getCurrentUser();
-        console.log();
-        console.log('asd', user);
         setUser(user);
       } catch (error) {
         console.log(error);
@@ -30,5 +25,12 @@ export const AuthSection = () => {
     checkAuth();
   }, []);
 
-  return user ? <p>hello ${user.username}</p> : <button onClick={handleSignIn}>Log In</button>;
+  return user ? (
+    <div>
+      <p>hello ${user.username}</p>
+      <button onClick={() => signOut()}>Log Out</button>
+    </div>
+  ) : (
+    <button onClick={() => signInWithRedirect({ provider: 'Google' })}>Log In</button>
+  );
 };
