@@ -27,14 +27,6 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const card = await prisma.card.findFirst({
-      where: {
-        keywords: { some: { id: parsed.data.id } },
-      },
-    });
-
-    if (card) throw new ApiError(400, 'Keyword is in use.');
-
     const deleted = await prisma.keyword.delete({
       where: { id: parsed.data.id },
     });

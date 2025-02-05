@@ -10,16 +10,16 @@ interface CardStepProps {
 }
 
 export function CardStep(props: CardStepProps) {
-  const { setKeywords, clear, setAttributes } = useFiltersStore((state) => state);
+  const { setKeywords, clearSelectedFilters, setAttributes } = useFiltersStore((state) => state);
 
   useEffect(() => {
-    return () => clear();
+    return () => clearSelectedFilters();
   }, []);
 
   useEffect(() => {
-    setKeywords(props.step.id);
+    setKeywords(props.step.keywords);
     setAttributes(props.step.smartList?.attributes || []);
-  }, [props.step.id, props.step.cards]);
+  }, [props.step.keywords, props.step.smartList]);
 
   return (
     <div className={cn('flex h-full w-full flex-col gap-4')}>

@@ -64,9 +64,8 @@ function Content(props: ContentProps) {
     setSelectedKeywords,
     selectedAttributes,
     setSelectedAttributes,
-    deleteKeyword,
   } = useFiltersStore((state) => state);
-  const addCard = useMainSectionStore((state) => state.addCard);
+  const { addCard, deleteKeyword } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdmin);
 
   return (

@@ -7,16 +7,16 @@ import { useEffect } from 'react';
 
 export function ItemsStep() {
   const { step } = useMainSectionStore((state) => state);
-  const clear = useFiltersStore((state) => state.clear);
+  const clearSelectedFilters = useFiltersStore((state) => state.clearSelectedFilters);
 
   useEffect(() => {
-    return () => clear();
-  }, [step]);
+    return () => clearSelectedFilters();
+  }, [step?.id]);
 
   if (!step) {
     return (
       <div className={cn('flex h-full w-full flex-col gap-4')}>
-        <div className='flex items-center justify-center w-full h-full'>Select a step</div>
+        <div className='flex h-full w-full items-center justify-center'>Select a step</div>
       </div>
     );
   }

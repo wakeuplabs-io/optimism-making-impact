@@ -10,13 +10,12 @@ export interface FiltersState {
 }
 
 export interface FiltersActions {
-  setKeywords: (stepId: number) => void;
+  setKeywords: (keywords: Keyword[]) => void;
   setAttributes: (attributeFilters: Attribute[]) => void;
   setSelectedStrengths: (strenght: Strength) => void;
   setSelectedKeywords: (keyword: Keyword) => void;
   setSelectedAttributes: (attribute: Attribute) => void;
-  deleteKeyword: (keywordId: number) => void;
-  clear: () => void;
+  clearSelectedFilters: () => void;
 }
 
 export type FiltersStore = FiltersState & FiltersActions;
