@@ -105,21 +105,24 @@ function Content(props: ContentProps) {
         />
         <FilterGroup
           title='Keywords'
-          filters={keywords.map((keyword) => ({
-            label: keyword.value.toLowerCase(),
-            selected: selectedKeywords.map(({ id }) => id).includes(keyword.id),
-            onClick: setSelectedKeywords,
-            data: keyword,
-            deleteComponent: (
-              <DeleteKeywordButton
-                keyword={keyword}
-                onClick={(keywordId) => {
-                  deleteKeyword(keywordId);
-                  setSelectedKeywords(keyword);
-                }}
-              />
-            ),
-          }))}
+          filters={keywords.map((keyword) => {
+            const selected = selectedKeywords.map(({ id }) => id).includes(keyword.id);
+            return {
+              label: keyword.value.toLowerCase(),
+              selected,
+              onClick: setSelectedKeywords,
+              data: keyword,
+              deleteComponent: (
+                <DeleteKeywordButton
+                  keyword={keyword}
+                  onClick={(keywordId) => {
+                    deleteKeyword(keywordId);
+                    if (selected) setSelectedKeywords(keyword);
+                  }}
+                />
+              ),
+            };
+          })}
           isAdmin={isAdmin}
         />
       </div>
