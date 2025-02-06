@@ -1,8 +1,9 @@
+import { AuthService } from '@/services/auth/service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
 interface StepsState {
-  isLoading: false;
+  isLoading: boolean;
   user: {
     isAdmin: boolean;
     authToken: string;
@@ -33,18 +34,22 @@ export const useUserStore = createWithMiddlewares<UserStore>((set) => ({
 
     const authSession = await fetchAuthSession({ forceRefresh: true });
 
-    if (!authSession.tokens?.idToken) {
+    if (!authSession?.tokens?.idToken) {
       set(() => ({ isLoading: false, user: initialUserState }));
       return;
     }
+
+    const idToken = authSession.tokens.idToken;
+    //login in our backend
+    const { data } = await AuthService.validate({ token: idToken.toString() });
 
     set(() => ({
       isLoading: false,
       user: {
         isAdmin: false,
-        authToken: authSession.tokens.idToken.toString(),
-        userName: authSession.tokens.idToken.payload['name'],
-        userEmail: authSession.tokens.idToken.payload['email'],
+        authToken: data.jwtToken,
+        userName: data.username,
+        userEmail: data.email,
       },
     }));
   },
