@@ -9,15 +9,6 @@ export class AuthManagerException extends Error {
 }
 
 export class AuthManager {
-  public static instance: AuthManager;
-
-  public static getInstance(cognitoJWTVerifier: CognitoJwtVerifier, prismaClient: PrismaClient): AuthManager {
-    if (!AuthManager.instance) {
-      AuthManager.instance = new AuthManager(cognitoJWTVerifier, prismaClient);
-    }
-    return AuthManager.instance;
-  }
-
   constructor(
     private cognitoJWTVerifier: CognitoJwtVerifier,
     private prismaClient: PrismaClient,

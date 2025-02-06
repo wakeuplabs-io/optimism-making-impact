@@ -12,6 +12,6 @@ const jwtVerifier = CognitoJwtVerifier.create({
   tokenUse: 'id',
 });
 
-export const authManager = AuthManager.getInstance(jwtVerifier, prisma);
+export const authManager = new AuthManager(jwtVerifier, prisma);
 export { AuthManagerException } from './auth-manager.js';
 export * from './types.js';
