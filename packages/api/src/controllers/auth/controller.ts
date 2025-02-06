@@ -15,11 +15,13 @@ const jwtVerifier = CognitoJwtVerifier.create({
   tokenUse: 'id', // or 'id' depending on which token you're validating
 });
 
-type TokenVerification = { status: 'success'; data: CognitoIdTokenPayload } | { status: 'fail' };
+type IdTokenPayload = CognitoIdTokenPayload & { name: string; email: string };
+
+type TokenVerification = { status: 'success'; data: IdTokenPayload } | { status: 'fail' };
 
 async function verifyToken(token: string): Promise<TokenVerification> {
   try {
-    const payload = await jwtVerifier.verify(token);
+    const payload = (await jwtVerifier.verify(token)) as IdTokenPayload;
     return { status: 'success', data: payload };
   } catch (error) {
     return { status: 'fail' };
@@ -38,8 +40,8 @@ async function validate(req: Request, res: Response, next: NextFunction) {
 
     return apiResponse.success(res, {
       authToken: parsed.data.token,
-      userName: tokenVerification.data['name'],
-      email: tokenVerification.data['email'],
+      userName: tokenVerification.data.name,
+      email: tokenVerification.data.email,
       isAdmin: false,
     });
   } catch (error) {
