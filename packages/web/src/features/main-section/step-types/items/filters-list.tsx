@@ -57,7 +57,7 @@ interface ContentProps {
 }
 
 function Content(props: ContentProps) {
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);

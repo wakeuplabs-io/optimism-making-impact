@@ -13,7 +13,7 @@ interface InfographyListProps {
 
 export function InfographyList(props: InfographyListProps) {
   const { deleteInfogrpahy, editInfogrpahy } = useMainSectionStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
 
   if (props.infographies.length < 1) {
     return (
