@@ -20,6 +20,9 @@ export default $config({
     };
   },
   async run() {
+    // AWS data
+    const { name: region } = await aws.getRegion({});
+
     //cognito pool
     const userPool = new sst.aws.CognitoUserPool('user-pool');
     const GoogleClientId = new sst.Secret('GOOGLE_CLIENT_ID');
@@ -94,7 +97,7 @@ export default $config({
       api: apiGateway.url,
       ui: ui.url,
       userPool: userPool.id,
-      userPoolDomain: userPoolDomain.domain,
+      userPoolDomain: $interpolate`https://${userPoolDomain.domain}.auth.${region}.amazoncognito.com`,
       userPoolClientId: userPoolClient.id,
     };
   },
