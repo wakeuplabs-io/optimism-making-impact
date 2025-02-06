@@ -41,7 +41,7 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.isAdmin);
+  const isAdmin = useUserStore((state) => state.user.isAdmin);
   const updateItem = useMainSectionStore((state) => state.updateItem);
   const deleteItem = useMainSectionStore((state) => state.deleteItem);
 
