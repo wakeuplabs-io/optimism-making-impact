@@ -7,7 +7,7 @@ import { UserStore } from './types';
 const initialUserState = {
   isAdmin: false,
   authToken: '',
-  userName: '',
+  name: '',
   email: '',
 };
 
