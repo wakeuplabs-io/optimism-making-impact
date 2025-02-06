@@ -7,7 +7,7 @@ export const validateRequestSchema = z.object({
 export const validateResponseSchema = z.object({
   isAdmin: z.boolean(),
   authToken: z.string(),
-  userName: z.string(),
+  name: z.string(),
   email: z.string(),
 });
 
