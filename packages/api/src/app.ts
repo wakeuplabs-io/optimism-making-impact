@@ -14,6 +14,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+app.use(middlewares.validateAdmin);
+
 app.use('/api', routes);
 
 app.use(middlewares.notFound);

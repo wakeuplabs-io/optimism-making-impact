@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { AuthenticatedUser, CognitoJwtVerifier } from './types.js';
 
-class AuthManagerException extends Error {
+export class AuthManagerException extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'AuthManagerException';
