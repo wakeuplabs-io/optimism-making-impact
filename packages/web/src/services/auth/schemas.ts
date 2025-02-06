@@ -4,4 +4,12 @@ export const validateRequestSchema = z.object({
   token: z.string(),
 });
 
-export type LoginRequest = z.infer<typeof validateRequestSchema>;
+export const validateResponseSchema = z.object({
+  isAdmin: z.boolean(),
+  authToken: z.string(),
+  userName: z.string(),
+  email: z.string(),
+});
+
+export type ValidateRequest = z.infer<typeof validateRequestSchema>;
+export type ValidateResponse = z.infer<typeof validateResponseSchema>;

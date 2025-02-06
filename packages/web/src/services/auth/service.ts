@@ -1,6 +1,6 @@
 import { fetcher } from '@/lib/fetcher';
 import { AxiosInstance } from 'axios';
-import { LoginRequest } from './schemas';
+import { ValidateRequest, ValidateResponse } from './schemas';
 
 const validateEndpoint = '/auth/validate';
 
@@ -20,8 +20,18 @@ class Service {
   }
 
   // TODO: IMPROVE RESPONSE TYPING
-  async validate(data: LoginRequest) {
-    return this.fetcher.post(validateEndpoint, data).then((rest) => rest.data);
+  async validate(data: ValidateRequest): Promise<{ status: 'success'; user: ValidateResponse } | { status: 'error' }> {
+    try {
+      const response = await this.fetcher.post(validateEndpoint, data);
+      return {
+        status: 'success',
+        user: response.data.data,
+      };
+    } catch {
+      return {
+        status: 'error',
+      };
+    }
   }
 }
 

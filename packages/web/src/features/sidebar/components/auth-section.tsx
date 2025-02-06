@@ -4,8 +4,6 @@ import { signInWithRedirect, signOut } from 'aws-amplify/auth';
 export const AuthSection = () => {
   const { isLoading, user } = useUserStore((state) => state);
 
-  console.log('user', user);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

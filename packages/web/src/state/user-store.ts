@@ -1,6 +1,7 @@
+import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { fetchAuthSession } from 'aws-amplify/auth';
+import { fetchAuthSession, signOut } from 'aws-amplify/auth';
 
 interface StepsState {
   isLoading: boolean;
@@ -8,7 +9,7 @@ interface StepsState {
     isAdmin: boolean;
     authToken: string;
     userName: string;
-    userEmail: string;
+    email: string;
   };
 }
 
@@ -23,7 +24,7 @@ const initialUserState = {
   isAdmin: false,
   authToken: '',
   userName: '',
-  userEmail: '',
+  email: '',
 };
 
 export const useUserStore = createWithMiddlewares<UserStore>((set) => ({
@@ -41,19 +42,22 @@ export const useUserStore = createWithMiddlewares<UserStore>((set) => ({
 
     const idToken = authSession.tokens.idToken;
     //login in our backend
-    const { data } = await AuthService.validate({ token: idToken.toString() });
+    const validation = await AuthService.validate({ token: idToken.toString() });
+
+    if (validation.status === 'error') {
+      toast({ title: 'Authentication Error', description: 'Failed to authenticate your user. Signing out', variant: 'destructive' });
+      setTimeout(() => {
+        signOut();
+      }, 1000);
+      return;
+    }
 
     set(() => ({
       isLoading: false,
-      user: {
-        isAdmin: false,
-        authToken: data.jwtToken,
-        userName: data.username,
-        userEmail: data.email,
-      },
+      user: validation.user,
     }));
   },
   toggleUserAdmin: () => {
-    set((state) => ({ user: { isAdmin: !state.user.isAdmin } }));
+    set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin } }));
   },
 }));

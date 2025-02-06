@@ -3,6 +3,7 @@ import { authValidateSchema } from './schemas.js';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
+import { CognitoIdTokenPayload } from 'aws-jwt-verify/jwt-model';
 
 if (!process.env.COGNITO_USER_POOL_ID || !process.env.COGNITO_USER_POOL_CLIENT) {
   throw new Error('Missing Cognito configs');
@@ -14,18 +15,31 @@ const jwtVerifier = CognitoJwtVerifier.create({
   tokenUse: 'id', // or 'id' depending on which token you're validating
 });
 
+type TokenVerification = { status: 'success'; data: CognitoIdTokenPayload } | { status: 'fail' };
+
+async function verifyToken(token: string): Promise<TokenVerification> {
+  try {
+    const payload = await jwtVerifier.verify(token);
+    return { status: 'success', data: payload };
+  } catch (error) {
+    return { status: 'fail' };
+  }
+}
+
 async function validate(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = authValidateSchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
     // Continue with login logic using validatedData
-    const data = await jwtVerifier.verify(parsed.data.token);
+    const tokenVerification = await verifyToken(parsed.data.token);
+
+    if (tokenVerification.status === 'fail') throw ApiError.unauthorized();
 
     return apiResponse.success(res, {
-      jwtToken: parsed.data.token,
-      username: data['name'],
-      email: data['email'],
+      authToken: parsed.data.token,
+      userName: tokenVerification.data['name'],
+      email: tokenVerification.data['email'],
       isAdmin: false,
     });
   } catch (error) {
