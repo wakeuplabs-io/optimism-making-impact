@@ -2,23 +2,7 @@ import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { fetchAuthSession, signOut } from 'aws-amplify/auth';
-
-interface StepsState {
-  isLoading: boolean;
-  user: {
-    isAdmin: boolean;
-    authToken: string;
-    userName: string;
-    email: string;
-  };
-}
-
-interface UserActions {
-  toggleUserAdmin: () => void;
-  fetchAuth: () => Promise<void>;
-}
-
-type UserStore = StepsState & UserActions;
+import { UserStore } from './types';
 
 const initialUserState = {
   isAdmin: false,
