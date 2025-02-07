@@ -5,6 +5,7 @@ import { seedItems } from './seeding/items';
 import { seedRounds } from './seeding/rounds';
 import { seedSteps } from './seeding/steps';
 import { PrismaClient } from '@prisma/client';
+import { seedUserWhitelist } from './seeding/user-whitelist';
 
 const prisma = new PrismaClient();
 
@@ -17,6 +18,7 @@ export async function seedDatabase() {
   await seedInfographics(prisma, steps);
   await seedCards(prisma, steps);
   await seedItems(prisma, steps);
+  await seedUserWhitelist(prisma);
 
   console.log('Seeding complete!');
 }

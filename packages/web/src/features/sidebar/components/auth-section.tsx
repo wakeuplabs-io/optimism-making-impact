@@ -10,7 +10,7 @@ export const AuthSection = () => {
 
   return user.authToken ? (
     <div>
-      <p className='font-bold'>Welcome {user.userName}</p>
+      <p className='font-bold'>Welcome {user.name}</p>
       <br />
       <button onClick={() => signOut()}>Log Out</button>
     </div>
