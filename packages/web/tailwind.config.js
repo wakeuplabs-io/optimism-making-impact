@@ -23,6 +23,9 @@ export default {
         ['dark-low']: 'var(--dark-low)',
         ['background-brighter']: 'var(--background-brighter)',
         background: 'var(--background)',
+        gray: {
+          700: 'var(--gray-700)',
+        },
         // End of new custom colors
 
         // Start of Card tag colors
