@@ -54,4 +54,7 @@ export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
     set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin }, isAdminModeEnabled: !state.isAdminModeEnabled }));
   },
   isAuthenticated: () => !!get().user.authToken,
+  toggleAdminMode: () => {
+    set((state) => ({ isAdminModeEnabled: !state.isAdminModeEnabled }));
+  },
 }));

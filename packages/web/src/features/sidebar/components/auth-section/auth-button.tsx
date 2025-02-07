@@ -18,7 +18,7 @@ export const AuthButton = forwardRef<HTMLButtonElement, AuthButtonProps>(
       <Button
         className={cn(className, {
           'rounded-xl justify-start': !isLoading,
-          'rounded-2xl justify-center': !label,
+          'rounded-xl justify-center': !label,
           'opacity-50 cursor-not-allowed justify-center': isLoading,
         })}
         variant={variant === 'dark' ? 'gray' : 'gray-light'}
@@ -33,7 +33,7 @@ export const AuthButton = forwardRef<HTMLButtonElement, AuthButtonProps>(
           </span>
         ) : (
           <>
-            <Icon className='!h-6 !w-6' strokeWidth={3} />
+            <Icon className='!h-6 !w-6' strokeWidth={2} />
             {label}
           </>
         )}
