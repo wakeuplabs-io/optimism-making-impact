@@ -12,7 +12,7 @@ import { useInterval } from 'usehooks-ts';
 
 export function InfographyStep() {
   const { addInfography, saveInfographies, step, stepInitialState, savingStatus } = useMainSectionStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const isStateEqual = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
 
   useInterval(

@@ -14,6 +14,7 @@ const initialUserState = {
 export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
   user: initialUserState,
   isLoading: false,
+  isAdminModeEnabled: false,
   fetchAuth: async () => {
     set(() => ({ isLoading: true }));
 
@@ -38,11 +39,12 @@ export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
 
     set(() => ({
       isLoading: false,
+      isAdminModeEnabled: validation.user.isAdmin,
       user: validation.user,
     }));
   },
   toggleUserAdmin: () => {
-    set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin } }));
+    set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin }, isAdminModeEnabled: !state.isAdminModeEnabled }));
   },
   isAuthenticated: () => !!get().user.authToken,
 }));

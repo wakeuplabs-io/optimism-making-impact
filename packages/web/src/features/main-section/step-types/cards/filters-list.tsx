@@ -66,7 +66,7 @@ function Content(props: ContentProps) {
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
   const { addCard, deleteKeyword } = useMainSectionStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
     <div className='flex w-full flex-col'>

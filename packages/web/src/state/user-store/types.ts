@@ -1,5 +1,6 @@
 interface UserState {
   isLoading: boolean;
+  isAdminModeEnabled: boolean;
   user: {
     isAdmin: boolean;
     authToken: string;
