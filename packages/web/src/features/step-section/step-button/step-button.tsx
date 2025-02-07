@@ -22,7 +22,7 @@ const buttonVariants = cva(
     variants: {
       state: {
         past: 'border-white-low text-white-low hover:bg-primary hover:text-white',
-        active: 'border-primary',
+        active: 'border-primary bg-white',
         coming: 'border-secondary hover:bg-primary hover:text-white',
       },
       isMobile: {
@@ -39,15 +39,15 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
 
   return (
     <button {...props} className={cn(buttonVariants({ state: props.state, isMobile }))}>
-      <div className='flex max-w-full items-center gap-2'>
+      <div className='flex items-center max-w-full gap-2'>
         <div>
           <IconWithDefault src={props.step.icon} />
         </div>
 
-        {!isMobile && <div className='flex-1 truncate text-left'>{props.step.title}</div>}
+        {!isMobile && <div className='flex-1 text-left truncate'>{props.step.title}</div>}
 
         {showActionIcons && (
-          <div className='ml-1 flex gap-4' onClick={(e) => e.stopPropagation()}>
+          <div className='flex gap-4 ml-1' onClick={(e) => e.stopPropagation()}>
             <DeleteStepModal step={props.step} onClick={onDelete} />
             <EditStepModal step={props.step} onClick={onEdit} />
           </div>
