@@ -3,7 +3,7 @@ interface UserState {
   user: {
     isAdmin: boolean;
     authToken: string;
-    userName: string;
+    name: string;
     email: string;
   };
 }
@@ -11,6 +11,7 @@ interface UserState {
 interface UserActions {
   toggleUserAdmin: () => void;
   fetchAuth: () => Promise<void>;
+  isAuthenticated: () => boolean;
 }
 
 export type UserStore = UserState & UserActions;
