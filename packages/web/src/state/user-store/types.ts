@@ -3,7 +3,7 @@ interface UserState {
   user: {
     isAdmin: boolean;
     authToken: string;
-    userName: string;
+    name: string;
     email: string;
   };
 }
