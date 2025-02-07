@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
   const selectedCategoryId = useSidebarStore((state) => state.selectedCategoryId);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   useEffect(() => {
     if (selectedCategoryId) {

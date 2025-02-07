@@ -17,7 +17,7 @@ interface ItemsListProps {
 
 export function ItemsList(props: ItemsListProps) {
   const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
   const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
@@ -41,7 +41,7 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const updateItem = useMainSectionStore((state) => state.updateItem);
   const deleteItem = useMainSectionStore((state) => state.deleteItem);
 

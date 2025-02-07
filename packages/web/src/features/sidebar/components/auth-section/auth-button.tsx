@@ -4,23 +4,25 @@ import { LucideIcon, LoaderCircle } from 'lucide-react';
 import { forwardRef } from 'react';
 
 type AuthButtonProps = {
-  label: React.ReactNode;
   icon: LucideIcon;
+  variant?: 'regular' | 'dark';
+  label?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
   onClick?: () => void;
 };
 
 export const AuthButton = forwardRef<HTMLButtonElement, AuthButtonProps>(
-  ({ isLoading = false, icon: Icon, label, onClick, className }, ref) => {
+  ({ isLoading = false, icon: Icon, variant = 'regular', label, onClick, className }, ref) => {
     return (
       <Button
-        className={cn(className, 'rounded-xl', {
-          'justify-start': !isLoading,
+        className={cn(className, {
+          'rounded-xl justify-start': !isLoading,
+          'rounded-xl justify-center': !label,
           'opacity-50 cursor-not-allowed justify-center': isLoading,
         })}
-        variant='gray'
-        size='xl'
+        variant={variant === 'dark' ? 'gray' : 'gray-light'}
+        size={label ? 'xl' : 'icon-xl'}
         onClick={onClick}
         ref={ref}
       >
@@ -31,7 +33,7 @@ export const AuthButton = forwardRef<HTMLButtonElement, AuthButtonProps>(
           </span>
         ) : (
           <>
-            <Icon className='!h-6 !w-6' />
+            <Icon className='!h-6 !w-6' strokeWidth={2} />
             {label}
           </>
         )}

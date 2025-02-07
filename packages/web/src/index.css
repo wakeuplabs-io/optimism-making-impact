@@ -21,7 +21,9 @@
     --dark-low: hsla(0, 0%, 25%, 1);
     --background-brighter: hsla(218, 40%, 98%, 1);
     --background: rgb(255, 255, 255);
+    --gray-600: hsla(0, 0%, 62%, 1);
     --gray-700: hsla(216, 14%, 54%, 1);
+    --slate-500: hsla(216, 15%, 48%, 1);
     /* End of new custom colors */
 
     /* Start of Card tag colors */

@@ -24,7 +24,11 @@ export default {
         ['background-brighter']: 'var(--background-brighter)',
         background: 'var(--background)',
         gray: {
+          600: 'var(--gray-600)',
           700: 'var(--gray-700)',
+        },
+        slate: {
+          500: 'var(--slate-500)',
         },
         // End of new custom colors
 

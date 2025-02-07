@@ -21,7 +21,12 @@ export const Login = () => {
           </DialogDescription>
         </DialogHeader>
         <div className='w-full pt-[110px]'>
-          <Button className='justify-center w-full' variant='gray' size='xl' onClick={() => signInWithRedirect({ provider: 'Google' })}>
+          <Button
+            className='justify-center w-full'
+            variant='gray-light'
+            size='xl'
+            onClick={() => signInWithRedirect({ provider: 'Google' })}
+          >
             <img src={googleLogo} />
             <span>Continue with Google</span>
           </Button>
