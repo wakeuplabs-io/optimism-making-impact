@@ -10,7 +10,7 @@ export const Login = () => {
   const { isLoading } = useUserStore((state) => state);
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <AuthButton className='w-full' isLoading={isLoading} icon={LogIn} label='Login' />
       </DialogTrigger>
       <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>
