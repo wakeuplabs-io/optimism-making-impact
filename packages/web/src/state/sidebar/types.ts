@@ -8,6 +8,7 @@ export interface SidebarState {
 }
 
 export interface SidebarActions {
+  init: () => void;
   fetchData: () => void;
   setSelectedRound: (roundId: number) => void;
   setSelectedCategoryId: (categoryId: number) => void;

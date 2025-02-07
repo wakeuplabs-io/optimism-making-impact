@@ -28,16 +28,16 @@ function Index() {
   // Set the initial state
   useEffect(() => {
     (async () => {
-      await useSidebarStore.getState().fetchData();
+      await useSidebarStore.getState().init();
       await useUserStore.getState().fetchAuth();
       if (search.roundId) useSidebarStore.getState().setSelectedRound(search.roundId);
     })();
   }, []);
 
   return (
-    <div className='flex h-screen w-screen flex-col overflow-hidden lg:flex-row'>
+    <div className='flex flex-col w-screen h-screen overflow-hidden lg:flex-row'>
       <SidebarSection />
-      <div className='flex flex-1 flex-col-reverse overflow-hidden lg:flex-col'>
+      <div className='flex flex-col-reverse flex-1 overflow-hidden lg:flex-col'>
         <StepsSection />
         <MainSectionLayout />
       </div>
