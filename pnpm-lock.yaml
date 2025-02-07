@@ -69,6 +69,9 @@ importers:
       '@prisma/client':
         specifier: 6.1.0
         version: 6.1.0(prisma@6.1.0)
+      aws-jwt-verify:
+        specifier: ^5.0.0
+        version: 5.0.0
       cors:
         specifier: 2.8.5
         version: 2.8.5
@@ -2587,6 +2590,10 @@ packages:
 
   aws-amplify@6.12.3:
     resolution: {integrity: sha512-i8kzMRWTvn6SptsfrfHWMSzgURU7H4bO8C6zZowTUufEbxaZTAmN/peNE5gHU9IcPle4IlS6PJFTyPav9PLZDg==}
+
+  aws-jwt-verify@5.0.0:
+    resolution: {integrity: sha512-FQM5EYEm7AnVJ3oeTpvBZQm7hYnpI067Em1oopHBs7cCNAcw8Aw8NFbojFjkNXifsOzyYe1ks+bg7Q9fMsTZSA==}
+    engines: {node: '>=16.0.0'}
 
   aws-sdk@2.1692.0:
     resolution: {integrity: sha512-x511uiJ/57FIsbgUe5csJ13k3uzu25uWQE+XqfBis/sB0SFoiElJWXRkgEAUh0U6n40eT3ay5Ue4oPkRMu1LYw==}
@@ -8401,6 +8408,8 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+
+  aws-jwt-verify@5.0.0: {}
 
   aws-sdk@2.1692.0:
     dependencies:

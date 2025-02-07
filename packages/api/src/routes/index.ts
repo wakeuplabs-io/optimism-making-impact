@@ -9,6 +9,7 @@ import { smartListsRouter } from '@/routes/smart-lists/route.js';
 import { stepsRouter } from '@/routes/steps/route.js';
 import { testRouter } from '@/routes/test/route.js';
 import { Router } from 'express';
+import { authRouter } from './auth/route.js';
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use('/keywords', keywordsRouter);
 router.use('/rounds', roundsRouter);
 router.use('/smart-lists', smartListsRouter);
 router.use('/steps', stepsRouter);
+router.use('/auth', authRouter);
 
 router.use('/test', testRouter);
 

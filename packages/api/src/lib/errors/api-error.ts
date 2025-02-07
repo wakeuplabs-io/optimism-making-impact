@@ -19,4 +19,8 @@ export class ApiError extends Error {
   static badRequest(): ApiError {
     return new ApiError(StatusCodes.BAD_REQUEST);
   }
+
+  static unauthorized(): ApiError {
+    return new ApiError(StatusCodes.UNAUTHORIZED);
+  }
 }

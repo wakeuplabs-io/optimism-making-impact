@@ -1,2 +1,2 @@
 export * from './sidebar/sidebar-store';
-export * from './user-store';
+export * from './user-store/user-store';
