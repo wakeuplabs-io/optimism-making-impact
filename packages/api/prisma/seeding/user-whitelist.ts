@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-const userWhiteListData = [{ email: 'matias.barro@gmail.com' }];
+const userWhiteListData = [{ email: 'matias.barro@gmail.com' }, { email: 'martincatala14@gmail.com' }];
 
 export async function seedUserWhitelist(prisma: PrismaClient) {
   console.log('Seeding user whitelist...');
