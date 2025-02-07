@@ -37,6 +37,13 @@ export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
       return;
     }
 
+    //show toast to user indicating if they are admin or viewer
+    //TODO: avoid displaying the toast if the user refresh the page instead of login (will be done when persisting session in local storage)
+    toast({
+      title: 'Welcome!',
+      description: validation.user.isAdmin ? 'You have access to edit the site.' : 'You can start exploring the site.',
+    });
+
     set(() => ({
       isLoading: false,
       isAdminModeEnabled: validation.user.isAdmin,
