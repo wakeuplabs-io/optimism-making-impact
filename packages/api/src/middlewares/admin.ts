@@ -3,8 +3,10 @@ import { authManager, AuthManagerException } from '@/lib/auth/index.js';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
+const adminRequiredMethods = ['POST', 'PUT', 'DELETE'];
+
 async function validateAdmin(req: Request, res: Response, next: NextFunction) {
-  if (!['POST', 'PUT', 'DELETE'].includes(req.method) || req.path.includes('/auth')) {
+  if (!adminRequiredMethods.includes(req.method) || req.path.includes('/auth')) {
     next();
     return;
   }
