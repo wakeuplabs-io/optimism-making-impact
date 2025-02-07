@@ -11,7 +11,7 @@ const initialUserState = {
   email: '',
 };
 
-export const useUserStore = createWithMiddlewares<UserStore>((set) => ({
+export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
   user: initialUserState,
   isLoading: false,
   fetchAuth: async () => {
@@ -44,4 +44,5 @@ export const useUserStore = createWithMiddlewares<UserStore>((set) => ({
   toggleUserAdmin: () => {
     set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin } }));
   },
+  isAuthenticated: () => !!get().user.authToken,
 }));

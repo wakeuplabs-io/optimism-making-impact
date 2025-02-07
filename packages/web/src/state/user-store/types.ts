@@ -11,6 +11,7 @@ interface UserState {
 interface UserActions {
   toggleUserAdmin: () => void;
   fetchAuth: () => Promise<void>;
+  isAuthenticated: () => boolean;
 }
 
 export type UserStore = UserState & UserActions;
