@@ -1,4 +1,7 @@
-import { z } from "zod";
+import dotenv from 'dotenv';
+import { z } from 'zod';
+
+dotenv.config();
 
 const env = {
   NODE_ENV: process.env.NODE_ENV,
