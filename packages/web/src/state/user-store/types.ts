@@ -1,18 +1,18 @@
+interface User {
+  isAdmin: boolean;
+  authToken: string;
+  name: string;
+  email: string;
+}
+
 interface UserState {
   isLoading: boolean;
   isAdminModeEnabled: boolean;
-  user: {
-    isAdmin: boolean;
-    authToken: string;
-    name: string;
-    email: string;
-  };
+  user: User | null;
 }
 
 interface UserActions {
-  toggleUserAdmin: () => void;
   fetchAuth: () => Promise<void>;
-  isAuthenticated: () => boolean;
   toggleAdminMode: () => void;
 }
 
