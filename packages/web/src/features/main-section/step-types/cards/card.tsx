@@ -15,7 +15,7 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   const { keywords, attributes } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
     <div className='0 flex h-fit min-h-[320px] w-[320px] flex-col gap-4 rounded-2xl bg-white p-4'>

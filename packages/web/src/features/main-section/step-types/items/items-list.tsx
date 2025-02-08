@@ -17,13 +17,13 @@ interface ItemsListProps {
 
 export function ItemsList(props: ItemsListProps) {
   const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
   const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
 
   return (
-    <div className='flex flex-col flex-1 p-2'>
+    <div className='flex flex-1 flex-col p-2'>
       <div className='mb-4 flex h-12 items-center justify-between border-b border-[#D9D9D9]'>
         <h2 className='text-[20px] font-[500]'>{props.title}</h2>
         {isAdmin && props.attributes && <AddItemModal stepId={props.stepId} onClick={addItem} attributes={props.attributes} />}
@@ -41,12 +41,12 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const updateItem = useMainSectionStore((state) => state.updateItem);
   const deleteItem = useMainSectionStore((state) => state.deleteItem);
 
   return (
-    <div className='flex flex-col w-full gap-4'>
+    <div className='flex w-full flex-col gap-4'>
       {props.items.length === 0 ? (
         <EmptyState />
       ) : (
@@ -63,7 +63,7 @@ function List(props: ListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex items-center justify-center w-full h-full'>
+    <div className='flex h-full w-full items-center justify-center'>
       <p>No item matches applied filters</p>
     </div>
   );

@@ -20,7 +20,7 @@ interface ContentProps {
 
 function Content(props: ContentProps) {
   const sidebarState = useSidebarStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   if (props.categories.length === 0) return <EmptyState />;
 

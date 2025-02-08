@@ -35,7 +35,7 @@ function SidebarContainer(props: SidebarContainerProps) {
   if (isMobile) {
     // Render as a Sheet on Mobile
     return (
-      <nav className='flex items-center justify-start w-full gap-4 p-3 h-28 lg:static'>
+      <nav className='flex h-28 w-full items-center justify-start gap-4 p-3 lg:static'>
         <SideMenu trigger={<Menu className='text-black' />} description='Sidebar' side='left' className='w-[320px]' triggerAsChild>
           {props.children}
         </SideMenu>
@@ -58,17 +58,16 @@ function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
   const rounds = useSidebarStore((state) => state.rounds);
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
-
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const roundOptions = useMemo(() => rounds.map((round) => ({ label: getRoundName(round.id), value: round.id.toString() })), [rounds]);
 
   return (
-    <div className='flex flex-col justify-between h-full gap-10'>
+    <div className='flex h-full flex-col justify-between gap-10'>
       <div className='flex justify-center'>
         <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
       </div>
-      <div className='flex flex-col justify-between flex-1'>
-        <div className='flex flex-col flex-1 gap-4'>
+      <div className='flex flex-1 flex-col justify-between'>
+        <div className='flex flex-1 flex-col gap-4'>
           <SelectInput
             name='round'
             placeholder='Select Round'
@@ -78,7 +77,7 @@ function SidebarContent() {
             onValueChange={(val) => setSelectedRound(+val)}
           />
           {isAdmin && (
-            <div className='flex justify-center w-full gap-1'>
+            <div className='flex w-full justify-center gap-1'>
               <CreateRoundModal onSave={addRound} />
               {selectedRound && <AddCategoryModal roundId={selectedRound.id} onSave={addCategory} />}
             </div>

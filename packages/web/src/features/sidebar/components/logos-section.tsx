@@ -5,7 +5,7 @@ import { useSidebarStore, useUserStore } from '@/state';
 
 export default function LogosSection() {
   const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
-  const isAdmin = useUserStore((state) => state.user.isAdmin);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   if (!selectedRound) {
     return null;
