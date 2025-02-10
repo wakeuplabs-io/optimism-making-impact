@@ -1,17 +1,21 @@
 import { Modal } from '@/components/modal';
 import { Step } from '@/types';
-import { Trash, X } from 'lucide-react';
+import { Trash } from 'lucide-react';
 
-interface DeleteIconProps {
+interface DeleteStepConfirmationModal {
+  isOpen: boolean;
   step: Step;
+  onOpenChange: (open: boolean) => void;
   onClick?: (stepId: number) => void;
 }
 
-export function DeleteStepModal(props: DeleteIconProps) {
+// TODO: USE THIS CONFIRMATION SCREEN IN OTHER MODALS
+export function DeleteStepConfirmationModal(props: DeleteStepConfirmationModal) {
   return (
     <Modal
+      open={props.isOpen}
       title='Delete step'
-      trigger={<X size={14} className='cursor-pointer stroke-[#4E4E4E] hover:stroke-black' />}
+      onOpenChange={props.onOpenChange}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Delete', variant: 'primary', icon: <Trash />, onClick: () => props.onClick?.(props.step.id) },

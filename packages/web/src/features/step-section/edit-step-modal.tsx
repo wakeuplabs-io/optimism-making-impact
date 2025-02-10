@@ -2,12 +2,13 @@ import { Modal } from '@/components/modal';
 import { TextInput } from '@/components/text-input';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
-import { Pencil, Save } from 'lucide-react';
+import { Pencil, Save, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 interface EditIconProps {
   step: Step;
   onClick?: (stepId: number, data: UpdateStepBody) => void;
+  onDelete?: () => void;
 }
 
 export function EditStepModal(props: EditIconProps) {
@@ -32,7 +33,7 @@ export function EditStepModal(props: EditIconProps) {
       title='Edit step'
       trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
       buttons={[
-        { label: 'Cancel', variant: 'secondary', onClick: () => {} },
+        { label: 'Delete', variant: 'secondary', onClick: () => props.onDelete?.(), icon: <Trash /> },
         { label: 'Save', variant: 'primary', onClick: () => props.onClick?.(props.step.id, { title, icon, description }), icon: <Save /> },
       ]}
     >

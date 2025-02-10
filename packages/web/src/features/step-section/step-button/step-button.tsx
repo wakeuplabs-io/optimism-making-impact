@@ -1,5 +1,4 @@
 import { IconWithDefault } from '@/components/icon-with-default';
-import { DeleteStepModal } from '@/features/step-section/delete-step-modal';
 import { EditStepModal } from '@/features/step-section/edit-step-modal';
 import { StepButtonState } from '@/features/step-section/step-button/helpers';
 import { useIsMobile } from '@/hooks/use-is-mobile';
@@ -7,6 +6,8 @@ import { cn } from '@/lib/utils';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 import { cva } from 'class-variance-authority';
+import { useState } from 'react';
+import { DeleteStepConfirmationModal } from '../delete-step-confirmation-modal';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   state: StepButtonState;
@@ -36,6 +37,7 @@ const buttonVariants = cva(
 export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonProps) {
   const isMobile = useIsMobile();
   const showActionIcons = isAdmin && !isMobile;
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
   return (
     <button {...props} className={cn(buttonVariants({ state: props.state, isMobile }))}>
@@ -48,9 +50,16 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
 
         {showActionIcons && (
           <div className='flex gap-4 ml-1' onClick={(e) => e.stopPropagation()}>
-            <DeleteStepModal step={props.step} onClick={onDelete} />
-            <EditStepModal step={props.step} onClick={onEdit} />
+            <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
           </div>
+        )}
+        {isConfirmDeleteModalOpen && (
+          <DeleteStepConfirmationModal
+            isOpen={isConfirmDeleteModalOpen}
+            onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
+            step={props.step}
+            onClick={onDelete}
+          />
         )}
       </div>
     </button>
