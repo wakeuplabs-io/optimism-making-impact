@@ -23,7 +23,7 @@ export function StepsList(props: StepsListProps) {
   }
 
   return (
-    <div className='flex items-center justify-between w-full overflow-hidden'>
+    <div className='flex items-center justify-between flex-1 max-w-full overflow-hidden gap-4'>
       {props.steps.map((step, idx) => {
         const buttonState = getButtonState(step, props.selectedStep);
 
