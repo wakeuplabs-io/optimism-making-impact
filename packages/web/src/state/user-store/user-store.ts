@@ -1,60 +1,62 @@
+import { UserStore } from './types';
+import { IS_DEVELOPMENT } from '@/config';
 import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { fetchAuthSession, signOut } from 'aws-amplify/auth';
-import { UserStore } from './types';
 
-const initialUserState = {
-  isAdmin: false,
-  authToken: '',
-  name: '',
-  email: '',
-};
+const persistConfig = { name: 'user' };
 
-export const useUserStore = createWithMiddlewares<UserStore>((set, get) => ({
-  user: initialUserState,
-  isLoading: false,
-  isAdminModeEnabled: false,
-  fetchAuth: async () => {
-    set(() => ({ isLoading: true }));
+export const useUserStore = createWithMiddlewares<UserStore>(
+  (set, get) => ({
+    user: null,
+    isLoading: false,
+    isAdminModeEnabled: false,
+    fetchAuth: async () => {
+      const userWasLoggedIn = Boolean(get().user);
 
-    const authSession = await fetchAuthSession({ forceRefresh: true });
+      if (!userWasLoggedIn) set(() => ({ isLoading: true }));
 
-    if (!authSession?.tokens?.idToken) {
-      set(() => ({ isLoading: false, user: initialUserState }));
-      return;
-    }
+      const authSession = await fetchAuthSession({ forceRefresh: true });
 
-    const idToken = authSession.tokens.idToken;
-    //login in our backend
-    const validation = await AuthService.validate({ token: idToken.toString() });
+      if (!authSession?.tokens?.idToken) {
+        set(() => ({ isLoading: false, user: null }));
+        return;
+      }
 
-    if (validation.status === 'error') {
-      toast({ title: 'Authentication Error', description: 'Failed to authenticate your user. Signing out', variant: 'destructive' });
-      setTimeout(() => {
-        signOut();
-      }, 1000);
-      return;
-    }
+      const idToken = authSession.tokens.idToken;
 
-    //show toast to user indicating if they are admin or viewer
-    //TODO: avoid displaying the toast if the user refresh the page instead of login (will be done when persisting session in local storage)
-    toast({
-      title: 'Welcome!',
-      description: validation.user.isAdmin ? 'You have access to edit the site.' : 'You can start exploring the site.',
-    });
+      const validation = await AuthService.validate({ token: idToken.toString() });
 
-    set(() => ({
-      isLoading: false,
-      isAdminModeEnabled: validation.user.isAdmin,
-      user: validation.user,
-    }));
-  },
-  toggleUserAdmin: () => {
-    set((state) => ({ user: { ...state.user, isAdmin: !state.user.isAdmin }, isAdminModeEnabled: !state.isAdminModeEnabled }));
-  },
-  isAuthenticated: () => !!get().user.authToken,
-  toggleAdminMode: () => {
-    set((state) => ({ isAdminModeEnabled: !state.isAdminModeEnabled }));
-  },
-}));
+      if (validation.status === 'error') {
+        toast({ title: 'Authentication Error', description: 'Failed to authenticate your user. Signing out.', variant: 'destructive' });
+        setTimeout(() => {
+          signOut();
+        }, 1000);
+        return;
+      }
+
+      set(() => ({ isLoading: false, user: validation.user }));
+
+      if (!userWasLoggedIn) {
+        // Display success toast if the user wasn't logged in before.
+        toast({
+          title: 'Welcome!',
+          description: validation.user.isAdmin ? 'You have access to edit the site.' : 'You can start exploring the site.',
+        });
+        set({ isAdminModeEnabled: true });
+        return;
+      }
+    },
+    toggleAdminMode: () => {
+      const user = get().user;
+
+      if (!IS_DEVELOPMENT) {
+        if (!user?.isAdmin) return;
+      }
+
+      set((state) => ({ isAdminModeEnabled: !state.isAdminModeEnabled }));
+    },
+  }),
+  persistConfig,
+);
