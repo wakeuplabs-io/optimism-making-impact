@@ -4,10 +4,14 @@ import { describe, expect, test } from 'vitest';
 
 describe('Duplicate round', async () => {
   const lastRound = await getLastCompleteRound();
+  if (!lastRound) throw new Error('No last round found');
+
   const newRoundId = await duplicateRound(lastRound);
 
   const originalRound = await getCompleteRound(lastRound.id);
   const duplicatedRound = await getCompleteRound(newRoundId);
+
+  if (!originalRound || !duplicatedRound) throw new Error('Original or duplicated round not found');
 
   test('Round fields should match except for IDs and timestamps', () => {
     expect(duplicatedRound.link1).toBe(originalRound.link1);

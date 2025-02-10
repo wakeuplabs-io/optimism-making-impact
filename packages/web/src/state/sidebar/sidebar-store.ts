@@ -13,38 +13,45 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   rounds: [],
   selectedRound: null,
   selectedCategoryId: -1,
+  init: async () => {
+    const response = await RoundsService.getRounds();
+    const rounds: CompleteRound[] = response.data.rounds;
+
+    set(() => ({ rounds }));
+
+    const firstRound = rounds[0];
+
+    if (!firstRound) return;
+
+    get().setSelectedRound(firstRound.id);
+  },
   fetchData: async () => {
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
 
-    let selectedRound = get().selectedRound;
-
-    if (!selectedRound) selectedRound = rounds[0]; // Just set the selecteRound to the latest if it is the first load
-
-    const select = rounds.find((round) => round.id === selectedRound.id);
-
-    set(() => ({
-      rounds,
-      selectedRound: select,
-      categories: select?.categories,
-      selectedCategoryId: get().selectedCategoryId < 0 ? select?.categories[0].id : get().selectedCategoryId,
-    }));
+    set(() => ({ rounds }));
   },
   setSelectedRound: (roundId: number) => {
     const selectedRound = get().rounds.find((round) => round.id === roundId);
 
-    if (selectedRound) {
-      const categories = selectedRound.categories;
-      set(() => ({ selectedRound, categories, selectedCategoryId: categories[0].id }));
-      router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
-    }
+    if (!selectedRound) return;
+
+    const categories = selectedRound.categories;
+
+    set(() => ({ selectedRound, categories, selectedCategoryId: categories[0] ? categories[0].id : get().selectedCategoryId }));
+
+    router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
   },
   addRound: async () => {
     await optimisticUpdate({
       getStateSlice: () => get().rounds,
-      updateFn: (rounds) => [{ ...rounds[0], id: rounds[0].id, name: `Round ${rounds[0].id + 1}` }, ...rounds],
+      updateFn: (rounds) => {
+        return rounds[0]
+          ? [{ ...rounds[0], id: rounds[0].id + 1, name: `Round ${rounds[0].id + 1}` }, ...rounds]
+          : [{ id: 1, name: 'Round 1', categories: [], link1: '', link2: '' }];
+      },
       setStateSlice: (rounds) => {
-        set({ rounds, selectedRound: rounds[0] });
+        set({ rounds, selectedRound: rounds[0] ?? null });
       },
       apiCall: () => RoundsService.createRound(),
       onError: (error) => {
