@@ -20,7 +20,7 @@ export function CardList(props: CardListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex items-center justify-center w-full h-full'>
+    <div className='flex h-full w-full items-center justify-center'>
       <p>No card matches applied filters</p>
     </div>
   );
@@ -33,8 +33,8 @@ interface ListProps {
 
 function List(props: ListProps) {
   return (
-    <div className='p-8 pt-0 overflow-y-auto'>
-      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-8 lg:flex-row lg:items-start'>
+    <div className='w-full overflow-y-auto p-8 pt-0'>
+      <div className='flex w-full flex-1 flex-col flex-wrap items-center gap-8 lg:flex-row lg:items-start'>
         {props.cards.map((card, i) => {
           return <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />;
         })}
