@@ -37,17 +37,17 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
       {...props}
       className={cn(
         buttonVariants({ state: props.state }),
-        ' h-[45px] justify-center items-center lg:justify-start lg:py-[12px] 2xl:px-[27px] 2xl:min-w-[250px] 2xl:max-w-[500px] gap-3 ',
+        ' h-[45px] justify-center items-center lg:justify-between lg:py-[12px] 2xl:px-[27px] 2xl:min-w-[250px] 2xl:max-w-[500px] gap-3',
         {
           'w-[80px] px-[10px] py-0 ': !showActionIcons || isMobile,
           'w-[150px] px-[12px]': showActionIcons,
         },
       )}
     >
-      <IconWithDefault src={props.step.icon} />
-
-      {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block '>{props.step.title}</div>}
-
+      <div className='flex justify-start gap-3'>
+        <IconWithDefault src={props.step.icon} />
+        {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block '>{props.step.title}</div>}
+      </div>
       {showActionIcons && (
         <div className='ml-1' onClick={(e) => e.stopPropagation()}>
           <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
