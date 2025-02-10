@@ -2,6 +2,7 @@ import { getButtonState } from '@/features/step-section/step-button/helpers';
 import { StepButton } from '@/features/step-section/step-button/step-button';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
+import { StepSeparator } from './step-separator';
 
 interface StepsListProps {
   steps: Step[];
@@ -22,20 +23,23 @@ export function StepsList(props: StepsListProps) {
   }
 
   return (
-    <div className='flex justify-between flex-1 max-w-full overflow-hidden'>
-      {props.steps.map((step) => {
+    <div className='flex items-center justify-between w-full overflow-hidden'>
+      {props.steps.map((step, idx) => {
         const buttonState = getButtonState(step, props.selectedStep);
 
         return (
-          <StepButton
-            state={buttonState}
-            key={`${step.id}-${step.title}`}
-            onClick={() => props.onSelectStep(step.id)}
-            step={step}
-            isAdmin={props.isAdmin}
-            onDelete={props.onDeleteStep}
-            onEdit={props.onEditStep}
-          />
+          <>
+            <StepButton
+              state={buttonState}
+              key={`${step.id}-${step.title}`}
+              onClick={() => props.onSelectStep(step.id)}
+              step={step}
+              isAdmin={props.isAdmin}
+              onDelete={props.onDeleteStep}
+              onEdit={props.onEditStep}
+            />
+            {idx < props.steps.length - 1 && <StepSeparator />}
+          </>
         );
       })}
     </div>
