@@ -1,7 +1,6 @@
 import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { DeleteKeywordButton } from '@/features/main-section/step-types/cards/delete-keyword-button';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useUserStore } from '@/state';
@@ -65,17 +64,11 @@ function Content(props: ContentProps) {
     selectedAttributes,
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
-  const { addCard, deleteKeyword } = useMainSectionStore((state) => state);
+  const { deleteKeyword } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
     <div className='flex flex-col w-full'>
-      {isAdmin && (
-        <div className='mb-8'>
-          <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} attributes={props.smartList?.attributes} />
-        </div>
-      )}
-
       <h2 className='h-12 text-[20px] font-[500]'>Filters</h2>
       <hr className='border-[#D9D9D9]' />
 
