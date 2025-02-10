@@ -1,4 +1,5 @@
 import { Toaster } from '@/components/ui/toaster';
+import { IS_DEVELOPMENT } from '@/config';
 import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
 import { MainSectionLayout } from '@/layout/sections/main';
 import { SidebarSection } from '@/layout/sections/sidebar';
@@ -42,7 +43,7 @@ function Index() {
         <MainSectionLayout />
       </div>
       <Toaster />
-      {import.meta.env.DEV && <IsAdminIndicator />}
+      {IS_DEVELOPMENT && <IsAdminIndicator />}
     </div>
   );
 }

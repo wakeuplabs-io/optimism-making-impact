@@ -10,7 +10,8 @@ const fetcher = axios.create({
 
 fetcher.interceptors.request.use((config) => {
   //interceptor that adds the auth token to the request
-  const authToken = useUserStore.getState().user.authToken;
+  const authToken = useUserStore.getState().user?.authToken;
+
   if (authToken) {
     config.headers.Authorization = authToken;
   }
