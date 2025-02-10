@@ -18,7 +18,7 @@ export function Card(props: CardProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
-    <div className='0 flex h-fit min-h-[320px] w-[320px] flex-col gap-4 rounded-2xl bg-white p-4'>
+    <div className='flex h-fit min-h-[320px] w-[320px] flex-col gap-4 rounded-2xl bg-white p-8'>
       <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
@@ -95,13 +95,13 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex flex-wrap justify-start w-full gap-2'>
+    <div className='flex flex-wrap justify-between w-full gap-2'>
       {props.keywords.map((keyword, i) => {
         return (
           <Badge
             key={`${keyword.id}-${i}`}
             style={{ backgroundColor: getRandomBadgeColor(keyword.value) }}
-            className='inline-block w-[45%] truncate rounded-full px-6 py-1 text-center'
+            className='inline-block w-[48%] truncate rounded-full px-6 py-1 text-center'
           >
             {keyword.value}
           </Badge>
