@@ -4,6 +4,13 @@ import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { fetchAuthSession, signOut } from 'aws-amplify/auth';
+import {
+  AUTHENTICATION_ERROR_DESCRIPTION,
+  AUTHENTICATION_ERROR_TITLE,
+  AUTHENTICATION_NOT_ADMIN_ERROR_DESCRIPTION,
+  AUTHENTICATION_SUCCESS_DESCRIPTION,
+  AUTHENTICATION_SUCCESS_TITLE,
+} from './texts';
 
 const persistConfig = { name: 'user' };
 
@@ -26,23 +33,29 @@ export const useUserStore = createWithMiddlewares<UserStore>(
 
       const idToken = authSession.tokens.idToken;
 
-      const validation = await AuthService.validate({ token: idToken.toString() });
+      const { status, user } = await AuthService.validate({ token: idToken.toString() });
 
-      if (validation.status === 'error') {
-        toast({ title: 'Authentication Error', description: 'Failed to authenticate your user. Signing out.', variant: 'destructive' });
+      // if the authentication fails or user is not an admin, sign out the user
+      if (status === 'error' || !user.isAdmin) {
+        toast({
+          title: AUTHENTICATION_ERROR_TITLE,
+          description: status === 'error' ? AUTHENTICATION_ERROR_DESCRIPTION : AUTHENTICATION_NOT_ADMIN_ERROR_DESCRIPTION,
+          variant: 'destructive',
+        });
         setTimeout(() => {
+          set(() => ({ isLoading: false, user: null }));
           signOut();
         }, 1000);
         return;
       }
 
-      set(() => ({ isLoading: false, user: validation.user }));
+      set(() => ({ isLoading: false, user }));
 
       if (!userWasLoggedIn) {
         // Display success toast if the user wasn't logged in before.
         toast({
-          title: 'Welcome!',
-          description: validation.user.isAdmin ? 'You have access to edit the site.' : 'You can start exploring the site.',
+          title: AUTHENTICATION_SUCCESS_TITLE,
+          description: AUTHENTICATION_SUCCESS_DESCRIPTION,
         });
         set({ isAdminModeEnabled: true });
         return;
