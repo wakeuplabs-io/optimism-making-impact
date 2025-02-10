@@ -16,7 +16,7 @@ export function DeleteAttributeModal(props: DeleteAttributeModalProps) {
       title='Remove attribute from Smart List'
       trigger={
         <button>
-          <X size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+          <X size={14} className='stroke-[#8A8A8A] hover:stroke-black' />
         </button>
       }
       buttons={[
