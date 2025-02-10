@@ -37,7 +37,7 @@ function Index() {
   return (
     <div className='flex flex-col w-screen h-screen overflow-hidden lg:flex-row'>
       <SidebarSection />
-      <div className='flex flex-1 flex-col-reverse overflow-hidden bg-[#F1F4F9] lg:flex-col lg:p-8 lg:pl-16 lg:pt-0'>
+      <div className='flex flex-1 flex-col-reverse overflow-hidden bg-[#F1F4F9] lg:flex-col lg:p-8 lg:py-0 lg:pl-16'>
         <StepsSection />
         <MainSectionLayout />
       </div>
