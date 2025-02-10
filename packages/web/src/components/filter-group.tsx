@@ -2,7 +2,7 @@ import { ColorDot } from '@/components/color-dot';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import { Color } from '@/types';
-import { Info, X } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { ComponentProps } from 'react';
 
 interface Filter<T> {
@@ -53,7 +53,7 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-sm text-center'>
+    <div className='text-center text-sm'>
       <span>No filters available</span>
     </div>
   );
@@ -82,13 +82,17 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
     <button
       {...props}
       className={cn(
-        'flex w-full items-center justify-start gap-2 rounded-full px-2 py-0.5',
+        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full px-2 py-0.5',
         selected && 'border-1 border border-black',
         className,
       )}
       onClick={handleClick}
     >
-      {prefixDot && <ColorDot color={prefixDot} />}
+      {prefixDot && (
+        <div>
+          <ColorDot color={prefixDot} />
+        </div>
+      )}
       <span
         className={cn(
           'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
@@ -98,9 +102,8 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         {label}
       </span>
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
-      {selected && <X size={12} className='stroke-[#4E4E4E] hover:stroke-black' />}
       {props.isAdmin && (
-        <div className='flex items-center gap-1 ml-auto' onClick={(e) => e.stopPropagation()}>
+        <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
           {props.editComponent}
           {props.deleteComponent}
         </div>
@@ -114,7 +117,9 @@ function InfoIcon(props: { tooltipText: string }) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Info size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+          <div>
+            <Info size={14} className='stroke-[#A8A8A8] hover:stroke-black' />
+          </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>{props.tooltipText}</p>
