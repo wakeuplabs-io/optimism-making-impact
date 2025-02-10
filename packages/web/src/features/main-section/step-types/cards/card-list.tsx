@@ -33,8 +33,8 @@ interface ListProps {
 
 function List(props: ListProps) {
   return (
-    <div className='flex flex-col items-center flex-1 gap-2'>
-      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-4 lg:flex-row lg:items-start'>
+    <div className='p-8 pt-0'>
+      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-8 lg:flex-row lg:items-start'>
         {props.cards.map((card, i) => {
           return <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />;
         })}

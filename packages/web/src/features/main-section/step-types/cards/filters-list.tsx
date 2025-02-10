@@ -37,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
+      <div className='flex items-center justify-between w-full gap-4 h-14 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -46,7 +46,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex w-[250px] min-w-[250px] p-2'>{props.children}</div>;
+  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white p-5'>{props.children}</div>;
 }
 
 interface ContentProps {
@@ -69,7 +69,7 @@ function Content(props: ContentProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
-    <div className='flex w-full flex-col'>
+    <div className='flex flex-col w-full'>
       {isAdmin && (
         <div className='mb-8'>
           <AddCardModal stepId={props.stepId} onClick={addCard} keywords={keywords} attributes={props.smartList?.attributes} />

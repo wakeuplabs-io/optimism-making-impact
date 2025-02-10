@@ -10,7 +10,7 @@ interface CardStepProps {
 export function CardStep(props: CardStepProps) {
   return (
     <div className={cn('flex h-full w-full flex-col gap-4')}>
-      <div className='flex flex-col lg:flex-row'>
+      <div className='flex flex-col h-full lg:flex-row'>
         <CardFilters smartList={props.step.smartList} stepId={props.step.id} />
         <CardList cards={props.step.cards} stepId={props.step.id} />
       </div>
