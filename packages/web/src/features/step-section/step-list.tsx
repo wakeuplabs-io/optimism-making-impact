@@ -4,6 +4,7 @@ import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 import { StepSeparator } from './step-separator';
 import { useIsDesktopXL } from '@/hooks/use-tresholds';
+import { useMemo } from 'react';
 
 interface StepsListProps {
   steps: Step[];
@@ -16,6 +17,10 @@ interface StepsListProps {
 
 export function StepsList(props: StepsListProps) {
   const isDesktopXL = useIsDesktopXL();
+  const selectedStepIdx = useMemo(
+    () => props.steps.findIndex((step) => step.id === props.selectedStep?.id) ?? 0,
+    [props.steps, props.selectedStep],
+  );
 
   if (props.steps.length === 0) {
     return (
@@ -45,7 +50,7 @@ export function StepsList(props: StepsListProps) {
               onDelete={props.onDeleteStep}
               onEdit={props.onEditStep}
             />
-            {idx < props.steps.length - 1 && <StepSeparator />}
+            {idx < props.steps.length - 1 && <StepSeparator past={idx < selectedStepIdx} />}
           </>
         );
       })}
