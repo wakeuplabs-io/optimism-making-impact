@@ -53,7 +53,7 @@ export function FilterGroup<T>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-center text-sm'>
+    <div className='text-sm text-center'>
       <span>No filters available</span>
     </div>
   );
@@ -88,11 +88,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
       )}
       onClick={handleClick}
     >
-      {prefixDot && (
-        <div>
-          <ColorDot color={prefixDot} />
-        </div>
-      )}
+      {prefixDot && <ColorDot color={prefixDot} />}
       <span
         className={cn(
           'w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline',
@@ -103,7 +99,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
       </span>
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
       {props.isAdmin && (
-        <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+        <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
           {props.editComponent}
           {props.deleteComponent}
         </div>
