@@ -20,7 +20,7 @@ interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const buttonVariants = cva('flex overflow-hidden whitespace-nowrap rounded-3xl border transition-all ease-in-out duration-500', {
   variants: {
     state: {
-      past: 'border-white-low text-white-low hover:bg-primary hover:text-white',
+      past: 'border-white-low text-white-low bg-[#F1F4F9] hover:bg-primary hover:text-white',
       active: 'border-primary bg-white',
       coming: 'border-secondary hover:bg-primary hover:text-white',
     },
@@ -38,7 +38,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
       className={cn(
         props.className,
         buttonVariants({ state: props.state }),
-        'w-[70px] h-[70px] p-2 rounded-full lg:h-[45px] lg:rounded-3xl  lg:py-[12px] 2xl:px-[27px] gap-3',
+        'w-[70px] h-[70px] p-2 rounded-full gap-3 lg:h-[45px] lg:rounded-3xl  lg:py-[12px] 2xl:px-[27px] ',
         {
           'lg:w-[45px] lg:px-[10px] lg:py-0': !showActionIcons || isMobile,
           'lg:w-[80px] lg:px-[12px]': showActionIcons,
