@@ -38,39 +38,45 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
       className={cn(
         props.className,
         buttonVariants({ state: props.state }),
-        // 'h-[45px] px-[12px] lg:py-[12px] 2xl:w-[220px] 2xl:px-[27px] gap-3 ',
-        'w-[100px] h-[45px] px-[12px] lg:py-[12px] 2xl:px-[27px] gap-3',
+        'w-[70px] h-[70px] p-2 rounded-full lg:h-[45px] lg:rounded-3xl  lg:py-[12px] 2xl:px-[27px] gap-3',
         {
-          'lg:w-[45px] px-[10px] py-0 ': !showActionIcons || isMobile,
-          'lg:w-[80px] px-[12px]': showActionIcons,
+          'lg:w-[45px] lg:px-[10px] lg:py-0': !showActionIcons || isMobile,
+          'lg:w-[80px] lg:px-[12px]': showActionIcons,
         },
       )}
     >
-      <div className='w-full flex items-center justify-center'>
-        <div
-          className={cn('flex gap-3', {
-            'w-[90%]': showActionIcons,
-          })}
-        >
-          <div className='min-w[22px]'>
-            <IconWithDefault src={props.step.icon} />
-          </div>
-          {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
+      {isMobile ? (
+        <div className='flex items-center justify-center w-full h-full'>
+          <IconWithDefault src={props.step.icon} size='lg' />
         </div>
-        {showActionIcons && (
-          <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
-            <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+      ) : (
+        <div className='w-full flex justify-between items-center'>
+          <div
+            className={cn('flex items-center justify-center gap-3', {
+              'w-[90%]': showActionIcons,
+              'w-full': !showActionIcons,
+            })}
+          >
+            <div className='lg:min-w[22px]'>
+              <IconWithDefault src={props.step.icon} />
+            </div>
+            {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
           </div>
-        )}
-        {isConfirmDeleteModalOpen && (
-          <DeleteStepConfirmationModal
-            isOpen={isConfirmDeleteModalOpen}
-            onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
-            step={props.step}
-            onClick={onDelete}
-          />
-        )}
-      </div>
+          {showActionIcons && (
+            <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
+              <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+            </div>
+          )}
+          {isConfirmDeleteModalOpen && (
+            <DeleteStepConfirmationModal
+              isOpen={isConfirmDeleteModalOpen}
+              onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
+              step={props.step}
+              onClick={onDelete}
+            />
+          )}
+        </div>
+      )}
     </button>
   );
 }

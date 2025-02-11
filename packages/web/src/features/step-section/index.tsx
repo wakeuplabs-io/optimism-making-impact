@@ -1,5 +1,6 @@
 import { AddStepModal } from '@/features/step-section/add-step-modal';
 import { StepsList } from '@/features/step-section/step-list';
+import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
 import { useStepsStore } from '@/state/steps/steps-store';
@@ -9,6 +10,7 @@ export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
   const selectedCategoryId = useSidebarStore((state) => state.selectedCategoryId);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (selectedCategoryId) {
@@ -37,6 +39,7 @@ export function StepsSectionContent() {
       <div
         className={cn({
           invisible: !isAdmin,
+          hidden: isMobile,
         })}
       >
         <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />

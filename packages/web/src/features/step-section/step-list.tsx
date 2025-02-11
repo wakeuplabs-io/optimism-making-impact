@@ -26,7 +26,7 @@ export function StepsList(props: StepsListProps) {
   }
 
   return (
-    <div className='flex items-center flex-1 w-[95%] overflow-hidden gap-4 lg:justify-start'>
+    <div className='flex items-center justify-between flex-1 overflow-x-auto lg:w-[95%] gap-4 lg:justify-start lg:overflow-hidden'>
       {props.steps.map((step, idx) => {
         const buttonState = getButtonState(step, props.selectedStep);
 
@@ -35,7 +35,7 @@ export function StepsList(props: StepsListProps) {
             <StepButton
               // The step button width is dynamic based on the number of steps and the screen size for larger screens.
               // To calculate it we divide the screen width by the number of steps and subtract the gap between the separators and the width of a single separator dot.
-              style={isDesktopXL ? { width: `calc((100%/${props.steps.length}) - 21px - 16px)` } : undefined}
+              style={isDesktopXL ? { width: `calc((95%/${props.steps.length}) - 21px - 16px)` } : undefined}
               className={`shrink-0 2xl:max-w-[220px]`}
               state={buttonState}
               key={`${step.id}-${step.title}`}
