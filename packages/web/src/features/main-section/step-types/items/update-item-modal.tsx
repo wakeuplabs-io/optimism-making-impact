@@ -1,7 +1,7 @@
 import { ColorDot } from '@/components/color-dot';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
+import { TextAreaInput } from '@/components/text-area-input';
 import { UpdateItemBody } from '@/services/items/schemas';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteItem } from '@/types';
@@ -18,7 +18,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
   const [markdown, setMarkdown] = useState(props.item.markdown);
   const [attributeId, setAttributeId] = useState<number>(props.item.attributeId);
 
-  function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleValueChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setMarkdown(event.target.value);
   }
 
@@ -45,7 +45,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
       ]}
     >
       <div className='grid gap-4 py-4'>
-        <TextInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' />
+        <TextAreaInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' rows={5} />
         {attributes && (
           <SelectInput
             name='attributeId'
