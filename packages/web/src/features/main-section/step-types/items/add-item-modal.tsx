@@ -1,80 +1,94 @@
 import { ColorDot } from '@/components/color-dot';
+import { FormModal } from '@/components/form-modal';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
-import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
+import { TextAreaInput } from '@/components/text-area-input';
 import { CreateItemBody } from '@/services/items/schemas';
 import { Attribute } from '@/types';
-import { Plus, Save } from 'lucide-react';
-import { useState } from 'react';
+import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
-interface AddAttributeButtonProps {
+interface AddItemModalProps {
   attributes: Attribute[];
   stepId: number;
   onClick: (data: CreateItemBody) => void;
 }
 
-export function AddItemModal(props: AddAttributeButtonProps) {
-  return <AddModal {...props} />;
+interface AddItemFormData {
+  markdown: string;
+  attributeId?: number;
 }
 
-interface AddSmartListModalProps {
-  attributes: Attribute[];
-  stepId: number;
-  onClick: (data: CreateItemBody) => void;
-}
+export function AddItemModal(props: AddItemModalProps) {
+  const attributeOptions = useMemo(
+    () =>
+      props.attributes.map((a) => ({
+        value: a.id.toString(),
+        label: (
+          <div className='flex items-center gap-2'>
+            <ColorDot color={a.color} />
+            <span>{a.value}</span>
+          </div>
+        ),
+      })),
+    [props.attributes],
+  );
 
-function AddModal(props: AddSmartListModalProps) {
-  const [markdown, setMarkdown] = useState('');
-  const [attributeId, setAttributeId] = useState<number | undefined>(undefined);
+  const defaultValues: AddItemFormData = {
+    markdown: '',
+    attributeId: undefined,
+  };
 
-  function clearForm() {
-    setMarkdown('');
-    setAttributeId(undefined);
-  }
-
-  function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setMarkdown(event.target.value);
-  }
-  function handleAttributeChange(value: string) {
-    const attributeId = Number(value);
-    setAttributeId(attributeId);
-  }
-
-  function handleSubmit() {
-    if (!attributeId) return;
-    props.onClick({ markdown, attributeId, stepId: props.stepId });
-
-    clearForm();
+  function handleSubmit(data: AddItemFormData) {
+    if (!data.attributeId) return;
+    props.onClick({ markdown: data.markdown, attributeId: data.attributeId, stepId: props.stepId });
   }
 
   return (
-    <Modal
-      onOpenChange={clearForm}
+    <FormModal<AddItemFormData>
       title='Add item'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
-      buttons={[
-        { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Save', variant: 'primary', disabled: !attributeId, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
     >
-      <div className='grid gap-4 py-4'>
-        <TextInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' />
-        <SelectInput
+      <FormFields attributeOptions={attributeOptions} defaultValues={defaultValues} />
+    </FormModal>
+  );
+}
+
+interface FormFieldsProps {
+  attributeOptions: { value: string; label: React.ReactNode }[];
+  defaultValues: AddItemFormData;
+}
+
+function FormFields({ attributeOptions, defaultValues }: FormFieldsProps) {
+  const { control } = useFormContext<AddItemFormData>();
+
+  return (
+    <div className='grid gap-4 py-4'>
+      <Controller
+        name='markdown'
+        control={control}
+        defaultValue={defaultValues.markdown}
+        render={({ field }) => <TextAreaInput {...field} rows={5} placeholder='Content' />}
+      />
+      {attributeOptions.length > 0 && (
+        <Controller
           name='attributeId'
-          items={props.attributes.map((a) => ({
-            value: a.id.toString(),
-            label: (
-              <div className='flex items-center gap-2'>
-                <ColorDot color={a.color} />
-                <span>{a.value}</span>
-              </div>
-            ),
-          }))}
-          onValueChange={handleAttributeChange}
-          placeholder='Select an attribute'
+          control={control}
+          defaultValue={defaultValues.attributeId}
+          render={({ field }) => (
+            <SelectInput
+              name='attributeId'
+              items={attributeOptions}
+              onValueChange={(val) => field.onChange(Number(val))}
+              value={String(field.value ?? '')}
+              placeholder='Select an attribute'
+            />
+          )}
         />
-      </div>
-    </Modal>
+      )}
+    </div>
   );
 }

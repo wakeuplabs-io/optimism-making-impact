@@ -42,7 +42,7 @@ function UpdateModal(props: UpdateModalProps) {
       title='Edit attribute'
       trigger={
         <button>
-          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+          <Pencil size={14} className='stroke-[#8A8A8A] hover:stroke-black' />
         </button>
       }
       buttons={[

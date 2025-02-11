@@ -48,7 +48,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex w-[250px] min-w-[250px] p-2'>{props.children}</div>;
+  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white p-5'>{props.children}</div>;
 }
 
 interface ContentProps {

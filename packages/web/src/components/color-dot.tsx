@@ -9,5 +9,5 @@ interface ColorDotProps {
 export function ColorDot(props: ColorDotProps) {
   const color = getColor(props.color);
 
-  return <div className={cn('h-2 w-2 rounded-full', props.className)} style={{ backgroundColor: color }} />;
+  return <div className={cn('h-2 w-2 shrink-0 rounded-full', props.className)} style={{ backgroundColor: color }} />;
 }

@@ -23,8 +23,8 @@ export function ItemsList(props: ItemsListProps) {
   const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
 
   return (
-    <div className='flex flex-1 flex-col p-2'>
-      <div className='mb-4 flex h-12 items-center justify-between border-b border-[#D9D9D9]'>
+    <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
+      <div className='mb-4 flex h-12 items-center justify-between border-b border-[#D9D9D9] pb-8'>
         <h2 className='text-[20px] font-[500]'>{props.title}</h2>
         {isAdmin && props.attributes && <AddItemModal stepId={props.stepId} onClick={addItem} attributes={props.attributes} />}
       </div>
