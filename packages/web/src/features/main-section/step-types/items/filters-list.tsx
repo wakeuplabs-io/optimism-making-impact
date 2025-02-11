@@ -4,7 +4,7 @@ import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { DeleteAttributeModal } from '@/features/main-section/step-types/items/delete-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';

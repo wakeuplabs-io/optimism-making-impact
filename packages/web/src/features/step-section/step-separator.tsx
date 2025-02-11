@@ -7,6 +7,7 @@ interface StepSeparatorProps {
 
 export const StepSeparator: React.FC<StepSeparatorProps> = ({ className }) => {
   return (
-    <div className={cn(className, 'w-full min-w-[21px] h-2 bg-step-separator bg-repeat-x bg-[length:21px_5px] bg-[position:0_center]')} />
+    // Width of the separator will be 8 dots. In this case 8 x 21px = 168px
+    <div className={cn(className, 'w-[21px] md:w-[168px] h-2 bg-step-separator bg-repeat-x bg-[length:21px_5px] bg-[position:0_center]')} />
   );
 };

@@ -1,5 +1,6 @@
 import { AddStepModal } from '@/features/step-section/add-step-modal';
 import { StepsList } from '@/features/step-section/step-list';
+import { cn } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { useEffect } from 'react';
@@ -33,7 +34,13 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {isAdmin && <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />}
+      <div
+        className={cn({
+          invisible: !isAdmin,
+        })}
+      >
+        <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />
+      </div>
     </div>
   );
 }

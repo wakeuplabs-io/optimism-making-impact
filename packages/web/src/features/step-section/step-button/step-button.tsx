@@ -1,7 +1,7 @@
 import { IconWithDefault } from '@/components/icon-with-default';
 import { EditStepModal } from '@/features/step-section/edit-step-modal';
 import { StepButtonState } from '@/features/step-section/step-button/helpers';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
@@ -11,8 +11,8 @@ import { DeleteStepConfirmationModal } from '../delete-step-confirmation-modal';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   state: StepButtonState;
-  isAdmin?: boolean;
   step: Step;
+  isAdmin?: boolean;
   onDelete?: (stepId: number) => void;
   onEdit?: (stepId: number, data: UpdateStepBody) => void;
 }
@@ -36,31 +36,41 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
     <button
       {...props}
       className={cn(
+        props.className,
         buttonVariants({ state: props.state }),
-        ' h-[45px] justify-center items-center lg:justify-between lg:py-[12px] 2xl:px-[27px] 2xl:min-w-[250px] 2xl:max-w-[500px] gap-3',
+        // 'h-[45px] px-[12px] lg:py-[12px] 2xl:w-[220px] 2xl:px-[27px] gap-3 ',
+        'w-[100px] h-[45px] px-[12px] lg:py-[12px] 2xl:px-[27px] gap-3',
         {
-          'w-[80px] px-[10px] py-0 ': !showActionIcons || isMobile,
-          'w-[150px] px-[12px]': showActionIcons,
+          'lg:w-[45px] px-[10px] py-0 ': !showActionIcons || isMobile,
+          'lg:w-[80px] px-[12px]': showActionIcons,
         },
       )}
     >
-      <div className='flex justify-start gap-3'>
-        <IconWithDefault src={props.step.icon} />
-        {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block '>{props.step.title}</div>}
-      </div>
-      {showActionIcons && (
-        <div className='ml-1' onClick={(e) => e.stopPropagation()}>
-          <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+      <div className='w-full flex items-center justify-center'>
+        <div
+          className={cn('flex gap-3', {
+            'w-[90%]': showActionIcons,
+          })}
+        >
+          <div className='min-w[22px]'>
+            <IconWithDefault src={props.step.icon} />
+          </div>
+          {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
         </div>
-      )}
-      {isConfirmDeleteModalOpen && (
-        <DeleteStepConfirmationModal
-          isOpen={isConfirmDeleteModalOpen}
-          onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
-          step={props.step}
-          onClick={onDelete}
-        />
-      )}
+        {showActionIcons && (
+          <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
+            <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+          </div>
+        )}
+        {isConfirmDeleteModalOpen && (
+          <DeleteStepConfirmationModal
+            isOpen={isConfirmDeleteModalOpen}
+            onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
+            step={props.step}
+            onClick={onDelete}
+          />
+        )}
+      </div>
     </button>
   );
 }
