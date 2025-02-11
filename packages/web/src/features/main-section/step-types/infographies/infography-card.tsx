@@ -26,7 +26,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
   return (
     <div
       className={cn(
-        'relative flex w-full flex-col items-center justify-between gap-4 rounded-[10px] p-4 lg:flex-row lg:items-start lg:gap-24',
+        'relative flex w-full flex-col items-center justify-between rounded-[10px] gap-12 lg:p-4 lg:flex-row lg:items-start lg:gap-40',
         props.order % 2 === 0 && 'lg:flex-row-reverse',
         props.isAdmin && 'border border-[#BEBEBE]',
       )}
@@ -34,7 +34,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
       <HoverOverlay
         disabled={!props.isAdmin}
         overlayClassName='rounded-full bg-black bg-opacity-50'
-        className='flex aspect-square max-h-[345px] w-full max-w-[345px] items-center justify-center rounded-full'
+        className='flex aspect-square w-full max-w-[238px] max-h-[238px] lg:max-h-[345px] lg:max-w-[345px] items-center justify-center rounded-full'
         overlayContent={
           <div className='flex items-center justify-center w-full h-full cursor-pointer' onClick={() => setEditImgModalOpen(true)}>
             <Pencil className='text-white hover:text-gray-400' />
@@ -47,7 +47,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
           defaultImgClassname='rounded-full'
         />
       </HoverOverlay>
-      <div className='flex h-full w-screen max-w-[500px] flex-[2] items-center px-4 lg:px-0'>
+      <div className='flex h-full w-full items-center lg:max-w-[500px] lg:px-0'>
         <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
       {props.isAdmin && <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />}

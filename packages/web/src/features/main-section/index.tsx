@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 
 export function MainSection() {
   return (
-    <main className='flex flex-col items-center flex-1 gap-8 p-4 pb-0 overflow-hidden'>
+    <main className='flex flex-col items-center flex-1 gap-8 p-4 pb-0 overflow-y-auto'>
       <MainSectionContent />
     </main>
   );

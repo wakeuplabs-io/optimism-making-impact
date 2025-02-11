@@ -31,7 +31,7 @@ export function InfographyStep() {
   }
 
   return (
-    <div className='flex w-full max-w-[1000px] flex-col gap-4'>
+    <div className='flex w-full flex-col gap-y-20 py-12 px-8 bg-white lg:px-32 lg:py-24 lg:rounded-3xl lg:gap-4'>
       {isAdmin && (
         <div className='flex justify-end w-full gap-2'>
           <AutoSaveIndicator status={savingStatus} />
