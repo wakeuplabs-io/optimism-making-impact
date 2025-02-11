@@ -2,7 +2,7 @@ import { ColorDot } from '@/components/color-dot';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
+import { TextAreaInput } from '@/components/text-area-input';
 import { CreateItemBody } from '@/services/items/schemas';
 import { Attribute } from '@/types';
 import { Plus, Save } from 'lucide-react';
@@ -33,7 +33,7 @@ function AddModal(props: AddSmartListModalProps) {
     setAttributeId(undefined);
   }
 
-  function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleValueChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setMarkdown(event.target.value);
   }
   function handleAttributeChange(value: string) {
@@ -59,7 +59,7 @@ function AddModal(props: AddSmartListModalProps) {
       ]}
     >
       <div className='grid gap-4 py-4'>
-        <TextInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' />
+        <TextAreaInput name='content' value={markdown} onChange={handleValueChange} placeholder='Content' rows={5} />
         <SelectInput
           name='attributeId'
           items={props.attributes.map((a) => ({
