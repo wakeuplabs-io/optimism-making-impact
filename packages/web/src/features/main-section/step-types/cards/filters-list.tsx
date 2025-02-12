@@ -69,9 +69,8 @@ function Content(props: ContentProps) {
 
   return (
     <div className='flex flex-col w-full'>
-      <h2 className='h-12 text-[20px] font-[500]'>Filters</h2>
-      <hr className='border-[#D9D9D9]' />
-
+      <h2 className='text-[20px] font-[500]'>Filters</h2>
+      <hr className='border-[#D9D9D9] my-6' />
       <div className='flex flex-col gap-8'>
         {props.smartList && (
           <FilterGroup
