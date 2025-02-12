@@ -26,7 +26,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
   return (
     <div
       className={cn(
-        'relative flex w-full flex-col items-center justify-between rounded-[10px] gap-12 lg:p-4 lg:flex-row lg:items-start lg:gap-40',
+        'relative flex w-full flex-col items-center justify-between rounded-[10px] gap-12 lg:p-4 lg:flex-row lg:items-start xl:gap-40',
         props.order % 2 === 0 && 'lg:flex-row-reverse',
         props.isAdmin && 'border border-[#BEBEBE]',
       )}
