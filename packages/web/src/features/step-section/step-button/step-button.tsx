@@ -50,7 +50,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           <IconWithDefault src={props.step.icon} size='lg' />
         </div>
       ) : (
-        <div className='w-full flex justify-between items-center'>
+        <div className='w-full h-full flex justify-between items-center'>
           <div
             className={cn('flex items-center justify-center gap-3', {
               'w-[90%]': showActionIcons,
