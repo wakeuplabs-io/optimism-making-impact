@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-tresholds';
 
 function InfographyStepWrapper({ children }: { children: ReactNode }) {
-  return <div className='flex w-full flex-col px-8 py-12 bg-white lg:pt-7 lg:pb-16 lg:rounded-3xl xl:px-32'>{children}</div>;
+  return <div className='flex w-full flex-col px-8 py-12 bg-white lg:pt-7 lg:pb-16 lg:rounded-3xl lg:px-16'>{children}</div>;
 }
 
 export function InfographyStep() {
