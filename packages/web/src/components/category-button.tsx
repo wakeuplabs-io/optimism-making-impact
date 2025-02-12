@@ -18,7 +18,7 @@ export function CategoryButton(props: CategoryButtonProps) {
     <button
       className={cn(
         `group flex w-full items-center justify-between gap-1 rounded-[10px] px-4 py-2 text-secondary shadow-none hover:bg-[#F1F4F9] hover:text-dark-high`,
-        props.isActive && 'text-dark-high',
+        props.isActive && 'text-dark-high bg-[#F1F4F9]',
       )}
       onClick={props.onClick}
     >
