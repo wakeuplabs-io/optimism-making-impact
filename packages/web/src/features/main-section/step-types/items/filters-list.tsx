@@ -73,29 +73,26 @@ function Content(props: ContentProps) {
 
   return (
     <div className='flex w-full flex-col'>
-      <div className='flex h-12 items-center justify-between'>
+      <div className='flex items-center justify-between'>
         <h2 className='text-[20px] font-[500]'>Filters</h2>
         {isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
       </div>
-      <hr className='border-[#D9D9D9]' />
-
-      <div className='flex flex-col gap-8'>
-        <FilterGroup<Attribute>
-          className='mt-4'
-          // title={props.smartList.title} TODO: add title
-          filters={props.smartList.attributes.map((attr) => ({
-            label: attr.value.toLowerCase(),
-            selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
-            onClick: setSelectedAttributes,
-            data: attr,
-            prefixDot: attr.color,
-            editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
-            deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
-            tooltipText: attr.description,
-          }))}
-          isAdmin={isAdmin}
-        />
-      </div>
+      <hr className='my-6 border-[#D9D9D9]' />
+      <FilterGroup<Attribute>
+        // title={props.smartList.title} TODO: add title
+        filters={props.smartList.attributes.map((attr) => ({
+          label: attr.value.toLowerCase(),
+          selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
+          onClick: setSelectedAttributes,
+          data: attr,
+          prefixDot: attr.color,
+          editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
+          deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
+          tooltipText: attr.description,
+        }))}
+        isAdmin={isAdmin}
+        spacing='xl'
+      />
     </div>
   );
 }

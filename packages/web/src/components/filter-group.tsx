@@ -21,13 +21,20 @@ interface FilterGroupProps<T> {
   filters: Filter<T>[];
   className?: string;
   isAdmin?: boolean;
+  spacing?: 'md' | 'lg' | 'xl';
 }
 
 export function FilterGroup<T>(props: FilterGroupProps<T>) {
   return (
     <div className={cn('flex flex-col gap-2', props.className)}>
       {props.title && <h3 className='text-[16px] font-[400] text-[#68778D]'>{props.title}</h3>}
-      <div className='flex flex-col gap-1'>
+      <div
+        className={cn('flex flex-col gap-1', {
+          'gap-1': !props.spacing || props.spacing === 'md',
+          'gap-4': props.spacing === 'lg',
+          'gap-8': props.spacing === 'xl',
+        })}
+      >
         {props.filters.length === 0 ? (
           <EmptyState />
         ) : (
