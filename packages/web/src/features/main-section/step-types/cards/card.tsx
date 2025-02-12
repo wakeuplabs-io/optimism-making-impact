@@ -18,7 +18,7 @@ export function Card(props: CardProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
-    <div className='flex h-fit min-h-[320px] w-[320px] flex-col gap-4 rounded-2xl bg-white p-8'>
+    <div className='flex h-fit w-full min-h-[320px] flex-col gap-4 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] '>
       <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
