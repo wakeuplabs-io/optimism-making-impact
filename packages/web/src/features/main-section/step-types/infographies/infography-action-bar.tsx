@@ -7,13 +7,14 @@ import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { AutoSaveIndicator } from '@/components/autosave-indicator/autosave-indicator';
 import { AUTOSAVE_INTERVAL } from '@/config';
 import { cn } from '@/lib/utils';
+import { AddInfogrpahyButton } from './add-infogrpahy-modal';
 
 interface InfographyActionBarProps {
   className?: string;
 }
 
 export const InfographyActionBar: React.FC<InfographyActionBarProps> = ({ className }) => {
-  const { step, stepInitialState, saveInfographies, savingStatus } = useMainSectionStore((state) => state);
+  const { step, stepInitialState, addInfography, saveInfographies, savingStatus } = useMainSectionStore((state) => state);
 
   const isStateEqual = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
 
@@ -30,6 +31,7 @@ export const InfographyActionBar: React.FC<InfographyActionBarProps> = ({ classN
     <div className={cn(className, 'flex justify-end w-full gap-2')}>
       <AutoSaveIndicator status={savingStatus} />
       <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
+      <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
     </div>
   );
 };

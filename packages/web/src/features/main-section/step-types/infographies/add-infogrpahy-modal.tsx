@@ -1,9 +1,7 @@
-import { ActionButton } from '@/components/action-button';
 import { IconButton } from '@/components/icon-button';
 import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
-import { useIsMobile } from '@/hooks/use-tresholds';
 import { CreateInfographyBody } from '@/services/infogrpahies/schemas';
 import { Plus, Save } from 'lucide-react';
 import { useState } from 'react';
@@ -27,7 +25,6 @@ interface AddInfogrpahyModalProps {
 function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   const [image, setImage] = useState('');
   const [markdown, setMarkdown] = useState('');
-  const isMobile = useIsMobile();
 
   function handleMarkdownChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     setMarkdown(event.target.value);
@@ -46,13 +43,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   return (
     <Modal
       title='Add Infography'
-      trigger={
-        isMobile ? (
-          <IconButton variant='secondary' icon={<Plus strokeWidth={3} />} />
-        ) : (
-          <ActionButton label='Add new' variant='secondary' icon={<Plus />} className={props.buttonClassName} />
-        )
-      }
+      trigger={<IconButton variant='secondary' icon={<Plus strokeWidth={3} />} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
