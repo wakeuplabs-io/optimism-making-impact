@@ -25,11 +25,11 @@ export function InfographyCard(props: InfogrpahyCardProps) {
 
   return (
     <div
-      className={cn(
-        'relative flex w-full flex-col items-center justify-center rounded-[10px] gap-12 lg:p-4 lg:flex-row xl:gap-40 ',
-        props.order % 2 === 0 && 'lg:flex-row-reverse',
-        props.isAdmin && 'border border-[#BEBEBE]',
-      )}
+      className={cn('relative flex w-full flex-col items-center justify-center rounded-[10px] gap-12 lg:flex-row xl:gap-40 ', {
+        'lg:flex-row-reverse': props.order % 2 === 0,
+        'border border-[#BEBEBE] p-6 lg:px-20 lg:py-6': props.isAdmin,
+        'lg:p-4': !props.isAdmin,
+      })}
     >
       <HoverOverlay
         disabled={!props.isAdmin}
@@ -50,7 +50,11 @@ export function InfographyCard(props: InfogrpahyCardProps) {
       <div className='flex h-full w-full items-center lg:max-w-[500px] lg:px-0'>
         <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
       </div>
-      {props.isAdmin && <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />}
+      {props.isAdmin && (
+        <div className='absolute right-5 top-5 '>
+          <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />
+        </div>
+      )}
       {props.isAdmin && editImgModalOpen && (
         <EditInfogrpahyImageModal
           infography={props.infography}
