@@ -40,7 +40,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
 
   return (
     <Modal
-      title='Add step'
+      title='Add Infography'
       trigger={<IconButton variant='secondary' icon={<Plus />} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },

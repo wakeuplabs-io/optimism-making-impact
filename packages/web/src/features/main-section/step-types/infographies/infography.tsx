@@ -1,26 +1,11 @@
-import { AutoSaveIndicator } from '@/components/autosave-indicator/autosave-indicator';
-import { IconButton } from '@/components/icon-button';
-import { AUTOSAVE_INTERVAL } from '@/config';
-import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-modal';
 import { InfographyList } from '@/features/main-section/step-types/infographies/infography-list';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import isEqual from 'lodash.isequal';
-import { Save } from 'lucide-react';
-import { useMemo } from 'react';
-import { useInterval } from 'usehooks-ts';
+import { InfographyActionBar } from './infography-action-bar';
 
 export function InfographyStep() {
-  const { addInfography, saveInfographies, step, stepInitialState, savingStatus } = useMainSectionStore((state) => state);
+  const { step } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const isStateEqual = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
-
-  useInterval(
-    async () => {
-      if (step) saveInfographies(step.infographies);
-    },
-    !isStateEqual ? AUTOSAVE_INTERVAL : null,
-  );
 
   if (!step) {
     return (
@@ -32,13 +17,7 @@ export function InfographyStep() {
 
   return (
     <div className='flex w-full flex-col gap-y-20 py-12 px-8 bg-white lg:rounded-3xl lg:gap-4 xl:px-32 lg:py-24'>
-      {isAdmin && (
-        <div className='flex justify-end w-full gap-2'>
-          <AutoSaveIndicator status={savingStatus} />
-          <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
-          <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
-        </div>
-      )}
+      {isAdmin && <InfographyActionBar />}
       <InfographyList infographies={step.infographies} />
     </div>
   );
