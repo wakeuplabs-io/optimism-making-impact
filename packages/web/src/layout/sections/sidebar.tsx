@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import OmiLogo from '@/assets/omi-logo.png';
 import WakeUpLogo from '@/assets/wake-up-logo.png';
 import { ImageButton } from '@/components/image-button';
@@ -13,7 +14,6 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
 import { Menu } from 'lucide-react';
-import { useMemo } from 'react';
 
 export function SidebarSection() {
   return (
@@ -29,17 +29,37 @@ interface SidebarContainerProps {
 
 function SidebarContainer(props: SidebarContainerProps) {
   const isMobile = useIsMobile();
-  const selectedRoundId = useSidebarStore((state) => state.selectedRound)?.id;
-  const roundName = selectedRoundId ? getRoundName(selectedRoundId) : 'Round';
+  const { selectedRound, selectedCategoryId } = useSidebarStore((state) => state);
+
+  //Check if category is selected
+  const title = useMemo(() => {
+    if (!selectedRound) {
+      return 'Round';
+    }
+
+    const category = selectedRound.categories.find((category) => category.id === selectedCategoryId);
+
+    if (!category) {
+      return getRoundName(selectedRound.id);
+    }
+
+    return category.name;
+  }, [selectedRound, selectedCategoryId]);
 
   if (isMobile) {
     // Render as a Sheet on Mobile
     return (
-      <nav className='flex h-28 w-full items-center justify-start gap-4 p-3 lg:static'>
-        <SideMenu trigger={<Menu className='text-black' />} description='Sidebar' side='left' className='w-[320px]' triggerAsChild>
+      <nav className='flex w-full items-center justify-start gap-12 pt-14 px-8 pb-7 bg-[#F1F4F9] lg:static '>
+        <SideMenu
+          trigger={<Menu className='text-black w-[50px] h-[50px]' strokeWidth={1} />}
+          description='Sidebar'
+          side='left'
+          className='w-[320px]'
+          triggerAsChild
+        >
           {props.children}
         </SideMenu>
-        <span>{roundName}</span>
+        <span className='text-2xl text-secondary font-semibold  '>{title}</span>
       </nav>
     );
   }
