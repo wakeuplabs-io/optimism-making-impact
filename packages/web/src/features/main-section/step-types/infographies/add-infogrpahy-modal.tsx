@@ -1,4 +1,4 @@
-import { IconButton } from '@/components/icon-button';
+import { ActionButton } from '@/components/action-button';
 import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
@@ -8,15 +8,17 @@ import { useState } from 'react';
 
 interface AddInfogrpahyButtonProps {
   stepId: number;
+  className?: string;
   onClick?: (data: CreateInfographyBody) => void;
 }
 
-export function AddInfogrpahyButton(props: AddInfogrpahyButtonProps) {
-  return <AddInfogrpahyModal {...props} onClick={props.onClick} />;
+export function AddInfogrpahyButton({ className, ...props }: AddInfogrpahyButtonProps) {
+  return <AddInfogrpahyModal {...props} buttonClassName={className} onClick={props.onClick} />;
 }
 
 interface AddInfogrpahyModalProps {
   stepId: number;
+  buttonClassName?: string;
   onClick?: (data: CreateInfographyBody) => void;
 }
 
@@ -41,7 +43,7 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
   return (
     <Modal
       title='Add Infography'
-      trigger={<IconButton variant='secondary' icon={<Plus />} />}
+      trigger={<ActionButton label='Add new' variant='secondary' icon={<Plus />} className={props.buttonClassName} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },

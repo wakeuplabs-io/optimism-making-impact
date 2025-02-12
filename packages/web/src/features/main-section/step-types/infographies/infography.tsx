@@ -2,9 +2,11 @@ import { InfographyList } from '@/features/main-section/step-types/infographies/
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { InfographyActionBar } from './infography-action-bar';
+import { AddInfogrpahyButton } from './add-infogrpahy-modal';
+import { cn } from '@/lib/utils';
 
 export function InfographyStep() {
-  const { step } = useMainSectionStore((state) => state);
+  const { step, addInfography } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   if (!step) {
@@ -16,9 +18,22 @@ export function InfographyStep() {
   }
 
   return (
-    <div className='flex w-full flex-col gap-y-20 py-12 px-8 bg-white lg:rounded-3xl lg:gap-4 xl:px-32 lg:py-24'>
-      {isAdmin && <InfographyActionBar />}
-      <InfographyList infographies={step.infographies} />
+    <div className='flex w-full flex-col px-8 bg-white lg:pt-7 lg:pb-16 lg:rounded-3xl xl:px-32'>
+      <InfographyActionBar
+        className={cn('lg:mb-7', {
+          invisible: !isAdmin,
+        })}
+      />
+      <div className='flex w-full flex-col gap-y-16'>
+        <InfographyList infographies={step.infographies} />
+      </div>
+      <AddInfogrpahyButton
+        onClick={addInfography}
+        stepId={step.id}
+        className={cn('w-full lg:mt-16', {
+          invisible: !isAdmin,
+        })}
+      />
     </div>
   );
 }
