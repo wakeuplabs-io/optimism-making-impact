@@ -98,7 +98,7 @@ export function AddCardModal(props: AddCardModalProps) {
     <Modal
       onOpenChange={clearForm}
       title='New card'
-      trigger={<ActionButton label='Add card' variant='secondary' icon={<Plus />} className='w-[320px] lg:w-[250px]' />}
+      trigger={<ActionButton label='Add card' variant='secondary' icon={<Plus />} className='w-[320px] max-w-[320px] lg:w-[250px]' />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },

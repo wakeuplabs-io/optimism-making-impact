@@ -9,7 +9,7 @@ export const ViewModeToggle = forwardRef<HTMLButtonElement>((props, ref) => {
   return (
     <Button className='w-full justify-center rounded-xl' variant='slate' size='xl' onClick={toggleAdminMode} ref={ref} {...props}>
       <View className='!h-6 !w-6' strokeWidth={2} />
-      {isAdminModeEnabled ? 'User View' : 'Admin View'}
+      {isAdminModeEnabled ? 'User' : 'Admin'}
     </Button>
   );
 });
