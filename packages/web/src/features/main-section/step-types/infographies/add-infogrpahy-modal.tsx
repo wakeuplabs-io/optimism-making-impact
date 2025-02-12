@@ -8,15 +8,17 @@ import { useState } from 'react';
 
 interface AddInfogrpahyButtonProps {
   stepId: number;
+  className?: string;
   onClick?: (data: CreateInfographyBody) => void;
 }
 
-export function AddInfogrpahyButton(props: AddInfogrpahyButtonProps) {
-  return <AddInfogrpahyModal {...props} onClick={props.onClick} />;
+export function AddInfogrpahyButton({ className, ...props }: AddInfogrpahyButtonProps) {
+  return <AddInfogrpahyModal {...props} buttonClassName={className} onClick={props.onClick} />;
 }
 
 interface AddInfogrpahyModalProps {
   stepId: number;
+  buttonClassName?: string;
   onClick?: (data: CreateInfographyBody) => void;
 }
 
@@ -40,8 +42,8 @@ function AddInfogrpahyModal(props: AddInfogrpahyModalProps) {
 
   return (
     <Modal
-      title='Add step'
-      trigger={<IconButton variant='secondary' icon={<Plus />} />}
+      title='Add Infography'
+      trigger={<IconButton variant='secondary' icon={<Plus strokeWidth={3} />} />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },

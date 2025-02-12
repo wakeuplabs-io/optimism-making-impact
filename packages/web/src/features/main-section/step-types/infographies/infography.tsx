@@ -1,26 +1,19 @@
-import { AutoSaveIndicator } from '@/components/autosave-indicator/autosave-indicator';
-import { IconButton } from '@/components/icon-button';
-import { AUTOSAVE_INTERVAL } from '@/config';
-import { AddInfogrpahyButton } from '@/features/main-section/step-types/infographies/add-infogrpahy-modal';
+import { ReactNode } from 'react';
 import { InfographyList } from '@/features/main-section/step-types/infographies/infography-list';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import isEqual from 'lodash.isequal';
-import { Save } from 'lucide-react';
-import { useMemo } from 'react';
-import { useInterval } from 'usehooks-ts';
+import { InfographyActionBar } from './infography-action-bar';
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-tresholds';
+
+function InfographyStepWrapper({ children }: { children: ReactNode }) {
+  return <div className='flex w-full flex-col px-8 py-12 bg-white lg:pt-7 lg:pb-16 lg:rounded-3xl lg:px-16'>{children}</div>;
+}
 
 export function InfographyStep() {
-  const { addInfography, saveInfographies, step, stepInitialState, savingStatus } = useMainSectionStore((state) => state);
+  const { step } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const isStateEqual = useMemo(() => isEqual(step, stepInitialState), [step, stepInitialState]);
-
-  useInterval(
-    async () => {
-      if (step) saveInfographies(step.infographies);
-    },
-    !isStateEqual ? AUTOSAVE_INTERVAL : null,
-  );
+  const isMobile = useIsMobile();
 
   if (!step) {
     return (
@@ -30,16 +23,33 @@ export function InfographyStep() {
     );
   }
 
+  if (isMobile) {
+    return (
+      <div className='flex flex-col gap-6'>
+        <InfographyActionBar
+          className={cn({
+            invisible: !isAdmin,
+          })}
+        />
+        <InfographyStepWrapper>
+          <div className='flex w-full flex-col gap-y-16'>
+            <InfographyList infographies={step.infographies} />
+          </div>
+        </InfographyStepWrapper>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex w-full max-w-[1000px] flex-col gap-4'>
-      {isAdmin && (
-        <div className='flex justify-end w-full gap-2'>
-          <AutoSaveIndicator status={savingStatus} />
-          <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
-          <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
-        </div>
-      )}
-      <InfographyList infographies={step.infographies} />
-    </div>
+    <InfographyStepWrapper>
+      <InfographyActionBar
+        className={cn('lg:mb-7', {
+          invisible: !isAdmin,
+        })}
+      />
+      <div className='flex w-full flex-col gap-y-16'>
+        <InfographyList infographies={step.infographies} />
+      </div>
+    </InfographyStepWrapper>
   );
 }

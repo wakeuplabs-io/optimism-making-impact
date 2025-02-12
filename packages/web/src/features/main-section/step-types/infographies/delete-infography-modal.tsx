@@ -11,7 +11,7 @@ export function DeleteInfogrpahyModal(props: DeleteInfogrpahyModalProps) {
   return (
     <Modal
       title='Delete infography'
-      trigger={<X size={22} className='absolute right-5 top-5 cursor-pointer stroke-[#7D7D7D] hover:stroke-black' />}
+      trigger={<X size={22} className='cursor-pointer stroke-[#7D7D7D] hover:stroke-black' />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Delete', variant: 'primary', icon: <Trash />, onClick: () => props.onClick?.(props.infography.id) },
