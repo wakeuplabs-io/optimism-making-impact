@@ -30,8 +30,8 @@ export function CategoryButton(props: CategoryButtonProps) {
           {props.category.name}
         </span>
       </div>
-      {props.isAdmin && (
-        <div className='hidden gap-1 group-hover:flex'>
+      {props.isAdmin && props.isActive && (
+        <div className='flex gap-1'>
           <EditCategoryButton category={props.category} onSave={props.onEdit} />
           <DeleteCategoryButton category={props.category} onDelete={props.onDelete} />
         </div>
