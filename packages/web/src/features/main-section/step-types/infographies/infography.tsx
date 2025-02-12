@@ -26,11 +26,7 @@ export function InfographyStep() {
   if (isMobile) {
     return (
       <div className='flex flex-col gap-6'>
-        <InfographyActionBar
-          className={cn({
-            invisible: !isAdmin,
-          })}
-        />
+        <InfographyActionBar className={cn({ hidden: !isAdmin })} />
         <InfographyStepWrapper>
           <div className='flex w-full flex-col gap-y-16'>
             <InfographyList infographies={step.infographies} />
