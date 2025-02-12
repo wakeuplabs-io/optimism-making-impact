@@ -39,7 +39,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex h-14 w-full items-center justify-between gap-4 lg:static'>
+      <div className='flex h-14 w-full items-center justify-between gap-4 px-10 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[300px]'>
           {props.children}
