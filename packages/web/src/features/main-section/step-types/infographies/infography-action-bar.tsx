@@ -28,7 +28,7 @@ export const InfographyActionBar: React.FC<InfographyActionBarProps> = ({ classN
   if (!step) return null;
 
   return (
-    <div className={cn(className, 'flex justify-end w-full gap-2')}>
+    <div className={cn('flex justify-end w-full gap-2', className)}>
       <AutoSaveIndicator status={savingStatus} />
       <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
       <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />

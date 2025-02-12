@@ -24,7 +24,7 @@ export function ItemsList(props: ItemsListProps) {
 
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
-      <div className='mb-4 flex h-12 items-center justify-between border-b border-[#D9D9D9] pb-8'>
+      <div className='mb-6 flex h-12 items-center justify-between border-b border-[#D9D9D9] pb-8'>
         <h2 className='text-[20px] font-[500]'>{props.title}</h2>
         {isAdmin && props.attributes && <AddItemModal stepId={props.stepId} onClick={addItem} attributes={props.attributes} />}
       </div>
@@ -46,7 +46,7 @@ function List(props: ListProps) {
   const deleteItem = useMainSectionStore((state) => state.deleteItem);
 
   return (
-    <div className='flex w-full flex-col gap-4'>
+    <div className='flex w-full flex-col gap-6'>
       {props.items.length === 0 ? (
         <EmptyState />
       ) : (

@@ -89,8 +89,10 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
     <button
       {...props}
       className={cn(
-        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full px-2 py-0.5',
-        selected && 'border-1 border border-black',
+        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full px-2 py-0.5 border-1 border border-transparent',
+        {
+          'border-black bg-[#F1F4F9]': selected,
+        },
         className,
       )}
       onClick={handleClick}
