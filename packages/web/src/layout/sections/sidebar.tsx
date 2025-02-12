@@ -9,7 +9,7 @@ import { AuthSection } from '@/features/sidebar/components/auth-section';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { CreateRoundModal } from '@/features/sidebar/components/create-round-modal';
 import LogosSection from '@/features/sidebar/components/logos-section';
-import { useIsMobile } from '@/hooks/use-is-mobile';
+import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
 import { Menu } from 'lucide-react';

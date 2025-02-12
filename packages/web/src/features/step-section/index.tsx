@@ -1,5 +1,7 @@
 import { AddStepModal } from '@/features/step-section/add-step-modal';
 import { StepsList } from '@/features/step-section/step-list';
+import { useIsMobile } from '@/hooks/use-tresholds';
+import { cn } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { useEffect } from 'react';
@@ -8,6 +10,7 @@ export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
   const selectedCategoryId = useSidebarStore((state) => state.selectedCategoryId);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (selectedCategoryId) {
@@ -24,7 +27,7 @@ export function StepsSectionContent() {
   }
 
   return (
-    <div className='flex items-center justify-between flex-1 max-w-full gap-4 overflow-hidden'>
+    <div className='flex items-center justify-between flex-1 px-8 pt-4 pb-12 max-w-full gap-4 overflow-hidden lg:h-16 lg:px-4 lg:py-16'>
       <StepsList
         steps={stepsState.steps}
         selectedStep={stepsState.selectedStep}
@@ -33,7 +36,14 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {isAdmin && <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />}
+      <div
+        className={cn({
+          invisible: !isAdmin,
+          hidden: isMobile,
+        })}
+      >
+        <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />
+      </div>
     </div>
   );
 }
