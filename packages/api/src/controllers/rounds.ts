@@ -8,7 +8,6 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
     const rounds = await prisma.round.findMany({
       orderBy: { id: 'desc' },
-      take: 10,
       include: {
         categories: {
           orderBy: { id: 'asc' },
