@@ -120,7 +120,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       ...currentStep.infographies,
       {
         ...data,
-        id: Date.now(),
+        id: -1,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         position: currentStep.infographies.length,

@@ -18,6 +18,7 @@ export const bulkUpdateInfogrpahyBodySchema = z.array(
     id: z.number(),
     markdown: z.string().min(1).optional(),
     image: z.string().min(1).optional(),
+    stepId: z.number().min(1),
   }),
 );
 export type BulkUpdateInfographyBody = z.infer<typeof bulkUpdateInfogrpahyBodySchema>;
