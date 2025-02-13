@@ -12,7 +12,7 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
     if (!parsed.success) throw ApiError.badRequest();
 
     const category = await prisma.category.findFirst({
-      where: { roundId: parsed.data.id },
+      where: { id: parsed.data.id },
       include: {
         steps: {
           select: {
