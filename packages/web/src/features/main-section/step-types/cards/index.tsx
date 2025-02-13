@@ -17,7 +17,7 @@ export function CardStep(props: CardStepProps) {
   const adminMode = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
-    <div className={cn('flex h-full w-full flex-col gap-4')}>
+    <div className={cn('flex flex-col gap-4')}>
       <div className='flex flex-col h-full lg:flex-row'>
         <div className='flex flex-col-reverse items-center gap-8 lg:flex-1 w-full mb-6 lg:mb-0 lg:flex-col lg:gap-6'>
           {adminMode && (
