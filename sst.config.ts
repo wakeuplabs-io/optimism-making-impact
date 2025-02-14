@@ -99,6 +99,23 @@ export default $config({
         VITE_COGNITO_USERPOOL_CLIENT_ID: userPoolClient.id,
         VITE_COGNITO_USERPOOL_DOMAIN: userPoolDomainURL,
       },
+      assets: {
+        textEncoding: 'utf-8',
+        fileOptions: [
+          {
+            files: ['**/*.css', '**/*.js'],
+            cacheControl: 'max-age=31536000,public,immutable',
+          },
+          {
+            files: '**/*.html',
+            cacheControl: 'max-age=0,no-cache,no-store,must-revalidate',
+          },
+          {
+            files: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+            cacheControl: 'max-age=31536000,public,immutable',
+          },
+        ],
+      },
     });
 
     return {
