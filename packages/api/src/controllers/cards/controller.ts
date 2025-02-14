@@ -44,6 +44,33 @@ async function create(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getKeywordsToRemove(cardId: number, updatedKeywords: Keyword[]): Promise<{ id: number }[]> {
+  if (updatedKeywords.length === 0) {
+    return [];
+  }
+
+  // Fetch card keywords from db;
+  const card = await prisma.card.findFirst({
+    where: { id: cardId },
+    select: {
+      id: true,
+      keywords: {
+        select: { id: true, cards: true },
+      },
+    },
+  });
+
+  // Get keywords removed from the card, the ones not present in updatedKeywords array
+  // and the ones that have only one card associated
+  const keywordsToRemove =
+    card?.keywords.filter((keyword) => {
+      return !updatedKeywords.some((updatedKeyword) => updatedKeyword.id === keyword.id) && keyword.cards.length === 1;
+    }) ?? [];
+
+  // keep only keywords that are not present in the updated step keywords
+  return keywordsToRemove.map(({ id }) => ({ id }));
+}
+
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
@@ -53,20 +80,38 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
+    const keywordsToRemove = await getKeywordsToRemove(parsedId.data.id, keywordsWithId);
 
-    const updated = await prisma.card.update({
-      where: { id: parsedId.data.id },
-      data: {
-        markdown: parsed.data.markdown,
-        strength: parsed.data.strength,
-        title: parsed.data.title,
-        attributeId: parsed.data.attributeId,
-        keywords: {
-          set: [],
-          connect: keywordsWithId.map(({ id }) => ({ id })),
-          create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
+    const updated = await prisma.$transaction(async (tx) => {
+      //update card
+      const updated = await tx.card.update({
+        where: { id: parsedId.data.id },
+        data: {
+          markdown: parsed.data.markdown,
+          strength: parsed.data.strength,
+          title: parsed.data.title,
+          attributeId: parsed.data.attributeId,
+          keywords: {
+            set: [],
+            connect: keywordsWithId.map(({ id }) => ({ id })),
+            create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
+          },
         },
-      },
+      });
+
+      //delete keywords
+      if (keywordsToRemove.length > 0) {
+        await tx.keyword.deleteMany({
+          where: {
+            id: {
+              in: keywordsToRemove.map(({ id }) => id),
+            },
+            stepId: parsed.data.stepId,
+          },
+        });
+      }
+
+      return updated;
     });
 
     apiResponse.success(res, updated, 201);
