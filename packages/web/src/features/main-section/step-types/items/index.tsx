@@ -8,10 +8,10 @@ interface ItemStepProps {
 
 export function ItemsStep(props: ItemStepProps) {
   return (
-    <div className={'flex h-full w-full flex-col gap-4'}>
+    <div className={'flex flex-col gap-4'}>
       <div className='flex h-full flex-col gap-6 lg:flex-row'>
         <ItemFilters smartList={props.step.smartList} stepId={props.step.id} />
-        <div className='w-full overflow-y-auto pb-8'>
+        <div className='w-full pb-8'>
           <ItemsList
             items={props.step.items}
             stepId={props.step.id}

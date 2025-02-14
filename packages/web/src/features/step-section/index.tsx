@@ -36,14 +36,15 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      <div
-        className={cn({
-          invisible: !isAdmin,
-          hidden: isMobile,
-        })}
-      >
-        <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />
-      </div>
+      {!isMobile && (
+        <div
+          className={cn({
+            invisible: !isAdmin,
+          })}
+        >
+          <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />
+        </div>
+      )}
     </div>
   );
 }
