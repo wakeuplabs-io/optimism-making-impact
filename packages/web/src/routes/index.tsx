@@ -1,5 +1,6 @@
 import { Toaster } from '@/components/ui/toaster';
 import { IS_DEVELOPMENT } from '@/config';
+import { useRouterObserver } from '@/hooks/use-router-observer';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { IsAdminIndicator } from '@/layout/sections/is-admin-indicator';
 import { MainSectionLayout } from '@/layout/sections/main';
@@ -13,9 +14,11 @@ import { z } from 'zod';
 
 const indexRouteSearchParamsSchema = z.object({
   roundId: z.number().min(1).optional(),
+  categoryId: z.number().min(1).optional(),
+  stepId: z.number().min(1).optional(),
 });
 
-type IndexRouteSearchParams = z.infer<typeof indexRouteSearchParamsSchema>;
+export type IndexRouteSearchParams = z.infer<typeof indexRouteSearchParamsSchema>;
 
 export const Route = createFileRoute('/')({
   component: Index,
@@ -28,6 +31,7 @@ export const Route = createFileRoute('/')({
 function Index() {
   const search = Route.useSearch();
   const isMobile = useIsMobile();
+  useRouterObserver();
 
   // Set the initial state
   useEffect(() => {
