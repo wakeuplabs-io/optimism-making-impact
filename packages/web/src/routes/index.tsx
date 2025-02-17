@@ -39,7 +39,7 @@ function Index() {
       await useUserStore.getState().fetchAuth();
       initializeObserver();
     })();
-  }, [initializeObserver]);
+  }, []);
 
   return (
     <div className='flex flex-col w-screen h-screen overflow-hidden lg:flex-row'>

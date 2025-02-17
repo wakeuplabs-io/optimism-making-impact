@@ -57,11 +57,11 @@ export const useRouterObserver = (): { initializeObserver: () => void } => {
       return;
     }
 
-    //finally if both searchRound and searchCategory exists, set the state
-    useSidebarStore.setState(() => ({ selectedRound: searchRound, selectedCategoryId: categoryId }));
-
     //set the selected step id
     if (stepId) useStepsStore.setState(() => ({ searchSelectedStepId: stepId }));
+
+    //finally if both searchRound and searchCategory exists, set the state
+    useSidebarStore.setState(() => ({ selectedRound: searchRound, selectedCategoryId: categoryId }));
   }, [search]);
 
   return { initializeObserver };

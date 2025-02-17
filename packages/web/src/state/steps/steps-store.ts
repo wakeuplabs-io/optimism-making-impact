@@ -24,14 +24,11 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
 
       const parsedSteps = stepArraySchema.parse(data.steps);
 
-      console.log('parsedSteps', parsedSteps);
+      let selectedStep = parsedSteps.find((step) => step.id === get().searchSelectedStepId);
 
-      const selectedStep = get().searchSelectedStepId
-        ? //get the one from search params
-          parsedSteps.find((step) => step.id === get().searchSelectedStepId)
-        : //get the last one
-          parsedSteps[parsedSteps.length - 1];
-
+      if (!selectedStep) {
+        selectedStep = parsedSteps.sort((a, b) => a.position - b.position)[0];
+      }
       // reset searchSelectedStepId
       set(() => ({ steps: parsedSteps, selectedStep, searchSelectedStepId: null }));
     } catch (error) {
