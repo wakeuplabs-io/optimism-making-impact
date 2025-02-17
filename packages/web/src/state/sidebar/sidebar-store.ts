@@ -18,12 +18,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     const rounds: CompleteRound[] = response.data.rounds;
 
     set(() => ({ rounds }));
-
-    const firstRound = rounds[0];
-
-    if (!firstRound) return;
-
-    get().setSelectedRound(firstRound.id);
   },
   fetchData: async () => {
     const response = await RoundsService.getRounds();

@@ -12,6 +12,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   error: '',
   steps: [],
   selectedStep: null,
+  searchSelectedStepId: null,
   setSelectedStep: (stepId: number) => {
     const selectedStep = get().steps.find((step) => step.id === stepId);
     if (!selectedStep) return;
@@ -23,7 +24,16 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
 
       const parsedSteps = stepArraySchema.parse(data.steps);
 
-      set(() => ({ steps: parsedSteps, selectedStep: parsedSteps[parsedSteps.length - 1] }));
+      console.log('parsedSteps', parsedSteps);
+
+      const selectedStep = get().searchSelectedStepId
+        ? //get the one from search params
+          parsedSteps.find((step) => step.id === get().searchSelectedStepId)
+        : //get the last one
+          parsedSteps[parsedSteps.length - 1];
+
+      // reset searchSelectedStepId
+      set(() => ({ steps: parsedSteps, selectedStep, searchSelectedStepId: null }));
     } catch (error) {
       console.error(error);
       set(() => ({ error: 'Error fetching steps' }));

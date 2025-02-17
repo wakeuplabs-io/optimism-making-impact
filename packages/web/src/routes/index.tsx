@@ -24,23 +24,22 @@ export const Route = createFileRoute('/')({
   component: Index,
   validateSearch: (search): IndexRouteSearchParams => {
     const parsed = indexRouteSearchParamsSchema.safeParse(search);
-    return { roundId: parsed.data?.roundId };
+    return { roundId: parsed.data?.roundId, categoryId: parsed.data?.categoryId, stepId: parsed.data?.stepId };
   },
 });
 
 function Index() {
-  const search = Route.useSearch();
   const isMobile = useIsMobile();
-  useRouterObserver();
+  const { initializeObserver } = useRouterObserver();
 
   // Set the initial state
   useEffect(() => {
     (async () => {
       await useSidebarStore.getState().init();
       await useUserStore.getState().fetchAuth();
-      if (search.roundId) useSidebarStore.getState().setSelectedRound(search.roundId);
+      initializeObserver();
     })();
-  }, []);
+  }, [initializeObserver]);
 
   return (
     <div className='flex flex-col w-screen h-screen overflow-hidden lg:flex-row'>
