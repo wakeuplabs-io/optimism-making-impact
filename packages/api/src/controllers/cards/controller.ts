@@ -45,17 +45,13 @@ async function create(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getKeywordsToRemoveIds(cardId: number, updatedKeywords?: Keyword[]): Promise<number[]> {
-  if (!updatedKeywords || updatedKeywords.length === 0) {
-    return [];
-  }
-
   // Fetch card keywords that were not present in the updated step keywords;
   const card = await prisma.card.findFirst({
     where: { id: cardId },
     select: {
       id: true,
       keywords: {
-        where: { id: { notIn: updatedKeywords.map(({ id }) => id) } },
+        where: { id: { notIn: (updatedKeywords ?? []).map(({ id }) => id) } },
         select: { id: true, cards: { select: { id: true } } },
       },
     },
@@ -76,7 +72,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
-    const keywordsToRemove = await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId);
+    const keywordsToRemove = keywordsWithId.length > 0 ? await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId) : [];
 
     const updated = await prisma.$transaction(async (tx) => {
       //update card
@@ -122,8 +118,24 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsedId.success) throw ApiError.badRequest();
 
-    const deleted = await prisma.card.delete({
-      where: { id: parsedId.data.id },
+    const keywordsToRemove = await getKeywordsToRemoveIds(parsedId.data.id);
+
+    const deleted = await prisma.$transaction(async (tx) => {
+      const deleted = await tx.card.delete({
+        where: { id: parsedId.data.id },
+      });
+
+      if (keywordsToRemove.length > 0) {
+        await tx.keyword.deleteMany({
+          where: {
+            id: {
+              in: keywordsToRemove,
+            },
+          },
+        });
+      }
+
+      return deleted;
     });
 
     apiResponse.success(res, deleted, 201);
