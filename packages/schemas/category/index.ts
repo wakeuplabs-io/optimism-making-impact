@@ -7,3 +7,7 @@ export const createCategoryBodySchema = z.object({
 });
 
 export type CreateCategoryBody = z.infer<typeof createCategoryBodySchema>;
+
+export const getAllCategoriesSchema = z.object({
+  roundId: z.string().transform(Number).optional(),
+});
