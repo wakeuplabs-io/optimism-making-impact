@@ -8,7 +8,6 @@ import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } 
 import { InfographiesService } from '@/services/infogrpahies/service';
 import { CreateItemBody } from '@/services/items/schemas';
 import { ItemsService } from '@/services/items/service';
-// import { KeywordsService } from '@/services/keywords/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
@@ -226,30 +225,6 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
-  // deleteKeyword(keywordId: number) {
-  //   const currentStep = get().step;
-  //   if (!currentStep) return;
-
-  //   optimisticUpdate({
-  //     getStateSlice: () => currentStep.cards,
-  //     updateFn: (cards) => cards.map((card) => ({ ...card, keywords: card.keywords.filter((keyword) => keyword.id !== keywordId) })),
-  //     setStateSlice: (cards) => set({ step: { ...currentStep, cards } }),
-  //     apiCall: () => KeywordsService.deleteOne(keywordId),
-  //     onError: (error) => {
-  //       const title = 'Failed to delete keyword';
-  //       let description = 'Unknown error';
-
-  //       if (error instanceof AxiosError) {
-  //         description = error.response?.data.error.message;
-  //       }
-
-  //       toast({ title, description, variant: 'destructive' });
-  //     },
-  //     onSuccess: async () => {
-  //       await get().fetchData(currentStep.id);
-  //     },
-  //   });
-  // },
   addAttributeToSmartList: (data: CreateAttributeBody) => {
     const currentStep = get().step;
     if (!currentStep || !currentStep.smartList) return;
