@@ -1,10 +1,8 @@
-import { editCategoryBodySchema } from '@/controllers/categories/schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
-import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
-import { createCategoryBodySchema, getAllCategoriesSchema } from '@optimism-making-impact/schemas';
+import { createCategoryBodySchema, getAllCategoriesSchema, idParamsSchema, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
