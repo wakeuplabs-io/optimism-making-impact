@@ -1,32 +1,29 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { FormModal } from '@/components/form-modal';
 import { SidebarActionButton } from '@/components/sidebar-acion-button';
-import { TextInput } from '@/components/text-input';
 import { Plus } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { FormTextInput } from '@/components/form/form-text-input';
 
 interface AddCategoryModalProps {
   roundId: number;
   onSave?: (name: string, icon: string, roundId: number) => void;
 }
 
-export interface AddCategoryFormData {
-  name: string;
-  iconUrl: string;
-}
-
 export function AddCategoryModal(props: AddCategoryModalProps) {
-  const defaultValues: AddCategoryFormData = { name: '', iconUrl: '' };
+  const defaultValues: CreateCategoryBody = { name: '', icon: '', roundId: props.roundId };
 
-  function handleSubmit(data: AddCategoryFormData) {
-    props.onSave?.(data.name, data.iconUrl, props.roundId);
+  function handleSubmit(data: CreateCategoryBody) {
+    props.onSave?.(data.name, data.icon, props.roundId);
   }
 
   return (
-    <FormModal<AddCategoryFormData>
+    <FormModal
       title='New category'
       trigger={<SidebarActionButton label='Add category' icon={<Plus size={12} className='font-bold text-white' />} />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
+      schema={createCategoryBodySchema}
     >
       <FormFields defaultValues={defaultValues} />
     </FormModal>
@@ -34,13 +31,13 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
 }
 
 interface FormFieldsProps {
-  defaultValues: AddCategoryFormData;
+  defaultValues: CreateCategoryBody;
 }
 
 // The inner form fields use react-hook-form's context.
 // We use Controller for inputs that work as controlled components.
 function FormFields(props: FormFieldsProps) {
-  const { control } = useFormContext<AddCategoryFormData>();
+  const { control } = useFormContext<CreateCategoryBody>();
 
   return (
     <div className='grid w-full gap-4 py-4'>
@@ -48,13 +45,13 @@ function FormFields(props: FormFieldsProps) {
         name='name'
         control={control}
         defaultValue={props.defaultValues.name}
-        render={({ field }) => <TextInput {...field} placeholder='Title' />}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Name' />}
       />
       <Controller
-        name='iconUrl'
+        name='icon'
         control={control}
-        defaultValue={props.defaultValues.iconUrl}
-        render={({ field }) => <TextInput {...field} placeholder='Icon URL' />}
+        defaultValue={props.defaultValues.icon}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Icon' />}
       />
     </div>
   );
