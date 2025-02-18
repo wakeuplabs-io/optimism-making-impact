@@ -21,10 +21,6 @@ class Service {
   async getByStepId(stepId: number) {
     return this.fetcher.get(keywordsEndpoint + `/${stepId}`).then((res) => res.data);
   }
-
-  async deleteOne(id: number) {
-    return this.fetcher.delete(keywordsEndpoint + `/${id}`).then((res) => res.data);
-  }
 }
 
 export const KeywordsService = Service.getInstance(fetcher);

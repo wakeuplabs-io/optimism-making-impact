@@ -44,6 +44,25 @@ async function create(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getKeywordsToRemoveIds(cardId: number, updatedKeywords?: Keyword[]): Promise<number[]> {
+  // Fetch card keywords that were not present in the updated step keywords;
+  const card = await prisma.card.findFirst({
+    where: { id: cardId },
+    select: {
+      id: true,
+      keywords: {
+        where: { id: { notIn: (updatedKeywords ?? []).map(({ id }) => id) } },
+        select: { id: true, cards: { select: { id: true } } },
+      },
+    },
+  });
+
+  // keep only keywords that are not present in other cards
+  const keywordsToRemove = card?.keywords.filter((keyword) => keyword.cards.length === 1).map(({ id }) => id) ?? [];
+
+  return keywordsToRemove;
+}
+
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
@@ -53,20 +72,38 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
+    const keywordsToRemove = keywordsWithId.length > 0 ? await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId) : [];
 
-    const updated = await prisma.card.update({
-      where: { id: parsedId.data.id },
-      data: {
-        markdown: parsed.data.markdown,
-        strength: parsed.data.strength,
-        title: parsed.data.title,
-        attributeId: parsed.data.attributeId,
-        keywords: {
-          set: [],
-          connect: keywordsWithId.map(({ id }) => ({ id })),
-          create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
+    const updated = await prisma.$transaction(async (tx) => {
+      //update card
+      const updated = await tx.card.update({
+        where: { id: parsedId.data.id },
+        data: {
+          markdown: parsed.data.markdown,
+          strength: parsed.data.strength,
+          title: parsed.data.title,
+          attributeId: parsed.data.attributeId,
+          keywords: {
+            set: [],
+            connect: keywordsWithId.map(({ id }) => ({ id })),
+            create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),
+          },
         },
-      },
+      });
+
+      //delete keywords
+      if (keywordsToRemove.length > 0) {
+        await tx.keyword.deleteMany({
+          where: {
+            id: {
+              in: keywordsToRemove,
+            },
+            stepId: parsed.data.stepId,
+          },
+        });
+      }
+
+      return updated;
     });
 
     apiResponse.success(res, updated, 201);
@@ -81,8 +118,24 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsedId.success) throw ApiError.badRequest();
 
-    const deleted = await prisma.card.delete({
-      where: { id: parsedId.data.id },
+    const keywordsToRemove = await getKeywordsToRemoveIds(parsedId.data.id);
+
+    const deleted = await prisma.$transaction(async (tx) => {
+      const deleted = await tx.card.delete({
+        where: { id: parsedId.data.id },
+      });
+
+      if (keywordsToRemove.length > 0) {
+        await tx.keyword.deleteMany({
+          where: {
+            id: {
+              in: keywordsToRemove,
+            },
+          },
+        });
+      }
+
+      return deleted;
     });
 
     apiResponse.success(res, deleted, 201);
