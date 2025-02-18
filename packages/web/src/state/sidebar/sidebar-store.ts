@@ -1,5 +1,5 @@
 import { toast } from '@/hooks/use-toast';
-import { router } from '@/router';
+// import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
@@ -18,12 +18,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     const rounds: CompleteRound[] = response.data.rounds;
 
     set(() => ({ rounds }));
-
-    const firstRound = rounds[0];
-
-    if (!firstRound) return;
-
-    get().setSelectedRound(firstRound.id);
   },
   fetchData: async () => {
     const response = await RoundsService.getRounds();
@@ -39,8 +33,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     const categories = selectedRound.categories;
 
     set(() => ({ selectedRound, categories, selectedCategoryId: categories[0] ? categories[0].id : get().selectedCategoryId }));
-
-    router.navigate({ search: () => ({ roundId }), reloadDocument: false, to: '/' });
   },
   addRound: async () => {
     await optimisticUpdate({

@@ -4,6 +4,7 @@ import { Step } from '@/types';
 interface StepsState {
   steps: Step[];
   selectedStep: Step | null;
+  searchSelectedStepId: number | null;
   loading: boolean;
   error: string;
 }
