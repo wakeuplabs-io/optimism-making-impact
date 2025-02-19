@@ -20,7 +20,7 @@ export class ApiError extends Error {
     return new ApiError(StatusCodes.BAD_REQUEST);
   }
 
-  static unauthorized(): ApiError {
-    return new ApiError(StatusCodes.UNAUTHORIZED);
+  static unauthorized(message?: string): ApiError {
+    return new ApiError(StatusCodes.UNAUTHORIZED, message);
   }
 }
