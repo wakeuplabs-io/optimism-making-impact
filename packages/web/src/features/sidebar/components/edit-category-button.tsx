@@ -22,7 +22,7 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
   }
 
   return (
-    <FormModal<EditCategoryFormData> title='Edit category' trigger={<EditIcon />} onSubmit={handleSubmit} defaultValues={defaultValues}>
+    <FormModal<EditCategoryFormData> title='Edit Category' trigger={<EditIcon />} onSubmit={handleSubmit} defaultValues={defaultValues}>
       <FormFields defaultValues={defaultValues} />
     </FormModal>
   );

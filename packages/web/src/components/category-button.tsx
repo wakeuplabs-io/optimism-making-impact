@@ -1,5 +1,4 @@
 import { IconWithDefault } from '@/components/icon-with-default';
-import { DeleteCategoryButton } from '@/features/sidebar/components/delete-category-modal';
 import { EditCategoryButton } from '@/features/sidebar/components/edit-category-button';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types';
@@ -26,14 +25,13 @@ export function CategoryButton(props: CategoryButtonProps) {
         <div className='h-[22px] w-[22px]'>
           <IconWithDefault src={props.category.icon ?? ''} />
         </div>
-        <span className='overflow-hidden truncate whitespace-nowrap text-[16px] font-semibold leading-5 2xl:text-base'>
+        <span className='overflow-hidden truncate whitespace-nowrap text-[16px] leading-5 2xl:text-base'>
           {props.category.name}
         </span>
       </div>
       {props.isAdmin && props.isActive && (
         <div className='flex gap-1'>
           <EditCategoryButton category={props.category} onSave={props.onEdit} />
-          <DeleteCategoryButton category={props.category} onDelete={props.onDelete} />
         </div>
       )}
     </button>

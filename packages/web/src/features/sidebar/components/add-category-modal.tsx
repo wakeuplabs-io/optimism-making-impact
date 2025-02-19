@@ -1,4 +1,5 @@
 import { FormModal } from '@/components/form-modal';
+import { NewButton } from '@/components/new-button';
 import { SidebarActionButton } from '@/components/sidebar-acion-button';
 import { TextInput } from '@/components/text-input';
 import { Plus } from 'lucide-react';
@@ -23,8 +24,8 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
 
   return (
     <FormModal<AddCategoryFormData>
-      title='New category'
-      trigger={<SidebarActionButton label='Add category' icon={<Plus size={12} className='font-bold text-white' />} />}
+      title='New Category'
+      trigger={<NewButton label='Add category' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
     >
@@ -43,19 +44,32 @@ function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<AddCategoryFormData>();
 
   return (
-    <div className='grid w-full gap-4 py-4'>
-      <Controller
-        name='name'
-        control={control}
-        defaultValue={props.defaultValues.name}
-        render={({ field }) => <TextInput {...field} placeholder='Title' />}
-      />
+      <div className="grid grid-cols-[auto_1fr] items-center gap-4 w-full">
       <Controller
         name='iconUrl'
         control={control}
         defaultValue={props.defaultValues.iconUrl}
-        render={({ field }) => <TextInput {...field} placeholder='Icon URL' />}
+        render={({ field }) => 
+          <div 
+            {...field}
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
+            {/* Aquí va el ícono */}
+          </div>}
       />
+      <Controller
+        name='name'
+        control={control}
+        defaultValue={props.defaultValues.name}
+        render={({ field }) => 
+          <input
+            {...field}
+            type="text"
+            placeholder="Write here..."
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:ring-0"
+          />
+        }
+      />
+
     </div>
   );
 }
