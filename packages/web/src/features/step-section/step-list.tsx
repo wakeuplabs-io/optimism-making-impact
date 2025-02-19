@@ -50,7 +50,8 @@ export function StepsList(props: StepsListProps) {
               onDelete={props.onDeleteStep}
               onEdit={props.onEditStep}
             />
-            {idx < props.steps.length - 1 && <StepSeparator past={idx > selectedStepIdx - 1} />}
+                        
+            {idx < props.steps.length - 1 && <StepSeparator past={idx < selectedStepIdx} />}
           </>
         );
       })}
