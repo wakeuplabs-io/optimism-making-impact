@@ -10,8 +10,6 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
-  onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
-  onCancel?: () => void;
   defaultValues?: DefaultValues<z.TypeOf<TFormSchema>>;
   children: React.ReactNode;
   submitButtonText?: string;
@@ -19,6 +17,9 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   cancelButtonText?: string;
   cancelButtonIcon?: React.ReactNode;
   contentProps?: React.ComponentProps<typeof Modal>['contentProps'];
+  onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
+  onCancel?: () => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function FormModal<TFormSchema extends z.AnyZodObject>({
@@ -33,6 +34,11 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
   const onInternalSubmit: SubmitHandler<z.infer<TFormSchema>> = async (data) => {
     await props.onSubmit(data);
     setOpen(false);
+  };
+
+  const onOpenChange = (open: boolean) => {
+    setOpen(open);
+    props.onOpenChange?.(open);
   };
 
   const buttons = React.useMemo<ModalActionButtonProps[]>(
@@ -53,7 +59,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
   return (
     <Modal
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={onOpenChange}
       title={props.title}
       subtitle={props.subtitle}
       trigger={props.trigger}
@@ -88,7 +94,7 @@ function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFo
 
   return (
     <FormProvider {...methods}>
-      <form id={props.formId} onSubmit={handleSubmit(props.onInternalSubmit)} className='w-full'>
+      <form id={props.formId} onSubmit={handleSubmit(props.onInternalSubmit)} onError={(errors) => console.log(errors)} className='w-full'>
         {props.children}
       </form>
     </FormProvider>

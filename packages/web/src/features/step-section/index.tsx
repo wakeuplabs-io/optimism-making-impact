@@ -35,7 +35,7 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {!isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onClick={stepsState.addStep} />}
+      {!isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
     </div>
   );
 }
