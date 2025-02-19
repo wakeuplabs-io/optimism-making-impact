@@ -1,17 +1,18 @@
 import { ActionButton } from '@/components/action-button';
 import { ColorDot } from '@/components/color-dot';
+import { FormModal } from '@/components/form-modal';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
-import { Modal } from '@/components/modal';
 import { MultiSelect } from '@/components/multi-select/multi-select';
-import { TextAreaInput } from '@/components/text-area-input';
-import { TextInput } from '@/components/text-input';
-import { CreateCardBody } from '@/services/cards/schemas';
-import { Attribute, Keyword, strengthArray, StrengthEnum } from '@/types';
-import { Plus, Save } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Attribute, strengthItems } from '@/types';
+import { CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
+import { Plus } from 'lucide-react';
+import { useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+
+const strengthOptions = strengthItems.map(({ value }) => ({ label: value.toLowerCase(), value }));
 
 const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
-
 interface AddCardModalProps {
   stepId: number;
   onClick?: (data: CreateCardBody) => void;
@@ -19,12 +20,24 @@ interface AddCardModalProps {
   attributes?: Attribute[];
 }
 
+type KeywordOption = {
+  value: string;
+  label: string;
+};
+
+type AttributeOption = {
+  value: string;
+  label: JSX.Element;
+};
+
 export function AddCardModal(props: AddCardModalProps) {
-  const [title, setTitle] = useState('');
-  const [markdown, setMarkdown] = useState('');
-  const [strength, setStrength] = useState(StrengthEnum.MEDIUM);
-  const [attributeId, setAttributeId] = useState<number>(dontAssignOption.value);
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const defaultValues: CreateCardBody = {
+    title: '',
+    markdown: '',
+    strength: 'MEDIUM',
+    keywords: [],
+    stepId: props.stepId,
+  };
 
   const keywordsOptions = useMemo(
     () => props.keywords.map((keyword) => ({ value: keyword.value, label: keyword.value })),
@@ -52,32 +65,8 @@ export function AddCardModal(props: AddCardModalProps) {
     return options;
   }, [props.attributes]);
 
-  function clearForm() {
-    setMarkdown('');
-    setTitle('');
-    setStrength(StrengthEnum.MEDIUM);
-    setSelectedKeywords([]);
-  }
-
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
-  }
-
-  function handleMarkdownChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setMarkdown(event.target.value);
-  }
-  function handleStrengthChange(value: string) {
-    setStrength(value as StrengthEnum);
-  }
-  function handleAttributeChange(value: string) {
-    setAttributeId(+value);
-  }
-  function handleKeywordsChange(value: string[]) {
-    setSelectedKeywords(value);
-  }
-
-  function handleSubmit() {
-    const selectedKeywordsValueAndId = selectedKeywords.map((value) => {
+  function handleSubmit({ title, markdown, keywords, strength, attributeId, stepId }: CreateCardBody) {
+    const selectedKeywordsValueAndId = keywords.map(({ value }) => {
       const keyword = props.keywords.find((keyword) => keyword.value === value);
       return { value, id: keyword?.id };
     });
@@ -85,60 +74,100 @@ export function AddCardModal(props: AddCardModalProps) {
     props.onClick?.({
       title,
       markdown,
-      stepId: props.stepId,
-      keywords: selectedKeywordsValueAndId,
+      stepId,
       strength,
-      attributeId: attributeId < 1 ? undefined : attributeId,
+      keywords: selectedKeywordsValueAndId,
+      attributeId: attributeId && attributeId < 1 ? undefined : attributeId,
     });
-    setTitle('');
-    setMarkdown('');
   }
 
   return (
-    <Modal
-      onOpenChange={clearForm}
+    <FormModal
       title='New card'
       trigger={<ActionButton label='Add card' variant='secondary' icon={<Plus />} className='w-[320px] max-w-[320px] lg:w-[250px]' />}
-      buttons={[
-        { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
-      ]}
-      contentProps={{
-        onPointerDownOutside: (e) => {
-          if (document.getElementById('multiselect-popover-content')) e.preventDefault();
-        },
-      }}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={createCardBodySchema}
     >
-      <div className='grid gap-4 py-4'>
-        <SelectInput
-          placeholder='Select Strength'
-          name='strength'
-          items={strengthOptions}
-          triggerClassName='capitalize'
-          itemClassName='capitalize'
-          onValueChange={handleStrengthChange}
-        />
-        <SelectInput
-          placeholder='Select Smart List Filter'
-          name='attribute'
-          items={attributeOptions}
-          triggerClassName='capitalize'
-          itemClassName='capitalize'
-          onValueChange={handleAttributeChange}
-          disabled={attributeOptions.length === 0}
-        />
-        <TextInput name='title' value={title} onChange={handleTitleChange} placeholder='Title' />
-        <TextAreaInput name='markdown' rows={3} value={markdown} onChange={handleMarkdownChange} placeholder='Text' />
-        <MultiSelect
-          options={keywordsOptions}
-          onValueChange={handleKeywordsChange}
-          value={selectedKeywords}
-          placeholder='Keywords connected'
-          maxCount={3}
-        />
-      </div>
-    </Modal>
+      <FormFields defaultValues={defaultValues} keywordsOptions={keywordsOptions} attributeOptions={attributeOptions} />
+    </FormModal>
   );
 }
 
-const strengthOptions = strengthArray.map(({ value }) => ({ label: value.toLowerCase(), value }));
+interface FormFieldsProps {
+  defaultValues: CreateCardBody;
+  keywordsOptions: KeywordOption[];
+  attributeOptions: AttributeOption[];
+}
+
+// The inner form fields use react-hook-form's context.
+// We use Controller for inputs that work as controlled components.
+function FormFields(props: FormFieldsProps) {
+  const { control } = useFormContext<CreateCardBody>();
+
+  return (
+    <div className='grid w-full gap-4 py-4'>
+      <Controller
+        name='title'
+        control={control}
+        defaultValue={props.defaultValues.title}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='markdown'
+        control={control}
+        defaultValue={props.defaultValues.markdown}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Markdown' />}
+      />
+      <Controller
+        name='strength'
+        control={control}
+        defaultValue={props.defaultValues.strength}
+        render={({ field, formState }) => (
+          <SelectInput
+            name='type'
+            items={strengthOptions}
+            onValueChange={field.onChange}
+            defaultValue={formState.defaultValues?.strength}
+            placeholder='Select Strength'
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
+          />
+        )}
+      />
+      <Controller
+        name='attributeId'
+        control={control}
+        defaultValue={props.defaultValues.attributeId}
+        render={({ field }) => (
+          <SelectInput
+            placeholder='Select Smart List Filter'
+            name='attribute'
+            items={props.attributeOptions}
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
+            onValueChange={(value) => field.onChange(+value)}
+            disabled={props.attributeOptions.length === 0}
+          />
+        )}
+      />
+      <Controller
+        name='keywords'
+        control={control}
+        defaultValue={props.defaultValues.keywords}
+        render={({ field }) => (
+          <MultiSelect
+            options={props.keywordsOptions}
+            onValueChange={(keywordsValues) => {
+              console.log(keywordsValues);
+              field.onChange(keywordsValues.map((value) => ({ value })));
+            }}
+            value={field.value.map(({ value }) => value)}
+            placeholder='Keywords connected'
+            maxCount={3}
+          />
+        )}
+      />
+    </div>
+  );
+}

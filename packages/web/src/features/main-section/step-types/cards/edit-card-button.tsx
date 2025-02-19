@@ -6,10 +6,11 @@ import { MultiSelect } from '@/components/multi-select/multi-select';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
 import { UpdateCardBody } from '@/services/cards/schemas';
-import { Attribute, CompleteCard, Keyword, strengthArray, StrengthEnum } from '@/types';
+import { Attribute, CompleteCard, Keyword, strengthItems } from '@/types';
 import { Trash } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { StrengthEnum } from '@/services/cards/schemas';
 
 const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 
@@ -30,7 +31,7 @@ export interface EditCardFormData {
   keywords: string[];
 }
 
-const strengthOptions = strengthArray.map(({ value }) => ({ label: value.toLowerCase(), value }));
+const strengthOptions = strengthItems.map(({ value }) => ({ label: value.toLowerCase(), value }));
 
 export function EditCardModal(props: EditCardModalProps) {
   const keywordsOptions = useMemo(

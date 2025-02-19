@@ -1,6 +1,7 @@
+import { Keyword } from '@optimism-making-impact/schemas';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { Attribute, Keyword, Strength, strengthArray } from '@/types';
+import { Attribute, StrengthItem, strengthItems } from '@/types';
 
 const initialSelectedFilters = {
   selectedStrengths: [],
@@ -12,12 +13,12 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
   ...initialSelectedFilters,
   keywords: [],
   attributes: [],
-  strengths: strengthArray,
+  strengths: strengthItems,
   setKeywords: (keywords: Keyword[]) => {
     set({ keywords });
   },
   setAttributes: (attributes: Attribute[]) => set({ attributes }),
-  setSelectedStrengths: (strength: Strength) => {
+  setSelectedStrengths: (strength: StrengthItem) => {
     const selectedStrengths = toggleFilter(get().selectedStrengths, strength);
     set({ selectedStrengths });
   },
