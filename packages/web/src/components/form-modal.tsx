@@ -14,17 +14,17 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   children: React.ReactNode;
   submitButtonText?: string;
   submitButtonIcon?: React.ReactNode;
-  cancelButtonText?: string;
-  cancelButtonIcon?: React.ReactNode;
+  secondaryButtonText?: string;
+  secondaryButtonIcon?: React.ReactNode;
   contentProps?: React.ComponentProps<typeof Modal>['contentProps'];
   onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
-  onCancel?: () => void;
+  onSecondaryClick?: () => void;
   onOpenChange?: (open: boolean) => void;
 }
 
 export function FormModal<TFormSchema extends z.AnyZodObject>({
   submitButtonText = 'Save',
-  cancelButtonText = 'Cancel',
+  secondaryButtonText = 'Cancel',
   submitButtonIcon = <Save />,
   ...props
 }: FormModalProps<TFormSchema>) {
@@ -46,10 +46,10 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
       {
         type: 'button',
         variant: 'secondary',
-        label: cancelButtonText,
+        label: secondaryButtonText,
         closeOnClick: true,
-        icon: props.cancelButtonIcon,
-        onClick: () => props.onCancel?.(),
+        icon: props.secondaryButtonIcon,
+        onClick: () => props.onSecondaryClick?.(),
       },
       { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, icon: submitButtonIcon, form: formId },
     ],

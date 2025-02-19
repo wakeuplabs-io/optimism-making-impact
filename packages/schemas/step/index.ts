@@ -27,3 +27,11 @@ export const createStepBodySchemaWithValidation = createStepBodySchema.refine((d
 });
 
 export type CreateStepBody = z.infer<typeof createStepBodySchema>;
+
+export const updateStepBodySchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  icon: z.string().min(1, { message: 'Icon is required' }),
+  description: z.string().optional(),
+});
+
+export type UpdateStepBody = z.infer<typeof updateStepBodySchema>;

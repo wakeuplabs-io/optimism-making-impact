@@ -34,7 +34,6 @@ export function AddStepModal(props: AddStepModalProps) {
   };
 
   function handleSubmit(data: CreateStepBody) {
-    console.log('llego');
     props.onSave?.(props.categoryId, data);
   }
 
