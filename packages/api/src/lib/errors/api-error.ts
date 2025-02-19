@@ -12,15 +12,15 @@ export class ApiError extends Error {
   }
 
   // Common errors
-  static notFound(): ApiError {
-    return new ApiError(StatusCodes.NOT_FOUND);
+  static notFound(message?: string): ApiError {
+    return new ApiError(StatusCodes.NOT_FOUND, message);
   }
 
-  static badRequest(): ApiError {
-    return new ApiError(StatusCodes.BAD_REQUEST);
+  static badRequest(message?: string): ApiError {
+    return new ApiError(StatusCodes.BAD_REQUEST, message);
   }
 
-  static unauthorized(): ApiError {
-    return new ApiError(StatusCodes.UNAUTHORIZED);
+  static unauthorized(message?: string): ApiError {
+    return new ApiError(StatusCodes.UNAUTHORIZED, message);
   }
 }

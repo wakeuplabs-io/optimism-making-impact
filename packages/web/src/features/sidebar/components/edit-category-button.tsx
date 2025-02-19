@@ -1,41 +1,43 @@
+import { Controller, useFormContext } from 'react-hook-form';
 import { FormModal } from '@/components/form-modal';
 import { EditIcon } from '@/components/icons/edit-icon';
-import { TextInput } from '@/components/text-input';
 import { Category } from '@/types';
-import { Controller, useFormContext } from 'react-hook-form';
+import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { FormTextInput } from '@/components/form/form-text-input';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
   category: Category;
 }
 
-interface EditCategoryFormData {
-  name: string;
-  iconUrl: string;
-}
-
 export function EditCategoryButton(props: EditCategoryButtonProps) {
-  const defaultValues: EditCategoryFormData = { name: props.category.name, iconUrl: props.category.icon };
+  const defaultValues: EditCategoryBody = { name: props.category.name, icon: props.category.icon };
 
-  function handleSubmit(data: EditCategoryFormData) {
-    props.onSave(data.name, data.iconUrl);
+  function handleSubmit(data: EditCategoryBody) {
+    props.onSave(data.name, data.icon);
   }
 
   return (
-    <FormModal<EditCategoryFormData> title='Edit category' trigger={<EditIcon />} onSubmit={handleSubmit} defaultValues={defaultValues}>
+    <FormModal
+      title='Edit category'
+      trigger={<EditIcon />}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={editCategoryBodySchema}
+    >
       <FormFields defaultValues={defaultValues} />
     </FormModal>
   );
 }
 
 interface FormFieldsProps {
-  defaultValues: EditCategoryFormData;
+  defaultValues: EditCategoryBody;
 }
 
 // The inner form fields use react-hook-form's context.
 // We use Controller for inputs that work as controlled components.
 function FormFields(props: FormFieldsProps) {
-  const { control } = useFormContext<EditCategoryFormData>();
+  const { control } = useFormContext<EditCategoryBody>();
 
   return (
     <div className='grid w-full gap-4 py-4'>
@@ -43,13 +45,13 @@ function FormFields(props: FormFieldsProps) {
         name='name'
         control={control}
         defaultValue={props.defaultValues.name}
-        render={({ field }) => <TextInput {...field} placeholder='Title' />}
+        render={({ field, fieldState }) => <FormTextInput {...field} placeholder='Name' error={fieldState.error?.message} />}
       />
       <Controller
-        name='iconUrl'
+        name='icon'
         control={control}
-        defaultValue={props.defaultValues.iconUrl}
-        render={({ field }) => <TextInput {...field} placeholder='Icon URL' />}
+        defaultValue={props.defaultValues.icon}
+        render={({ field, fieldState }) => <FormTextInput {...field} placeholder='Icon' error={fieldState.error?.message} />}
       />
     </div>
   );
