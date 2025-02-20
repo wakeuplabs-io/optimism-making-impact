@@ -16,10 +16,9 @@ export interface AddCategoryFormData {
   iconUrl: string;
 }
 
+
 const modalIcons: Record<string, React.ComponentType> = Object.fromEntries(
   Object.entries(LucideIcons)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .filter(([_, value]) => typeof value === 'function')
     .map(([key, value]) => [key.toLowerCase(), value as React.ComponentType])
 );
 
