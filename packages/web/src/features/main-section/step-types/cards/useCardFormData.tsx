@@ -20,7 +20,6 @@ export function useCardFormData({ keywords, attributes }: UseCardFormDataProps) 
   );
 
   const attributeOptions = useMemo(() => {
-    console.log('calculating attributes');
     if (!attributes) return [];
 
     const options = attributes.map((a) => ({

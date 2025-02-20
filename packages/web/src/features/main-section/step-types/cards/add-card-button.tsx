@@ -135,7 +135,6 @@ function FormFields(props: FormFieldsProps) {
           <MultiSelect
             options={props.keywordsOptions}
             onValueChange={(keywordsValues) => {
-              console.log(keywordsValues);
               field.onChange(keywordsValues.map((value) => ({ value })));
             }}
             value={field.value.map(({ value }) => value)}
