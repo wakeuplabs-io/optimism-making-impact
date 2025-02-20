@@ -1,5 +1,5 @@
 import { toast } from '@/hooks/use-toast';
-import { CreateStepBody, UpdateStepBody } from '@/services/steps/schemas';
+import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { StepsService } from '@/services/steps/service';
 import { StepsStore } from '@/state/steps/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';

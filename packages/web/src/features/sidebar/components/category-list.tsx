@@ -16,17 +16,17 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 interface ContentProps {
-  title: string;
+  roundId: number;
   categories: Category[];
 }
 
-function Content({ title, categories }: ContentProps) {
+function Content({ categories, roundId }: ContentProps) {
   const sidebarState = useSidebarStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const addCategory = useSidebarStore((state) => state.addCategory);
 
   return (
     <>
-      <h2 className='text-sm font-medium text-gray-500'>{title}</h2>
       <ul className='flex flex-col gap-2'>
         {categories.length === 0 ? (
           <EmptyState />
@@ -46,7 +46,7 @@ function Content({ title, categories }: ContentProps) {
             ))}
             {isAdmin && (
               <li key='add-category'>
-                <AddCategoryModal roundId={1} onSave={() => {}} />
+                <AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />
               </li>
             )}
           </>

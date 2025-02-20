@@ -1,5 +1,5 @@
 import { ColorDot } from '@/components/color-dot';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form-modal-old';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
 import { MultiSelect } from '@/components/multi-select/multi-select';
@@ -92,9 +92,9 @@ export function EditCardModal(props: EditCardModalProps) {
       title='Edit card'
       trigger={<EditIcon />}
       onSubmit={handleSubmit}
-      secondaryButtonIcon={<Trash />}
-      secondaryButtonText='Delete'
-      onSecondaryClick={() => props.onDelete?.(props.card.id)}
+      cancelButtonIcon={<Trash />}
+      cancelButtonText='Delete'
+      onCancel={() => props.onDelete?.(props.card.id)}
       defaultValues={defaultValues}
       contentProps={{
         onPointerDownOutside: (e) => {

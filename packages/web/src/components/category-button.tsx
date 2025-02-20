@@ -13,6 +13,7 @@ type CategoryButtonProps = {
 };
 
 export function CategoryButton(props: CategoryButtonProps) {
+  console.log(props.category.icon);
   return (
     <button
       className={cn(
@@ -25,9 +26,7 @@ export function CategoryButton(props: CategoryButtonProps) {
         <div className='h-[22px] w-[22px]'>
           <IconWithDefault src={props.category.icon ?? ''} />
         </div>
-        <span className='overflow-hidden truncate whitespace-nowrap text-[16px] leading-5 2xl:text-base'>
-          {props.category.name}
-        </span>
+        <span className='overflow-hidden truncate whitespace-nowrap text-[16px] leading-5 2xl:text-base'>{props.category.name}</span>
       </div>
       {props.isAdmin && props.isActive && (
         <div className='flex gap-1'>
