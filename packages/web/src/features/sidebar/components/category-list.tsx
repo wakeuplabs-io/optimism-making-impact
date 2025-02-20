@@ -1,5 +1,4 @@
 import { CategoryButton } from '@/components/category-button';
-import { NewButton } from '@/components/new-button';
 import { useSidebarStore, useUserStore } from '@/state';
 import { Category } from '@/types';
 import { AddCategoryModal } from './add-category-modal';

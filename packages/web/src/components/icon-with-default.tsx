@@ -6,7 +6,7 @@ const iconMap: Record<string, LucideIcons.LucideIcon> = {
   loader: LucideIcons.LoaderCircle,
   blocks: LucideIcons.Blocks,
   circle: LucideIcons.Circle,
-  dot: LucideIcons.Dot, // Puedes agregar más íconos aquí
+  dot: LucideIcons.Dot,
 };
 
 interface IconWithDefaultProps {
@@ -18,7 +18,6 @@ interface IconWithDefaultProps {
 
 export function IconWithDefault({ src, className, defaultIcon = 'blocks', size = 'md' }: IconWithDefaultProps) {
   const { isValid } = useImageIsValid(src);
-  console.log({ src, isValid });
 
   const iconStyles = cn(
     {
