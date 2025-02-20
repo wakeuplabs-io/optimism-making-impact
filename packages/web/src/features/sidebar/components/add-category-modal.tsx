@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { IconPicker } from './icon-picker';
 import { createElement, useState } from 'react';
-import { Accessibility, AlarmClock, Archive, Bell } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
 interface AddCategoryModalProps {
   roundId: number;
@@ -15,6 +15,13 @@ export interface AddCategoryFormData {
   name: string;
   iconUrl: string;
 }
+
+const modalIcons: Record<string, React.ComponentType> = Object.fromEntries(
+  Object.entries(LucideIcons)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .filter(([_, value]) => typeof value === 'function')
+    .map(([key, value]) => [key.toLowerCase(), value as React.ComponentType])
+);
 
 export function AddCategoryModal(props: AddCategoryModalProps) {
   const defaultValues: AddCategoryFormData = { name: '', iconUrl: '' };
@@ -39,15 +46,9 @@ interface FormFieldsProps {
   defaultValues: AddCategoryFormData;
 }
 
-const hardcodedIcons: Record<string, React.ComponentType> = {
-  accessibility: Accessibility,
-  alarm: AlarmClock,
-  archive: Archive,
-  bell: Bell,
-};
 function FormFields(props: FormFieldsProps) {
   const { control, setValue } = useFormContext<AddCategoryFormData>();
-  const [selectedIcon, setSelectedIcon] = useState<string>('Accessibility'); // Nombre de ícono por defecto
+  const [selectedIcon, setSelectedIcon] = useState<string>('Accessibility');
 
   return (
     <div className="grid grid-cols-1 gap-2 w-full">
@@ -67,8 +68,8 @@ function FormFields(props: FormFieldsProps) {
               onClick={() => console.log("Open icon picker")}
               className="flex h-[42px] w-[42px] items-center justify-center rounded-md border border-gray-300 cursor-pointer"
             >
-              {hardcodedIcons[selectedIcon] ? (
-                createElement(hardcodedIcons[selectedIcon])
+              {modalIcons[selectedIcon] ? (
+                createElement(modalIcons[selectedIcon])
               ) : (
                 <Plus className="text-red-500 w-6 h-6" />
               )}
@@ -93,6 +94,7 @@ function FormFields(props: FormFieldsProps) {
 
       <IconPicker 
         selectedIcon={selectedIcon} 
+        modalIcons={modalIcons}
         onSelect={(icon) => {
           setSelectedIcon(icon);
           setValue('iconUrl', icon);

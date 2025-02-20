@@ -1,20 +1,19 @@
-import { useState } from 'react';
-import * as LucideIcons from 'lucide-react';
+import { useMemo, useState } from 'react';
 
-const iconMap: Record<string, React.ComponentType> = Object.fromEntries(
-  Object.entries(LucideIcons)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    .filter(([_, value]) => typeof value === 'function')
-    .map(([key, value]) => [key.toLowerCase(), value as React.ComponentType])
-);
+interface IconPickerProps {
+  selectedIcon: string;
+  modalIcons: Record<string, React.ComponentType>;
+  onSelect: (iconName: string) => void;
+}
 
-export function IconPicker({ selectedIcon, onSelect }: { selectedIcon: string; onSelect: (iconName: string) => void }) {
+export function IconPicker({ selectedIcon, modalIcons, onSelect }: IconPickerProps) {
   const [search, setSearch] = useState('dot');
 
-  const filteredIcons = Object.keys(iconMap).filter((iconName) =>
-    new RegExp(search, 'i').test(iconName)
-  );
-  console.log({filteredIcons})
+  const filteredIcons = useMemo(() => {
+    return Object.keys(modalIcons).filter((iconName) =>
+      new RegExp(search, 'i').test(iconName)
+    );
+  }, [search, modalIcons]);
 
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -30,7 +29,7 @@ export function IconPicker({ selectedIcon, onSelect }: { selectedIcon: string; o
         <div className="grid grid-cols-6 gap-2 mt-2 max-h-[200px] overflow-y-auto">
           {filteredIcons.length > 0 ? (
             filteredIcons.slice(0, 30).map((iconName) => {
-              const IconComponent = iconMap[iconName];
+              const IconComponent = modalIcons[iconName];
 
               return (
                 <button
