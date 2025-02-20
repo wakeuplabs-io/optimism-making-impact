@@ -90,7 +90,7 @@ export default $config({
 
     const ui = new sst.aws.StaticSite('web', {
       build: {
-        command: 'pnpm --filter web build',
+        command: 'pnpm ui:build',
         output: 'packages/web/dist',
       },
       environment: {
