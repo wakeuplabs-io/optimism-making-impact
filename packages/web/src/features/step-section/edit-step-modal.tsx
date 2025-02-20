@@ -1,49 +1,73 @@
-import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
-import { UpdateStepBody } from '@/services/steps/schemas';
+import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
 import { Step } from '@/types';
-import { Pencil, Save, Trash } from 'lucide-react';
-import { useState } from 'react';
+import { Pencil, Trash } from 'lucide-react';
+import { FormModal } from '@/components/form-modal';
+import { Controller, useFormContext } from 'react-hook-form';
+import { FormTextInput } from '@/components/form/form-text-input';
 
 interface EditIconProps {
   step: Step;
-  onClick?: (stepId: number, data: UpdateStepBody) => void;
+  onSave?: (stepId: number, data: UpdateStepBody) => void;
   onDelete?: () => void;
 }
 
 export function EditStepModal(props: EditIconProps) {
-  const [title, setTitle] = useState(props.step.title);
-  const [icon, setIcon] = useState(props.step.icon);
-  const [description, setDescription] = useState(props.step.description);
+  const defaultValues: UpdateStepBody = {
+    title: props.step.title,
+    icon: props.step.icon,
+    description: props.step.description,
+  };
 
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
-  }
-
-  function handleIconChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setIcon(event.target.value);
-  }
-
-  function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setDescription(event.target.value);
+  function handleSubmit(data: UpdateStepBody) {
+    props.onSave?.(props.step.id, data);
   }
 
   return (
-    <Modal
-      title='Edit step'
+    <FormModal
+      title='New category'
       trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
-      buttons={[
-        { label: 'Delete', variant: 'secondary', onClick: () => props.onDelete?.(), icon: <Trash /> },
-        { label: 'Save', variant: 'primary', onClick: () => props.onClick?.(props.step.id, { title, icon, description }), icon: <Save /> },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={updateStepBodySchema}
+      onSecondaryClick={props.onDelete}
+      secondaryButtonText='Delete'
+      secondaryButtonIcon={<Trash />}
     >
-      <span>Edit {props.step.title} step?</span>
+      <FormFields defaultValues={defaultValues} step={props.step} />
+    </FormModal>
+  );
+}
 
-      <div className='grid gap-4 py-4'>
-        <TextInput name='Title' value={title} onChange={handleTitleChange} />
-        <TextInput name='Icon' value={icon} onChange={handleIconChange} />
-        {props.step.type === 'ITEMS' && <TextInput name='Description' value={description} onChange={handleDescriptionChange} />}
-      </div>
-    </Modal>
+interface FormFieldsProps {
+  defaultValues: UpdateStepBody;
+  step: Step;
+}
+
+function FormFields({ defaultValues, step }: FormFieldsProps) {
+  const { control } = useFormContext<UpdateStepBody>();
+
+  return (
+    <div className='grid gap-4 py-4'>
+      <Controller
+        name='title'
+        control={control}
+        defaultValue={defaultValues.title}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='icon'
+        control={control}
+        defaultValue={defaultValues.icon}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Icon' />}
+      />
+      {step.type === 'ITEMS' && (
+        <Controller
+          name='description'
+          control={control}
+          defaultValue={defaultValues.description}
+          render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />}
+        />
+      )}
+    </div>
   );
 }

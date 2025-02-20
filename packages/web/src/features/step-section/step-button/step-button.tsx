@@ -1,12 +1,12 @@
+import { useState } from 'react';
+import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { EditStepModal } from '@/features/step-section/edit-step-modal';
 import { StepButtonState } from '@/features/step-section/step-button/helpers';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
-import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 import { cva } from 'class-variance-authority';
-import { useState } from 'react';
 import { DeleteStepConfirmationModal } from '../delete-step-confirmation-modal';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -64,7 +64,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           </div>
           {showActionIcons && (
             <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
-              <EditStepModal step={props.step} onClick={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+              <EditStepModal step={props.step} onSave={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
             </div>
           )}
           {isConfirmDeleteModalOpen && (
