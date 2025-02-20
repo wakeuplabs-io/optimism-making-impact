@@ -1,18 +1,15 @@
 import { ActionButton } from '@/components/action-button';
-import { ColorDot } from '@/components/color-dot';
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
 import { MultiSelect } from '@/components/multi-select/multi-select';
-import { Attribute, strengthItems } from '@/types';
+import { Attribute } from '@/types';
 import { CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
-import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { strengthOptions } from './common';
+import { useCardFormData } from './useCardFormData';
 
-const strengthOptions = strengthItems.map(({ value }) => ({ label: value.toLowerCase(), value }));
-
-const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 interface AddCardModalProps {
   stepId: number;
   onClick?: (data: CreateCardBody) => void;
@@ -39,31 +36,10 @@ export function AddCardModal(props: AddCardModalProps) {
     stepId: props.stepId,
   };
 
-  const keywordsOptions = useMemo(
-    () => props.keywords.map((keyword) => ({ value: keyword.value, label: keyword.value })),
-    [props.keywords],
-  );
-
-  const attributeOptions = useMemo(() => {
-    if (!props.attributes) return [];
-
-    const options = props.attributes.map((a) => ({
-      value: a.id.toString(),
-      label: (
-        <div className='flex items-center gap-2'>
-          <ColorDot color={a.color} />
-          <span>{a.value}</span>
-        </div>
-      ),
-    }));
-
-    options.unshift({
-      ...dontAssignOption,
-      value: dontAssignOption.value.toString(),
-    });
-
-    return options;
-  }, [props.attributes]);
+  const { keywordsOptions, attributeOptions } = useCardFormData({
+    keywords: props.keywords,
+    attributes: props.attributes,
+  });
 
   function handleSubmit({ title, markdown, keywords, strength, attributeId, stepId }: CreateCardBody) {
     const selectedKeywordsValueAndId = keywords.map(({ value }) => {
