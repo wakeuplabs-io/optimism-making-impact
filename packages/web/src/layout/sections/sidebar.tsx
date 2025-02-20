@@ -2,12 +2,10 @@ import { useMemo } from 'react';
 import OmiLogo from '@/assets/omi-logo.png';
 import WakeUpLogo from '@/assets/wake-up-logo.png';
 import { ImageButton } from '@/components/image-button';
-import { SelectInput } from '@/components/inputs/select-input';
 import { SideMenu } from '@/components/side-menu';
 import { WAKEUP_URL } from '@/config';
 import { AuthSection } from '@/features/sidebar/components/auth-section';
 import { CategoryList } from '@/features/sidebar/components/category-list';
-import { CreateRoundModal } from '@/features/sidebar/components/create-round-modal';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
@@ -79,29 +77,12 @@ function SidebarContent() {
   const rounds = useSidebarStore((state) => state.rounds);
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const roundOptions = useMemo(() => rounds.map((round) => ({ label: getRoundName(round.id), value: round.id.toString() })), [rounds]);
 
   return (
     <div className='flex h-full flex-col justify-between gap-6'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
       <div className='flex flex-1 flex-col justify-start md:justify-between gap-8'>
         <div className='flex flex-col gap-4'>
-          {/* <SelectInput
-            name='round'
-            placeholder='Select Round'
-            items={roundOptions}
-            disabled={roundOptions.length === 0}
-            value={selectedRound?.id.toString()}
-            onValueChange={(val) => setSelectedRound(+val)}
-            triggerClassName='border-grey-[#F2F2F2]'
-          /> */}
-          {/* {isAdmin && (
-            <div className='flex w-full justify-center gap-1'>
-              <CreateRoundModal onSave={addRound} />
-              {selectedRound && <AddCategoryModal roundId={selectedRound.id} onSave={addCategory} />}
-            </div>
-          )} */}
-          {/* {selectedRound && <CategoryList title="Round" categories={selectedRound.categories} />} */}
           {rounds.length > 0 && <RoundList title="Rounds" rounds={rounds} />}
           <hr className=' border-[#D9D9D9]' />
           {selectedRound && <CategoryList title="Categories" categories={selectedRound.categories} />}
