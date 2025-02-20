@@ -1,4 +1,4 @@
-import { CreateStepBody, UpdateStepBody } from '@/services/steps/schemas';
+import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { Step } from '@/types';
 
 interface StepsState {

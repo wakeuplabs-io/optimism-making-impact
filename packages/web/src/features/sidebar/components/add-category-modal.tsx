@@ -47,40 +47,42 @@ function FormFields(props: FormFieldsProps) {
 
   return (
     <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
-      <div
-        onClick={() => console.log('Open icon picker')}
-        className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
-      >
-        {modalIcons[selectedIcon] ? createElement(modalIcons[selectedIcon]) : <Plus className='h-6 w-6 text-red-500' />}
+      <div className='flex gap-2 col-span-2'>
+        <div className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'>
+          {modalIcons[selectedIcon] ? createElement(modalIcons[selectedIcon]) : <Plus className='h-6 w-6 text-red-500' />}
+        </div>
+        <Controller
+          name='name'
+          control={control}
+          defaultValue={props.defaultValues.name}
+          render={({ field, fieldState }) => (
+            <div className='w-full'>
+              <FormTextInput
+                {...field}
+                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                error={fieldState.error?.message}
+                placeholder='Name'
+              />
+            </div>
+          )}
+        />
       </div>
-      <Controller
-        name='name'
-        control={control}
-        defaultValue={props.defaultValues.name}
-        render={({ field, fieldState }) => (
-          <FormTextInput
-            {...field}
-            className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
-            error={fieldState.error?.message}
-            placeholder='Name'
-          />
-        )}
-      />
       <Controller
         name='icon'
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-          <>
-          <IconPicker
-            selectedIcon={field.value}
-            modalIcons={modalIcons}
-            onSelect={(icon) => {
-              setValue('icon', icon);
-            }}
-          />
-          <p className='text-sm text-gray-500'>{fieldState.error?.message}</p>
-          </>
+          <div className='col-span-2'>
+            <IconPicker
+              selectedIcon={field.value}
+              modalIcons={modalIcons}
+              onSelect={(icon) => {
+                setValue('icon', icon);
+              }}
+            />
+            {/* TODO: EXTRACT ERROR MESSAGE IN A COMMON COMPONENT */}
+            {fieldState.error?.message && <p className='text-red-500 text-xs'>{fieldState.error?.message}</p>}
+          </div>
         )}
       />
     </div>

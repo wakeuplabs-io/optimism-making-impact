@@ -1,10 +1,10 @@
 import { getButtonState } from '@/features/step-section/step-button/helpers';
 import { StepButton } from '@/features/step-section/step-button/step-button';
-import { UpdateStepBody } from '@/services/steps/schemas';
 import { Step } from '@/types';
 import { StepSeparator } from './step-separator';
 import { useIsDesktopXL } from '@/hooks/use-tresholds';
 import { useMemo } from 'react';
+import { UpdateStepBody } from '@optimism-making-impact/schemas';
 
 interface StepsListProps {
   steps: Step[];
@@ -50,7 +50,7 @@ export function StepsList(props: StepsListProps) {
               onDelete={props.onDeleteStep}
               onEdit={props.onEditStep}
             />
-                        
+
             {idx < props.steps.length - 1 && <StepSeparator past={idx < selectedStepIdx} />}
           </>
         );

@@ -1,5 +1,5 @@
 import { ColorDot } from '@/components/color-dot';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form-modal-old';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { TextAreaInput } from '@/components/text-area-input';
