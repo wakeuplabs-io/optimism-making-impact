@@ -49,7 +49,6 @@ function Content({ title, categories }: ContentProps) {
                 <AddCategoryModal roundId={1} onSave={() => {}} />
               </li>
             )}
-            ,
           </>
         )}
       </ul>
