@@ -1,3 +1,5 @@
+import { authRouter } from './auth/route.js';
+import { usersRouter } from './users/route.js';
 import { attributesRouter } from '@/routes/attributes/route.js';
 import { cardsRouter } from '@/routes/cards/route.js';
 import { categoriesRouter } from '@/routes/categories/route.js';
@@ -9,7 +11,6 @@ import { smartListsRouter } from '@/routes/smart-lists/route.js';
 import { stepsRouter } from '@/routes/steps/route.js';
 import { testRouter } from '@/routes/test/route.js';
 import { Router } from 'express';
-import { authRouter } from './auth/route.js';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.use('/rounds', roundsRouter);
 router.use('/smart-lists', smartListsRouter);
 router.use('/steps', stepsRouter);
 router.use('/auth', authRouter);
+router.use('/users', usersRouter);
 
 router.use('/test', testRouter);
 

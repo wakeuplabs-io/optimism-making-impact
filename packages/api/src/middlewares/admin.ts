@@ -26,6 +26,7 @@ async function validateAdmin(req: Request, res: Response, next: NextFunction) {
       apiResponse.error(res, StatusCodes.FORBIDDEN, 'FORBIDDEN', 'Your account does not have admin privileges');
       return;
     }
+    req.app.locals.authUser = authUser;
     next();
   } catch (error) {
     if (error instanceof AuthManagerException) {
