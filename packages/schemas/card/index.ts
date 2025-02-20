@@ -13,6 +13,10 @@ export const keywordSchema = keywordValueSchema.extend({
 
 export type Keyword = z.infer<typeof keywordSchema>;
 
+const upsertKeywordSchema = keywordValueSchema.extend({
+  id: z.number().optional(),
+});
+
 export const createCardBodySchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   markdown: z.string().min(1, { message: 'Markdown is required' }),
@@ -21,14 +25,20 @@ export const createCardBodySchema = z.object({
     message: 'Step is required',
   }),
   attributeId: z.number().optional(),
-  keywords: z
-    .array(
-      keywordValueSchema.extend({
-        id: z.number().optional(),
-      }),
-    )
-    .optional()
-    .default([]),
+  keywords: z.array(upsertKeywordSchema).optional().default([]),
 });
 
 export type CreateCardBody = z.infer<typeof createCardBodySchema>;
+
+export const updateCardBodySchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  markdown: z.string().min(1, { message: 'Markdown is required' }),
+  strength: z.enum(cardStrengthList).default('MEDIUM'),
+  stepId: z.number().refine((value) => !!value, {
+    message: 'Step is required',
+  }),
+  attributeId: z.number().optional(),
+  keywords: z.array(upsertKeywordSchema).optional().default([]),
+});
+
+export type UpdateCardBody = z.infer<typeof updateCardBodySchema>;
