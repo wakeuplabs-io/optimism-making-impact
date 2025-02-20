@@ -1,14 +1,21 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { IconPicker } from './icon-picker';
 import { FormModal } from '@/components/form-modal';
-import { SidebarActionButton } from '@/components/sidebar-acion-button';
-import { Plus } from 'lucide-react';
-import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
+import { NewButton } from '@/components/new-button';
+import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { Plus } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
+import { createElement } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddCategoryModalProps {
   roundId: number;
   onSave?: (name: string, icon: string, roundId: number) => void;
 }
+
+const modalIcons: Record<string, React.ComponentType> = Object.fromEntries(
+  Object.entries(LucideIcons).map(([key, value]) => [key.toLowerCase(), value as React.ComponentType]),
+);
 
 export function AddCategoryModal(props: AddCategoryModalProps) {
   const defaultValues: CreateCategoryBody = { name: '', icon: '', roundId: props.roundId };
@@ -20,7 +27,7 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
   return (
     <FormModal
       title='New category'
-      trigger={<SidebarActionButton label='Add category' icon={<Plus size={12} className='font-bold text-white' />} />}
+      trigger={<NewButton label='Add category' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={createCategoryBodySchema}
@@ -34,24 +41,47 @@ interface FormFieldsProps {
   defaultValues: CreateCategoryBody;
 }
 
-// The inner form fields use react-hook-form's context.
-// We use Controller for inputs that work as controlled components.
 function FormFields(props: FormFieldsProps) {
-  const { control } = useFormContext<CreateCategoryBody>();
+  const { control, setValue, watch } = useFormContext<CreateCategoryBody>();
+  const selectedIcon = watch('icon');
 
   return (
-    <div className='grid w-full gap-4 py-4'>
+    <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
+      <div
+        onClick={() => console.log('Open icon picker')}
+        className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+      >
+        {modalIcons[selectedIcon] ? createElement(modalIcons[selectedIcon]) : <Plus className='h-6 w-6 text-red-500' />}
+      </div>
       <Controller
         name='name'
         control={control}
         defaultValue={props.defaultValues.name}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Name' />}
+        render={({ field, fieldState }) => (
+          <FormTextInput
+            {...field}
+            className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+            error={fieldState.error?.message}
+            placeholder='Name'
+          />
+        )}
       />
       <Controller
         name='icon'
         control={control}
         defaultValue={props.defaultValues.icon}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Icon' />}
+        render={({ field, fieldState }) => (
+          <>
+          <IconPicker
+            selectedIcon={field.value}
+            modalIcons={modalIcons}
+            onSelect={(icon) => {
+              setValue('icon', icon);
+            }}
+          />
+          <p className='text-sm text-gray-500'>{fieldState.error?.message}</p>
+          </>
+        )}
       />
     </div>
   );
