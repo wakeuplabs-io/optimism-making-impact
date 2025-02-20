@@ -1,8 +1,3 @@
-import { z } from 'zod';
-
-export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const;
-export const stepTypeSchema = z.enum(stepTypes);
-export type StepType = z.infer<typeof stepTypeSchema>;
 export const enum StepTypes {
   INFOGRAPHY,
   ITEMS,

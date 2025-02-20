@@ -1,109 +1,138 @@
+import { Plus } from 'lucide-react';
+import { CreateStepBody, stepTypes, StepType, createStepBodySchema } from '@optimism-making-impact/schemas';
+
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
-import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
 import { capitalizeFirst } from '@/lib/utils';
 import { SmartListsService } from '@/services/smart-lists/service';
-import { CreateStepBody } from '@/services/steps/schemas';
-import { StepType, stepTypes } from '@/types';
-import { Plus, Save } from 'lucide-react';
-import { useState } from 'react';
+import { FormModal } from '@/components/form-modal';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { FormTextInput } from '@/components/form/form-text-input';
+
+type SmartListOption = { label: string; value: string };
 
 const options = stepTypes.map((type) => ({
   value: type,
   label: capitalizeFirst(type),
 }));
-const emptySmartListOption = { label: 'None', value: '0' };
 
+const emptySmartListOption = { label: 'None', value: '0' };
 interface AddStepModalProps {
   categoryId: number;
-  onClick?: (categoryId: number, data: CreateStepBody) => void;
+  onSave?: (categoryId: number, data: CreateStepBody) => void;
 }
 
 export function AddStepModal(props: AddStepModalProps) {
-  const [title, setTitle] = useState('');
-  const [icon, setIcon] = useState('');
-  const [type, setType] = useState<string>(options[0].value);
-  const [smartListsOptions, setSmartListsOptions] = useState<{ label: string; value: string }[]>([]);
-  const [selectedSmartListId, setSelectedSmartListId] = useState<number | null>(null);
-  const [description, setDescription] = useState('');
+  const [smartListsOptions, setSmartListsOptions] = useState<SmartListOption[]>([]);
+  const defaultValues = {
+    title: '',
+    icon: '',
+    type: options[0].value as StepType,
+    categoryId: props.categoryId,
+    description: '',
+  };
 
-  function handleOpenChange(open: boolean) {
+  function handleSubmit(data: CreateStepBody) {
+    props.onSave?.(props.categoryId, data);
+  }
+
+  function onOpenChange(open: boolean) {
     if (!open) {
-      clear();
-    } else {
-      SmartListsService.getByCategoryId(props.categoryId).then((res) => {
-        const smartListsOptions = res.smartLists.map((smartList) => ({ label: smartList.title, value: smartList.id.toString() }));
-        setSmartListsOptions([emptySmartListOption, ...smartListsOptions]);
-      });
+      return;
     }
-  }
+    //load smart lists
+    SmartListsService.getByCategoryId(props.categoryId).then((res) => {
+      const smartListsOptions = res.smartLists.map((smartList) => ({ label: smartList.title, value: smartList.id.toString() }));
+      if (smartListsOptions.length === 0) {
+        return;
+      }
 
-  function clear() {
-    setTitle('');
-    setIcon('');
-    setType(options[0].value);
-    setSelectedSmartListId(null);
-  }
-
-  function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
-  }
-
-  function handleIconChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setIcon(event.target.value);
-  }
-
-  function handleTypeChange(value: string) {
-    setType(value);
-  }
-
-  function handleSmartListChange(value: string) {
-    setSelectedSmartListId(+value);
-  }
-  function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setDescription(event.target.value);
-  }
-
-  function handleSubmit() {
-    const selectedType = type as StepType;
-
-    const shouldAddSmartList = type === 'CARD' && selectedSmartListId !== null && selectedSmartListId !== 0;
-
-    props.onClick?.(props.categoryId, {
-      title,
-      icon,
-      type: selectedType,
-      categoryId: props.categoryId,
-      smartListId: shouldAddSmartList ? selectedSmartListId : undefined,
-      description: selectedType === 'ITEMS' ? description : undefined,
+      setSmartListsOptions([emptySmartListOption, ...smartListsOptions]);
     });
-    clear();
   }
-
-  const saveDisabled = title === '' || (type === 'CARD' && selectedSmartListId === null);
 
   return (
-    <Modal
-      onOpenChange={handleOpenChange}
-      title='Add step'
+    <FormModal
+      title='New category'
       trigger={<IconButton variant='secondary' icon={<Plus className='text-white' />} />}
-      buttons={[
-        { label: 'Cancel', variant: 'secondary' },
-        { label: 'Save', variant: 'primary', disabled: saveDisabled, icon: <Save />, onClick: handleSubmit },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={createStepBodySchema}
+      onOpenChange={onOpenChange}
     >
-      <div className='flex flex-col gap-4'>
-        <TextInput name='Title' placeholder='Title' value={title} onChange={handleTitleChange} />
-        <TextInput name='Icon' placeholder='Icon' value={icon} onChange={handleIconChange} />
-        <SelectInput name='Type' items={options} onValueChange={handleTypeChange} value={type} />
-        {type === 'CARD' && (
-          <SelectInput name='Smart List' items={smartListsOptions} onValueChange={handleSmartListChange} placeholder='Select Smart List' />
+      <FormFields defaultValues={defaultValues} smartListOptions={smartListsOptions} />
+    </FormModal>
+  );
+}
+
+interface FormFieldsProps {
+  defaultValues: CreateStepBody;
+  smartListOptions: SmartListOption[];
+}
+
+// The inner form fields use react-hook-form's context.
+// We use Controller for inputs that work as controlled components.
+function FormFields(props: FormFieldsProps) {
+  const { control, setValue } = useFormContext<CreateStepBody>();
+  const type = useWatch({ control, name: 'type' });
+
+  useEffect(() => {
+    if (type !== 'CARD') {
+      setValue('smartListId', undefined);
+    }
+  }, [type, setValue]);
+
+  return (
+    <div className='grid w-full gap-4 py-4'>
+      <Controller
+        name='title'
+        control={control}
+        defaultValue={props.defaultValues.title}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='icon'
+        control={control}
+        defaultValue={props.defaultValues.icon}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Icon' />}
+      />
+      <Controller
+        name='type'
+        control={control}
+        defaultValue={props.defaultValues.type}
+        render={({ field, formState }) => (
+          <SelectInput
+            name='type'
+            items={options}
+            onValueChange={field.onChange}
+            defaultValue={formState.defaultValues?.type}
+            placeholder='Select Smart List'
+          />
         )}
-        {type === 'ITEMS' && (
-          <TextInput name='Description' placeholder='Description' value={description} onChange={handleDescriptionChange} />
-        )}
-      </div>
-    </Modal>
+      />
+      {type === 'CARD' && props.smartListOptions.length > 0 && (
+        <Controller
+          name='smartListId'
+          control={control}
+          render={({ field }) => (
+            <SelectInput
+              name='smartListId'
+              items={props.smartListOptions}
+              onValueChange={(value) => field.onChange(Number(value))}
+              placeholder='Select Smart List'
+            />
+          )}
+        />
+      )}
+      {type === 'ITEMS' && (
+        <Controller
+          name='description'
+          control={control}
+          defaultValue={props.defaultValues.description}
+          render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />}
+        />
+      )}
+    </div>
   );
 }

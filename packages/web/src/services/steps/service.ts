@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateStepBody, UpdateStepBody } from '@/services/steps/schemas';
+import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const stepsEndpoint = '/steps';

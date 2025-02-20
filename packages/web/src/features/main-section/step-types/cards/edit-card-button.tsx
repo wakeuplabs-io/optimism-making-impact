@@ -92,9 +92,9 @@ export function EditCardModal(props: EditCardModalProps) {
       title='Edit card'
       trigger={<EditIcon />}
       onSubmit={handleSubmit}
-      cancelButtonIcon={<Trash />}
-      cancelButtonText='Delete'
-      onCancel={() => props.onDelete?.(props.card.id)}
+      secondaryButtonIcon={<Trash />}
+      secondaryButtonText='Delete'
+      onSecondaryClick={() => props.onDelete?.(props.card.id)}
       defaultValues={defaultValues}
       contentProps={{
         onPointerDownOutside: (e) => {
