@@ -8,7 +8,7 @@ import { CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { strengthOptions } from './common';
-import { useCardFormData } from './useCardFormData';
+import { dontAssignOption, useCardFormData } from './useCardFormData';
 
 interface AddCardModalProps {
   stepId: number;
@@ -47,13 +47,15 @@ export function AddCardModal(props: AddCardModalProps) {
       return { value, id: keyword?.id };
     });
 
+    const numericAttributeId = attributeId ? +attributeId : 0;
+
     props.onClick?.({
       title,
       markdown,
       stepId,
       strength,
       keywords: selectedKeywordsValueAndId,
-      attributeId: attributeId && attributeId < 1 ? undefined : attributeId,
+      attributeId: numericAttributeId === dontAssignOption.value ? undefined : numericAttributeId,
     });
   }
 

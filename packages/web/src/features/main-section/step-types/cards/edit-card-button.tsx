@@ -41,13 +41,15 @@ export function EditCardModal(props: EditCardModalProps) {
       return { value, id: keyword?.id };
     });
 
+    const numericAttributeId = attributeId ? +attributeId : 0;
+
     props.onSave?.(props.card.id, {
       title,
       markdown,
       stepId,
       strength,
       keywords: selectedKeywordsValueAndId,
-      attributeId: attributeId && attributeId < 1 ? undefined : attributeId,
+      attributeId: numericAttributeId === dontAssignOption.value ? undefined : attributeId,
     });
   }
 
@@ -56,9 +58,9 @@ export function EditCardModal(props: EditCardModalProps) {
       title='Edit card'
       trigger={<EditIcon />}
       onSubmit={handleSubmit}
-      cancelButtonIcon={<Trash />}
-      cancelButtonText='Delete'
-      onCancel={() => props.onDelete?.(props.card.id)}
+      secondaryButtonIcon={<Trash />}
+      secondaryButtonText='Delete'
+      onSecondaryClick={() => props.onDelete?.(props.card.id)}
       defaultValues={defaultValues}
       schema={updateCardBodySchema}
       contentProps={{
@@ -118,13 +120,14 @@ function FormFields({ attributeOptions, keywordsOptions, defaultValues }: FormFi
         name='attributeId'
         control={control}
         defaultValue={defaultValues.attributeId}
-        render={({ field }) => (
+        render={({ field, formState }) => (
           <SelectInput
             placeholder='Select Smart List Filter'
             name='attribute'
             items={attributeOptions}
             triggerClassName='capitalize'
             itemClassName='capitalize'
+            defaultValue={formState.defaultValues?.attributeId?.toString()}
             onValueChange={(value) => field.onChange(+value)}
             disabled={attributeOptions.length === 0}
             value={field.value?.toString()}
@@ -135,15 +138,14 @@ function FormFields({ attributeOptions, keywordsOptions, defaultValues }: FormFi
         name='keywords'
         control={control}
         defaultValue={defaultValues.keywords}
-        render={({ field }) => {
-          console.log(field.value.map(({ value }) => value));
+        render={({ field, formState }) => {
           return (
             <MultiSelect
               options={keywordsOptions}
               onValueChange={(keywordsValues) => {
                 field.onChange(keywordsValues.map((value) => ({ value })));
               }}
-              defaultValue={defaultValues.keywords.map(({ value }) => value)}
+              defaultValue={formState.defaultValues?.keywords ? formState.defaultValues.keywords.map((keyword) => keyword!.value!) : []}
               value={field.value.map(({ value }) => value)}
               placeholder='Keywords connected'
               maxCount={3}
