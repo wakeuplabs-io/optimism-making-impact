@@ -16,6 +16,11 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
   strengths: strengthItems,
   setKeywords: (keywords: Keyword[]) => {
     set({ keywords });
+    // Remove selected keywords that are not in the updated keyword list
+    const updatedSelectedKeywords = get().selectedKeywords.filter((selectedKeyword) =>
+      keywords.some((keyword) => selectedKeyword.id === keyword.id),
+    );
+    set({ selectedKeywords: updatedSelectedKeywords });
   },
   setAttributes: (attributes: Attribute[]) => set({ attributes }),
   setSelectedStrengths: (strength: StrengthItem) => {
