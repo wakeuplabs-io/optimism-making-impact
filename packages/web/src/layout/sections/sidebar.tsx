@@ -8,12 +8,12 @@ import { AuthSection } from '@/features/sidebar/components/auth-section';
 import { CategoryList } from '@/features/sidebar/components/category-list';
 import { CreateRoundModal } from '@/features/sidebar/components/create-round-modal';
 import LogosSection from '@/features/sidebar/components/logos-section';
-import { OpenSetupModal } from '@/features/sidebar/components/open-setup-modal';
+import SetupModal from '@/features/sidebar/components/setup-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
-import { Menu } from 'lucide-react';
-import { useMemo } from 'react';
+import { Menu, Settings } from 'lucide-react';
+import { useMemo, useState } from 'react';
 
 export function SidebarSection() {
   return (
@@ -79,6 +79,7 @@ function SidebarContent() {
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const roundOptions = useMemo(() => rounds.map((round) => ({ label: getRoundName(round.id), value: round.id.toString() })), [rounds]);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className='flex h-full flex-col justify-between gap-6'>
@@ -102,11 +103,16 @@ function SidebarContent() {
           {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
           <LogosSection />
         </div>
-        <OpenSetupModal
-          onSave={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
+        <>
+          <button
+            onClick={() => setOpen(true)}
+            className='flex w-full items-center gap-3 rounded-lg px-4 py-2 text-[#4e4e4e] transition-colors hover:bg-[#f1f4f9]'
+          >
+            <Settings className='h-4 w-4' />
+            <span className='text-sm'>Setup</span>
+          </button>
+          <SetupModal open={open} onOpenChange={setOpen} />
+        </>
         <AuthSection />
       </div>
       <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
