@@ -1,5 +1,4 @@
 import React, { useId, useState } from 'react';
-import { Save } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, ModalActionButtonProps } from '@/components/modal';
@@ -24,9 +23,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
 }
 
 export function FormModal<TFormSchema extends z.AnyZodObject>({
-  submitButtonText = 'Save',
-  secondaryButtonText = 'Cancel',
-  submitButtonIcon = <Save />,
+  submitButtonText = 'Create',
   ...props
 }: FormModalProps<TFormSchema>) {
   const [open, setOpen] = useState(false);
@@ -50,17 +47,9 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
 
   const buttons = React.useMemo<ModalActionButtonProps[]>(
     () => [
-      {
-        type: 'button',
-        variant: 'secondary',
-        label: secondaryButtonText,
-        closeOnClick: true,
-        icon: props.secondaryButtonIcon,
-        onClick: () => props.onSecondaryClick?.(),
-      },
-      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, icon: submitButtonIcon, form: formId },
+      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
     ],
-    [],
+    [formId, submitButtonText],
   );
 
   const isOpen = props.controlledOpen ?? open;
