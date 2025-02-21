@@ -1,9 +1,9 @@
 import {
   BulkUpdateInfographyBody,
-  bulkUpdateInfogrpahyBodySchema,
-  createInfogrpahyBodySchema,
-  updateInfogrpahyBodySchema,
-} from '@/controllers/infographies/schemas.js';
+  bulkUpdateInfographyBodySchema,
+  createInfographyBodySchema,
+  updateInfographyBodySchema,
+} from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
@@ -23,7 +23,7 @@ async function getLastInfographyPosition(stepId: number, _prisma: PrismaClient) 
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = createInfogrpahyBodySchema.safeParse(req.body);
+    const parsed = createInfographyBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
 
@@ -43,7 +43,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
-    const parsedBody = updateInfogrpahyBodySchema.safeParse(req.body);
+    const parsedBody = updateInfographyBodySchema.safeParse(req.body);
 
     if (!parsedBody.success || !parsedId.success) throw ApiError.badRequest();
 
@@ -65,17 +65,15 @@ function getBulkUpdatesQueries(data: BulkUpdateInfographyBody, _prisma: PrismaCl
 }
 
 async function getBulkNewInfographiesQueries(data: BulkUpdateInfographyBody, _prisma: PrismaClient) {
-  const newInfographies = data.filter(({ id }) => id < 0);
-
-  if (!data) {
+  if (data.length === 0) {
     return [];
   }
 
-  const lastPosition = await getLastInfographyPosition(newInfographies[0].stepId, _prisma);
+  const lastPosition = await getLastInfographyPosition(data[0].stepId, _prisma);
   const infographiesToInsert = [];
   let currentPosition = lastPosition > 0 ? lastPosition + 1 : 0;
 
-  for (const newInfography of newInfographies) {
+  for (const newInfography of data) {
     infographiesToInsert.push(
       _prisma.infography.create({
         data: {
@@ -95,14 +93,14 @@ async function getBulkNewInfographiesQueries(data: BulkUpdateInfographyBody, _pr
 
 export async function updateBulk(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsedBody = bulkUpdateInfogrpahyBodySchema.safeParse(req.body);
+    const parsedBody = bulkUpdateInfographyBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
       throw ApiError.badRequest();
     }
 
-    const infographiesToUpdate = parsedBody.data.filter(({ id }) => id >= 0);
-    const infographiesToInsert = parsedBody.data.filter(({ id }) => id < 0);
+    const infographiesToUpdate = parsedBody.data.filter(({ id }) => id && id >= 0);
+    const infographiesToInsert = parsedBody.data.filter(({ id }) => !id || id < 0);
 
     //validate all has the same stepId
     if (infographiesToInsert.some(({ stepId }) => stepId !== infographiesToInsert[0].stepId)) {
