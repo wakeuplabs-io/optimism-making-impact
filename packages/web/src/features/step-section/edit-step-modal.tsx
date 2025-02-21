@@ -28,12 +28,13 @@ export function EditStepModal(props: EditIconProps) {
 
   return (
     <FormModal
-      title='Edit step'
+      title='Edit tab'
       trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={updateStepBodySchema}
       onSecondaryClick={props.onDelete}
+      submitButtonText='Save'
       secondaryButtonText='Delete'
       secondaryButtonIcon={<Trash />}
     >
@@ -53,32 +54,39 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
   const modalIcons = useIcons();
   const selectedIcon = watch('icon');
 
-  console.log({step})
   return (
     <div className='grid gap-4 py-4'>
       <div className='col-span-2 flex gap-2'>
-        <div
-          className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
-          onClick={() => setIsIconPickerOpen((prev) => !prev)}
-        >
-          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+        <div className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-gray-500">Icon</span>
+          <div
+            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+            onClick={() => setIsIconPickerOpen((prev) => !prev)}
+          >
+            {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+          </div>
         </div>
-        <Controller
-          name='title'
-          control={control}
-          defaultValue={defaultValues.title}
-          render={({ field, fieldState }) => (
-            <div className='w-full'>
-              <FormTextInput
-                {...field}
-                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
-                placeholder='Name'
-              />
-              <FormErrorMessage error={fieldState.error?.message} />
-            </div>
-          )}
-        />
+
+        <div className="flex flex-col gap-1 w-full">
+          <span className="text-xs font-medium text-gray-500">Title</span>
+          <Controller
+            name='title'
+            control={control}
+            defaultValue={defaultValues.title}
+            render={({ field, fieldState }) => (
+              <div className='w-full'>
+                <FormTextInput
+                  {...field}
+                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                  placeholder='Write here...'
+                />
+                <FormErrorMessage error={fieldState.error?.message} />
+              </div>
+            )}
+          />
+        </div>
       </div>
+
       <Controller
         name='icon'
         control={control}
@@ -100,14 +108,21 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           </>
         )}
       />
+
       {step.type === 'ITEMS' && (
-        <Controller
-          name='description'
-          control={control}
-          defaultValue={defaultValues.description}
-          render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />}
-        />
+        <div className="flex flex-col gap-1">
+          <span className="text-xs font-medium text-gray-500">Description</span>
+          <Controller
+            name='description'
+            control={control}
+            defaultValue={defaultValues.description}
+            render={({ field, fieldState }) => (
+              <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />
+            )}
+          />
+        </div>
       )}
     </div>
   );
 }
+
