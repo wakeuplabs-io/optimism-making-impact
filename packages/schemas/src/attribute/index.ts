@@ -21,7 +21,7 @@ export const attributeSchema = z.object({
 export type Attribute = z.infer<typeof attributeSchema>;
 
 export const createAttributeSchema = z.object({
-  value: z.string().min(1, 'Value is required'),
+  value: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   color: colorSchema.refine((value) => !!value, { message: 'Color is required' }),
   smartListId: z.number().superRefine(idValidator('Smart List')),
@@ -31,7 +31,7 @@ export type CreateAttributeBody = z.infer<typeof createAttributeSchema>;
 
 export const updateAttributeSchema = z.object({
   id: z.number().superRefine(idValidator('ID')),
-  value: z.string().min(1, 'Value is required'),
+  value: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   color: colorSchema.refine((value) => !!value, { message: 'Color is required' }),
 });
