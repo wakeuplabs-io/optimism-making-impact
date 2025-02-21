@@ -10,7 +10,11 @@ export const createItemSchema = z.object({
   attributeId: z.number().superRefine(attributeIdValidator),
 });
 
+export type CreateItemBody = z.infer<typeof createItemSchema>;
+
 export const updateItemSchema = z.object({
   markdown: z.string().min(1, { message: 'Markdown is required' }),
   attributeId: z.number().superRefine(attributeIdValidator),
 });
+
+export type UpdateItemBody = z.infer<typeof updateItemSchema>;

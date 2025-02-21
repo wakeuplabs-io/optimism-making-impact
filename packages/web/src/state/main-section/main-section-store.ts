@@ -5,7 +5,7 @@ import { AttributesService } from '@/services/attributes/service';
 import { CardsService } from '@/services/cards/service';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
-import { CreateItemBody } from '@/services/items/schemas';
+import { CreateItemBody } from '@optimism-making-impact/schemas';
 import { ItemsService } from '@/services/items/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
