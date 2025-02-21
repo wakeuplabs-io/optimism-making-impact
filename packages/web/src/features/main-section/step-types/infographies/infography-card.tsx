@@ -47,12 +47,9 @@ export function InfographyCard(props: InfogrpahyCardProps) {
           defaultImgClassname='rounded-full'
         />
       </HoverOverlay>
-      <EditInfographyMarkdown
-        isAdmin={props.isAdmin}
-        markdown={props.infography.markdown}
-        onChange={handleMarkdownChange}
-        className='h-full w-full lg:max-w-[500px]'
-      />
+      <div className='flex items-center h-full w-full lg:px-0 lg:max-w-[500px]'>
+        <EditInfographyMarkdown isAdmin={props.isAdmin} markdown={props.infography.markdown} onChange={handleMarkdownChange} />
+      </div>
       {props.isAdmin && (
         <div className='absolute right-5 top-5 '>
           <DeleteInfogrpahyModal infography={props.infography} onClick={props.onDelete} />
