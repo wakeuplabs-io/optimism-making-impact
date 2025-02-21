@@ -69,7 +69,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    apiResponse.success(res, { message: 'Round deleted.', data: deleted }, 201);
+    apiResponse.success(res, { message: 'Round deleted.', data: deleted }, 201); // TODO: magic numbers
   } catch (error) {
     next(error);
   }

@@ -21,7 +21,7 @@ async function validate(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
     // Continue with login logic using validatedData
-    const authResult = await authenticate(parsed.data.token);
+    const authResult = await authenticate(parsed.data.token); // TODO: DO NOT DO THIS, no need a function to execute 1 line of code!!!!!!
 
     if (authResult.status === 'fail') throw ApiError.unauthorized();
 

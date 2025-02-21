@@ -7,3 +7,6 @@ const middlewares = {
 };
 
 export default middlewares;
+
+
+// TODO: remove this file, no need index files!!!!

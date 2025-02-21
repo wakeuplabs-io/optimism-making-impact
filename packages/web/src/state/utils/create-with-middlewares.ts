@@ -6,6 +6,9 @@ type WithMiddlewaresStateCreator<T> = StateCreator<T, [['zustand/immer', never]]
 type StoreState<T> = StateCreator<T, [['zustand/immer', never], ['zustand/persist', unknown]], [], T>;
 type PersistConfig = { name: string; storageType?: 'localStorage' | 'sessionStorage' };
 
+// TODO: review this component!!!! what are we trying to do here???
+
+
 export const createWithImmer = <T>(store: WithMiddlewaresStateCreator<T>) => {
   return create<T>()(immer(store));
 };

@@ -1,6 +1,8 @@
 // This file implements a singleton pattern for the PrismaClient.
 import { PrismaClient } from '@prisma/client';
 
+// TODO: rename the folder or move it to the real prisma folder
+
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 /**

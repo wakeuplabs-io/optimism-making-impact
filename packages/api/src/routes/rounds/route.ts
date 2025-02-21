@@ -3,6 +3,8 @@ import { Router } from 'express';
 
 export const roundsRouter = Router();
 
+// TODO: remove the folder, is just one file
+
 roundsRouter.get('/', roundsController.getAll);
 roundsRouter.post('/', roundsController.create);
 roundsRouter.put('/:id', roundsController.update);

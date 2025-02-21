@@ -4,7 +4,7 @@ export const getAllStepsQueryParams = z.object({
   categoryId: z.string().transform(Number).optional(),
 });
 
-export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const;
+export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const; // TODO: use prisma enum
 export const stepTypeSchema = z.enum(stepTypes);
 export type StepType = z.infer<typeof stepTypeSchema>;
 
@@ -21,6 +21,8 @@ export const createStepBodySchema = z.object({
   smartListId: z.number().optional(),
 });
 
+
+//createStepBodySchemaWithValidation // TODO: looks weird, explain what it does
 export const createStepBodySchemaWithValidation = createStepBodySchema.refine((data) => !(data.type !== 'CARD' && data.smartListId), {
   message: 'Smart list id is required only for card type',
   path: ['smartListId'],

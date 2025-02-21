@@ -8,6 +8,8 @@ const initialSelectedFilters = {
   selectedAttributes: [],
 };
 
+// TODO: review this component!!!! do we really need a global store?????
+
 export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) => ({
   ...initialSelectedFilters,
   keywords: [],

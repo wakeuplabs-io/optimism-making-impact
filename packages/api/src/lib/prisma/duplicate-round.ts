@@ -4,6 +4,8 @@ import { CompleteRound } from '@/types/entities/round.js';
 import { CompleteStep } from '@/types/entities/step.js';
 import { Category, Round } from '@prisma/client';
 
+// TODO: rename the folder or move it to the real prisma folder
+
 /**
  * Duplicates an entire round, including categories, steps, items, cards, and related entities.
  * Ensures relationships remain intact.

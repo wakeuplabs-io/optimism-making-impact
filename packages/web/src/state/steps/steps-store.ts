@@ -7,6 +7,8 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { stepArraySchema } from '@/types';
 import { AxiosError } from 'axios';
 
+// TODO: review this component!!!! do we really need a global store?????
+
 export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   loading: false,
   error: '',

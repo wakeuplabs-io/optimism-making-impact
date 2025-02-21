@@ -7,6 +7,8 @@ interface StepTypeSelectorProps {
   step: CompleteStep;
 }
 
+// TODO: review this component!!!!
+
 export function StepTypeSelector(props: StepTypeSelectorProps) {
   switch (props.step.type) {
     case 'INFOGRAPHY':

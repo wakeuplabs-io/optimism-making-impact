@@ -14,11 +14,11 @@ async function create(req: Request, res: Response, next: NextFunction) {
     const attribute = await prisma.attribute.create({
       data: {
         ...parsed.data,
-        categoryId: 1, // HARDCODED:
+        categoryId: 1, // HARDCODED: // TODO: FIX THIS!!!!!!!!
       },
     });
 
-    apiResponse.success(res, attribute, 201);
+    apiResponse.success(res, attribute, 201); // TODO: DO NOT use this api response, no needed, also DO NOT use magic numbers!!!!!!!
   } catch (error) {
     next(error);
   }

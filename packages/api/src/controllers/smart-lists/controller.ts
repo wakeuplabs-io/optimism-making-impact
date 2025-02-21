@@ -22,7 +22,7 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
       },
     });
 
-    if (!category) throw new ApiError(404, 'Category not found.');
+    if (!category) throw new ApiError(404, 'Category not found.'); // TODO: DO NOT USE MAGIC NUMBERS
 
     const smartlistIds = category.steps.map((step) => step.smartListId);
     const stepsIds: number[] = smartlistIds.filter((id): id is number => id !== null);

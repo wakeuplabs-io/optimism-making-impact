@@ -24,7 +24,7 @@ async function grantAdminRole(req: Request, res: Response, next: NextFunction) {
 async function revokeAdminRole(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = authGrantOrRevokeSchema.safeParse(req.body);
-    // Prevent revoking admin role for current user
+    // Prevent revoking admin role for current user// TODO: remove unnecessary comments!!!!!!
     if (!parsed.success) throw ApiError.badRequest();
     if (parsed.data.email === req.app.locals.authUser.email) throw ApiError.unauthorized('You cannot revoke your own admin role.');
     await prisma.userWhitelist.delete({

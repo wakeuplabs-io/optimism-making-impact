@@ -3,6 +3,8 @@ import { Router } from 'express';
 
 export const stepsRouter = Router();
 
+// TODO: remove the folder, is just one file
+
 stepsRouter.get('/', stepsController.getAll);
 stepsRouter.get('/:id', stepsController.getOne);
 stepsRouter.post('/', stepsController.create);

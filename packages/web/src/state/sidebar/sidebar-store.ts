@@ -8,6 +8,8 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { CompleteRound, Round } from '@/types';
 import { AxiosError } from 'axios';
 
+// TODO: review this component!!!! do we really need a global store?????
+
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
   rounds: [],

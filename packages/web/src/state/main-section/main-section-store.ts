@@ -16,6 +16,9 @@ import { Step } from '@/types';
 import { AxiosError } from 'axios';
 import isEqual from 'lodash.isequal';
 
+// TODO: review the use of lodash, it's a bit overkill, prefer not having autosave.
+
+
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
   loading: true,

@@ -16,8 +16,8 @@ datasource db {
 // Enums
 enum StepType {
   INFOGRAPHY
-  ITEMS
-  CARD
+  ITEMS // TODO: cambiar por smart list
+  CARD // TODO: cambiar por card grid
 }
 
 enum CardStrength {
@@ -43,8 +43,8 @@ enum Color {
 model Round {
   id Int @id @default(autoincrement())
 
-  link1 String? @default("")
-  link2 String? @default("")
+  link1 String? // TODO: use null default
+  link2 String? // TODO: use null default
 
   categories Category[]
 
@@ -71,15 +71,15 @@ model Step {
   id Int @id @default(autoincrement())
 
   title       String
-  description String?  @default("")
+  description String?  @default("")  // TODO: use null default, explain why????
   icon        String
-  position    Int
+  position    Int // TODO: why we use this?, there is no task that needs this.
   type        StepType
 
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
 
-  infographies Infography[]
+  infographics Infographic[] // TODO: typo fixed
   items        Item[]
   cards        Card[]
   smartList    SmartList?   @relation(fields: [smartListId], references: [id])
@@ -93,12 +93,12 @@ model Step {
   @@unique([title, categoryId])
 }
 
-model Infography {
+model Infographic {
   id Int @id @default(autoincrement())
 
   markdown String
   image    String
-  position Int
+  position Int // TODO: why we use this?, there is no task that needs this.
 
   stepId Int
   step   Step @relation(fields: [stepId], references: [id])
@@ -111,7 +111,7 @@ model Item {
   id Int @id @default(autoincrement())
 
   markdown String
-  position Int
+  position Int // TODO: why we use this?, there is no task that needs this.
 
   stepId      Int
   step        Step       @relation(fields: [stepId], references: [id])
@@ -128,7 +128,7 @@ model Card {
   title    String
   markdown String
   strength CardStrength
-  position Int
+  position Int // TODO: why we use this?, there is no task that needs this.
 
   stepId      Int
   step        Step       @relation(fields: [stepId], references: [id])
@@ -175,7 +175,7 @@ model Attribute {
   updatedAt DateTime @updatedAt
 }
 
-model SmartList {
+model SmartList { // TODO: raname this, in this project Smart List means something different
   id Int @id @default(autoincrement())
 
   title String

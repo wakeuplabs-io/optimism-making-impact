@@ -1,3 +1,5 @@
+// TODO: review this component!!!! do we really need a global store?????
+
 interface OptimisticUpdateParams<T> {
   getStateSlice: () => T;
   setStateSlice: (newState: T) => void;

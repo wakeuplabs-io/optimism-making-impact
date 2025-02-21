@@ -14,6 +14,8 @@ import {
 
 const persistConfig = { name: 'user' };
 
+// TODO: review this component!!!! do we really need a global store?????
+
 export const useUserStore = createWithMiddlewares<UserStore>(
   (set, get) => ({
     user: null,

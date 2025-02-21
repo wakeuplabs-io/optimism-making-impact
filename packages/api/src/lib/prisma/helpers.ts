@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma/instance.js';
 import { CompleteRound } from '@/types/entities/round.js';
 
+// TODO: rename the folder or move it to the real prisma folder
+
 /**
  * Fetches a complete round from the database, including all associated categories, steps, smart lists, infographics, items, cards, attributes, and keywords, if exists.
  * @param {number} roundId - The ID of the round to fetch.

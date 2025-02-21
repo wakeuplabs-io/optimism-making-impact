@@ -17,6 +17,9 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsedParams.success) throw ApiError.badRequest();
 
+    // TODO: why we include everything? we can to a different query for each type of step
+    // TODO: why we get all this data at one instead of getting just what we need for each component?
+
     const step = await prisma.step.findUnique({
       where: { id: parsedParams.data.id },
       include: {
@@ -138,18 +141,18 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
     if (!parsed.success) throw ApiError.badRequest();
 
     const deleted = await prisma.$transaction(async (prisma) => {
-      // Delete the specified step
+      // Delete the specified step // TODO: remove unnecessary comments!!!!!!
       const deleted = await prisma.step.delete({
         where: { id: parsed.data.id },
       });
 
-      // Get all remaining steps ordered by position
+      // Get all remaining steps ordered by position// TODO: remove unnecessary comments!!!!!!
       const remainingSteps = await prisma.step.findMany({
         where: { categoryId: deleted.categoryId },
         orderBy: { position: 'asc' },
       });
 
-      // Update their positions sequentially (zero-based)
+      // Update their positions sequentially (zero-based)// TODO: remove unnecessary comments!!!!!!
       for await (const step of remainingSteps) {
         await prisma.step.update({
           where: { id: step.id },

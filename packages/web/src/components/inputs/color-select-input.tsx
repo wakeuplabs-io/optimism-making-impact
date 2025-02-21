@@ -2,6 +2,8 @@ import { cn, getColor } from '@/lib/utils';
 import { Color, colorArray } from '@/types';
 import { createContext, useContext, useState } from 'react';
 
+// TODO: NO NEED FOR A CONTEXT, we need just a local state
+
 interface ColorSelectInputProps {
   onChange?: (color: Color) => void;
   selected?: Color;

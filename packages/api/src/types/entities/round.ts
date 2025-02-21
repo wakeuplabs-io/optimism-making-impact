@@ -1,5 +1,7 @@
 import { Prisma } from '@prisma/client';
 
+// TODO: put in the prisma folder
+
 export type CompleteRound = Prisma.RoundGetPayload<{
   include: {
     categories: {
