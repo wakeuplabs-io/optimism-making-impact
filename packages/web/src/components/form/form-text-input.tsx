@@ -1,4 +1,5 @@
 import { TextInput } from '../text-input';
+import { FormInputWrapper } from './form-input';
 
 interface FormTextInputProps extends React.ComponentProps<typeof TextInput> {
   error?: string;
@@ -6,9 +7,8 @@ interface FormTextInputProps extends React.ComponentProps<typeof TextInput> {
 
 export function FormTextInput({ error, ...field }: FormTextInputProps) {
   return (
-    <div className='flex flex-col gap-1'>
+    <FormInputWrapper error={error}>
       <TextInput {...field} />
-      {error && <p className='text-red-500 text-xs'>{error}</p>}
-    </div>
+    </FormInputWrapper>
   );
 }
