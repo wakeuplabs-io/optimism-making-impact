@@ -2,7 +2,7 @@ import { IconButton } from '@/components/icon-button';
 import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
-import { CreateInfographyBody } from '@/services/infogrpahies/schemas';
+import { CreateInfographyBody } from '@optimism-making-impact/schemas';
 import { Plus, Save } from 'lucide-react';
 import { useState } from 'react';
 
