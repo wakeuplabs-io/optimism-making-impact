@@ -2,8 +2,7 @@ import { ColorSelectInput } from '@/components/inputs/color-select-input';
 import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
-import { UpdateAttributeBody } from '@/services/attributes/schemas';
-import { Attribute } from '@/types';
+import { Attribute, UpdateAttributeBody } from '@optimism-making-impact/schemas';
 import { Pencil, Save } from 'lucide-react';
 import { useState } from 'react';
 

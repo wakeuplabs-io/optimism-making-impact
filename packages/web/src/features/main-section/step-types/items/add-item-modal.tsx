@@ -1,7 +1,6 @@
 import { FormModal } from '@/components/form-modal';
 import { SelectInput } from '@/components/inputs/select-input';
-import { CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
-import { Attribute } from '@/types';
+import { Attribute, CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';

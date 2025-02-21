@@ -1,4 +1,5 @@
-import { Attribute, Keyword, StrengthItem } from '@/types';
+import { Keyword, StrengthItem } from '@/types';
+import { Attribute } from '@optimism-making-impact/schemas';
 
 export interface FiltersState {
   strengths: StrengthItem[];

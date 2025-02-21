@@ -1,7 +1,7 @@
-import { Keyword } from '@optimism-making-impact/schemas';
+import { Attribute, Keyword } from '@optimism-making-impact/schemas';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { Attribute, StrengthItem, strengthItems } from '@/types';
+import { StrengthItem, strengthItems } from '@/types';
 
 const initialSelectedFilters = {
   selectedStrengths: [],

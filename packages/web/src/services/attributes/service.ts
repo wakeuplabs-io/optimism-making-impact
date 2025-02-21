@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
+import { CreateAttributeBody, UpdateAttributeBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const attributesEndpoint = '/attributes';

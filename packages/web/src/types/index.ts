@@ -1,4 +1,3 @@
-export * from './attributes';
 export * from './cards';
 export * from './categories';
 export * from './common';

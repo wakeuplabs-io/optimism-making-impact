@@ -1,5 +1,6 @@
 import { BADGE_COLORS, COLOR_MAP } from '@/config';
-import { Color, CompleteCard, Keyword } from '@/types';
+import { CompleteCard, Keyword } from '@/types';
+import { Color } from '@optimism-making-impact/schemas';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';

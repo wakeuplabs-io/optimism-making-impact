@@ -1,5 +1,5 @@
 import { cn, getColor } from '@/lib/utils';
-import { Color, colorArray } from '@/types';
+import { Color, colorList } from '@optimism-making-impact/schemas';
 import { createContext, useContext, useState } from 'react';
 
 interface ColorSelectInputProps {
@@ -27,7 +27,7 @@ export function ColorSelectInput(props: ColorSelectInputProps) {
           props.containerClassName,
         )}
       >
-        {colorArray.map((color) => (
+        {colorList.map((color) => (
           <ColorOption key={color} color={color} onClick={handleColorChange} disabled={props.disabled} />
         ))}
       </div>

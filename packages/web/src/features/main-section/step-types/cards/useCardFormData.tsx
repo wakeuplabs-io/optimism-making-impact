@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import { Attribute, Keyword } from '@/types';
+import { Keyword } from '@/types';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
+import { Attribute } from '@optimism-making-impact/schemas';
 
 export const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
 

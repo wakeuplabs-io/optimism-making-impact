@@ -2,8 +2,8 @@ import { ColorDot } from '@/components/color-dot';
 import { MarkdownText } from '@/components/markdown-text';
 import { DeleteItemModal } from '@/features/main-section/step-types/items/delete-item-modal';
 import { UpdateItemModal } from '@/features/main-section/step-types/items/update-item-modal';
-import { UpdateItemBody } from '@/services/items/schemas';
 import { CompleteItem } from '@/types/items';
+import { UpdateItemBody } from '@optimism-making-impact/schemas';
 
 interface ItemProps {
   item: CompleteItem;

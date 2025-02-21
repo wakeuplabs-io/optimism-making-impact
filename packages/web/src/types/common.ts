@@ -16,28 +16,3 @@ export const strengthItems: StrengthItem[] = [
   { id: 2, value: 'MEDIUM' },
   { id: 3, value: 'HIGH' },
 ];
-
-export enum Color {
-  RED = 'RED',
-  PINK = 'PINK',
-  PURPLE = 'PURPLE',
-  YELLOW = 'YELLOW',
-  TAN = 'TAN',
-  ORANGE = 'ORANGE',
-  GREEN = 'GREEN',
-  LIGHTBLUE = 'LIGHTBLUE',
-  BLUE = 'BLUE',
-  DARKBLUE = 'DARKBLUE',
-}
-export const colorArray = [
-  Color.RED,
-  Color.PINK,
-  Color.PURPLE,
-  Color.YELLOW,
-  Color.TAN,
-  Color.ORANGE,
-  Color.GREEN,
-  Color.LIGHTBLUE,
-  Color.BLUE,
-  Color.DARKBLUE,
-];

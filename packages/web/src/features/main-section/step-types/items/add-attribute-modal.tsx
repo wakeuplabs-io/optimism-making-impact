@@ -3,8 +3,7 @@ import { ColorSelectInput } from '@/components/inputs/color-select-input';
 import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
 import { TextInput } from '@/components/text-input';
-import { CreateAttributeBody } from '@/services/attributes/schemas';
-import { Color } from '@/types';
+import { Color, CreateAttributeBody } from '@optimism-making-impact/schemas';
 import { Plus, Save } from 'lucide-react';
 import { useState } from 'react';
 
@@ -16,12 +15,12 @@ interface AddAttributeModalProps {
 export function AddAttributeModal(props: AddAttributeModalProps) {
   const [value, setValue] = useState('');
   const [description, setDescription] = useState('');
-  const [color, setColor] = useState(Color.RED);
+  const [color, setColor] = useState<Color>('RED');
 
   function clearForm() {
     setValue('');
     setDescription('');
-    setColor(Color.RED);
+    setColor('RED');
   }
 
   function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {

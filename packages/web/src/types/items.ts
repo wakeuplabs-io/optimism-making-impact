@@ -1,4 +1,4 @@
-import { attributeSchema } from '@/types/attributes';
+import { attributeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const itemSchema = z.object({
