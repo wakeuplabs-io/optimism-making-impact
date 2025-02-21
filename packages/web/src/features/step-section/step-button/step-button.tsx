@@ -29,7 +29,8 @@ const buttonVariants = cva('flex overflow-hidden whitespace-nowrap rounded-3xl b
 
 export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonProps) {
   const isMobile = useIsMobile();
-  const showActionIcons = isAdmin && !isMobile;
+  const isActive = props.state === 'active';
+  const showActionIcons = isActive && isAdmin && !isMobile;
   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
   return (
