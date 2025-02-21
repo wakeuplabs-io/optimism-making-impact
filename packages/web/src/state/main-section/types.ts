@@ -1,7 +1,7 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
-import { CreateItemBody, UpdateItemBody } from '@/services/items/schemas';
+import { CreateItemBody, UpdateItemBody } from '@optimism-making-impact/schemas';
 import { CompleteStep } from '@/types';
 import { CreateCardBody, UpdateCardBody } from '@optimism-making-impact/schemas';
 
