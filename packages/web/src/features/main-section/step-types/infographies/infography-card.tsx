@@ -1,7 +1,7 @@
 import { HoverOverlay } from '@/components/hover-overlay';
 import { ImageWithDefault } from '@/components/image-with-default';
 import { DeleteInfogrpahyModal } from '@/features/main-section/step-types/infographies/delete-infography-modal';
-import { EditInfogrpahyImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
+import { EditInfographyImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
 import { cn } from '@/lib/utils';
 import { Infography } from '@/types/infographies';
 import { Pencil } from 'lucide-react';
@@ -56,7 +56,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         </div>
       )}
       {props.isAdmin && editImgModalOpen && (
-        <EditInfogrpahyImageModal
+        <EditInfographyImageModal
           infography={props.infography}
           onClick={props.onChangeImage}
           open={editImgModalOpen}

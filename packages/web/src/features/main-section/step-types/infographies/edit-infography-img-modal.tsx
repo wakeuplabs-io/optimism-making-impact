@@ -1,45 +1,65 @@
-import { Modal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
+import { FormModal } from '@/components/form-modal';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { Infography } from '@/types/infographies';
-import { Save } from 'lucide-react';
-import { useState } from 'react';
+import { updateInfographyBodySchema } from '@optimism-making-impact/schemas';
+import { Controller, useFormContext } from 'react-hook-form';
+import { z } from 'zod';
 
-interface EditInfogrpahyImageModalProps {
+const updateInfographyImageSchema = updateInfographyBodySchema.pick({
+  image: true,
+});
+
+type UpdateInfographyImageBody = z.infer<typeof updateInfographyImageSchema>;
+
+interface EditInfographyImageModalProps {
   infography: Infography;
-  onClick?: (stepId: number, image: string) => void;
+  onClick?: (infographyId: number, image: string) => void;
   open: boolean;
   onClose: () => void;
 }
 
-export function EditInfogrpahyImageModal(props: EditInfogrpahyImageModalProps) {
-  const [image, setImage] = useState(props.infography.image);
+export function EditInfographyImageModal(props: EditInfographyImageModalProps) {
+  const defaultValues: UpdateInfographyImageBody = {
+    image: props.infography.image,
+  };
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setImage(event.target.value);
-  }
-
-  function handleSave() {
-    props.onClick?.(props.infography.id, image);
-    props.onClose();
-  }
-
-  function handleClose() {
-    props.onClick?.(props.infography.id, image);
-    props.onClose();
+  function handleSubmit(data: UpdateInfographyImageBody) {
+    props.onClick?.(props.infography.id, data.image);
   }
 
   return (
-    <Modal
-      open={props.open}
+    <FormModal
+      controlledOpen={props.open}
       title='Edit image'
-      buttons={[
-        { label: 'Cancel', variant: 'secondary', onClick: handleClose },
-        { label: 'Save', variant: 'primary', icon: <Save />, onClick: handleSave },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={updateInfographyImageSchema}
+      onOpenChange={(open) => {
+        if (!open) {
+          props.onClose();
+        }
+      }}
     >
-      <div className='grid gap-4 py-4'>
-        <TextInput name='image' value={image} onChange={handleChange} placeholder='Image' />
-      </div>
-    </Modal>
+      <FormFields defaultValues={defaultValues} />
+    </FormModal>
+  );
+}
+
+interface FormFieldsProps {
+  defaultValues: UpdateInfographyImageBody;
+}
+
+function FormFields({ defaultValues }: FormFieldsProps) {
+  const { control } = useFormContext<UpdateInfographyImageBody>();
+
+  return (
+    <div className='grid gap-4 py-4'>
+      <Controller
+        name='image'
+        control={control}
+        defaultValue={defaultValues.image}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Image' />}
+      />
+    </div>
   );
 }
