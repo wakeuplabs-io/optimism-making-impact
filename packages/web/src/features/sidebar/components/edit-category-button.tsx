@@ -5,17 +5,14 @@ import { Category } from '@/types';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { createElement, useState } from 'react';
-import * as LucideIcons from 'lucide-react';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { IconPicker } from './icon-picker';
+import { useIcons } from '@/hooks/use-icons';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
   category: Category;
 }
-const modalIcons: Record<string, React.ComponentType> = Object.fromEntries(
-  Object.entries(LucideIcons).map(([key, value]) => [key.toLowerCase(), value as React.ComponentType]),
-);
 
 export function EditCategoryButton(props: EditCategoryButtonProps) {
   const defaultValues: EditCategoryBody = { name: props.category.name, icon: props.category.icon };
@@ -32,6 +29,7 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
       defaultValues={defaultValues}
       schema={editCategoryBodySchema}
       submitButtonText='Save'
+      secondaryButtonText='Delete'
     >
       <FormFields defaultValues={defaultValues} />
     </FormModal>
@@ -42,9 +40,10 @@ interface FormFieldsProps {
   defaultValues: EditCategoryBody;
 }
 
-function FormFields(props: FormFieldsProps) {
+function FormFields({ defaultValues }: FormFieldsProps) {
   const { control, setValue, watch } = useFormContext<EditCategoryBody>();
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
+  const modalIcons = useIcons();
   const selectedIcon = watch('icon');
 
   return (
@@ -59,7 +58,7 @@ function FormFields(props: FormFieldsProps) {
         <Controller
           name='name'
           control={control}
-          defaultValue={props.defaultValues.name}
+          defaultValue={defaultValues.name}
           render={({ field, fieldState }) => (
             <div className='w-full'>
               <FormTextInput
@@ -75,7 +74,7 @@ function FormFields(props: FormFieldsProps) {
       <Controller
         name='icon'
         control={control}
-        defaultValue={props.defaultValues.icon}
+        defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
           <>
             {isIconPickerOpen && (

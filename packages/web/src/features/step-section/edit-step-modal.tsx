@@ -4,6 +4,10 @@ import { Pencil, Trash } from 'lucide-react';
 import { FormModal } from '@/components/form-modal';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormTextInput } from '@/components/form/form-text-input';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { createElement, useState } from 'react';
+import { IconPicker } from '../sidebar/components/icon-picker';
+import { useIcons } from '@/hooks/use-icons';
 
 interface EditIconProps {
   step: Step;
@@ -24,7 +28,7 @@ export function EditStepModal(props: EditIconProps) {
 
   return (
     <FormModal
-      title='New category'
+      title='Edit step'
       trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
@@ -44,21 +48,57 @@ interface FormFieldsProps {
 }
 
 function FormFields({ defaultValues, step }: FormFieldsProps) {
-  const { control } = useFormContext<UpdateStepBody>();
+  const { control, setValue, watch } = useFormContext<UpdateStepBody>();
+  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
+  const modalIcons = useIcons();
+  const selectedIcon = watch('icon');
 
+  console.log({step})
   return (
     <div className='grid gap-4 py-4'>
-      <Controller
-        name='title'
-        control={control}
-        defaultValue={defaultValues.title}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
-      />
+      <div className='col-span-2 flex gap-2'>
+        <div
+          className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+          onClick={() => setIsIconPickerOpen((prev) => !prev)}
+        >
+          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+        </div>
+        <Controller
+          name='title'
+          control={control}
+          defaultValue={defaultValues.title}
+          render={({ field, fieldState }) => (
+            <div className='w-full'>
+              <FormTextInput
+                {...field}
+                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                placeholder='Name'
+              />
+              <FormErrorMessage error={fieldState.error?.message} />
+            </div>
+          )}
+        />
+      </div>
       <Controller
         name='icon'
         control={control}
         defaultValue={defaultValues.icon}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Icon' />}
+        render={({ field, fieldState }) => (
+          <>
+            {isIconPickerOpen && (
+              <div className='col-span-2'>
+                <IconPicker
+                  selectedIcon={field.value}
+                  modalIcons={modalIcons}
+                  onSelect={(icon) => {
+                    setValue('icon', icon);
+                  }}
+                />
+                <FormErrorMessage error={fieldState.error?.message} />
+              </div>
+            )}
+          </>
+        )}
       />
       {step.type === 'ITEMS' && (
         <Controller
