@@ -1,4 +1,4 @@
-import { createItemSchema, updateItemSchema } from '@/controllers/items/schemas.js';
+import { createItemSchema, updateItemSchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
