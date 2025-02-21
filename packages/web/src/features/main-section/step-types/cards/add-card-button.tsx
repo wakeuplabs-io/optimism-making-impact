@@ -7,8 +7,8 @@ import { Attribute } from '@/types';
 import { CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { strengthOptions } from './common';
-import { dontAssignOption, useCardFormData } from './useCardFormData';
+import { dontAssignOption, useCardFormData, KeywordOption } from './useCardFormData';
+import { strengthOptions, AttributeOption } from '../utils';
 
 interface AddCardModalProps {
   stepId: number;
@@ -16,16 +16,6 @@ interface AddCardModalProps {
   keywords: Keyword[];
   attributes?: Attribute[];
 }
-
-type KeywordOption = {
-  value: string;
-  label: string;
-};
-
-type AttributeOption = {
-  value: string;
-  label: JSX.Element;
-};
 
 export function AddCardModal(props: AddCardModalProps) {
   const defaultValues: CreateCardBody = {

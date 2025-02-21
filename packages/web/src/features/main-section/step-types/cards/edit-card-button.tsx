@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormModal } from '@/components/form-modal';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
@@ -6,10 +5,10 @@ import { MultiSelect } from '@/components/multi-select/multi-select';
 import { Attribute, CompleteCard, Keyword } from '@/types';
 import { Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { strengthOptions } from './common';
-import { dontAssignOption, useCardFormData } from './useCardFormData';
+import { dontAssignOption, KeywordOption, useCardFormData } from './useCardFormData';
 import { UpdateCardBody, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
+import { AttributeOption, strengthOptions } from '../utils';
 
 interface EditCardModalProps {
   stepId: number;
@@ -75,8 +74,8 @@ export function EditCardModal(props: EditCardModalProps) {
 }
 
 interface FormFieldsProps {
-  attributeOptions: { value: string; label: React.ReactNode }[];
-  keywordsOptions: { value: string; label: string }[];
+  attributeOptions: AttributeOption[];
+  keywordsOptions: KeywordOption[];
   defaultValues: UpdateCardBody;
 }
 
