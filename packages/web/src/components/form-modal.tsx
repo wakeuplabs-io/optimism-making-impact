@@ -46,11 +46,26 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
   };
 
   const buttons = React.useMemo<ModalActionButtonProps[]>(
-    () => [
-      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
-    ],
-    [formId, submitButtonText],
+    () => {
+      const baseButtons: ModalActionButtonProps[] = [
+        { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
+      ];
+      if (props.secondaryButtonText) {
+        baseButtons.push({
+          type: 'button',
+          variant: 'secondary',
+          label: props.secondaryButtonText,
+          closeOnClick: true,
+          icon: props.secondaryButtonIcon,
+          onClick: () => props.onSecondaryClick?.(),
+        });
+      }
+  
+      return baseButtons;
+    },
+    [formId, submitButtonText, props],
   );
+  
 
   const isOpen = props.controlledOpen ?? open;
 

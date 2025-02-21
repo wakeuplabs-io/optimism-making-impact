@@ -4,7 +4,6 @@ import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { NewButton } from '@/components/new-button';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
-import { Plus } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -46,15 +45,14 @@ function FormFields(props: FormFieldsProps) {
   const { control, setValue, watch } = useFormContext<CreateCategoryBody>();
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const selectedIcon = watch('icon');
-  console.log({selectedIcon})
   return (
     <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
-      <div className='flex gap-2 col-span-2'>
-        <div 
+      <div className='col-span-2 flex gap-2'>
+        <div
           className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
           onClick={() => setIsIconPickerOpen((prev) => !prev)}
         >
-          {modalIcons[selectedIcon] ? createElement(modalIcons[selectedIcon]) : <Plus className='h-6 w-6 text-black-500' />}
+          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
         </div>
         <Controller
           name='name'
@@ -77,19 +75,20 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-<>
-          {isIconPickerOpen && <div className='col-span-2'>
-            <IconPicker
-              selectedIcon={field.value}
-              modalIcons={modalIcons}
-              onSelect={(icon) => {
-                setValue('icon', icon);
-              }}
-            />
-            <FormErrorMessage error={fieldState.error?.message} />
-          </div>}
-</>
-
+          <>
+            {isIconPickerOpen && (
+              <div className='col-span-2'>
+                <IconPicker
+                  selectedIcon={field.value}
+                  modalIcons={modalIcons}
+                  onSelect={(icon) => {
+                    setValue('icon', icon);
+                  }}
+                />
+                <FormErrorMessage error={fieldState.error?.message} />
+              </div>
+            )}
+          </>
         )}
       />
     </div>
