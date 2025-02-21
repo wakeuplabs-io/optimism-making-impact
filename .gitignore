@@ -48,3 +48,5 @@ packages/api/prisma/dbml
 # sst
 .sst
 sst-env.d.ts
+
+.DS_Store

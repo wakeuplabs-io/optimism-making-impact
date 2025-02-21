@@ -38,7 +38,20 @@ async function revokeAdminRole(req: Request, res: Response, next: NextFunction) 
   }
 }
 
+async function get(req: Request, res: Response, next: NextFunction) {
+  try {
+    const role = req.query.role;
+    const users = role
+      ? await prisma.userWhitelist.findMany({ where: { whiteListed: role === 'admin' } })
+      : await prisma.userWhitelist.findMany();
+    return apiResponse.success(res, { users });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const usersController = {
   grantAdminRole,
   revokeAdminRole,
+  get,
 };
