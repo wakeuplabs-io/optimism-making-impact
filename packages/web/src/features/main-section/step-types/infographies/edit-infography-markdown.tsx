@@ -2,18 +2,26 @@ import { MarkdownText } from '@/components/markdown-text';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
 import { Pencil } from 'lucide-react';
-import React from 'react';
 import { useToggle } from 'usehooks-ts';
 
-interface InfogrpahyCardProps extends ContentProps {
-  containerClassName?: string;
+interface EditInfographyMarkdownProps {
+  markdown: string;
+  onChange: (markdown: string) => void;
+  isAdmin?: boolean;
+  className?: string;
 }
 
-export function EditableText(props: InfogrpahyCardProps) {
+export function EditInfographyMarkdown({ markdown, isAdmin, onChange, className }: EditInfographyMarkdownProps): JSX.Element {
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(e.target.value);
+  };
+
   return (
-    <Container className={props.containerClassName}>
-      <Content {...props} />
-    </Container>
+    <div className={cn('flex items-center lg:px-0', className)}>
+      <Container>
+        <Content markdown={markdown} isAdmin={isAdmin} onChange={handleTextareaChange} />
+      </Container>
+    </div>
   );
 }
 
@@ -27,18 +35,18 @@ function Container(props: ContainerProps) {
 }
 
 interface ContentProps extends React.HtmlHTMLAttributes<HTMLTextAreaElement> {
-  value: string;
+  markdown: string;
   isAdmin?: boolean;
   className?: string;
 }
 
-function Content({ value, isAdmin, className, ...props }: InfogrpahyCardProps) {
+function Content({ markdown, isAdmin, className, ...props }: ContentProps) {
   const [editMode, toggleEditMode] = useToggle(false);
 
   if (editMode && isAdmin) {
     return (
       <>
-        <TextAreaInput name='content' rows={7} value={value} {...props} />
+        <TextAreaInput name='content' rows={7} value={markdown} {...props} />
         <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
       </>
     );
@@ -46,7 +54,7 @@ function Content({ value, isAdmin, className, ...props }: InfogrpahyCardProps) {
 
   return (
     <>
-      <MarkdownText className={cn('w-full overflow-auto break-words', className)}>{value}</MarkdownText>
+      <MarkdownText className={cn('w-full overflow-auto break-words', className)}>{markdown}</MarkdownText>
       <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
     </>
   );
