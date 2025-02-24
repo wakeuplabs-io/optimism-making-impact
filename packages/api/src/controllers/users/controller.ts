@@ -49,7 +49,7 @@ async function get(req: Request, res: Response, next: NextFunction) {
       email: user.email,
       role: user.whiteListed ? 'admin' : 'user',
     }));
-    return apiResponse.success(res, { mappedUsers });
+    return apiResponse.success(res, { users: mappedUsers });
   } catch (error) {
     next(error);
   }

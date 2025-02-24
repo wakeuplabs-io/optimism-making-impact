@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { useUserStore } from '@/state';
 import { User, UserCog } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface SetupModalProps {
   open: boolean;
@@ -14,17 +14,6 @@ interface SetupModalProps {
 
 export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
   const userState = useUserStore((state) => state);
-  const [viewMode, setViewMode] = useState<'user' | 'admin'>(userState.isAdminModeEnabled ? 'admin' : 'user');
-
-  const handleViewModeChange = (mode: 'user' | 'admin') => {
-    setViewMode(mode);
-    userState.toggleAdminMode();
-  };
-  const [editors, setEditors] = useState<string[]>(userState.adminUsers.map((editor) => editor.email));
-
-  useEffect(() => {
-    setEditors(userState.adminUsers.map((editor) => editor.email));
-  }, [userState.adminUsers]);
   const [newEditor, setNewEditor] = useState('');
 
   return (
@@ -40,18 +29,18 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
             <div className='flex rounded-2xl bg-[#f1f4f9] p-1'>
               <button
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
-                  viewMode === 'user' ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
+                  userState.isAdminModeEnabled ? 'text-[#9e9e9e] hover:text-[#4e4e4e]' : 'bg-white shadow-sm'
                 }`}
-                onClick={() => handleViewModeChange('user')}
+                onClick={() => userState.toggleAdminMode()}
               >
                 <User className='h-5 w-5' />
                 <span>User</span>
               </button>
               <button
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
-                  viewMode === 'admin' ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
+                  userState.isAdminModeEnabled ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
                 }`}
-                onClick={() => handleViewModeChange('admin')}
+                onClick={() => userState.toggleAdminMode()}
               >
                 <UserCog className='h-5 w-5' />
                 <span>Admin</span>
@@ -62,10 +51,10 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
           <div>
             <h3 className='mb-4 text-xl text-[#bebebe]'>Manage Editors</h3>
             <div className='space-y-4 rounded-2xl border border-[#d9d9d9] bg-white p-4'>
-              {editors.map((email) => (
-                <div key={email} className='flex items-center justify-between'>
-                  <span className='text-[#4e4e4e]'>{email}</span>
-                  <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => userState.revokeAdmin(email)}>
+              {userState.adminUsers.map((user) => (
+                <div key={user.email} className='flex items-center justify-between'>
+                  <span className='text-[#4e4e4e]'>{user.email}</span>
+                  <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => userState.revokeAdmin(user.email)}>
                     Delete
                   </Button>
                 </div>

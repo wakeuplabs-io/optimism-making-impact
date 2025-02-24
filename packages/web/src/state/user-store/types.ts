@@ -19,6 +19,7 @@ interface UserActions {
   toggleAdminMode: () => void;
   grantAdmin: (email: string) => Promise<void>;
   revokeAdmin: (email: string) => Promise<void>;
+  getAdminUsers: () => Promise<void>;
 }
 
 export type UserStore = UserState & UserActions;

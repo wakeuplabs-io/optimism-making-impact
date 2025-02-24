@@ -43,7 +43,7 @@ class UsersServiceClass {
   async getEditors() {
     return this.fetcher
       .get<{ data: { users: Editors[] } }>(usersEndpoint, { params: { role: Role.ADMIN } })
-      .then((res) => res.data.data.users.map((user: Editors) => user.email));
+      .then((res) => res.data.data.users);
   }
 }
 

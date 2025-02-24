@@ -95,7 +95,7 @@ export const useUserStore = createWithMiddlewares<UserStore>(
         },
       });
     },
-    initializeAdminUsers: async () => {
+    getAdminUsers: async () => {
       set(() => ({ isLoading: true }));
       try {
         const adminUsers = await UsersService.getEditors();
