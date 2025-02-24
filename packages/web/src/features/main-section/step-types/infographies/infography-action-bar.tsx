@@ -7,7 +7,7 @@ import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { AutoSaveIndicator } from '@/components/autosave-indicator/autosave-indicator';
 import { AUTOSAVE_INTERVAL } from '@/config';
 import { cn } from '@/lib/utils';
-import { AddInfogrpahyButton } from './add-infogrpahy-modal';
+import { AddInfographyModal } from './add-infogrpahy-modal';
 
 interface InfographyActionBarProps {
   className?: string;
@@ -31,7 +31,7 @@ export const InfographyActionBar: React.FC<InfographyActionBarProps> = ({ classN
     <div className={cn('flex justify-end w-full gap-2', className)}>
       <AutoSaveIndicator status={savingStatus} />
       <IconButton icon={<Save />} disabled={isStateEqual} onClick={() => saveInfographies(step.infographies)} />
-      <AddInfogrpahyButton onClick={addInfography} stepId={step.id} />
+      <AddInfographyModal onClick={addInfography} stepId={step.id} />
     </div>
   );
 };

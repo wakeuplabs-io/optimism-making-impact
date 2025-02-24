@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { BulkUpdateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
+import { BulkUpdateInfographyBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const infogrpahiesEndpoint = '/infographies';
@@ -17,10 +17,6 @@ export class InfographiesServiceClass {
       InfographiesServiceClass.instance = new InfographiesServiceClass(fetcher);
     }
     return InfographiesServiceClass.instance;
-  }
-
-  async update(id: number, data: UpdateInfographyBody) {
-    return this.fetcher.put(infogrpahiesEndpoint + `/${id}`, data).then((res) => res.data);
   }
 
   async updateBulk(data: BulkUpdateInfographyBody) {

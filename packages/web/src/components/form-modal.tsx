@@ -20,6 +20,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
   onSecondaryClick?: () => void;
   onOpenChange?: (open: boolean) => void;
+  controlledOpen?: boolean;
 }
 
 export function FormModal<TFormSchema extends z.AnyZodObject>({
@@ -33,11 +34,17 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
 
   const onInternalSubmit: SubmitHandler<z.infer<TFormSchema>> = async (data) => {
     await props.onSubmit(data);
-    setOpen(false);
+    if (!props.controlledOpen) {
+      setOpen(false);
+      return;
+    }
+    props.onOpenChange?.(false);
   };
 
   const onOpenChange = (open: boolean) => {
-    setOpen(open);
+    if (!props.controlledOpen) {
+      setOpen(open);
+    }
     props.onOpenChange?.(open);
   };
 
@@ -56,9 +63,11 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
     [],
   );
 
+  const isOpen = props.controlledOpen ?? open;
+
   return (
     <Modal
-      open={open}
+      open={isOpen}
       onOpenChange={onOpenChange}
       title={props.title}
       subtitle={props.subtitle}
@@ -66,7 +75,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
       buttons={buttons}
       contentProps={props.contentProps}
     >
-      {open && (
+      {isOpen && (
         <InnerForm<TFormSchema>
           defaultValues={props.defaultValues}
           onInternalSubmit={onInternalSubmit}
@@ -88,7 +97,7 @@ interface InnerFormProps<TFormSchema extends z.AnyZodObject> {
   onInternalSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
 }
 
-function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFormSchema>) {
+export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFormSchema>) {
   const methods = useForm({ defaultValues: props.defaultValues, resolver: zodResolver(props.schema) });
   const { handleSubmit } = methods;
 

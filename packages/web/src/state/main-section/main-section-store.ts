@@ -2,9 +2,14 @@ import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
 import { AttributesService } from '@/services/attributes/service';
 import { CardsService } from '@/services/cards/service';
-import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { InfographiesService } from '@/services/infogrpahies/service';
-import { CreateItemBody, CreateAttributeBody } from '@optimism-making-impact/schemas';
+import {
+  CreateItemBody,
+  CreateAttributeBody,
+  BulkUpdateInfographyBody,
+  UpdateInfographyBody,
+  CreateInfographyBody,
+} from '@optimism-making-impact/schemas';
 import { ItemsService } from '@/services/items/service';
 import { StepsService } from '@/services/steps/service';
 import { MainSectionStore } from '@/state/main-section/types';
@@ -65,7 +70,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
-  editInfogrpahy: async (infographyId: number, data: UpdateInfographyBody) => {
+  editInfogrpahy: async (infographyId: number, data: Partial<UpdateInfographyBody>) => {
     const step = get().step;
     const stepInitialState = get().stepInitialState;
 
