@@ -12,6 +12,7 @@ import SetupModal from '@/features/sidebar/components/setup-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
+import { useStepsStore } from '@/state/steps/steps-store';
 import { Menu, Settings } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -29,25 +30,10 @@ interface SidebarContainerProps {
 
 function SidebarContainer(props: SidebarContainerProps) {
   const isMobile = useIsMobile();
-  const { selectedRound, selectedCategoryId } = useSidebarStore((state) => state);
-
-  //Check if category is selected
-  const title = useMemo(() => {
-    if (!selectedRound) {
-      return 'Round';
-    }
-
-    const category = selectedRound.categories.find((category) => category.id === selectedCategoryId);
-
-    if (!category) {
-      return getRoundName(selectedRound.id);
-    }
-
-    return category.name;
-  }, [selectedRound, selectedCategoryId]);
+  const { selectedCategoryId } = useSidebarStore((state) => state);
+  const stepsState = useStepsStore((state) => state);
 
   if (isMobile) {
-    // Render as a Sheet on Mobile
     return (
       <nav className='flex w-full items-center justify-start gap-12 bg-[#F1F4F9] px-8 pb-7 pt-14 lg:static'>
         <SideMenu
@@ -64,7 +50,6 @@ function SidebarContainer(props: SidebarContainerProps) {
     );
   }
 
-  // Render static sidebar on Desktop
   return (
     <div className='w-[320px] overflow-y-auto overflow-x-hidden p-6'>
       <nav className='ml-auto h-full w-[220px] bg-white-high lg:static'>{props.children}</nav>
