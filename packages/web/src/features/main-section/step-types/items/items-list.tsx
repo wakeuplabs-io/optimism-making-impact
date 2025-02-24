@@ -4,8 +4,8 @@ import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute } from '@/types';
 import { CompleteItem } from '@/types/items';
+import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
 
 interface ItemsListProps {

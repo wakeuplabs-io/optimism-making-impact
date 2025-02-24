@@ -6,8 +6,8 @@ import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute, CompleteCard } from '@/types';
-import { CardStrength, Keyword } from '@optimism-making-impact/schemas';
+import { CompleteCard } from '@/types';
+import { CardStrength, Keyword, Attribute } from '@optimism-making-impact/schemas';
 
 interface CardProps {
   card: CompleteCard;

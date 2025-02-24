@@ -1,5 +1,4 @@
-import { attributeSchema } from '@/types/attributes';
-import { cardStrengthList, keywordSchema } from '@optimism-making-impact/schemas';
+import { cardStrengthList, keywordSchema, attributeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const cardSchema = z.object({

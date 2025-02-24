@@ -1,4 +1,5 @@
-import { Attribute, CompleteCard, CompleteItem, Keyword, StrengthItem } from '@/types';
+import { CompleteCard, CompleteItem, Keyword, StrengthItem } from '@/types';
+import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 type Data = CompleteCard | CompleteItem;

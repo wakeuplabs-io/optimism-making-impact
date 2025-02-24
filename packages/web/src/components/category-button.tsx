@@ -13,7 +13,6 @@ type CategoryButtonProps = {
 };
 
 export function CategoryButton(props: CategoryButtonProps) {
-  console.log(props.category.icon);
   return (
     <button
       className={cn(

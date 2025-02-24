@@ -1,6 +1,5 @@
 import { cn, getColor } from '@/lib/utils';
-import { Color } from '@/types';
-
+import { Color } from '@optimism-making-impact/schemas';
 interface ColorDotProps {
   color: Color;
   className?: string;

@@ -1,4 +1,4 @@
-import { Color } from '@/types';
+import { Color } from '@optimism-making-impact/schemas';
 
 export const IS_DEVELOPMENT = import.meta.env.DEV;
 
@@ -10,7 +10,7 @@ export const AUTOSAVE_INTERVAL = 30 * 1000;
 
 export const BADGE_COLORS = ['#D6E8F2', '#DDEFDA', '#F1F0EF', '#E8DEEE', '#FADEC9'];
 
-export const COLOR_MAP: Record<keyof typeof Color, string> = {
+export const COLOR_MAP: Record<Color, string> = {
   RED: '#FF0420',
   PINK: '#FF91E9',
   PURPLE: '#D383C3',

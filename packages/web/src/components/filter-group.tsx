@@ -1,7 +1,7 @@
 import { ColorDot } from '@/components/color-dot';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { Color } from '@/types';
+import { Color } from '@optimism-making-impact/schemas';
 import { Info } from 'lucide-react';
 import { ComponentProps } from 'react';
 

@@ -8,8 +8,8 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute } from '@/types';
 import { CompleteSmartList } from '@/types/smart-lists';
+import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 interface ItemsFiltersProps {

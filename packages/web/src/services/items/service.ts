@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateItemBody, UpdateItemBody } from '@/services/items/schemas';
+import { CreateItemBody, UpdateItemBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const itemsEndpoint = '/items';
