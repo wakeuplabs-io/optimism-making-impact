@@ -13,7 +13,7 @@ export function SelectInput(props: SelectInputModalProps) {
       <Label htmlFor={name} className='sr-only'>
         <span>{name}</span>
       </Label>
-      <Select {...props}itemClassName={props.itemClassName} />
+      <Select {...props} itemClassName={props.itemClassName} />
     </div>
   );
 }
