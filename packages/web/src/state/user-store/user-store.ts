@@ -13,8 +13,19 @@ import { AuthService } from '@/services/auth/service';
 import { Role, UsersService } from '@/services/users-service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { fetchAuthSession, signOut } from 'aws-amplify/auth';
+import { AxiosError } from 'axios';
 
 const persistConfig = { name: 'user' };
+const onUpdatesError = (error: unknown) => {
+  const title = 'Failed to create step';
+  let description = 'Unknown error';
+
+  if (error instanceof AxiosError) {
+    description = error.response?.data.error.message;
+  }
+
+  toast({ title, description, variant: 'destructive' });
+};
 
 export const useUserStore = createWithMiddlewares<UserStore>(
   (set, get) => ({
@@ -79,9 +90,7 @@ export const useUserStore = createWithMiddlewares<UserStore>(
         updateFn: (adminUsers) => [...adminUsers, { email, role: Role.ADMIN }],
         setStateSlice: (adminUsers) => set(() => ({ adminUsers })),
         apiCall: () => UsersService.grantAdmin({ email }),
-        onError: (error) => {
-          console.error('Error granting admin:', error);
-        },
+        onError: onUpdatesError,
       });
     },
     revokeAdmin: async (email: string) => {
@@ -90,9 +99,7 @@ export const useUserStore = createWithMiddlewares<UserStore>(
         updateFn: (adminUsers) => adminUsers.filter((adminUser) => adminUser.email !== email),
         setStateSlice: (adminUsers) => set(() => ({ adminUsers })),
         apiCall: () => UsersService.revokeAdmin({ email }),
-        onError: (error) => {
-          console.error('Error revoking admin:', error);
-        },
+        onError: onUpdatesError,
       });
     },
     getAdminUsers: async () => {

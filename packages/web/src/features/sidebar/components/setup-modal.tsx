@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -25,7 +23,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
 
         <div className='space-y-8'>
           <div>
-            <h3 className='mb-4 text-xl text-[#bebebe]'>View Mode</h3>
+            <p className='mb-4 text-xl text-[#bebebe]'>View Mode</p>
             <div className='flex rounded-2xl bg-[#f1f4f9] p-1'>
               <button
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
@@ -49,7 +47,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
           </div>
 
           <div>
-            <h3 className='mb-4 text-xl text-[#bebebe]'>Manage Editors</h3>
+            <p className='mb-4 text-xl text-[#bebebe]'>Manage Editors</p>
             <div className='space-y-4 rounded-2xl border border-[#d9d9d9] bg-white p-4'>
               {userState.adminUsers.map((user) => (
                 <div key={user.email} className='flex items-center justify-between'>
@@ -63,7 +61,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
           </div>
 
           <div>
-            <h3 className='mb-4 text-xl text-[#bebebe]'>New Editor</h3>
+            <p className='mb-4 text-xl text-[#bebebe]'>New Editor</p>
             <div className='flex gap-4'>
               <Input
                 type='email'
