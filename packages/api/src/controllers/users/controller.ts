@@ -44,7 +44,12 @@ async function get(req: Request, res: Response, next: NextFunction) {
     const users = role
       ? await prisma.userWhitelist.findMany({ where: { whiteListed: role === 'admin' } })
       : await prisma.userWhitelist.findMany();
-    return apiResponse.success(res, { users });
+
+    const mappedUsers = users.map((user) => ({
+      email: user.email,
+      role: user.whiteListed ? 'admin' : 'user',
+    }));
+    return apiResponse.success(res, { mappedUsers });
   } catch (error) {
     next(error);
   }

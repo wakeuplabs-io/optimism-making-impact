@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { UsersService } from '@/services/users-service';
+import { useUserStore } from '@/state';
 import { User, UserCog } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -13,44 +13,19 @@ interface SetupModalProps {
 }
 
 export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
-  const [viewMode, setViewMode] = useState<'user' | 'admin'>('user');
-  const [editors, setEditors] = useState<string[]>([]);
-  const [newEditor, setNewEditor] = useState('');
+  const userState = useUserStore((state) => state);
+  const [viewMode, setViewMode] = useState<'user' | 'admin'>(userState.isAdminModeEnabled ? 'admin' : 'user');
 
-  const resetEditorList = () => {
-    UsersService.getEditors().then((users) => setEditors(users));
+  const handleViewModeChange = (mode: 'user' | 'admin') => {
+    setViewMode(mode);
+    userState.toggleAdminMode();
   };
-
-  const handleDelete = async (email: string) => {
-    // Optimistically update the UI
-    setEditors((prev) => prev.filter((editor) => editor !== email));
-    try {
-      await UsersService.revokeAdmin({ email });
-    } catch (error) {
-      console.error('Error revoking admin:', error);
-      // Optionally revert the change by re-fetching the list
-      resetEditorList();
-    }
-  };
-
-  const handleAdd = async () => {
-    if (newEditor && !editors.includes(newEditor)) {
-      // Optimistically update the UI
-      setEditors((prev) => [...prev, newEditor]);
-      try {
-        await UsersService.grantAdmin({ email: newEditor });
-        setNewEditor('');
-      } catch (error) {
-        console.error('Error granting admin:', error);
-        // Optionally revert the optimistic update
-        resetEditorList();
-      }
-    }
-  };
+  const [editors, setEditors] = useState<string[]>(userState.adminUsers.map((editor) => editor.email));
 
   useEffect(() => {
-    resetEditorList();
-  }, []);
+    setEditors(userState.adminUsers.map((editor) => editor.email));
+  }, [userState.adminUsers]);
+  const [newEditor, setNewEditor] = useState('');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -67,7 +42,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
                   viewMode === 'user' ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
                 }`}
-                onClick={() => setViewMode('user')}
+                onClick={() => handleViewModeChange('user')}
               >
                 <User className='h-5 w-5' />
                 <span>User</span>
@@ -76,7 +51,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
                   viewMode === 'admin' ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
                 }`}
-                onClick={() => setViewMode('admin')}
+                onClick={() => handleViewModeChange('admin')}
               >
                 <UserCog className='h-5 w-5' />
                 <span>Admin</span>
@@ -90,7 +65,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
               {editors.map((email) => (
                 <div key={email} className='flex items-center justify-between'>
                   <span className='text-[#4e4e4e]'>{email}</span>
-                  <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => handleDelete(email)}>
+                  <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => userState.revokeAdmin(email)}>
                     Delete
                   </Button>
                 </div>
@@ -108,7 +83,10 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 onChange={(e) => setNewEditor(e.target.value)}
                 className='flex-1 rounded-2xl border-[#d9d9d9]'
               />
-              <Button onClick={handleAdd} className='rounded-2xl bg-[#10111a] px-8 text-white hover:bg-[#10111a]/90'>
+              <Button
+                onClick={() => userState.grantAdmin(newEditor)}
+                className='rounded-2xl bg-[#10111a] px-8 text-white hover:bg-[#10111a]/90'
+              >
                 Add
               </Button>
             </div>

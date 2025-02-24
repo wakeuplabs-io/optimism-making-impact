@@ -3,12 +3,15 @@ import { AxiosInstance } from 'axios';
 
 const usersEndpoint = '/users';
 
-type User = {
-  createdAt: string;
+export type Editors = {
   email: string;
-  updatedAt: string;
-  whiteListed: boolean;
+  role: Role;
 };
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 class UsersServiceClass {
   private static instance: UsersServiceClass;
@@ -39,8 +42,8 @@ class UsersServiceClass {
 
   async getEditors() {
     return this.fetcher
-      .get<{ data: { users: User[] } }>(usersEndpoint, { params: { role: 'admin' } })
-      .then((res) => res.data.data.users.map((user: User) => user.email));
+      .get<{ data: { users: Editors[] } }>(usersEndpoint, { params: { role: Role.ADMIN } })
+      .then((res) => res.data.data.users.map((user: Editors) => user.email));
   }
 }
 

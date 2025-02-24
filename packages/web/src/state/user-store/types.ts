@@ -1,3 +1,5 @@
+import { Editors } from '@/services/users-service';
+
 interface User {
   isAdmin: boolean;
   authToken: string;
@@ -9,11 +11,14 @@ interface UserState {
   isLoading: boolean;
   isAdminModeEnabled: boolean;
   user: User | null;
+  adminUsers: Editors[];
 }
 
 interface UserActions {
   fetchAuth: () => Promise<void>;
   toggleAdminMode: () => void;
+  grantAdmin: (email: string) => Promise<void>;
+  revokeAdmin: (email: string) => Promise<void>;
 }
 
 export type UserStore = UserState & UserActions;
