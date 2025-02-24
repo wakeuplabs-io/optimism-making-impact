@@ -1,5 +1,5 @@
 import { toast } from '@/hooks/use-toast';
-import { StepsService } from '@/services/steps/service';
+import { StepsService } from '@/services/steps-service';
 import { StepsStore } from '@/state/steps/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
