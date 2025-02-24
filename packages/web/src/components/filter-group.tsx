@@ -107,7 +107,7 @@ function FilterButton<T>({ label, selected, className, data, onClick, prefixDot,
         {label}
       </span>
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
-      {props.isAdmin && (
+      {props.isAdmin && selected && (
         <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
           {props.editComponent}
           {props.deleteComponent}
