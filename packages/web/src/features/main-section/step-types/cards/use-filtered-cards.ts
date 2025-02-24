@@ -1,9 +1,10 @@
-import { CompleteCard, Keyword, StrengthEnum } from '@/types';
+import { CompleteCard, Keyword } from '@/types';
+import { CardStrength } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 type UseFilteredCardsProps = {
   cards: CompleteCard[];
-  selectedStrengths: StrengthEnum[];
+  selectedStrengths: CardStrength[];
   selectedKeywords: Keyword[];
 };
 
@@ -18,7 +19,7 @@ export const useFilteredCards = ({ cards, selectedStrengths, selectedKeywords }:
 };
 
 // Helpers
-function filterByStrength(card: CompleteCard, selectedStrengths: StrengthEnum[]) {
+function filterByStrength(card: CompleteCard, selectedStrengths: CardStrength[]) {
   return !selectedStrengths.length || selectedStrengths.includes(card.strength);
 }
 

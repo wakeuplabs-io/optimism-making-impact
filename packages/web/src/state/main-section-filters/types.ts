@@ -1,8 +1,8 @@
-import { Attribute, Keyword, Strength } from '@/types';
+import { Attribute, Keyword, StrengthItem } from '@/types';
 
 export interface FiltersState {
-  strengths: Strength[];
-  selectedStrengths: Strength[];
+  strengths: StrengthItem[];
+  selectedStrengths: StrengthItem[];
   keywords: Keyword[];
   selectedKeywords: Keyword[];
   attributes: Attribute[];
@@ -12,7 +12,7 @@ export interface FiltersState {
 export interface FiltersActions {
   setKeywords: (keywords: Keyword[]) => void;
   setAttributes: (attributeFilters: Attribute[]) => void;
-  setSelectedStrengths: (strenght: Strength) => void;
+  setSelectedStrengths: (strenght: StrengthItem) => void;
   setSelectedKeywords: (keyword: Keyword) => void;
   setSelectedAttributes: (attribute: Attribute) => void;
   clearSelectedFilters: () => void;

@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { CreateCardBody, UpdateCardBody } from '@/services/cards/schemas';
+import { CreateCardBody, UpdateCardBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const cardsEndpoint = '/cards';

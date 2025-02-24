@@ -9,7 +9,7 @@
     "format": "pnpm -r --parallel run format",
     "studio": "pnpm -r --parallel run studio",
     "ui:add": "pnpm --filter web ui:add",
-    "ui:build": "pnpm --filter schemas build && pnpm --filter web ui:build",
+    "ui:build": "pnpm --filter schemas build && pnpm --filter web build",
     "deploy:app:staging": "sst install && sst deploy --stage=staging --print-logs"
   },
   "keywords": [],

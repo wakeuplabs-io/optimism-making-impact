@@ -1,9 +1,9 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CreateAttributeBody, UpdateAttributeBody } from '@/services/attributes/schemas';
-import { CreateCardBody, UpdateCardBody } from '@/services/cards/schemas';
 import { BulkUpdateInfographyBody, CreateInfographyBody, UpdateInfographyBody } from '@/services/infogrpahies/schemas';
 import { CreateItemBody, UpdateItemBody } from '@/services/items/schemas';
 import { CompleteStep } from '@/types';
+import { CreateCardBody, UpdateCardBody } from '@optimism-making-impact/schemas';
 
 export interface MainSectionState {
   error: string | null;

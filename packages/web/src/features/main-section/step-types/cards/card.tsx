@@ -6,7 +6,8 @@ import { getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute, CompleteCard, Keyword, StrengthEnum } from '@/types';
+import { Attribute, CompleteCard } from '@/types';
+import { CardStrength, Keyword } from '@optimism-making-impact/schemas';
 
 interface CardProps {
   card: CompleteCard;
@@ -61,15 +62,15 @@ function CardTitle(props: CardTitleProps) {
   );
 }
 
-function StrengthIndicator(props: { strength: StrengthEnum }) {
+function StrengthIndicator(props: { strength: CardStrength }) {
   switch (props.strength) {
-    case StrengthEnum.LOW:
+    case 'LOW':
       return <StrengthLowIcon size={26} />;
 
-    case StrengthEnum.MEDIUM:
+    case 'MEDIUM':
       return <StrengthMediumIcon size={26} />;
 
-    case StrengthEnum.HIGH:
+    case 'HIGH':
       return <StrengthHighIcon size={26} />;
 
     default:
