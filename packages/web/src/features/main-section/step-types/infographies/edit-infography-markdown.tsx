@@ -1,9 +1,9 @@
 import { FormInputWrapper } from '@/components/form/form-input';
 import { MarkdownText } from '@/components/markdown-text';
+import { EditPencilButton } from '@/components/pencil-edit-button';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
 import { updateInfographyBodySchema } from '@optimism-making-impact/schemas';
-import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useToggle } from 'usehooks-ts';
 
@@ -63,7 +63,7 @@ function Content({ markdown, isAdmin, className, onChange, ...props }: ContentPr
     return (
       <FormInputWrapper error={validationError} className='w-full'>
         <TextAreaInput name='content' rows={7} value={controlledMarkdownValue} {...props} onChange={handleTextareaChange} />
-        <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
+        {isAdmin && <EditPencilButton onClick={toggleEditMode} />}
       </FormInputWrapper>
     );
   }
@@ -74,24 +74,7 @@ function Content({ markdown, isAdmin, className, onChange, ...props }: ContentPr
         {/* if there is an error, show the original markdown */}
         {validationError ? markdown : controlledMarkdownValue}
       </MarkdownText>
-      <EditIcon onClick={toggleEditMode} isAdmin={isAdmin} />
+      {isAdmin && <EditPencilButton onClick={toggleEditMode} />}
     </>
-  );
-}
-
-interface EditIconProps {
-  onClick: () => void;
-  isAdmin?: boolean;
-}
-
-function EditIcon(props: EditIconProps) {
-  if (!props.isAdmin) return null;
-
-  return (
-    <Pencil
-      size={14}
-      onClick={() => props.onClick()}
-      className='cursor-pointer stroke-[#7D7D7D] transition-all duration-300 ease-in-out hover:stroke-black'
-    />
   );
 }
