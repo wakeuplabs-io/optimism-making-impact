@@ -1,18 +1,15 @@
-
-import * as LucideIcons from 'lucide-react';
-
-const modalIcons: Record<string, React.ComponentType> = Object.fromEntries(
-  Object.entries(LucideIcons).map(([key, value]) => [key.toLowerCase(), value as React.ComponentType]),
-);
+import { useIcons } from "@/hooks/use-icons";
 
 interface IconWithDefaultProps {
   src: string;
   className?: string;
-  defaultIcon?: keyof typeof modalIcons;
+  defaultIcon?: string;
   size?: 'md' | 'lg';
 }
 
 export function IconWithDefault({ src, defaultIcon = 'blocks' }: IconWithDefaultProps) {
+  const modalIcons = useIcons();
+  
   const LucideIcon = modalIcons[src] || modalIcons[defaultIcon];
   return <LucideIcon />;
 }

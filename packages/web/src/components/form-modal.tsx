@@ -60,12 +60,10 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
           onClick: () => props.onSecondaryClick?.(),
         });
       }
-  
       return baseButtons;
     },
     [formId, submitButtonText, props],
   );
-  
 
   const isOpen = props.controlledOpen ?? open;
 
