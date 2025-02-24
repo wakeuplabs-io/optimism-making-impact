@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { idValidator } from '../common';
+import { idValidator } from './common';
 
 export const colorList = ['RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE', 'GREEN', 'LIGHTBLUE', 'BLUE', 'DARKBLUE'] as const;
 

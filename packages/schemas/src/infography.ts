@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { idValidator } from '../common';
+import { idValidator } from './common';
 
 export const createInfographyBodySchema = z.object({
   markdown: z.string().min(1, { message: 'Markdown is required' }),

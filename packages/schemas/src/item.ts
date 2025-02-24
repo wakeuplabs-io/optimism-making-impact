@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { idValidator } from '../common';
+import { idValidator } from './common';
 
 const attributeIdValidator = idValidator('Attribute ID');
 const stepIdValidator = idValidator('Step ID');
