@@ -1,0 +1,48 @@
+name: Install Deps
+
+on:
+  workflow_call:
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Set up pnpm
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      # Cache pnpm dependencies
+      - name: Cache pnpm dependencies
+        uses: actions/cache@v4
+        id: pnpm-cache
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      # Install pnpm dependencies
+      - name: Install pnpm dependencies
+        if: steps.pnpm-cache.outputs.cache-hit != 'true'
+        run: pnpm install
+
+    outputs:
+      cache-hit: ${{ steps.pnpm-cache.outputs.cache-hit }}

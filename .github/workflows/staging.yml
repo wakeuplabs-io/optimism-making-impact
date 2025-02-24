@@ -1,0 +1,23 @@
+name: Staging
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, converted_to_draft]
+
+jobs:
+  # Install dependencies
+  call-install-workflow:
+    uses: ./.github/workflows/install-deps.yml
+
+  # Job to build the app
+  call-build-workflow:
+    uses: ./.github/workflows/build.yml
+    needs: call-install-workflow
+  # Job to deploy the API
+  call-deploy-api-workflow:
+    uses: ./.github/workflows/Deploy.yml
+    needs: call-build-workflow
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
