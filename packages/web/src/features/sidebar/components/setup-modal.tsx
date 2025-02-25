@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { useUserStore } from '@/state';
 import { User, UserCog } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface SetupModalProps {
   open: boolean;
@@ -13,6 +13,10 @@ interface SetupModalProps {
 export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
   const userState = useUserStore((state) => state);
   const [newEditor, setNewEditor] = useState('');
+
+  useEffect(() => {
+    userState.getAdminUsers();
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
