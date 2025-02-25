@@ -81,6 +81,7 @@ export default $config({
         },
       ],
     });
+    console.log('ENVS!!!!', process.env.DB_URL, process.env.DB_URL_NON_POOLING);
 
     const apiGateway = new sst.aws.ApiGatewayV2('api', {
       cors: true,
