@@ -1,7 +1,7 @@
 interface FormErrorMessageProps {
-  error?: string;
+  error: string;
 }
 
 export function FormErrorMessage({ error }: FormErrorMessageProps) {
-  return <p className="text-xs text-red-500 min-h-[20px]">{error || " "}</p>;
+  return <p className='text-xs text-red-500 min-h-[20px]'>{error || ' '}</p>;
 }

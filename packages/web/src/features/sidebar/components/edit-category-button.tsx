@@ -86,7 +86,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
                     setValue('icon', icon);
                   }}
                 />
-                <FormErrorMessage error={fieldState.error?.message} />
+                {fieldState.error?.message && <FormErrorMessage error={fieldState.error.message} />}
               </div>
             )}
           </>
