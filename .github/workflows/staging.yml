@@ -13,7 +13,7 @@ jobs:
   call-build-workflow:
     uses: ./.github/workflows/build.yml
     needs: call-install-workflow
-  # Job to deploy the API
+  # Job to deploy with SST
   call-deploy-api-workflow:
     uses: ./.github/workflows/Deploy.yml
     needs: call-build-workflow
