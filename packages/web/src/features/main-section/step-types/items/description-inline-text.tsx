@@ -61,32 +61,31 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
   }, [editMode, handleToggleEdit]);
 
   return (
-    <div className='w-[50%] h-20'>
-      <div className='flex h-full gap-2 items-center'>
-        {editMode ? (
-          <>
-            <FormTextInput
-              className={cn({
-                'border-red-500 focus-visible:ring-0': validationError,
-              })}
-              wrapperClassname='w-full h-full'
-              error={validationError}
-              value={controlledDescription}
-              onChange={handleChange}
-              {...field}
-              name='title'
-            />
-            {isAdmin && <SimpleIconButton icon={<Check />} onClick={handleToggleEdit} />}
-          </>
-        ) : (
-          <>
+    <div className='w-[50%] h-14'>
+      {editMode ? (
+        <div className='flex gap-2 items-start'>
+          <FormTextInput
+            className={cn({
+              'border-red-500 focus-visible:ring-0': validationError,
+            })}
+            wrapperClassname='w-full h-full'
+            error={validationError}
+            value={controlledDescription}
+            onChange={handleChange}
+            {...field}
+          />
+          {isAdmin && <SimpleIconButton className='flex h-9 items-center' icon={<Check />} onClick={handleToggleEdit} />}
+        </div>
+      ) : (
+        <div className='flex h-full items-start'>
+          <div className='flex items-center gap-2'>
             <p className='text-[20px] font-[500] truncate text-ellipsis whitespace-nowrap'>
               {validationError ? description : controlledDescription}
             </p>
             {isAdmin && <EditPencilButton onClick={toggleEditMode} />}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
