@@ -1,52 +1,76 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
 
 jobs:
-  Deploy:
+  # Job to Deploy the UI
+  deploy:
     runs-on: ubuntu-latest
+    environment: CI
+    env:
+      DB_URL: ${{ vars.POSTGRES_PRISMA_URL }}
+      DB_URL_NON_POOLING: ${{ vars.POSTGRES_URL_NON_POOLING }}
+
+    outputs:
+      api_url: ${{ steps.save-output.outputs.superchain_api_url }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "pnpm"
-      
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build all
-        run: pnpm build
-
+      # Configure AWS credentials
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: sa-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: 'no'
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: SAM Build
-        run: sam build
-
-      - name: SAM Deploy
-        run: |
-          sam deploy --stack-name ${{ vars.STACK_NAME }} --parameter-overrides StackName='${{ vars.STACK_NAME }}' DomainName='${{ vars.UI_DOMAIN }}'
-
-      - name: Deploy UI to s3
-        working-directory: ./packages/web
-        run: |
-          aws s3 sync dist s3://${{ vars.STACK_NAME }}.${{ vars.UI_DOMAIN }}/
-
-      - name: Deploy Api
-        uses: serverless/github-action@v3.2
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          args: deploy --stage main -c serverless-api.yml
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          node-version: 20
+
+      # Set up pnpm
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      # Restore cached dependencies
+      - name: Restore pnpm dependencies
+        uses: actions/cache/restore@v4
+        id: pnpm-cache
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          fail-on-cache-miss: true
+      # Run the build
+      - name: Build
+        run: pnpm run build
+
+      # Run the deploy
+      - name: Deploy
+        run: pnpm deploy:app:staging
+
+      # Output the API URL and store in $GITHUB_OUTPUT
+      - name: Save Output
+        id: save-output
+        run: |
+          API_URL=$(cat .env | sed -n 's/.*ServiceEndpoint = \"\(.*\)\"/\1/p')
+          echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"

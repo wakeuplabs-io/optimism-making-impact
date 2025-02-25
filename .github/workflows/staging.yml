@@ -1,0 +1,21 @@
+name: pipeline CD/CI staging
+
+on:
+  push:
+    branches:
+      # - main
+      - feat/OMI-54/workflows-on-merge
+
+jobs:
+  # Install dependencies
+  call-install-workflow:
+    uses: ./.github/workflows/install-deps.yml
+
+  # Job to deploy the API
+  call-deploy-api-workflow:
+    uses: ./.github/workflows/Deploy.yml
+    needs: call-install-workflow
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
