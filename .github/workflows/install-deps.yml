@@ -24,6 +24,10 @@ jobs:
         with:
           version: 10
 
+      # Install pnpm dependencies
+      - name: Install pnpm dependencies
+        run: pnpm install --frozen-lockfile
+
       # Cache pnpm dependencies
       - name: Cache pnpm dependencies
         uses: actions/cache/save@v4
@@ -36,11 +40,6 @@ jobs:
             packages/schemas/node_modules
             packages/api/node_modules
           key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-      # Install pnpm dependencies
-      - name: Install pnpm dependencies
-        if: steps.pnpm-cache.outputs.cache-hit != 'true'
-        run: pnpm install --frozen-lockfile
 
     outputs:
       cache-hit: ${{ steps.pnpm-cache.outputs.cache-hit }}
