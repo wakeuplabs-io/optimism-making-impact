@@ -5,6 +5,8 @@ import { TextInput } from '@/components/text-input';
 import { EditPencilButton } from '@/components/pencil-edit-button';
 import { useToggle } from 'usehooks-ts';
 import { cn } from '@/lib/utils';
+import { Check } from 'lucide-react';
+import { SimpleIconButton } from '@/components/simple-icon-button';
 
 const updateStepDescriptionSchema = updateStepBodySchema.pick({ description: true });
 
@@ -16,7 +18,7 @@ interface DescriptionInlineText extends Omit<React.ComponentProps<typeof TextInp
 
 export function DescriptionInlineText({ description, onChange, isAdmin = false, ...field }: DescriptionInlineText) {
   const [controlledDescription, setControlledDescription] = useState(description);
-  const [validationError, setValidationError] = useState<string>('');
+  const [validationError, setValidationError] = useState<string>();
   const [editMode, toggleEditMode] = useToggle(false);
 
   const handleToggleEdit = useCallback(() => {
@@ -59,29 +61,30 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
   }, [editMode, handleToggleEdit]);
 
   return (
-    <div className='w-[50%]'>
-      <div className='flex gap-2 items-end'>
+    <div className='w-[50%] h-20'>
+      <div className='flex h-full gap-2 items-center'>
         {editMode ? (
-          <FormTextInput
-            className={cn({
-              'border-red-500 focus-visible:ring-0': validationError,
-            })}
-            wrapperClassname='w-full'
-            error={validationError}
-            value={controlledDescription}
-            onChange={handleChange}
-            {...field}
-            name='title'
-          />
+          <>
+            <FormTextInput
+              className={cn({
+                'border-red-500 focus-visible:ring-0': validationError,
+              })}
+              wrapperClassname='w-full h-full'
+              error={validationError}
+              value={controlledDescription}
+              onChange={handleChange}
+              {...field}
+              name='title'
+            />
+            {isAdmin && <SimpleIconButton icon={<Check />} onClick={handleToggleEdit} />}
+          </>
         ) : (
-          <p className='text-[20px] font-[500] truncate text-ellipsis whitespace-nowrap'>
-            {validationError ? description : controlledDescription}
-          </p>
-        )}
-        {isAdmin && (
-          <div className='h-9 flex items-center'>
-            <EditPencilButton onClick={handleToggleEdit} />
-          </div>
+          <>
+            <p className='text-[20px] font-[500] truncate text-ellipsis whitespace-nowrap'>
+              {validationError ? description : controlledDescription}
+            </p>
+            {isAdmin && <EditPencilButton onClick={toggleEditMode} />}
+          </>
         )}
       </div>
     </div>
