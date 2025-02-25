@@ -86,31 +86,8 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           />
         </div>
       </div>
-
-      <Controller
-        name='icon'
-        control={control}
-        defaultValue={defaultValues.icon}
-        render={({ field, fieldState }) => (
-          <>
-            {isIconPickerOpen && (
-              <div className='col-span-2'>
-                <IconPicker
-                  selectedIcon={field.value}
-                  modalIcons={modalIcons}
-                  onSelect={(icon) => {
-                    setValue('icon', icon);
-                  }}
-                />
-                {fieldState.error?.message && <FormErrorMessage error={fieldState.error.message} />}
-              </div>
-            )}
-          </>
-        )}
-      />
-
       {step.type === 'ITEMS' && (
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col col-span-2 gap-1'>
           <span className='text-xs font-medium text-gray-500'>Description</span>
           <Controller
             name='description'
@@ -120,6 +97,28 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           />
         </div>
       )}
+
+      <Controller
+        name='icon'
+        control={control}
+        defaultValue={defaultValues.icon}
+        render={({ field, fieldState }) => (
+          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+            {isIconPickerOpen && (
+              <>
+                <IconPicker
+                  selectedIcon={field.value}
+                  modalIcons={modalIcons}
+                  onSelect={(icon) => {
+                    setValue('icon', icon);
+                  }}
+                />
+                {fieldState.error?.message && <FormErrorMessage error={fieldState.error.message} />}
+              </>
+            )}
+          </div>
+        )}
+      />
     </div>
   );
 }
