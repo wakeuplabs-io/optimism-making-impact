@@ -26,7 +26,7 @@ jobs:
 
       # Install pnpm dependencies
       - name: Install pnpm dependencies
-        run: pnpm -r install --frozen-lockfile
+        run: pnpm install
 
       # Cache pnpm dependencies
       - name: Cache pnpm dependencies

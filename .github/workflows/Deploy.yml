@@ -46,6 +46,19 @@ jobs:
             packages/api/dist
           key: dist-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           fail-on-cache-miss: true
+      # Restore cached dependencies
+      - name: Restore pnpm dependencies
+        uses: actions/cache/restore@v4
+        id: pnpm-cache
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          fail-on-cache-miss: true
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
