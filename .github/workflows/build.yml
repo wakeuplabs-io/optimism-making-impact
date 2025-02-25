@@ -27,7 +27,8 @@ jobs:
 
       # Restore cached dependencies
       - name: Restore pnpm dependencies
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
+        id: pnpm-cache
         with:
           path: |
             ~/.pnpm-store
@@ -35,9 +36,19 @@ jobs:
             packages/web/node_modules
             packages/schemas/node_modules
             packages/api/node_modules
-          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: pnpm-optimism-making-impact${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           fail-on-cache-miss: true
 
       # Run the build
       - name: Build
         run: pnpm run build
+
+      - name: Save build
+        uses: actions/cache/save@v4
+        id: cache-dist
+        with:
+          path: |
+            packages/web/dist
+            packages/schemas/dist
+            packages/api/dist
+          key: dist-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}

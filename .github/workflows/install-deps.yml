@@ -26,7 +26,7 @@ jobs:
 
       # Cache pnpm dependencies
       - name: Cache pnpm dependencies
-        uses: actions/cache@v4
+        uses: actions/cache/save@v4
         id: pnpm-cache
         with:
           path: |
@@ -35,9 +35,7 @@ jobs:
             packages/web/node_modules
             packages/schemas/node_modules
             packages/api/node_modules
-          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            pnpm-${{ runner.os }}-
+          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       # Install pnpm dependencies
       - name: Install pnpm dependencies

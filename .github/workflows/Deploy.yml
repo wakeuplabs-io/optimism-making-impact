@@ -35,17 +35,16 @@ jobs:
         with:
           version: 10
 
-      # Restore cached dependencies
-      - name: Restore pnpm dependencies
-        uses: actions/cache@v4
+      # Restore cached dist
+      - name: Restore build/dist
+        uses: actions/cache/restore@v4
+        id: cache-dist
         with:
           path: |
-            ~/.pnpm-store
-            node_modules
             packages/web/dist
             packages/schemas/dist
             packages/api/dist
-          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: dist-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           fail-on-cache-miss: true
 
       - name: Configure AWS credentials
