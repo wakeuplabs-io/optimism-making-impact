@@ -6,7 +6,7 @@ import { MultiSelect } from '@/components/multi-select/multi-select';
 import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { dontAssignOption, useCardFormData, KeywordOption } from './useCardFormData';
+import { nonAssignedOption, useCardFormData, KeywordOption } from './useCardFormData';
 import { strengthOptions, AttributeOption } from '../utils';
 
 interface AddCardModalProps {
@@ -44,7 +44,7 @@ export function AddCardModal(props: AddCardModalProps) {
       stepId,
       strength,
       keywords: selectedKeywordsValueAndId,
-      attributeId: numericAttributeId === dontAssignOption.value ? undefined : numericAttributeId,
+      attributeId: numericAttributeId === nonAssignedOption.value ? undefined : numericAttributeId,
     });
   }
 
