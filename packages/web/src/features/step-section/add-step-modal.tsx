@@ -167,8 +167,8 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
                   {...field}
                   className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
                   placeholder='Write here...'
+                  error={fieldState.error?.message}
                 />
-                <FormErrorMessage error={fieldState.error?.message} />
               </div>
             )}
           />

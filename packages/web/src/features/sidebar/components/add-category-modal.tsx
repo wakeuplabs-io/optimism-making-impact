@@ -42,7 +42,7 @@ function FormFields(props: FormFieldsProps) {
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const selectedIcon = watch('icon');
   const modalIcons = useIcons();
-  
+
   return (
     <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
       <div className='col-span-2 flex gap-2'>
@@ -62,8 +62,8 @@ function FormFields(props: FormFieldsProps) {
                 {...field}
                 className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
                 placeholder='Name'
+                error={fieldState.error?.message}
               />
-              <FormErrorMessage error={fieldState.error?.message} />
             </div>
           )}
         />

@@ -5,7 +5,7 @@ interface FormTextInputProps extends React.ComponentProps<typeof TextInput> {
   error?: string;
 }
 
-export function FormTextInput({ ...field }: FormTextInputProps) {
+export function FormTextInput({ error, ...field }: FormTextInputProps) {
   return (
     <FormInputWrapper error={error}>
       <TextInput {...field} />

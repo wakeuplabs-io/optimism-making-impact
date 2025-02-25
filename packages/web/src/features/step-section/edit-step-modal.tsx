@@ -57,8 +57,8 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
   return (
     <div className='grid gap-4 py-4'>
       <div className='col-span-2 flex gap-2'>
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-500">Icon</span>
+        <div className='flex flex-col gap-1'>
+          <span className='text-xs font-medium text-gray-500'>Icon</span>
           <div
             className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
@@ -67,8 +67,8 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-1 w-full">
-          <span className="text-xs font-medium text-gray-500">Title</span>
+        <div className='flex flex-col gap-1 w-full'>
+          <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
             control={control}
@@ -79,8 +79,8 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
                   {...field}
                   className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
                   placeholder='Write here...'
+                  error={fieldState.error?.message}
                 />
-                <FormErrorMessage error={fieldState.error?.message} />
               </div>
             )}
           />
@@ -110,19 +110,16 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
       />
 
       {step.type === 'ITEMS' && (
-        <div className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-500">Description</span>
+        <div className='flex flex-col gap-1'>
+          <span className='text-xs font-medium text-gray-500'>Description</span>
           <Controller
             name='description'
             control={control}
             defaultValue={defaultValues.description}
-            render={({ field, fieldState }) => (
-              <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />
-            )}
+            render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />}
           />
         </div>
       )}
     </div>
   );
 }
-
