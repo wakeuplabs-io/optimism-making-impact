@@ -3,8 +3,7 @@ name: pipeline CD/CI staging
 on:
   push:
     branches:
-      # - main
-      - feat/OMI-54/workflows-on-merge
+      - main
 
 jobs:
   # Install dependencies
