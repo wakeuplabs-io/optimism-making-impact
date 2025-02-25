@@ -42,9 +42,9 @@ jobs:
           path: |
             ~/.pnpm-store
             node_modules
-            packages/web/node_modules
-            packages/schemas/node_modules
-            packages/api/node_modules
+            packages/web/dist
+            packages/schemas/dist
+            packages/api/dist
           key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
           fail-on-cache-miss: true
 
