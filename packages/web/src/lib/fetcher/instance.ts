@@ -1,5 +1,4 @@
 import { useUserStore } from '@/state';
-import { signOut } from 'aws-amplify/auth';
 import axios from 'axios';
 
 const fetcher = axios.create({
@@ -26,7 +25,12 @@ fetcher.interceptors.response.use(
     if (error.response.status === 401) {
       //sign out the user
       setTimeout(() => {
-        signOut();
+        useUserStore
+          .getState()
+          .signOut()
+          .then(() => {
+            useUserStore.getState().clearState();
+          });
       }, 1000);
     }
     return Promise.reject(error);

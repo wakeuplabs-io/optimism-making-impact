@@ -1,11 +1,10 @@
 import { AuthButton } from './auth-button';
 import { ViewModeToggle } from './view-mode-toggle';
 import { useUserStore } from '@/state';
-import { signOut } from 'aws-amplify/auth';
 import { LogOut } from 'lucide-react';
 
 export const Logout = () => {
-  const { user } = useUserStore((state) => state);
+  const { user, signOut } = useUserStore((state) => state);
 
   const handleLogout = async () => {
     try {
