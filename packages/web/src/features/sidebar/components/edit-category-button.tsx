@@ -4,6 +4,10 @@ import { EditIcon } from '@/components/icons/edit-icon';
 import { Category } from '@/types';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
+import { createElement, useState } from 'react';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { IconPicker } from './icon-picker';
+import { useIcons } from '@/hooks/use-icons';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
@@ -24,6 +28,8 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={editCategoryBodySchema}
+      submitButtonText='Save'
+      secondaryButtonText='Delete'
     >
       <FormFields defaultValues={defaultValues} />
     </FormModal>
@@ -34,24 +40,57 @@ interface FormFieldsProps {
   defaultValues: EditCategoryBody;
 }
 
-// The inner form fields use react-hook-form's context.
-// We use Controller for inputs that work as controlled components.
-function FormFields(props: FormFieldsProps) {
-  const { control } = useFormContext<EditCategoryBody>();
+function FormFields({ defaultValues }: FormFieldsProps) {
+  const { control, setValue, watch } = useFormContext<EditCategoryBody>();
+  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
+  const modalIcons = useIcons();
+  const selectedIcon = watch('icon');
 
   return (
-    <div className='grid w-full gap-4 py-4'>
-      <Controller
-        name='name'
-        control={control}
-        defaultValue={props.defaultValues.name}
-        render={({ field, fieldState }) => <FormTextInput {...field} placeholder='Name' error={fieldState.error?.message} />}
-      />
+    <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
+      <div className='col-span-2 flex gap-2'>
+        <div
+          className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+          onClick={() => setIsIconPickerOpen((prev) => !prev)}
+        >
+          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+        </div>
+        <Controller
+          name='name'
+          control={control}
+          defaultValue={defaultValues.name}
+          render={({ field, fieldState }) => (
+            <div className='w-full'>
+              <FormTextInput
+                {...field}
+                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                placeholder='Name'
+                error={fieldState.error?.message}
+              />
+            </div>
+          )}
+        />
+      </div>
       <Controller
         name='icon'
         control={control}
-        defaultValue={props.defaultValues.icon}
-        render={({ field, fieldState }) => <FormTextInput {...field} placeholder='Icon' error={fieldState.error?.message} />}
+        defaultValue={defaultValues.icon}
+        render={({ field, fieldState }) => (
+          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+            {isIconPickerOpen && (
+              <>
+                <IconPicker
+                  selectedIcon={field.value}
+                  modalIcons={modalIcons}
+                  onSelect={(icon) => {
+                    setValue('icon', icon);
+                  }}
+                />
+                {fieldState.error?.message && <FormErrorMessage error={fieldState.error.message} />}
+              </>
+            )}
+          </div>
+        )}
       />
     </div>
   );

@@ -4,21 +4,21 @@ import { Category, Prisma, PrismaClient, StepType } from '@prisma/client';
 
 const groups = [
   [
-    { title: '(IN) Introduction', icon: 'https://www.example.com/step1-icon', type: StepType.INFOGRAPHY },
+    { title: '(IN) Introduction', icon: 'blocks', type: StepType.INFOGRAPHY },
     {
       title: '(IT) Checklist',
-      icon: 'https://www.example.com/step2-icon',
+      icon: 'blocks',
       type: StepType.ITEMS,
       description: 'Check items to understand the concept',
     },
-    { title: '(CA) Priority Cards', icon: 'https://www.example.com/step3-icon', type: StepType.CARD },
+    { title: '(CA) Priority Cards', icon: 'blocks', type: StepType.CARD },
   ],
   [
-    { title: '(CA) Visual Cards', icon: 'https://www.example.com/step6-icon', type: StepType.CARD },
-    { title: '(IN) Overview', icon: 'https://www.example.com/step4-icon', type: StepType.INFOGRAPHY },
+    { title: '(CA) Visual Cards', icon: 'blocks', type: StepType.CARD },
+    { title: '(IN) Overview', icon: 'blocks', type: StepType.INFOGRAPHY },
     {
       title: '(IT) Inventory',
-      icon: 'https://www.example.com/step5-icon',
+      icon: 'blocks',
       type: StepType.ITEMS,
       description: 'Add items to your inventory',
     },
@@ -26,12 +26,12 @@ const groups = [
   [
     {
       title: '(IT) Checkout Items',
-      icon: 'https://www.example.com/step8-icon',
+      icon: 'blocks',
       type: StepType.ITEMS,
       description: 'Check out items you have added',
     },
-    { title: '(IN) Deep Dive', icon: 'https://www.example.com/step7-icon', type: StepType.INFOGRAPHY },
-    { title: '(CA) Information Cards', icon: 'https://www.example.com/step9-icon', type: StepType.CARD },
+    { title: '(IN) Deep Dive', icon: 'blocks', type: StepType.INFOGRAPHY },
+    { title: '(CA) Information Cards', icon: 'blocks', type: StepType.CARD },
   ],
 ];
 
