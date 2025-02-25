@@ -54,7 +54,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: 'no'
-      # Run the build for the API
+      # Run the deploy
       - name: Deploy
         run: pnpm deploy:app:staging
 

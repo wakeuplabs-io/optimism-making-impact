@@ -29,7 +29,7 @@
     "serverless-plugin-common-excludes": "4.0.0",
     "serverless-plugin-include-dependencies": "6.1.1",
     "serverless-s3-sync": "3.4.0",
-    "sst": "3.4.54",
+    "sst": "3.9.10",
     "vite-tsconfig-paths": "4.3.2",
     "vitest": "^3.0.4"
   },
