@@ -12,7 +12,6 @@ import SetupModal from '@/features/sidebar/components/setup-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore, useUserStore } from '@/state';
-import { useStepsStore } from '@/state/steps/steps-store';
 import { Menu, Settings } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -30,8 +29,22 @@ interface SidebarContainerProps {
 
 function SidebarContainer(props: SidebarContainerProps) {
   const isMobile = useIsMobile();
-  const { selectedCategoryId } = useSidebarStore((state) => state);
-  const stepsState = useStepsStore((state) => state);
+  const { selectedRound, selectedCategoryId } = useSidebarStore((state) => state);
+
+  //Check if category is selected
+  const title = useMemo(() => {
+    if (!selectedRound) {
+      return 'Round';
+    }
+
+    const category = selectedRound.categories.find((category) => category.id === selectedCategoryId);
+
+    if (!category) {
+      return getRoundName(selectedRound.id);
+    }
+
+    return category.name;
+  }, [selectedRound, selectedCategoryId]);
 
   if (isMobile) {
     return (
