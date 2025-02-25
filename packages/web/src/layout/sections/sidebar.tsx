@@ -47,7 +47,6 @@ function SidebarContainer(props: SidebarContainerProps) {
   }, [selectedRound, selectedCategoryId]);
 
   if (isMobile) {
-    // Render as a Sheet on Mobile
     return (
       <nav className='flex w-full items-center justify-start gap-12 bg-[#F1F4F9] px-8 pb-7 pt-14 lg:static'>
         <SideMenu
@@ -64,7 +63,6 @@ function SidebarContainer(props: SidebarContainerProps) {
     );
   }
 
-  // Render static sidebar on Desktop
   return (
     <div className='w-[320px] overflow-y-auto overflow-x-hidden p-6'>
       <nav className='ml-auto h-full w-[220px] bg-white-high lg:static'>{props.children}</nav>
@@ -84,7 +82,7 @@ function SidebarContent() {
   return (
     <div className='flex h-full flex-col justify-between gap-6'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
-      <div className='flex flex-1 flex-col justify-start gap-8 md:justify-between'>
+      <div className='flex flex-1 flex-col justify-start md:justify-between gap-8'>
         <div className='flex flex-col gap-4'>
           <SelectInput
             name='round'
