@@ -14,6 +14,7 @@ jobs:
   # Job to Deploy the UI
   deploy:
     runs-on: ubuntu-latest
+    environment: CI
     env:
       DB_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
       DB_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
