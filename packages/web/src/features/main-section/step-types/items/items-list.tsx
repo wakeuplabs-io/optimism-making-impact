@@ -7,6 +7,7 @@ import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteItem } from '@/types/items';
 import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
+import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { DescriptionInlineText } from './description-inline-text';
 import { CompleteStep } from '@/types';
 
@@ -24,13 +25,15 @@ export function ItemsList({ items, step, editStepDescription, attributes }: Item
 
   const filteredItems = useFilteredData({ data: items, selectedStrengths, selectedKeywords, selectedAttributes });
 
+  const hasAttributes = !!attributes && attributes.length > 0;
+
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
       <div className='mb-6 flex items-start justify-between border-b border-[#D9D9D9] pb-3'>
         <DescriptionInlineText description={step.description} onChange={editStepDescription} isAdmin={isAdmin} />
-        {isAdmin && attributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
+        {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
       </div>
-      <List items={filteredItems} />
+      {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
     </div>
   );
 }
@@ -56,14 +59,6 @@ function List(props: ListProps) {
           </React.Fragment>
         ))
       )}
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className='flex h-full w-full items-center justify-center'>
-      <p>No item matches applied filters</p>
     </div>
   );
 }
