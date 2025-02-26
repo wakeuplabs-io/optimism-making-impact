@@ -18,7 +18,7 @@ export function CardStep(props: CardStepProps) {
 
   return (
     <div className={cn('flex flex-col gap-4')}>
-      <div className='flex flex-col h-full lg:flex-row'>
+      <div className='flex flex-col w-full h-full lg:flex-row lg:gap-8'>
         <div className='flex flex-col-reverse items-center gap-8 lg:flex-1 w-full mb-6 lg:mb-0 lg:flex-col lg:gap-6'>
           {adminMode && (
             <AddCardModal stepId={props.step.id} onClick={addCard} keywords={keywords} attributes={props.step.smartList?.attributes} />

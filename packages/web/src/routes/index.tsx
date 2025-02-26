@@ -45,7 +45,7 @@ function Index() {
     <div className='flex flex-col w-screen h-screen overflow-hidden lg:flex-row'>
       <SidebarSection />
       <div
-        className={cn('flex flex-1 flex-col-reverse bg-[#F1F4F9] lg:flex-col lg:p-8 lg:pl-16', {
+        className={cn('flex flex-1 flex-col-reverse bg-[#F1F4F9] lg:flex-col lg:p-8 lg:px-16', {
           'overflow-y-auto': !isMobile,
           'overflow-hidden': isMobile,
         })}
