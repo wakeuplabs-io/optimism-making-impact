@@ -72,9 +72,9 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             <DeleteConfirmationModal
               isOpen={isConfirmDeleteModalOpen}
               title='Delete step'
-              description={<span>Are you sure you want to delete {props.step.title} step?</span>}
+              description={`Are you sure you want to delete ${props.step.title} step?`}
               onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
-              onClick={() => onDelete?.(props.step.id)}
+              onConfirm={() => onDelete?.(props.step.id)}
             />
           )}
         </div>

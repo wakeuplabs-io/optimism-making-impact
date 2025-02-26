@@ -6,7 +6,7 @@ interface DeleteConfirmationModalProps {
   title: string;
   description: React.ReactNode;
   onOpenChange: (open: boolean) => void;
-  onClick?: () => void;
+  onConfirm?: () => void;
 }
 
 export function DeleteConfirmationModal(props: DeleteConfirmationModalProps) {
@@ -17,7 +17,7 @@ export function DeleteConfirmationModal(props: DeleteConfirmationModalProps) {
       onOpenChange={props.onOpenChange}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Delete', variant: 'primary', icon: <Trash />, onClick: () => props.onClick?.() },
+        { label: 'Delete', variant: 'primary', icon: <Trash />, onClick: () => props.onConfirm?.() },
       ]}
     >
       {props.description}

@@ -8,13 +8,17 @@ import { createElement, useState } from 'react';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { IconPicker } from './icon-picker';
 import { useIcons } from '@/hooks/use-icons';
+import { useToggle } from 'usehooks-ts';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
+  onDelete: (category: Category) => void;
   category: Category;
 }
 
 export function EditCategoryButton(props: EditCategoryButtonProps) {
+  const [isDeleteConfirmationModalOpen, toggleDeleteConfirmationModal] = useToggle();
   const defaultValues: EditCategoryBody = { name: props.category.name, icon: props.category.icon };
 
   function handleSubmit(data: EditCategoryBody) {
@@ -22,17 +26,33 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
   }
 
   return (
-    <FormModal
-      title='Edit category'
-      trigger={<EditIcon />}
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-      schema={editCategoryBodySchema}
-      submitButtonText='Save'
-      secondaryButtonText='Delete'
-    >
-      <FormFields defaultValues={defaultValues} />
-    </FormModal>
+    <>
+      <FormModal
+        title='Edit category'
+        trigger={<EditIcon />}
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+        schema={editCategoryBodySchema}
+        submitButtonText='Save'
+        secondaryButtonText='Delete'
+        onSecondaryClick={toggleDeleteConfirmationModal}
+      >
+        <FormFields defaultValues={defaultValues} />
+      </FormModal>
+      {isDeleteConfirmationModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isDeleteConfirmationModalOpen}
+          title='Delete category'
+          description={
+            <span>
+              Are you sure you want to delete <b>{props.category.name}</b> category?
+            </span>
+          }
+          onConfirm={() => props.onDelete(props.category)}
+          onOpenChange={toggleDeleteConfirmationModal}
+        />
+      )}
+    </>
   );
 }
 
