@@ -5,11 +5,12 @@ export interface SidebarState {
   rounds: CompleteRound[];
   selectedRound: CompleteRound | null;
   selectedCategoryId: number;
+  categoriesInProgress: number[];
 }
 
 export interface SidebarActions {
   init: () => void;
-  fetchData: () => void;
+  fetchData: () => Promise<void>;
   setSelectedRound: (roundId: number) => void;
   setSelectedCategoryId: (categoryId: number) => void;
   addRound: () => void;
@@ -17,6 +18,7 @@ export interface SidebarActions {
   addCategory: (name: string, icon: string, roundId: number) => void;
   editCategory: (name: string, icon: string) => void;
   deleteCategory: (categoryId: number) => void;
+  isCategoryInProgress: (categoryId: number) => boolean;
 }
 
 export type SidebarStore = SidebarState & SidebarActions;

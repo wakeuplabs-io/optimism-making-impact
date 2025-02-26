@@ -6,6 +6,7 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { stepArraySchema } from '@/types';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
+import { useSidebarStore } from '../sidebar/sidebar-store';
 
 export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   loading: false,
@@ -20,6 +21,14 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   },
   fetchByCategoryId: async (categoryId: number) => {
     try {
+      // check if category is in progress
+      const isCategoryInProgress = useSidebarStore.getState().isCategoryInProgress(categoryId);
+      if (isCategoryInProgress) {
+        // category is in progress, do not call api and return empty steps
+        set(() => ({ steps: [], selectedStep: null, searchSelectedStepId: null }));
+        return;
+      }
+
       const { data } = await StepsService.getByCategoryId(categoryId);
 
       const parsedSteps = stepArraySchema.parse(data.steps);
