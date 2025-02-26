@@ -173,7 +173,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     });
   },
   isCategoryInProgress: (categoryId: number) => {
-    console.log('categoriesInProgress', get().categoriesInProgress);
     return get().categoriesInProgress.includes(categoryId);
   },
 }));
