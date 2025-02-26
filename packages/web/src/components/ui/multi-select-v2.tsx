@@ -3,6 +3,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useCallback, useRef, useState } from 'react';
+import { Input } from './input';
 
 interface Tag {
   id: string;
@@ -85,15 +86,15 @@ export function MultiSelectInputV2({ value, onChange, placeholder = 'Type to sea
   return (
     <div className={cn('relative', className)}>
       <div
-        className='flex min-h-[40px] w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'
+        className='flex min-h-[40px] w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
         onClick={() => inputRef.current?.focus()}
       >
         {value.map((tag) => (
-          <Badge key={tag.id} className='gap-1'>
+          <Badge key={tag.id} className='gap-2 px-3 h-7'>
             {tag.text}
             <button
               type='button'
-              className='ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
+              className='ml-1 rounded-md outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   handleRemove(tag);
@@ -110,7 +111,7 @@ export function MultiSelectInputV2({ value, onChange, placeholder = 'Type to sea
             </button>
           </Badge>
         ))}
-        <input
+        <Input
           ref={inputRef}
           value={inputValue}
           onChange={(e) => {
@@ -122,7 +123,7 @@ export function MultiSelectInputV2({ value, onChange, placeholder = 'Type to sea
             setTimeout(() => setOpen(false), 200);
           }}
           placeholder={placeholder}
-          className='flex-1 bg-transparent outline-none placeholder:text-muted-foreground'
+          className='h-7 flex-1 bg-transparent border-none focus-visible:ring-0 outline-none shadow-none p-0'
         />
       </div>
       {open && inputValue ? (
