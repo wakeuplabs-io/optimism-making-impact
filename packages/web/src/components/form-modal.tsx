@@ -22,10 +22,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   controlledOpen?: boolean;
 }
 
-export function FormModal<TFormSchema extends z.AnyZodObject>({
-  submitButtonText = 'Create',
-  ...props
-}: FormModalProps<TFormSchema>) {
+export function FormModal<TFormSchema extends z.AnyZodObject>({ submitButtonText = 'Create', ...props }: FormModalProps<TFormSchema>) {
   const [open, setOpen] = useState(false);
   const formId = useId();
 
@@ -45,25 +42,22 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
     props.onOpenChange?.(open);
   };
 
-  const buttons = React.useMemo<ModalActionButtonProps[]>(
-    () => {
-      const baseButtons: ModalActionButtonProps[] = [
-        { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
-      ];
-      if (props.secondaryButtonText) {
-        baseButtons.push({
-          type: 'button',
-          variant: 'secondary',
-          label: props.secondaryButtonText,
-          closeOnClick: true,
-          icon: props.secondaryButtonIcon,
-          onClick: () => props.onSecondaryClick?.(),
-        });
-      }
-      return baseButtons;
-    },
-    [formId, submitButtonText, props],
-  );
+  const buttons = React.useMemo<ModalActionButtonProps[]>(() => {
+    const baseButtons: ModalActionButtonProps[] = [
+      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
+    ];
+    if (props.secondaryButtonText) {
+      baseButtons.push({
+        type: 'button',
+        variant: 'secondary',
+        label: props.secondaryButtonText,
+        closeOnClick: true,
+        icon: props.secondaryButtonIcon,
+        onClick: () => props.onSecondaryClick?.(),
+      });
+    }
+    return baseButtons;
+  }, [formId, submitButtonText, props]);
 
   const isOpen = props.controlledOpen ?? open;
 
@@ -105,7 +99,12 @@ export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormPr
 
   return (
     <FormProvider {...methods}>
-      <form id={props.formId} onSubmit={handleSubmit(props.onInternalSubmit)} onError={(errors) => console.log(errors)} className='w-full'>
+      <form
+        id={props.formId}
+        onSubmit={handleSubmit(props.onInternalSubmit)}
+        onError={(errors) => console.log(errors)}
+        className='min-w-[300px]'
+      >
         {props.children}
       </form>
     </FormProvider>

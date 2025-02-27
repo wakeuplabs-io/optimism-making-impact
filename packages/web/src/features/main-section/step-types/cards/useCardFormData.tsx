@@ -3,7 +3,7 @@ import { Keyword } from '@/types';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { Attribute } from '@optimism-making-impact/schemas';
 
-export const dontAssignOption = { value: 0, label: <span>Don't assign</span> };
+export const nonAssignedOption = { value: 0, label: <span>Non assigned</span> };
 
 interface UseCardFormDataProps {
   keywords: Keyword[];
@@ -31,8 +31,8 @@ export function useCardFormData({ keywords, attributes }: UseCardFormDataProps) 
     const options = attributesOptionsMapper(attributes);
 
     options.unshift({
-      ...dontAssignOption,
-      value: dontAssignOption.value.toString(),
+      ...nonAssignedOption,
+      value: nonAssignedOption.value.toString(),
     });
 
     return options;

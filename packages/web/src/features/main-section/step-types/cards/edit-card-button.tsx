@@ -5,7 +5,7 @@ import { MultiSelect } from '@/components/multi-select/multi-select';
 import { CompleteCard, Keyword } from '@/types';
 import { Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { dontAssignOption, KeywordOption, useCardFormData } from './useCardFormData';
+import { nonAssignedOption, KeywordOption, useCardFormData } from './useCardFormData';
 import { UpdateCardBody, updateCardBodySchema, Attribute } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { AttributeOption, strengthOptions } from '../utils';
@@ -24,7 +24,7 @@ export function EditCardModal(props: EditCardModalProps) {
     title: props.card.title,
     markdown: props.card.markdown,
     strength: props.card.strength,
-    attributeId: props.card.attributeId || dontAssignOption.value,
+    attributeId: props.card.attributeId || nonAssignedOption.value,
     keywords: props.card.keywords,
     stepId: props.stepId,
   };
@@ -48,7 +48,7 @@ export function EditCardModal(props: EditCardModalProps) {
       stepId,
       strength,
       keywords: selectedKeywordsValueAndId,
-      attributeId: numericAttributeId === dontAssignOption.value ? undefined : attributeId,
+      attributeId: numericAttributeId === nonAssignedOption.value ? undefined : attributeId,
     });
   }
 
