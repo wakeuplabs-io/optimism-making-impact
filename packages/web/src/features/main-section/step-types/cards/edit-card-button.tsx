@@ -9,6 +9,8 @@ import { nonAssignedOption, KeywordOption, useCardFormData } from './useCardForm
 import { UpdateCardBody, updateCardBodySchema, Attribute } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { AttributeOption, strengthOptions } from '../utils';
+import { useToggle } from 'usehooks-ts';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 
 interface EditCardModalProps {
   stepId: number;
@@ -20,6 +22,8 @@ interface EditCardModalProps {
 }
 
 export function EditCardModal(props: EditCardModalProps) {
+  const [isConfirmDeleteModalOpen, toggleConfirmDeleteModalOpen] = useToggle();
+
   const defaultValues: UpdateCardBody = {
     title: props.card.title,
     markdown: props.card.markdown,
@@ -53,23 +57,38 @@ export function EditCardModal(props: EditCardModalProps) {
   }
 
   return (
-    <FormModal
-      title='Edit card'
-      trigger={<EditIcon />}
-      onSubmit={handleSubmit}
-      secondaryButtonIcon={<Trash />}
-      secondaryButtonText='Delete'
-      onSecondaryClick={() => props.onDelete?.(props.card.id)}
-      defaultValues={defaultValues}
-      schema={updateCardBodySchema}
-      contentProps={{
-        onPointerDownOutside: (e) => {
-          if (document.getElementById('multiselect-popover-content')) e.preventDefault();
-        },
-      }}
-    >
-      <FormFields attributeOptions={attributeOptions} keywordsOptions={keywordsOptions} defaultValues={defaultValues} />
-    </FormModal>
+    <>
+      <FormModal
+        title='Edit card'
+        trigger={<EditIcon />}
+        onSubmit={handleSubmit}
+        secondaryButtonIcon={<Trash />}
+        secondaryButtonText='Delete'
+        onSecondaryClick={toggleConfirmDeleteModalOpen}
+        defaultValues={defaultValues}
+        schema={updateCardBodySchema}
+        contentProps={{
+          onPointerDownOutside: (e) => {
+            if (document.getElementById('multiselect-popover-content')) e.preventDefault();
+          },
+        }}
+      >
+        <FormFields attributeOptions={attributeOptions} keywordsOptions={keywordsOptions} defaultValues={defaultValues} />
+      </FormModal>
+      {isConfirmDeleteModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isConfirmDeleteModalOpen}
+          title='Delete Card'
+          description={
+            <span>
+              Are you sure you want to delete <b>{props.card.title}</b> card?
+            </span>
+          }
+          onConfirm={() => props.onDelete?.(props.card.id)}
+          onOpenChange={toggleConfirmDeleteModalOpen}
+        />
+      )}
+    </>
   );
 }
 
