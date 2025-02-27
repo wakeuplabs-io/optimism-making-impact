@@ -22,6 +22,7 @@ export interface MainSectionState {
 export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
+  updateStep: (step: Partial<CompleteStep>) => void;
   addInfography: (data: CreateInfographyBody) => void;
   deleteInfogrpahy: (infographyId: number) => void;
   editInfogrpahy: (infographyId: number, data: Partial<UpdateInfographyBody>) => void;

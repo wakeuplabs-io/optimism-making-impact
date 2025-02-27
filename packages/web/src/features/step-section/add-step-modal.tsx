@@ -6,7 +6,7 @@ import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
 import { capitalizeFirst } from '@/lib/utils';
-import { SmartListsService } from '@/services/smart-lists/service';
+import { SmartListsService } from '@/services/smart-lists-service';
 import { CreateStepBody, stepTypes, StepType, createStepBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { createElement, useEffect, useState } from 'react';

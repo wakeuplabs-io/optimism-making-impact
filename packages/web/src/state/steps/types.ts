@@ -14,6 +14,7 @@ interface StepsActions {
   setSelectedStep: (position: number) => void;
   addStep: (roundId: number, data: CreateStepBody) => void;
   editStep: (stepId: number, data: UpdateStepBody) => void;
+  editStepDescription: (stepId: number, description: string) => void;
   deleteStep: (stepId: number) => void;
 }
 

@@ -21,4 +21,5 @@ export const COLOR_MAP: Record<Color, string> = {
   LIGHTBLUE: '#A5EDFF',
   BLUE: '#4FB8ED',
   DARKBLUE: '#466299',
+  GRAY: '#D9D9D9',
 };

@@ -1,8 +1,8 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
-import { AttributesService } from '@/services/attributes/service';
-import { CardsService } from '@/services/cards/service';
-import { InfographiesService } from '@/services/infogrpahies/service';
+import { AttributesService } from '@/services/attributes-service';
+import { CardsService } from '@/services/cards-service';
+import { InfographiesService } from '@/services/infographies-service';
 import {
   CreateItemBody,
   CreateAttributeBody,
@@ -10,12 +10,12 @@ import {
   UpdateInfographyBody,
   CreateInfographyBody,
 } from '@optimism-making-impact/schemas';
-import { ItemsService } from '@/services/items/service';
-import { StepsService } from '@/services/steps/service';
+import { ItemsService } from '@/services/items-service';
+import { StepsService } from '@/services/steps-service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { Step } from '@/types';
+import { CompleteStep, Step } from '@/types';
 import { CreateCardBody, UpdateCardBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
 import isEqual from 'lodash.isequal';
@@ -42,6 +42,11 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       set({ error: "There's been an error fetching the step" });
       toast({ title: 'Error', description: "There's been an error fetching the step", variant: 'destructive' });
     }
+  },
+  updateStep: (data: Partial<CompleteStep>) => {
+    const step = get().step;
+    if (!step) return;
+    set({ step: { ...step, ...data } });
   },
   deleteInfogrpahy: async (infographyId: number) => {
     const currentStep = get().step;

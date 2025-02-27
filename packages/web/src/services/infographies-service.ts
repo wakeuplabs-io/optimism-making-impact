@@ -2,7 +2,7 @@ import { fetcher } from '@/lib/fetcher';
 import { BulkUpdateInfographyBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
-const infogrpahiesEndpoint = '/infographies';
+const infographiesEndpoint = '/infographies';
 
 export class InfographiesServiceClass {
   private static instance: InfographiesServiceClass;
@@ -20,11 +20,11 @@ export class InfographiesServiceClass {
   }
 
   async updateBulk(data: BulkUpdateInfographyBody) {
-    return this.fetcher.put(infogrpahiesEndpoint + `/bulk`, data).then((res) => res.data);
+    return this.fetcher.put(infographiesEndpoint + `/bulk`, data).then((res) => res.data);
   }
 
   async deleteOne(id: number) {
-    return this.fetcher.delete(infogrpahiesEndpoint + `/${id}`).then((res) => res.data);
+    return this.fetcher.delete(infographiesEndpoint + `/${id}`).then((res) => res.data);
   }
 }
 
