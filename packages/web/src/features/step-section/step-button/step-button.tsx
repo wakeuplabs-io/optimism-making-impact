@@ -7,7 +7,7 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { Step } from '@/types';
 import { cva } from 'class-variance-authority';
-import { DeleteStepConfirmationModal } from '../delete-step-confirmation-modal';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   state: StepButtonState;
@@ -69,11 +69,12 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             </div>
           )}
           {isConfirmDeleteModalOpen && (
-            <DeleteStepConfirmationModal
+            <DeleteConfirmationModal
               isOpen={isConfirmDeleteModalOpen}
+              title='Delete step'
+              description={`Are you sure you want to delete ${props.step.title} step?`}
               onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
-              step={props.step}
-              onClick={onDelete}
+              onConfirm={() => onDelete?.(props.step.id)}
             />
           )}
         </div>

@@ -29,7 +29,7 @@ export function CategoryButton(props: CategoryButtonProps) {
       </div>
       {props.isAdmin && props.isActive && (
         <div className='flex gap-1'>
-          <EditCategoryButton category={props.category} onSave={props.onEdit} />
+          <EditCategoryButton category={props.category} onSave={props.onEdit} onDelete={(category) => props.onDelete(category.id)} />
         </div>
       )}
     </button>
