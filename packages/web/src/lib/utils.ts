@@ -1,6 +1,5 @@
-import { BADGE_COLORS, COLOR_MAP } from '@/config';
+import { BADGE_COLORS, COLOR_MAP, ExtendedColor } from '@/config';
 import { CompleteCard, Keyword } from '@/types';
-import { Color } from '@optimism-making-impact/schemas';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -62,6 +61,6 @@ export function getRoundName(roundId: number) {
   return `Round ${roundId}`;
 }
 
-export function getColor(color: Color): string {
+export function getColor(color: ExtendedColor): string {
   return COLOR_MAP[color];
 }
