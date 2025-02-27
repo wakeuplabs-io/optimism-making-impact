@@ -64,7 +64,6 @@ export function EditCardModal(props: EditCardModalProps) {
         onSubmit={handleSubmit}
         secondaryButtonIcon={<Trash />}
         secondaryButtonText='Delete'
-        // onSecondaryClick={() => props.onDelete?.(props.card.id)}
         onSecondaryClick={toggleConfirmDeleteModalOpen}
         defaultValues={defaultValues}
         schema={updateCardBodySchema}
