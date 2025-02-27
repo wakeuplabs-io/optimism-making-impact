@@ -6,7 +6,7 @@ import {
   AUTHENTICATION_SUCCESS_DESCRIPTION,
   AUTHENTICATION_SUCCESS_TITLE,
 } from './texts';
-import { UserStore } from './types';
+import { UserState, UserStore } from './types';
 import { IS_DEVELOPMENT } from '@/config';
 import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
@@ -27,12 +27,16 @@ const onUpdatesError = (error: unknown) => {
   toast({ title, description, variant: 'destructive' });
 };
 
+const initialState: UserState = {
+  user: null,
+  adminUsers: [],
+  isLoading: false,
+  isAdminModeEnabled: false,
+};
+
 export const useUserStore = createWithMiddlewares<UserStore>(
   (set, get) => ({
-    user: null,
-    adminUsers: [],
-    isLoading: false,
-    isAdminModeEnabled: false,
+    ...initialState,
     fetchAuth: async () => {
       const userWasLoggedIn = Boolean(get().user);
 
@@ -57,8 +61,8 @@ export const useUserStore = createWithMiddlewares<UserStore>(
           variant: 'destructive',
         });
         setTimeout(() => {
-          set(() => ({ isLoading: false, user: null }));
-          signOut();
+          set(() => ({ isLoading: false, user: null, isAdminModeEnabled: false }));
+          get().signOut();
         }, 1000);
         return;
       }
@@ -74,6 +78,12 @@ export const useUserStore = createWithMiddlewares<UserStore>(
         set({ isAdminModeEnabled: true });
         return;
       }
+    },
+    signOut: async () => {
+      return signOut();
+    },
+    clearState: () => {
+      set(() => initialState);
     },
     toggleAdminMode: () => {
       const user = get().user;
