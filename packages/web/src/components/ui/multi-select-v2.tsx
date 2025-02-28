@@ -123,7 +123,11 @@ export function MultiSelectInputV2<T extends Tag>({
                 e.preventDefault();
                 e.stopPropagation();
               }}
-              onClick={() => handleRemove(tag)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRemove(tag);
+              }}
             >
               <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
               <span className='sr-only'>Remove {tag.value}</span>
