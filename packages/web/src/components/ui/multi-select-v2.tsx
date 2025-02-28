@@ -28,7 +28,6 @@ export function MultiSelectInputV2<T extends Tag>({
   className,
 }: MultiSelectInputV2Props<T>) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const selectorRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
   // Add a key to reset Command component
@@ -58,9 +57,9 @@ export function MultiSelectInputV2<T extends Tag>({
       setTimeout(() => {
         inputRef.current?.focus();
       }, 0);
-      // Scroll to the bottom to show the input
+
       setTimeout(() => {
-        scrollToBottom();
+        scrollInputIntoView();
       }, 0);
     },
     [value, onChange, createTag],
@@ -87,11 +86,7 @@ export function MultiSelectInputV2<T extends Tag>({
     }
   };
 
-  const scrollToBottom = () => {
-    if (!selectorRef.current) return;
-
-    selectorRef.current.scrollTop = selectorRef.current.scrollHeight;
-  };
+  const scrollInputIntoView = () => inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
   const filteredOptions = options.filter((tag) => {
     const matchesSearch = tag.value.toLowerCase().includes(inputValue.toLowerCase());
@@ -106,7 +101,7 @@ export function MultiSelectInputV2<T extends Tag>({
       <div
         className='flex min-h-[40px] max-h-[90px] overflow-y-auto w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
         onClick={() => inputRef.current?.focus()}
-        ref={selectorRef}
+        onFocus={() => scrollInputIntoView()}
       >
         {value.map((tag) => (
           <Badge key={`MS_BADGE_${tag.value}`} className='max-w-full gap-2 px-3 h-7'>
