@@ -1,13 +1,13 @@
+import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
+import { Plus } from 'lucide-react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
-import { MultiSelect } from '@/components/multi-select/multi-select';
-import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
-import { Plus } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { nonAssignedOption, useCardFormData, KeywordOption } from './useCardFormData';
 import { strengthOptions, AttributeOption } from '../utils';
+import { MultiSelectInputV2 } from '@/components/ui/multi-select-v2';
 
 interface AddCardModalProps {
   stepId: number;
@@ -31,11 +31,6 @@ export function AddCardModal(props: AddCardModalProps) {
   });
 
   function handleSubmit({ title, markdown, keywords, strength, attributeId, stepId }: CreateCardBody) {
-    const selectedKeywordsValueAndId = keywords.map(({ value }) => {
-      const keyword = props.keywords.find((keyword) => keyword.value === value);
-      return { value, id: keyword?.id };
-    });
-
     const numericAttributeId = attributeId ? +attributeId : 0;
 
     props.onClick?.({
@@ -43,7 +38,7 @@ export function AddCardModal(props: AddCardModalProps) {
       markdown,
       stepId,
       strength,
-      keywords: selectedKeywordsValueAndId,
+      keywords,
       attributeId: numericAttributeId === nonAssignedOption.value ? undefined : numericAttributeId,
     });
   }
@@ -56,7 +51,12 @@ export function AddCardModal(props: AddCardModalProps) {
       defaultValues={defaultValues}
       schema={createCardBodySchema}
     >
-      <FormFields defaultValues={defaultValues} keywordsOptions={keywordsOptions} attributeOptions={attributeOptions} />
+      <FormFields
+        defaultValues={defaultValues}
+        keywordsOptions={keywordsOptions}
+        keywords={props.keywords}
+        attributeOptions={attributeOptions}
+      />
     </FormModal>
   );
 }
@@ -64,6 +64,7 @@ export function AddCardModal(props: AddCardModalProps) {
 interface FormFieldsProps {
   defaultValues: CreateCardBody;
   keywordsOptions: KeywordOption[];
+  keywords: Keyword[];
   attributeOptions: AttributeOption[];
 }
 
@@ -73,7 +74,7 @@ function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<CreateCardBody>();
 
   return (
-    <div className='grid w-full gap-4 py-4'>
+    <div className='flex flex-col w-[320px] max-w-full gap-4 py-4'>
       <Controller
         name='title'
         control={control}
@@ -123,14 +124,12 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.keywords}
         render={({ field }) => (
-          <MultiSelect
-            options={props.keywordsOptions}
-            onValueChange={(keywordsValues) => {
-              field.onChange(keywordsValues.map((value) => ({ value })));
+          <MultiSelectInputV2
+            value={field.value}
+            options={props.keywords}
+            onChange={(value) => {
+              field.onChange(value);
             }}
-            value={field.value.map(({ value }) => value)}
-            placeholder='Keywords connected'
-            maxCount={3}
           />
         )}
       />
