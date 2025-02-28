@@ -9,7 +9,6 @@ const ENTER_CHARACTER = 'Enter';
 const SPACE_CHARACTER = ' ';
 
 interface Tag {
-  id?: number;
   value: string;
 }
 
@@ -29,6 +28,7 @@ export function MultiSelectInputV2<T extends Tag>({
   className,
 }: MultiSelectInputV2Props<T>) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const selectorRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState('');
   const [open, setOpen] = useState(false);
   // Add a key to reset Command component
@@ -51,16 +51,27 @@ export function MultiSelectInputV2<T extends Tag>({
         onChange([...value, newTag]);
       }
 
-      setInputValue('');
+      onInputChange('');
       // Reset Command component state
       setCommandKey((prev) => prev + 1);
       // Keep the dropdown open after selection
       setTimeout(() => {
         inputRef.current?.focus();
       }, 0);
+      // Scroll to the bottom to show the input
+      setTimeout(() => {
+        scrollToBottom();
+      }, 0);
     },
     [value, onChange, createTag],
   ); // Removed predefinedTags from dependencies
+
+  const onInputChange = useCallback((newInput: string) => {
+    setInputValue(newInput);
+
+    const shouldShowOptions = newInput.trim() !== '';
+    setOpen(shouldShowOptions);
+  }, []);
 
   const handleRemove = useCallback(
     (tagToRemove: T) => {
@@ -76,6 +87,12 @@ export function MultiSelectInputV2<T extends Tag>({
     }
   };
 
+  const scrollToBottom = () => {
+    if (!selectorRef.current) return;
+
+    selectorRef.current.scrollTop = selectorRef.current.scrollHeight;
+  };
+
   const filteredOptions = options.filter((tag) => {
     const matchesSearch = tag.value.toLowerCase().includes(inputValue.toLowerCase());
     const notSelected = !value.find((selected) => selected.value.toLowerCase() === tag.value.toLowerCase());
@@ -87,8 +104,9 @@ export function MultiSelectInputV2<T extends Tag>({
   return (
     <div className={cn('relative', className)}>
       <div
-        className='flex min-h-[40px] w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
+        className='flex min-h-[40px] max-h-[90px] overflow-y-auto w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
         onClick={() => inputRef.current?.focus()}
+        ref={selectorRef}
       >
         {value.map((tag) => (
           <Badge key={`MS_BADGE_${tag.value}`} className='max-w-full gap-2 px-3 h-7'>
@@ -116,18 +134,15 @@ export function MultiSelectInputV2<T extends Tag>({
           ref={inputRef}
           value={inputValue}
           onChange={(e) => {
-            const inputValue = e.target.value;
-            setInputValue(inputValue);
-            setOpen(inputValue.trim() !== '');
+            const value = e.target.value;
+            onInputChange(value);
           }}
           onKeyDown={handleKeyDown}
           onBlur={() => {
             setTimeout(() => setOpen(false), 200);
           }}
           placeholder={placeholder}
-          // className='h-7 flex-1 bg-transparent border-none focus-visible:ring-0 outline-none shadow-none p-0'
           className='w-auto h-7 flex-[1_0_auto] bg-transparent border-none focus-visible:ring-0 outline-none shadow-none p-0'
-          // className='h-7 bg-transparent border-none focus-visible:ring-0 outline-none shadow-none p-0'
         />
       </div>
       {showOptions ? (
@@ -137,7 +152,7 @@ export function MultiSelectInputV2<T extends Tag>({
               {filteredOptions.length > 0 && (
                 <CommandGroup>
                   {filteredOptions.map((tag) => (
-                    <CommandItem key={`MS_BADGE_${tag.id}`} onSelect={() => handleSelect(tag.value)} className='cursor-pointer'>
+                    <CommandItem key={`MS_OPTION_${tag.value}`} onSelect={() => handleSelect(tag.value)} className='cursor-pointer'>
                       {tag.value}
                     </CommandItem>
                   ))}
