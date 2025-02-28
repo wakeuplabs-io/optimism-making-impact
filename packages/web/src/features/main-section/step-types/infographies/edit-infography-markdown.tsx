@@ -1,10 +1,10 @@
 import { FormInputWrapper } from '@/components/form/form-input';
-import { MarkdownText } from '@/components/markdown-text';
 import { EditPencilButton } from '@/components/pencil-edit-button';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
 import { updateInfographyBodySchema } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
+import Markdown from 'react-markdown';
 import { useToggle } from 'usehooks-ts';
 
 const markdownSchema = updateInfographyBodySchema.pick({ markdown: true });
@@ -70,10 +70,12 @@ function Content({ markdown, isAdmin, className, onChange, ...props }: ContentPr
 
   return (
     <>
-      <MarkdownText className={cn('w-full overflow-auto break-words', className)}>
-        {/* if there is an error, show the original markdown */}
-        {validationError ? markdown : controlledMarkdownValue}
-      </MarkdownText>
+      <div className='w-full prose lg:prose-xl max-w-full'>
+        <Markdown className={cn('overflow-auto break-words', className)}>
+          {/* if there is an error, show the original markdown */}
+          {validationError ? markdown : controlledMarkdownValue}
+        </Markdown>
+      </div>
       {isAdmin && <EditPencilButton onClick={toggleEditMode} />}
     </>
   );

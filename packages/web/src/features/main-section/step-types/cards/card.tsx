@@ -1,5 +1,4 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
-import { MarkdownText } from '@/components/markdown-text';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getRandomBadgeColor } from '@/lib/utils';
@@ -8,6 +7,7 @@ import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteCard } from '@/types';
 import { CardStrength, Keyword, Attribute } from '@optimism-making-impact/schemas';
+import Markdown from 'react-markdown';
 
 interface CardProps {
   card: CompleteCard;
@@ -85,7 +85,7 @@ interface CardBodyProps {
 function CardBody(props: CardBodyProps) {
   return (
     <div className='flex flex-1'>
-      <MarkdownText>{props.markdown}</MarkdownText>
+      <Markdown className='overflow-auto break-words'>{props.markdown}</Markdown>
     </div>
   );
 }
