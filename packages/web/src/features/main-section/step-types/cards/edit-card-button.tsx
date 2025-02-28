@@ -1,16 +1,16 @@
 import { FormModal } from '@/components/form-modal';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
-import { MultiSelect } from '@/components/multi-select/multi-select';
 import { CompleteCard, Keyword } from '@/types';
-import { Trash } from 'lucide-react';
+import { Save, Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { nonAssignedOption, KeywordOption, useCardFormData } from './useCardFormData';
+import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { UpdateCardBody, updateCardBodySchema, Attribute } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { AttributeOption, strengthOptions } from '../utils';
 import { useToggle } from 'usehooks-ts';
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
+import { MultiSelectInputV2 } from '@/components/ui/multi-select-v2';
 
 interface EditCardModalProps {
   stepId: number;
@@ -33,8 +33,7 @@ export function EditCardModal(props: EditCardModalProps) {
     stepId: props.stepId,
   };
 
-  const { keywordsOptions, attributeOptions } = useCardFormData({
-    keywords: props.keywords,
+  const { attributeOptions } = useCardFormData({
     attributes: props.attributes,
   });
 
@@ -62,6 +61,8 @@ export function EditCardModal(props: EditCardModalProps) {
         title='Edit card'
         trigger={<EditIcon />}
         onSubmit={handleSubmit}
+        submitButtonText='Save'
+        submitButtonIcon={<Save />}
         secondaryButtonIcon={<Trash />}
         secondaryButtonText='Delete'
         onSecondaryClick={toggleConfirmDeleteModalOpen}
@@ -73,7 +74,7 @@ export function EditCardModal(props: EditCardModalProps) {
           },
         }}
       >
-        <FormFields attributeOptions={attributeOptions} keywordsOptions={keywordsOptions} defaultValues={defaultValues} />
+        <FormFields attributeOptions={attributeOptions} keywords={props.keywords} defaultValues={defaultValues} />
       </FormModal>
       {isConfirmDeleteModalOpen && (
         <DeleteConfirmationModal
@@ -94,17 +95,17 @@ export function EditCardModal(props: EditCardModalProps) {
 
 interface FormFieldsProps {
   attributeOptions: AttributeOption[];
-  keywordsOptions: KeywordOption[];
+  keywords: Keyword[];
   defaultValues: UpdateCardBody;
 }
 
 // The inner form fields use react-hook-form's context.
 // We use Controller for inputs that work as controlled components.
-function FormFields({ attributeOptions, keywordsOptions, defaultValues }: FormFieldsProps) {
+function FormFields({ attributeOptions, keywords, defaultValues }: FormFieldsProps) {
   const { control } = useFormContext<UpdateCardBody>();
 
   return (
-    <div className='grid w-full gap-4 py-4'>
+    <div className='flex flex-col w-[320px] max-w-full gap-4 py-4'>
       <Controller
         name='title'
         control={control}
@@ -156,17 +157,14 @@ function FormFields({ attributeOptions, keywordsOptions, defaultValues }: FormFi
         name='keywords'
         control={control}
         defaultValue={defaultValues.keywords}
-        render={({ field, formState }) => {
+        render={({ field }) => {
           return (
-            <MultiSelect
-              options={keywordsOptions}
-              onValueChange={(keywordsValues) => {
-                field.onChange(keywordsValues.map((value) => ({ value })));
+            <MultiSelectInputV2
+              value={field.value}
+              options={keywords}
+              onChange={(value) => {
+                field.onChange(value);
               }}
-              defaultValue={formState.defaultValues?.keywords ? formState.defaultValues.keywords.map((keyword) => keyword!.value!) : []}
-              value={field.value.map(({ value }) => value)}
-              placeholder='Keywords connected'
-              maxCount={3}
             />
           );
         }}

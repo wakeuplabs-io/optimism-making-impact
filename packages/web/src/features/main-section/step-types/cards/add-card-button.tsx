@@ -5,7 +5,7 @@ import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
-import { nonAssignedOption, useCardFormData, KeywordOption } from './useCardFormData';
+import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { strengthOptions, AttributeOption } from '../utils';
 import { MultiSelectInputV2 } from '@/components/ui/multi-select-v2';
 
@@ -25,8 +25,7 @@ export function AddCardModal(props: AddCardModalProps) {
     stepId: props.stepId,
   };
 
-  const { keywordsOptions, attributeOptions } = useCardFormData({
-    keywords: props.keywords,
+  const { attributeOptions } = useCardFormData({
     attributes: props.attributes,
   });
 
@@ -51,19 +50,13 @@ export function AddCardModal(props: AddCardModalProps) {
       defaultValues={defaultValues}
       schema={createCardBodySchema}
     >
-      <FormFields
-        defaultValues={defaultValues}
-        keywordsOptions={keywordsOptions}
-        keywords={props.keywords}
-        attributeOptions={attributeOptions}
-      />
+      <FormFields defaultValues={defaultValues} keywords={props.keywords} attributeOptions={attributeOptions} />
     </FormModal>
   );
 }
 
 interface FormFieldsProps {
   defaultValues: CreateCardBody;
-  keywordsOptions: KeywordOption[];
   keywords: Keyword[];
   attributeOptions: AttributeOption[];
 }

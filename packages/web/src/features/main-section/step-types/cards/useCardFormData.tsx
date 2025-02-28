@@ -1,30 +1,14 @@
 import { useMemo } from 'react';
-import { Keyword } from '@/types';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { Attribute } from '@optimism-making-impact/schemas';
 
 export const nonAssignedOption = { value: 0, label: <span>Non assigned</span> };
 
 interface UseCardFormDataProps {
-  keywords: Keyword[];
   attributes?: Attribute[];
 }
 
-export type KeywordOption = {
-  value: string;
-  label: string;
-};
-
-export function useCardFormData({ keywords, attributes }: UseCardFormDataProps) {
-  const keywordsOptions: KeywordOption[] = useMemo(
-    () =>
-      keywords.map((keyword) => ({
-        value: keyword.value,
-        label: keyword.value,
-      })),
-    [keywords],
-  );
-
+export function useCardFormData({ attributes }: UseCardFormDataProps) {
   const attributeOptions: AttributeOption[] = useMemo(() => {
     if (!attributes) return [];
 
@@ -39,7 +23,6 @@ export function useCardFormData({ keywords, attributes }: UseCardFormDataProps) 
   }, [attributes]);
 
   return {
-    keywordsOptions,
     attributeOptions,
   };
 }
