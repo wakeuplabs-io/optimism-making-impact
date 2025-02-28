@@ -22,7 +22,11 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   controlledOpen?: boolean;
 }
 
-export function FormModal<TFormSchema extends z.AnyZodObject>({ submitButtonText = 'Create', ...props }: FormModalProps<TFormSchema>) {
+export function FormModal<TFormSchema extends z.AnyZodObject>({
+  submitButtonText = 'Create',
+  submitButtonIcon,
+  ...props
+}: FormModalProps<TFormSchema>) {
   const [open, setOpen] = useState(false);
   const formId = useId();
 
@@ -44,7 +48,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({ submitButtonText
 
   const buttons = React.useMemo<ModalActionButtonProps[]>(() => {
     const baseButtons: ModalActionButtonProps[] = [
-      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, form: formId },
+      { type: 'submit', variant: 'primary', icon: submitButtonIcon, label: submitButtonText, closeOnClick: false, form: formId },
     ];
     if (props.secondaryButtonText) {
       baseButtons.push({
