@@ -74,7 +74,7 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

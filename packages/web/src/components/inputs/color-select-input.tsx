@@ -50,7 +50,10 @@ function ColorOption(props: ColorOptionProps) {
     <button
       className={cn('flex h-[23px] w-[23px] items-center justify-center rounded-full', props.disabled && 'opacity-50')}
       style={{ backgroundColor: getColor(props.color) }}
-      onClick={() => props.onClick?.(props.color)}
+      onClick={(e) => {
+        e.preventDefault();
+        props.onClick?.(props.color);
+      }}
       disabled={props.disabled}
     >
       <div className={cn('h-[19px] w-[19px] rounded-full', isSelected && 'border-2 border-white')} />
