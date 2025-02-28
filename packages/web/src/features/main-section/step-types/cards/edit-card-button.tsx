@@ -10,7 +10,7 @@ import { FormTextInput } from '@/components/form/form-text-input';
 import { AttributeOption, strengthOptions } from '../utils';
 import { useToggle } from 'usehooks-ts';
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { MultiSelectInputV2 } from '@/components/ui/multi-select-v2';
+import { MultiSelectInput } from '@/components/ui/multi-select';
 
 interface EditCardModalProps {
   stepId: number;
@@ -159,7 +159,7 @@ function FormFields({ attributeOptions, keywords, defaultValues }: FormFieldsPro
         defaultValue={defaultValues.keywords}
         render={({ field }) => {
           return (
-            <MultiSelectInputV2
+            <MultiSelectInput
               value={field.value}
               options={keywords}
               onChange={(value) => {

@@ -7,7 +7,7 @@ import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { strengthOptions, AttributeOption } from '../utils';
-import { MultiSelectInputV2 } from '@/components/ui/multi-select-v2';
+import { MultiSelectInput } from '@/components/ui/multi-select';
 
 interface AddCardModalProps {
   stepId: number;
@@ -117,7 +117,7 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.keywords}
         render={({ field }) => (
-          <MultiSelectInputV2
+          <MultiSelectInput
             value={field.value}
             options={props.keywords}
             onChange={(value) => {
