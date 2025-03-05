@@ -52,7 +52,7 @@ function SidebarContainer(props: SidebarContainerProps) {
           trigger={<Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />}
           description='Sidebar'
           side='left'
-          className='w-[320px]'
+          className='w-[320px] overflow-y-auto'
           triggerAsChild
         >
           {props.children}
@@ -75,7 +75,9 @@ function SidebarContent() {
       <div className='flex flex-1 flex-col justify-start md:justify-between gap-8'>
         <div className='flex flex-col gap-4'>
           <RoundList />
+          <hr />
           {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
+          <hr />
           <LogosSection />
         </div>
         <>

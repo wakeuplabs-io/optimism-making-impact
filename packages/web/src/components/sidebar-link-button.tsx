@@ -2,21 +2,23 @@ import { ActionButton } from '@/components/action-button';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
 import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { Label } from '@radix-ui/react-label';
-import { Pencil, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   link: string;
   onClick: (url: string) => void;
   isAdmin?: boolean;
+  className?: string;
 }
 
 export function SidebarLinkButton(props: SidebarLinkButtonProps) {
   return (
-    <div className='relative'>
-      {props.isAdmin && <EditIcon onClick={props.onClick} link={props.link} />}
+    <div className={cn('relative', props.className)}>
+      {props.isAdmin && <EditLink onClick={props.onClick} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
         <ImageButton src={props.src} />
       </a>
@@ -24,12 +26,12 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
   );
 }
 
-interface EditIconProps {
+interface EditLinkProps {
   onClick?: (link: string) => void;
   link: string;
 }
 
-function EditIcon(props: EditIconProps) {
+function EditLink(props: EditLinkProps) {
   const [newLink, setNewLink] = useState(props.link);
 
   useEffect(() => setNewLink(props.link), [props.link]);
@@ -42,7 +44,8 @@ function EditIcon(props: EditIconProps) {
     <Modal
       title='Edit link'
       subtitle='Click save when you are done.'
-      trigger={<Pencil size={18} className='absolute right-3 top-3 z-50 cursor-pointer stroke-[white] hover:opacity-50' />}
+      triggerClassname='absolute w-full h-16 flex items-end justify-center gap-2 bg-mi-stone-300 rounded-b-xl '
+      trigger={<span className='w-full text-center text-sm text-slate-500 hover:underline'>edit</span>}
     >
       <div className='grid gap-4 py-4'>
         <div>

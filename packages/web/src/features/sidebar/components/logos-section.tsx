@@ -1,5 +1,5 @@
-import RetroList from '@/assets/retro-list.png';
-import VoteHere from '@/assets/vote-here.png';
+import RetroList from '@/assets/retro-list.svg';
+import VoteHere from '@/assets/vote-here.svg';
 import { SidebarLinkButton } from '@/components/sidebar-link-button';
 import { useSidebarStore, useUserStore } from '@/state';
 
@@ -12,18 +12,20 @@ export default function LogosSection() {
   }
 
   return (
-    <div className='flex w-full flex-col gap-4'>
+    <div className='flex w-full gap-2'>
       <SidebarLinkButton
         src={VoteHere}
         link={selectedRound.link1}
         isAdmin={isAdmin}
         onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
+        className='w-1/2'
       />
       <SidebarLinkButton
         src={RetroList}
         link={selectedRound.link2}
         isAdmin={isAdmin}
         onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
+        className='w-1/2'
       />
     </div>
   );

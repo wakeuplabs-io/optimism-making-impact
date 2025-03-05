@@ -12,7 +12,7 @@ export function CategoryList(props: ContentProps) {
 }
 
 function Container(props: { children: React.ReactNode }) {
-  return <div className='mb-6 flex flex-col gap-2'>{props.children} </div>;
+  return <div className='flex flex-col gap-2'>{props.children} </div>;
 }
 
 interface ContentProps {
