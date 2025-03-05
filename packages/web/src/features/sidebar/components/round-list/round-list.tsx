@@ -17,7 +17,6 @@ export function RoundList({ className }: RoundListProps) {
       <ul className='flex flex-col gap-2'>
         {rounds.map((round) => {
           const isSelected = selectedRound?.id === round.id;
-
           return (
             <li key={round.id}>
               <RoundListButton round={round} isSelected={isSelected} onSelect={(round) => setSelectedRound(round.id)} />

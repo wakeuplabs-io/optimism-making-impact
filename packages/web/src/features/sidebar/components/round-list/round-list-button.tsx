@@ -1,5 +1,6 @@
 import { cn, getRoundName } from '@/lib/utils';
 import { CompleteRound } from '@/types';
+import { Circle } from 'lucide-react';
 
 interface RoundListButtonProps {
   round: CompleteRound;
@@ -11,14 +12,14 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
   return (
     <button
       className={cn(
-        `group flex w-full items-center gap-2 rounded-[10px] px-4 py-2 text-secondary hover:bg-mi-stone-300 hover:text-dark-high`,
+        `group flex w-full items-center gap-4 rounded-[10px] px-3 py-2 text-secondary hover:bg-mi-stone-300 hover:text-dark-high [&_svg]:hover:text-primary transition-colors duration-200`,
         {
-          'text-dark-high bg-mi-stone-300': isSelected,
+          'text-dark-high bg-mi-stone-300 [&_svg]:text-primary': isSelected,
         },
       )}
       onClick={() => onSelect(round)}
     >
-      <div className='h-[22px] w-[22px]'></div>
+      <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
       <span className='truncate text-sm'>{getRoundName(round.id)}</span>
     </button>
   );
