@@ -17,11 +17,9 @@ export const Login = () => {
               <LoaderCircle className='!h-[20px] !w-[20px]' />
             </span>
           ) : (
-            <span>
-              <LogIn className='h-[20px] w-[20px]' />
-            </span>
+            <LogIn className='h-[20px] w-[20px]' />
           )}
-          <span>Login</span>
+          <span className='text-sm'>Login</span>
         </SidebarListButton>
       </DialogTrigger>
       <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>

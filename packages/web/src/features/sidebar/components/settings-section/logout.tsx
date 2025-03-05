@@ -1,10 +1,9 @@
-import { AuthButton } from './auth-button';
-import { ViewModeToggle } from './view-mode-toggle';
+import { SidebarListButton } from '../sidebar-list-button';
 import { useUserStore } from '@/state';
 import { LogOut } from 'lucide-react';
 
 export const Logout = () => {
-  const { user, signOut } = useUserStore((state) => state);
+  const signOut = useUserStore((state) => state.signOut);
 
   const handleLogout = async () => {
     try {
@@ -14,13 +13,11 @@ export const Logout = () => {
     }
   };
 
-  return user?.isAdmin ? (
-    <div className='flex gap-2'>
-      <AuthButton onClick={handleLogout} icon={LogOut} variant='dark' />
-      <ViewModeToggle />
-    </div>
-  ) : (
-    <AuthButton onClick={handleLogout} label='Logout' icon={LogOut} />
+  return (
+    <SidebarListButton onClick={handleLogout}>
+      <LogOut className='h-[20px] w-[20px]' />
+      <span className='text-sm'>Log out</span>
+    </SidebarListButton>
   );
 };
 
