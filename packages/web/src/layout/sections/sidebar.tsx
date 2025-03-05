@@ -63,11 +63,7 @@ function SidebarContainer(props: SidebarContainerProps) {
     );
   }
 
-  return (
-    <div className='w-[320px] overflow-y-auto overflow-x-hidden p-6'>
-      <nav className='ml-auto h-full w-[220px] bg-white-high lg:static'>{props.children}</nav>
-    </div>
-  );
+  return <nav className='w-[320px] overflow-y-auto overflow-x-hidden h-full bg-white-high lg:static px-8 pt-10'>{props.children}</nav>;
 }
 
 function SidebarContent() {
@@ -80,7 +76,7 @@ function SidebarContent() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className='flex h-full flex-col justify-between gap-6'>
+    <div className='flex h-full flex-col justify-between items-start gap-6'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
       <div className='flex flex-1 flex-col justify-start md:justify-between gap-8'>
         <div className='flex flex-col gap-4'>
