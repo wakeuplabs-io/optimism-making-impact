@@ -12,14 +12,16 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
   return (
     <button
       className={cn(
-        `group flex w-full items-center gap-4 rounded-[10px] px-3 py-2 text-secondary hover:bg-mi-stone-300 hover:text-dark-high [&_svg]:hover:text-primary transition-colors duration-200`,
+        `group flex w-full items-center gap-2 rounded-[10px] px-3 py-2 text-secondary hover:bg-mi-stone-300 hover:text-dark-high [&_svg]:hover:text-primary transition-colors duration-200`,
         {
           'text-dark-high bg-mi-stone-300 [&_svg]:text-primary': isSelected,
         },
       )}
       onClick={() => onSelect(round)}
     >
-      <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
+      <div className='h-[20px] w-[20px] flex items-center justify-center'>
+        <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
+      </div>
       <span className='truncate text-sm'>{getRoundName(round.id)}</span>
     </button>
   );

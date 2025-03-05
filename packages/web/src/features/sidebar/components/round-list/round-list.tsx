@@ -1,6 +1,7 @@
-import { useSidebarStore } from '@/state';
+import { useSidebarStore, useUserStore } from '@/state';
 import { cn } from '@/lib/utils';
 import { RoundListButton } from './round-list-button';
+import { CreateRoundModal } from '../create-round-modal';
 
 interface RoundListProps {
   className?: string;
@@ -10,6 +11,8 @@ export function RoundList({ className }: RoundListProps) {
   const rounds = useSidebarStore((state) => state.rounds);
   const selectedRound = useSidebarStore((state) => state.selectedRound);
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
+  const addRound = useSidebarStore((state) => state.addRound);
+  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   return (
     <div className={cn('flex flex-col gap-2', className)}>
@@ -23,12 +26,12 @@ export function RoundList({ className }: RoundListProps) {
             </li>
           );
         })}
+        {isAdmin && (
+          <li key='add-round-button'>
+            <CreateRoundModal onSave={addRound} />
+          </li>
+        )}
       </ul>
-      {/* {isAdmin && (
-        <div className='flex w-full justify-center gap-1'>
-          <CreateRoundModal onSave={addRound} />
-        </div>
-      )} */}
     </div>
   );
 }
