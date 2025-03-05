@@ -1,4 +1,4 @@
-import { useIcons } from "@/hooks/use-icons";
+import { useIcons } from '@/hooks/use-icons';
 
 interface IconWithDefaultProps {
   src: string;
@@ -7,9 +7,9 @@ interface IconWithDefaultProps {
   size?: 'md' | 'lg';
 }
 
-export function IconWithDefault({ src, defaultIcon = 'blocks' }: IconWithDefaultProps) {
+export function IconWithDefault({ src, defaultIcon = 'blocks', className }: IconWithDefaultProps) {
   const modalIcons = useIcons();
-  
+
   const LucideIcon = modalIcons[src] || modalIcons[defaultIcon];
-  return <LucideIcon />;
+  return <LucideIcon className={className} />;
 }

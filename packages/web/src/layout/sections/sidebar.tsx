@@ -4,7 +4,7 @@ import { ImageButton } from '@/components/image-button';
 import { SideMenu } from '@/components/side-menu';
 import { WAKEUP_URL } from '@/config';
 import { AuthSection } from '@/features/sidebar/components/auth-section';
-import { CategoryList } from '@/features/sidebar/components/category-list';
+import { CategoryList } from '@/features/sidebar/components/category-list/category-list';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { RoundList } from '@/features/sidebar/components/round-list/round-list';
 import SetupModal from '@/features/sidebar/components/setup-modal';
