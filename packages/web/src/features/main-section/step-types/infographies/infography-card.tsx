@@ -47,7 +47,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
           defaultImgClassname='rounded-full'
         />
       </HoverOverlay>
-      <div className='flex items-center h-full w-full lg:px-0 lg:max-w-[500px]'>
+      <div className='flex items-center h-full w-full lg:px-0'>
         <EditInfographyMarkdown isAdmin={props.isAdmin} markdown={props.infography.markdown} onChange={handleMarkdownChange} />
       </div>
       {props.isAdmin && (
