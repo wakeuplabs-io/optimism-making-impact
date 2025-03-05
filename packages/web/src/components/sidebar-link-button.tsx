@@ -17,10 +17,18 @@ interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
 
 export function SidebarLinkButton(props: SidebarLinkButtonProps) {
   return (
-    <div className={cn('relative', props.className)}>
+    <div
+      className={cn(
+        'relative',
+        {
+          ' h-16': props.isAdmin,
+        },
+        props.className,
+      )}
+    >
       {props.isAdmin && <EditLink onClick={props.onClick} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
-        <ImageButton src={props.src} />
+        <ImageButton className='h-fit' src={props.src} />
       </a>
     </div>
   );
@@ -44,7 +52,7 @@ function EditLink(props: EditLinkProps) {
     <Modal
       title='Edit link'
       subtitle='Click save when you are done.'
-      triggerClassname='absolute w-full h-16 flex items-end justify-center gap-2 bg-mi-stone-300 rounded-b-xl '
+      triggerClassname='absolute w-full h-16 flex items-end justify-center mb-4 gap-2 bg-mi-stone-300 rounded-b-xl '
       trigger={<span className='w-full text-center text-sm text-slate-500 hover:underline'>edit</span>}
     >
       <div className='grid gap-4 py-4'>

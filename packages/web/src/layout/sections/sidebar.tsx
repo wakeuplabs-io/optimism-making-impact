@@ -3,16 +3,17 @@ import WakeUpLogo from '@/assets/wake-up-logo.png';
 import { ImageButton } from '@/components/image-button';
 import { SideMenu } from '@/components/side-menu';
 import { WAKEUP_URL } from '@/config';
-import { AuthSection } from '@/features/sidebar/components/auth-section';
+// import { AuthSection } from '@/features/sidebar/components/settings-section/index';
 import { CategoryList } from '@/features/sidebar/components/category-list/category-list';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { RoundList } from '@/features/sidebar/components/round-list/round-list';
-import SetupModal from '@/features/sidebar/components/setup-modal';
+// import SetupModal from '@/features/sidebar/components/setup-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore } from '@/state';
-import { Menu, Settings } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Menu } from 'lucide-react';
+import { useMemo } from 'react';
+import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
 
 export function SidebarSection() {
   return (
@@ -67,7 +68,6 @@ function SidebarContainer(props: SidebarContainerProps) {
 
 function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
-  const [open, setOpen] = useState(false);
 
   return (
     <div className='flex h-full flex-col justify-between items-start gap-6'>
@@ -79,22 +79,13 @@ function SidebarContent() {
           {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
           <hr />
           <LogosSection />
+          <hr />
+          <SettingsSection />
         </div>
-        <>
-          <button
-            onClick={() => setOpen(true)}
-            className='flex w-full items-center gap-3 rounded-lg px-4 py-2 text-[#4e4e4e] transition-colors hover:bg-[#f1f4f9]'
-          >
-            <Settings className='h-4 w-4' />
-            <span className='text-sm'>Setup</span>
-          </button>
-          <SetupModal open={open} onOpenChange={setOpen} />
-        </>
-        <AuthSection />
+        <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
+          <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
+        </a>
       </div>
-      <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
-        <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
-      </a>
     </div>
   );
 }

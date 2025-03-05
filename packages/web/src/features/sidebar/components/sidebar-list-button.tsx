@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 export interface SidebarListButtonProps {
-  isSelected: boolean;
+  isSelected?: boolean;
   children?: React.ReactNode;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
