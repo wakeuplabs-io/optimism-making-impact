@@ -17,7 +17,7 @@ export function CategoryListButton({ category, isAdmin, isSelected = false, onCl
     <SidebarListButton isSelected={isSelected} onClick={onClick}>
       <div className='flex items-center  w-full gap-2 overflow-hidden'>
         <IconWithDefault src={category.icon ?? ''} className='h-[20px] w-[20px]' />
-        <span className='overflow-hidden truncate whitespace-nowrap text-sm 2xl:text-base'>{category.name}</span>
+        <span className='overflow-hidden truncate whitespace-nowrap text-sm'>{category.name}</span>
       </div>
       {isAdmin && isSelected && (
         <div className='flex gap-1'>
