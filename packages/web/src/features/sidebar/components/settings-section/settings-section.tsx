@@ -1,6 +1,5 @@
 import { useUserStore } from '@/state';
 import { SettingsButton } from './settings-button';
-// import Logout from './logout';
 import { Login } from './login';
 import Logout from './logout';
 
@@ -9,8 +8,14 @@ export function SettingsSection() {
 
   return (
     <ul className='flex flex-col gap-2'>
-      <SettingsButton />
-      {user?.authToken ? <Logout /> : <Login />}
+      {user?.authToken ? (
+        <>
+          <SettingsButton />
+          <Logout />
+        </>
+      ) : (
+        <Login />
+      )}
     </ul>
   );
 }

@@ -9,7 +9,6 @@ export interface SidebarListButtonProps {
 }
 
 export function SidebarListButton({ isSelected, isDisabled, children, onClick, className }: SidebarListButtonProps) {
-  console.log(isDisabled);
   return (
     <button
       className={cn(
