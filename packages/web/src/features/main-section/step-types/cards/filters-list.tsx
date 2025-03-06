@@ -72,7 +72,10 @@ function Content(props: ContentProps) {
             filters={props.smartList.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               data: attr,
-              prefixDot: attr.color,
+              filterIcon: {
+                type: 'DOT',
+                color: attr.color,
+              },
               tooltipText: attr.description,
             }))}
             onSelected={setSelectedAttributes}
