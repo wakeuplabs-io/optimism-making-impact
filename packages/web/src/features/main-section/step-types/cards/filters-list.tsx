@@ -42,7 +42,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white p-5'>{props.children}</div>;
+  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white px-8 py-6'>{props.children}</div>;
 }
 
 interface ContentProps {
@@ -63,12 +63,11 @@ function Content(props: ContentProps) {
   } = useFiltersStore((state) => state);
   return (
     <div className='flex flex-col w-full'>
-      <h2 className='text-[20px] font-[500]'>Filters</h2>
-      <hr className='border-[#D9D9D9] my-6' />
+      <h2 className='text-base font-semibold'>Filters</h2>
+      <hr className='my-4' />
       <div className='flex flex-col gap-8'>
         {props.smartList && (
           <FilterGroup
-            className='mt-4'
             title={props.smartList.title}
             filters={props.smartList.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),

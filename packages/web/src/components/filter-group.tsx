@@ -47,11 +47,11 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   }, [props.filters, props.selected]);
 
   return (
-    <div className={cn('flex flex-col gap-2', props.className)}>
-      {props.title && <h3 className='text-[16px] font-[400] text-[#68778D]'>{props.title}</h3>}
+    <div className={cn('flex flex-col gap-4', props.className)}>
+      {props.title && <h3 className='text-sm font-semibold text-gray-700'>{props.title}</h3>}
       <div
         className={cn('flex flex-col gap-1', {
-          'gap-1': !props.spacing || props.spacing === 'md',
+          'gap-2': !props.spacing || props.spacing === 'md',
           'gap-4': props.spacing === 'lg',
           'gap-8': props.spacing === 'xl',
         })}
@@ -125,7 +125,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'border-1 flex w-fit max-w-full items-center justify-start gap-2 rounded-full border border-transparent px-2 py-0.5',
+        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full py-0.5 border-1 border border-transparent',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -134,7 +134,7 @@ function FilterButton<T extends FilterData>({
       onClick={handleClick}
     >
       {prefixDot && <ColorDot color={selected ? prefixDot : 'GRAY'} />}
-      <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline'>
+      <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
         {label}
       </span>
       {tooltipText && <InfoIcon tooltipText={tooltipText} />}
