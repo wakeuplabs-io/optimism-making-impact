@@ -1,13 +1,13 @@
 import { cn } from '@/lib/utils';
 import React, { useMemo, useState } from 'react';
-import { SidebarListButton } from './sidebar-list-button';
+import { SidebarListButton, SidebarListButtonProps } from './sidebar-list-button';
 import { Ellipsis } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent } from '@/components/ui/sheet';
 import { WakeUpLogo } from './wakeup-logo';
 
 interface Item {
   id: number;
-  item: React.ReactNode;
+  item: React.ReactElement<typeof SidebarListButton>;
 }
 
 interface SidebarSectionListProps {
@@ -28,8 +28,15 @@ export function SidebarSectionList({ id, isAdmin, items, title, addItem, maxItem
       return [items, []];
     }
 
-    const viewAllItems = items.slice(maxItems);
-    const itemsToShow = items.slice(0, maxItems);
+    let sectionItems = [...items];
+    const selectedItemIdx = sectionItems.findIndex((item) => (item.item.props as SidebarListButtonProps).isSelected);
+
+    if (selectedItemIdx >= maxItems) {
+      sectionItems = [...sectionItems.splice(selectedItemIdx, 1), ...sectionItems];
+    }
+
+    const viewAllItems = sectionItems.slice(maxItems);
+    const itemsToShow = sectionItems.slice(0, maxItems);
 
     return [itemsToShow, viewAllItems];
   }, [items, maxItems]);
@@ -72,13 +79,11 @@ interface ViewAllSidebarProps {
 function ViewAllSidebar({ isOpen, title, onOpenChange, children }: ViewAllSidebarProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetTrigger></SheetTrigger>
       <SheetContent side='left' className='w-[320px] py-20 px-8' overlayClassName='bg-inherit'>
         <div className='flex flex-col h-full w-full justify-between'>
           <div className='flex h-full w-full flex-col gap-2'>
             <p className='text-xs font-normal text-gray-700'>All {title}</p>
-            {/* capture click on children and close the sheet */}
-            <div onClick={() => onOpenChange(false)}>{children}</div>
+            <SheetClose>{children}</SheetClose>
           </div>
           <WakeUpLogo />
         </div>
