@@ -1,7 +1,7 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
-import { getRandomBadgeColor } from '@/lib/utils';
+import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -18,8 +18,13 @@ export function Card(props: CardProps) {
   const { keywords, attributes } = useFiltersStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
+  const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
+
   return (
-    <div className='flex h-fit w-full min-h-[320px] flex-col gap-4 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] '>
+    <div
+      style={{ borderLeftColor: borderColor }}
+      className={`flex h-fit w-full min-h-[320px] flex-col gap-4 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]`}
+    >
       <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
@@ -84,8 +89,8 @@ interface CardBodyProps {
 
 function CardBody(props: CardBodyProps) {
   return (
-    <div className='flex flex-1'>
-      <Markdown className='overflow-auto break-words'>{props.markdown}</Markdown>
+    <div className='prose prose-s flex flex-1 w-full'>
+      <Markdown className='w-full overflow-auto break-words'>{props.markdown}</Markdown>
     </div>
   );
 }
