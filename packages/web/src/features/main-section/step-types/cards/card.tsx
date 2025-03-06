@@ -23,7 +23,7 @@ export function Card(props: CardProps) {
   return (
     <div
       style={{ borderLeftColor: borderColor }}
-      className={`flex h-fit w-full min-h-[320px] flex-col gap-4 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]`}
+      className={`flex h-fit w-full min-h-[320px] flex-col gap-6 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]`}
     >
       <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
       <CardBody markdown={props.card.markdown} />
@@ -46,10 +46,7 @@ function CardTitle(props: CardTitleProps) {
 
   return (
     <div className='flex items-center max-w-full gap-4'>
-      <p
-        className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-[18px] font-[400] leading-[22px]'
-        title={props.card.title}
-      >
+      <p className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-base font-medium' title={props.card.title}>
         {props.card.title}
       </p>
       <StrengthIndicator strength={props.card.strength} />
@@ -90,7 +87,14 @@ interface CardBodyProps {
 function CardBody(props: CardBodyProps) {
   return (
     <div className='prose prose-s flex flex-1 w-full'>
-      <Markdown className='w-full overflow-auto break-words'>{props.markdown}</Markdown>
+      <Markdown
+        className='w-full overflow-auto break-words'
+        components={{
+          p: (props) => <p className='text-sm m-0' {...props} />,
+        }}
+      >
+        {props.markdown}
+      </Markdown>
     </div>
   );
 }
@@ -107,7 +111,7 @@ function CardFooter(props: CardFooterProps) {
           <Badge
             key={`${keyword.id}-${i}`}
             style={{ backgroundColor: getRandomBadgeColor(keyword.value) }}
-            className='inline-block w-[48%] truncate rounded-full px-6 py-1 text-center'
+            className='inline-block w-[48%] truncate rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}
           </Badge>
