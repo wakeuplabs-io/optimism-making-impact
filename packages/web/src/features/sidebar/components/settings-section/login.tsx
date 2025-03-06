@@ -19,12 +19,12 @@ export const Login = () => {
           ) : (
             <LogIn className='h-[20px] w-[20px]' />
           )}
-          <span className='text-sm'>Login</span>
+          <span className='text-sm'>Log in</span>
         </SidebarListButton>
       </DialogTrigger>
       <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>
         <DialogHeader className='flex items-start justify-start w-full gap-6'>
-          <DialogTitle className='text-2xl text-left text-dark-low font-medium'>Login</DialogTitle>
+          <DialogTitle className='text-2xl text-left text-dark-low font-medium'>Log in</DialogTitle>
           <DialogDescription className='text-xl text-left text-dark-high'>
             Login with Google to access additional features.
           </DialogDescription>
