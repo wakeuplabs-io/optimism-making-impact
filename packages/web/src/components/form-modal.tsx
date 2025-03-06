@@ -9,6 +9,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
+  triggerClassname?: string;
   defaultValues?: DefaultValues<z.TypeOf<TFormSchema>>;
   children: React.ReactNode;
   submitButtonText?: string;
@@ -72,6 +73,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
       title={props.title}
       subtitle={props.subtitle}
       trigger={props.trigger}
+      triggerClassname={props.triggerClassname}
       buttons={buttons}
       contentProps={props.contentProps}
     >

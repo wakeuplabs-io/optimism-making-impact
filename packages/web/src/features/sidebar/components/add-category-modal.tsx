@@ -2,11 +2,11 @@ import { IconPicker } from './icon-picker';
 import { FormModal } from '@/components/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { NewButton } from '@/components/new-button';
 import { useIcons } from '@/hooks/use-icons';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
 
 interface AddCategoryModalProps {
   roundId: number;
@@ -23,7 +23,8 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
   return (
     <FormModal
       title='New category'
-      trigger={<NewButton label='Add category' />}
+      trigger={<SidebarModalAddTrigger label='New Category' />}
+      triggerClassname='w-full'
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={createCategoryBodySchema}

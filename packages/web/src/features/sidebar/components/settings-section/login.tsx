@@ -1,17 +1,26 @@
-import { LogIn } from 'lucide-react';
-import { AuthButton } from './auth-button';
+import { LoaderCircle, LogIn } from 'lucide-react';
 import { useUserStore } from '@/state';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import googleLogo from '@/assets/google_logo.svg';
 import { signInWithRedirect } from 'aws-amplify/auth';
+import { SidebarListButton } from '../sidebar-list-button';
 
 export const Login = () => {
-  const { isLoading } = useUserStore((state) => state);
+  const isLoading = useUserStore((state) => state.isLoading);
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <AuthButton className='w-full' isLoading={isLoading} icon={LogIn} label='Login' />
+        <SidebarListButton isDisabled={isLoading}>
+          {isLoading ? (
+            <span className='animate-spin'>
+              <LoaderCircle className='!h-[20px] !w-[20px]' />
+            </span>
+          ) : (
+            <LogIn className='h-[20px] w-[20px]' />
+          )}
+          <span className='text-sm'>Login</span>
+        </SidebarListButton>
       </DialogTrigger>
       <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>
         <DialogHeader className='flex items-start justify-start w-full gap-6'>

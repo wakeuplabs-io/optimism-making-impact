@@ -1,5 +1,5 @@
-import { AddCategoryModal } from './add-category-modal';
-import { CategoryButton } from '@/components/category-button';
+import { AddCategoryModal } from '../add-category-modal';
+import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
 import { useSidebarStore, useUserStore } from '@/state';
 import { Category } from '@/types';
 
@@ -12,7 +12,7 @@ export function CategoryList(props: ContentProps) {
 }
 
 function Container(props: { children: React.ReactNode }) {
-  return <div className='mb-6 flex flex-col gap-2'>{props.children} </div>;
+  return <div className='flex flex-col gap-2'>{props.children} </div>;
 }
 
 interface ContentProps {
@@ -26,7 +26,8 @@ function Content({ categories, roundId }: ContentProps) {
   const addCategory = useSidebarStore((state) => state.addCategory);
 
   return (
-    <>
+    <div className='flex flex-col gap-2'>
+      <p className='text-xs font-normal text-gray-700'>Categories</p>
       <ul className='flex flex-col gap-2'>
         {categories.length === 0 ? (
           <EmptyState />
@@ -34,9 +35,9 @@ function Content({ categories, roundId }: ContentProps) {
           <>
             {categories.map((category) => (
               <li key={category.id}>
-                <CategoryButton
+                <CategoryListButton
                   category={category}
-                  isActive={sidebarState.selectedCategoryId === category.id}
+                  isSelected={sidebarState.selectedCategoryId === category.id}
                   onClick={() => sidebarState.setSelectedCategoryId(category.id)}
                   isAdmin={isAdmin}
                   onDelete={sidebarState.deleteCategory}
@@ -52,7 +53,7 @@ function Content({ categories, roundId }: ContentProps) {
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 }
 

@@ -31,6 +31,9 @@ export default {
         slate: {
           500: 'var(--slate-500)',
         },
+        ['mi-stone']: {
+          300: 'var(--mi-stone-300)',
+        },
         // End of new custom colors
 
         // Start of Card tag colors
