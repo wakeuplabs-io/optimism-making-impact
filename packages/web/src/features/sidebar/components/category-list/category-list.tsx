@@ -2,6 +2,7 @@ import { AddCategoryModal } from '../add-category-modal';
 import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
 import { useSidebarStore, useUserStore } from '@/state';
 import { Category } from '@/types';
+import { SidebarSectionList } from '../sidebar-section-list';
 
 export function CategoryList(props: ContentProps) {
   return (
@@ -25,35 +26,29 @@ function Content({ categories, roundId }: ContentProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addCategory = useSidebarStore((state) => state.addCategory);
 
+  if (categories.length === 0) return <EmptyState />;
+
   return (
-    <div className='flex flex-col gap-2'>
-      <p className='text-xs font-normal text-gray-700'>Categories</p>
-      <ul className='flex flex-col gap-2'>
-        {categories.length === 0 ? (
-          <EmptyState />
-        ) : (
-          <>
-            {categories.map((category) => (
-              <li key={category.id}>
-                <CategoryListButton
-                  category={category}
-                  isSelected={sidebarState.selectedCategoryId === category.id}
-                  onClick={() => sidebarState.setSelectedCategoryId(category.id)}
-                  isAdmin={isAdmin}
-                  onDelete={sidebarState.deleteCategory}
-                  onEdit={sidebarState.editCategory}
-                />
-              </li>
-            ))}
-            {isAdmin && (
-              <li key='add-category'>
-                <AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />
-              </li>
-            )}
-          </>
-        )}
-      </ul>
-    </div>
+    <SidebarSectionList
+      id='categories'
+      isAdmin={isAdmin}
+      title='Categories'
+      items={categories.map((category) => ({
+        id: category.id,
+        item: (
+          <CategoryListButton
+            category={category}
+            isSelected={sidebarState.selectedCategoryId === category.id}
+            onClick={() => sidebarState.setSelectedCategoryId(category.id)}
+            isAdmin={isAdmin}
+            onDelete={sidebarState.deleteCategory}
+            onEdit={sidebarState.editCategory}
+          />
+        ),
+      }))}
+      addItem={<AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />}
+      maxItems={5}
+    />
   );
 }
 
