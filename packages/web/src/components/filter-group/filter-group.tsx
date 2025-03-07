@@ -131,7 +131,12 @@ function FilterButton<T extends FilterData>({
       )}
       onClick={handleClick}
     >
-      {FilterIcon && <FilterIcon selected={selected} />}
+      {FilterIcon && (
+        // All icons have the same size, so we can use a fixed size for the container.
+        <div className='h-4 w-4 flex items-center justify-center'>
+          <FilterIcon selected={selected} />
+        </div>
+      )}
       <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
         {label}
       </span>

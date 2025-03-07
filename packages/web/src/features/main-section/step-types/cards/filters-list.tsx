@@ -6,6 +6,7 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
+import { FilterStrengthIcon } from './filter-strength-icon';
 
 interface CardFiltersProps {
   smartList?: CompleteSmartList;
@@ -85,6 +86,7 @@ function Content(props: ContentProps) {
           filters={strengths.map((strength) => ({
             label: strength.value.toLowerCase(),
             data: strength,
+            filterIcon: ({ selected }) => <FilterStrengthIcon strength={strength.value} selected={selected} />,
           }))}
           onSelected={setSelectedStrengths}
           selected={selectedStrengths}
