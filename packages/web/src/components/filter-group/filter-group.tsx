@@ -2,6 +2,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
 import { ComponentProps, useMemo } from 'react';
+import { useToggle } from 'usehooks-ts';
 
 type FilterIcon = React.ComponentType<{ selected: boolean }>;
 interface FilterData {
@@ -23,12 +24,15 @@ interface FilterGroupProps<T extends FilterData> {
   isAdmin?: boolean;
   spacing?: 'md' | 'lg' | 'xl';
   selected?: T[];
+  maxFilters?: number;
   onSelected: (data: T) => void;
 }
 
 export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
+  const [showAllFilters, toggleShowAllFilters] = useToggle(false);
   //only when a selected filter is present, the edition is allowed
   const editionIsAllowed = !!props.selected?.length;
+  const showAllFiltersEnabled = props.maxFilters && props.maxFilters < props.filters.length;
 
   const selectedFilters = useMemo(() => {
     return props.filters.reduce(
@@ -44,6 +48,14 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
     );
   }, [props.filters, props.selected]);
 
+  const [filtersToDisplay, hiddenFilterAmount] = useMemo(() => {
+    if (showAllFilters) return [props.filters, 0];
+
+    if (!showAllFiltersEnabled) return [props.filters, 0];
+
+    return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters!];
+  }, [props.filters, props.maxFilters, showAllFilters, showAllFiltersEnabled]);
+
   return (
     <div className={cn('flex flex-col gap-4', props.className)}>
       {props.title && <h3 className='text-sm font-semibold text-gray-700'>{props.title}</h3>}
@@ -57,21 +69,28 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
         {props.filters.length === 0 ? (
           <EmptyState />
         ) : (
-          props.filters.map((filter, i) => (
-            <FilterButton
-              key={`${filter.label}-${i}`}
-              label={filter.label}
-              data={filter.data}
-              editable={selectedFilters[filter.data.id] && editionIsAllowed}
-              selected={!!selectedFilters[filter.data.id]}
-              onClick={props.onSelected}
-              filterIcon={filter.filterIcon}
-              isAdmin={props.isAdmin}
-              editComponent={filter.editComponent}
-              tooltipText={filter.tooltipText}
-              deleteComponent={filter.deleteComponent}
-            />
-          ))
+          <>
+            {filtersToDisplay.map((filter, i) => (
+              <FilterButton
+                key={`${filter.label}-${i}`}
+                label={filter.label}
+                data={filter.data}
+                editable={selectedFilters[filter.data.id] && editionIsAllowed}
+                selected={!!selectedFilters[filter.data.id]}
+                onClick={props.onSelected}
+                filterIcon={filter.filterIcon}
+                isAdmin={props.isAdmin}
+                editComponent={filter.editComponent}
+                tooltipText={filter.tooltipText}
+                deleteComponent={filter.deleteComponent}
+              />
+            ))}
+            {showAllFiltersEnabled && (
+              <button className='text-sm text-left underline pl-6' onClick={() => toggleShowAllFilters()}>
+                {showAllFilters ? 'Collapse' : `View all (${hiddenFilterAmount})`}
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
