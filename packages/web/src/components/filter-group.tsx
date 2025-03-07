@@ -82,7 +82,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-sm text-center'>
+    <div className='text-center text-sm'>
       <span>No filters available</span>
     </div>
   );
@@ -109,6 +109,10 @@ function FilterButton<T extends FilterData>({
   onClick,
   prefixDot,
   editable = false,
+  deleteComponent,
+  editComponent,
+  tooltipText,
+  isAdmin,
   ...props
 }: FilterButtonProps<T>) {
   function handleClick() {
@@ -121,7 +125,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full px-2 py-0.5 border-1 border border-transparent',
+        'border-1 flex w-fit max-w-full items-center justify-start gap-2 rounded-full border border-transparent px-2 py-0.5',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -133,11 +137,11 @@ function FilterButton<T extends FilterData>({
       <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline'>
         {label}
       </span>
-      {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
-      {props.isAdmin && editable && (
+      {tooltipText && <InfoIcon tooltipText={tooltipText} />}
+      {isAdmin && editable && (
         <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
-          {props.editComponent}
-          {props.deleteComponent}
+          {editComponent}
+          {deleteComponent}
         </div>
       )}
     </button>
