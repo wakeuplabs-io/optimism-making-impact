@@ -40,8 +40,8 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
         {buttons.length > 0 && (
           <DialogFooter className='mt-5 w-full'>
             <div className='flex w-full gap-4'>
-              {buttons.map((button) => (
-                <ModalActionButton key={button.id} {...button} className='w-full' />
+              {buttons.map((button, index) => (
+                <ModalActionButton key={index} {...button} className='w-full' />
               ))}
             </div>
           </DialogFooter>
