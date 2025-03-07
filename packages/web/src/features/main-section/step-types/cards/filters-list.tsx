@@ -1,5 +1,5 @@
 import { FilterGroup } from '@/components/filter-group/filter-group';
-import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
+import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
@@ -7,6 +7,8 @@ import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
 import { FilterStrengthIcon } from './filter-strength-icon';
+import { Hash } from 'lucide-react';
+import { getRandomBadgeColor } from '@/lib/utils';
 
 interface CardFiltersProps {
   smartList?: CompleteSmartList;
@@ -96,6 +98,14 @@ function Content(props: ContentProps) {
           filters={keywords.map((keyword) => ({
             label: keyword.value.toLowerCase(),
             data: keyword,
+            filterIcon: ({ selected }) => (
+              <FilterGroupIcon
+                selected={selected}
+                icon={Hash}
+                color={getRandomBadgeColor(keyword.value.toLowerCase()).color}
+                strokeWidth={3}
+              />
+            ),
           }))}
           onSelected={setSelectedKeywords}
           selected={selectedKeywords}

@@ -105,13 +105,13 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex justify-between w-full gap-2 pb-1 overflow-x-auto'>
+    <div className='flex justify-between w-full h-[50px] p-1 gap-2 overflow-x-auto scroll-s'>
       {props.keywords.map((keyword, i) => {
         return (
           <Badge
             key={`${keyword.id}-${i}`}
-            style={{ backgroundColor: getRandomBadgeColor(keyword.value) }}
-            className='inline-block w-[48%] rounded-full px-6 py-1 text-center text-xs font-normal'
+            style={{ backgroundColor: getRandomBadgeColor(keyword.value).background }}
+            className='inline-block w-[48%] h-fit rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}
           </Badge>

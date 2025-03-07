@@ -1,4 +1,4 @@
-import { BADGE_COLORS, COLOR_MAP, ExtendedColor } from '@/config';
+import { BADGE_COLORS, BadgeColorType, COLOR_MAP, ExtendedColor } from '@/config';
 import { CompleteCard, Keyword } from '@/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -38,7 +38,7 @@ export function capitalizeFirst(string: string) {
  * @param {string} input - The string used to determine the color.
  * @returns {string} - A color from the BADGE_COLORS array.
  */
-export function getRandomBadgeColor(input: string): string {
+export function getRandomBadgeColor(input: string): BadgeColorType {
   // Simple hash function to convert string to a number
   const hash = Array.from(input).reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
