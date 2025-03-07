@@ -1,4 +1,5 @@
-import { FilterGroup } from '@/components/filter-group';
+import { FilterGroup } from '@/components/filter-group/filter-group';
+import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
@@ -72,10 +73,7 @@ function Content(props: ContentProps) {
             filters={props.smartList.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               data: attr,
-              filterIcon: {
-                type: 'DOT',
-                color: attr.color,
-              },
+              filterIcon: ({ selected }) => <FilterGroupColorDot selected={selected} color={attr.color} />,
               tooltipText: attr.description,
             }))}
             onSelected={setSelectedAttributes}

@@ -1,29 +1,16 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn, getColor } from '@/lib/utils';
-import { Color } from '@optimism-making-impact/schemas';
-import { Info, LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Info } from 'lucide-react';
 import { ComponentProps, useMemo } from 'react';
-import { ColorDot } from './color-dot';
 
-type FilterIconType =
-  | {
-      type: 'DOT';
-      color: Color;
-    }
-  | {
-      type: 'ICON';
-      icon: LucideIcon;
-      color: string;
-    };
-
+type FilterIcon = React.ComponentType<{ selected: boolean }>;
 interface FilterData {
   id: number;
 }
-
 interface Filter<T extends FilterData> {
   data: T;
   label: string;
-  filterIcon?: FilterIconType;
+  filterIcon?: FilterIcon;
   editComponent?: React.ReactNode;
   deleteComponent?: React.ReactNode;
   tooltipText?: string;
@@ -76,7 +63,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
               label={filter.label}
               data={filter.data}
               editable={selectedFilters[filter.data.id] && editionIsAllowed}
-              selected={selectedFilters[filter.data.id]}
+              selected={!!selectedFilters[filter.data.id]}
               onClick={props.onSelected}
               filterIcon={filter.filterIcon}
               isAdmin={props.isAdmin}
@@ -102,10 +89,10 @@ function EmptyState() {
 interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'button'>, 'onClick'> {
   label: string; // Label displayed on the button.
   editable: boolean;
-  selected?: boolean; // Whether the button is in a "selected" state.
+  selected: boolean; // Whether the button is in a "selected" state.
   data: T; // Data payload associated with this button.
   onClick?: (data: T) => void; // Callback when the button is clicked.
-  filterIcon?: FilterIconType;
+  filterIcon?: FilterIcon;
   isAdmin?: boolean;
   editComponent?: React.ReactNode;
   deleteComponent?: React.ReactNode;
@@ -118,7 +105,7 @@ function FilterButton<T extends FilterData>({
   className,
   data,
   onClick,
-  filterIcon,
+  filterIcon: FilterIcon,
   editable = false,
   deleteComponent,
   editComponent,
@@ -144,7 +131,7 @@ function FilterButton<T extends FilterData>({
       )}
       onClick={handleClick}
     >
-      {filterIcon && <FilterIcon icon={filterIcon} selected={selected} />}
+      {FilterIcon && <FilterIcon selected={selected} />}
       <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
         {label}
       </span>
@@ -157,13 +144,6 @@ function FilterButton<T extends FilterData>({
       )}
     </button>
   );
-}
-
-function FilterIcon({ icon, selected }: { icon: FilterIconType; selected?: boolean }) {
-  if (icon.type === 'DOT') {
-    return <ColorDot color={selected ? icon.color : 'GRAY'} />;
-  }
-  return <icon.icon color={selected ? icon.color : getColor('GRAY')} />;
 }
 
 function InfoIcon(props: { tooltipText: string }) {
