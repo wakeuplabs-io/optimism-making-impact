@@ -1,4 +1,4 @@
-import { Modal } from '@/components/modal';
+import { BACKTONORMAL_Modal } from '@/components/modal2';
 import { CompleteItem } from '@/types';
 import { Trash, X } from 'lucide-react';
 
@@ -13,7 +13,7 @@ export function DeleteItemModal(props: DeleteItemModalProps) {
   }
 
   return (
-    <Modal
+    <BACKTONORMAL_Modal
       title='Delete item'
       trigger={
         <button>
@@ -26,6 +26,6 @@ export function DeleteItemModal(props: DeleteItemModalProps) {
       ]}
     >
       <span>Are you sure you want to delete this item?</span>
-    </Modal>
+    </BACKTONORMAL_Modal>
   );
 }
