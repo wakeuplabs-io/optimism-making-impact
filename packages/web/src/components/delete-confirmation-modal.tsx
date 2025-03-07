@@ -1,4 +1,4 @@
-import { BACKTONORMAL_Modal } from '@/components/modal2';
+import { Modal } from '@/components/modal';
 import { Trash } from 'lucide-react';
 
 interface DeleteConfirmationModalProps {
@@ -11,7 +11,7 @@ interface DeleteConfirmationModalProps {
 
 export function DeleteConfirmationModal(props: DeleteConfirmationModalProps) {
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       open={props.isOpen}
       title={props.title}
       onOpenChange={props.onOpenChange}
@@ -21,6 +21,6 @@ export function DeleteConfirmationModal(props: DeleteConfirmationModalProps) {
       ]}
     >
       {props.description}
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }

@@ -1,6 +1,6 @@
 import { ActionButton } from '@/components/action-button';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
-import { BACKTONORMAL_Modal } from '@/components/modal2';
+import { Modal } from '@/components/modal';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
@@ -49,7 +49,7 @@ function EditLink(props: EditLinkProps) {
   }
 
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       title='Edit link'
       subtitle='Click save when you are done.'
       trigger={
@@ -82,6 +82,6 @@ function EditLink(props: EditLinkProps) {
           <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(newLink)} />
         </DialogClose>
       </div>
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }

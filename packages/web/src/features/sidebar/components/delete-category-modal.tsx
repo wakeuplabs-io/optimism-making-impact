@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@/components/icons/delete-icon';
-import { BACKTONORMAL_Modal } from '@/components/modal2';
+import { Modal } from '@/components/modal';
 import { Category } from '@/types';
 import { Trash } from 'lucide-react';
 
@@ -10,7 +10,7 @@ interface DeleteCategoryButtonProps {
 
 export function DeleteCategoryButton(props: DeleteCategoryButtonProps) {
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       title='Delete category'
       subtitle='Click save when you are done.'
       trigger={<DeleteIcon />}
@@ -20,6 +20,6 @@ export function DeleteCategoryButton(props: DeleteCategoryButtonProps) {
       ]}
     >
       <span>Are you sure you want to delete {props.category.name} category?</span>
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }

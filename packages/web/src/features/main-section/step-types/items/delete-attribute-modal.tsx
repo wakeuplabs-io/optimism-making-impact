@@ -1,4 +1,4 @@
-import { BACKTONORMAL_Modal } from '@/components/modal2';
+import { Modal } from '@/components/modal';
 import { Trash, X } from 'lucide-react';
 
 interface DeleteAttributeModalProps {
@@ -12,7 +12,7 @@ export function DeleteAttributeModal(props: DeleteAttributeModalProps) {
   }
 
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       title='Remove attribute from Smart List'
       trigger={
         <button>
@@ -25,6 +25,6 @@ export function DeleteAttributeModal(props: DeleteAttributeModalProps) {
       ]}
     >
       <span>Are you sure you want to Remove this attribute from the Smart List?</span>
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }

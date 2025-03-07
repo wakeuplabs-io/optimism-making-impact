@@ -1,4 +1,4 @@
-import { BACKTONORMAL_Modal, ModalActionButtonProps } from '@/components/modal2';
+import { Modal, ModalActionButtonProps } from '@/components/modal';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useId, useState } from 'react';
 import { DefaultValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   submitButtonIcon?: React.ReactNode;
   secondaryButtonText?: string;
   secondaryButtonIcon?: React.ReactNode;
-  contentProps?: React.ComponentProps<typeof BACKTONORMAL_Modal>['contentProps'];
+  contentProps?: React.ComponentProps<typeof Modal>['contentProps'];
   onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
   onSecondaryClick?: () => void;
   onOpenChange?: (open: boolean) => void;
@@ -66,7 +66,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
   const isOpen = props.controlledOpen ?? open;
 
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       open={isOpen}
       onOpenChange={onOpenChange}
       title={props.title}
@@ -85,7 +85,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
           {props.children}
         </InnerForm>
       )}
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }
 

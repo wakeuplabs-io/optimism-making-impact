@@ -1,4 +1,4 @@
-import { BACKTONORMAL_Modal } from '@/components/modal2';
+import { Modal } from '@/components/modal';
 import { Infography } from '@/types/infographies';
 import { Trash, X } from 'lucide-react';
 
@@ -9,7 +9,7 @@ interface DeleteInfogrpahyModalProps {
 
 export function DeleteInfogrpahyModal(props: DeleteInfogrpahyModalProps) {
   return (
-    <BACKTONORMAL_Modal
+    <Modal
       title='Delete infography'
       trigger={<X size={22} className='cursor-pointer stroke-[#7D7D7D] hover:stroke-black' />}
       buttons={[
@@ -18,6 +18,6 @@ export function DeleteInfogrpahyModal(props: DeleteInfogrpahyModalProps) {
       ]}
     >
       <span>Are you sure you want to delete this infography?</span>
-    </BACKTONORMAL_Modal>
+    </Modal>
   );
 }
