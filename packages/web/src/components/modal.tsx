@@ -30,7 +30,7 @@ interface ModalProps extends DialogProps {
 export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps) {
   return (
     <Dialog {...props}>
-      <DialogTrigger asChild>{props.trigger}</DialogTrigger>
+      <DialogTrigger>{props.trigger}</DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px] p-6' {...contentProps}>
         <DialogHeader className='flex w-full items-center justify-center'>
           {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}

@@ -53,7 +53,7 @@ function EditLink(props: EditLinkProps) {
       title='Edit link'
       subtitle='Click save when you are done.'
       trigger={
-        <button className='absolute mb-4 flex h-16 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
+        <button className='absolute mb-4 flex h-6 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
           edit
         </button>
       }
