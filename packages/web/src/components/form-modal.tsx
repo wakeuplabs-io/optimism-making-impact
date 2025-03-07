@@ -1,22 +1,21 @@
-import React, { useId, useState } from 'react';
-import { z } from 'zod';
+import { BACKTONORMAL_Modal, ModalActionButtonProps } from '@/components/modal2';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Modal, ModalActionButtonProps } from '@/components/modal';
+import React, { useId, useState } from 'react';
 import { DefaultValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   schema: TFormSchema;
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
-  triggerClassname?: string;
   defaultValues?: DefaultValues<z.TypeOf<TFormSchema>>;
   children: React.ReactNode;
   submitButtonText?: string;
   submitButtonIcon?: React.ReactNode;
   secondaryButtonText?: string;
   secondaryButtonIcon?: React.ReactNode;
-  contentProps?: React.ComponentProps<typeof Modal>['contentProps'];
+  contentProps?: React.ComponentProps<typeof BACKTONORMAL_Modal>['contentProps'];
   onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
   onSecondaryClick?: () => void;
   onOpenChange?: (open: boolean) => void;
@@ -67,13 +66,12 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
   const isOpen = props.controlledOpen ?? open;
 
   return (
-    <Modal
+    <BACKTONORMAL_Modal
       open={isOpen}
       onOpenChange={onOpenChange}
       title={props.title}
       subtitle={props.subtitle}
       trigger={props.trigger}
-      triggerClassname={props.triggerClassname}
       buttons={buttons}
       contentProps={props.contentProps}
     >
@@ -87,7 +85,7 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
           {props.children}
         </InnerForm>
       )}
-    </Modal>
+    </BACKTONORMAL_Modal>
   );
 }
 
