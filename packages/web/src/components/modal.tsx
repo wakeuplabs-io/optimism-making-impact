@@ -43,10 +43,10 @@ export function Modal({ buttons = [], contentProps = {}, triggerClassname, ...pr
         </DialogHeader>
         <div className='w-full'>{props.children}</div>
         {buttons.length > 0 && (
-          <DialogFooter className='w-full mt-5'>
-            <div className='flex gap-4 w-full'>
-              {buttons.map((button) => (
-                <ModalActionButton key={button.id} {...button} className='w-full' />
+          <DialogFooter className='mt-5 w-full'>
+            <div className='flex w-full gap-4'>
+              {buttons.map((button, index) => (
+                <ModalActionButton key={index} {...button} className='w-full' />
               ))}
             </div>
           </DialogFooter>
