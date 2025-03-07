@@ -1,6 +1,6 @@
 import { ActionButton } from '@/components/action-button';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
-import { Modal } from '@/components/modal';
+import { BACKTONORMAL_Modal } from '@/components/modal2';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { DialogClose } from '@radix-ui/react-dialog';
@@ -21,7 +21,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
       className={cn(
         'relative',
         {
-          ' h-16': props.isAdmin,
+          'h-16': props.isAdmin,
         },
         props.className,
       )}
@@ -49,11 +49,14 @@ function EditLink(props: EditLinkProps) {
   }
 
   return (
-    <Modal
+    <BACKTONORMAL_Modal
       title='Edit link'
       subtitle='Click save when you are done.'
-      triggerClassname='absolute w-full h-16 flex items-end justify-center mb-4 gap-2 bg-mi-stone-300 rounded-b-xl '
-      trigger={<span className='w-full text-center text-sm text-slate-500 hover:underline'>edit</span>}
+      trigger={
+        <button className='absolute mb-4 flex h-16 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
+          edit
+        </button>
+      }
     >
       <div className='grid gap-4 py-4'>
         <div>
@@ -79,6 +82,6 @@ function EditLink(props: EditLinkProps) {
           <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(newLink)} />
         </DialogClose>
       </div>
-    </Modal>
+    </BACKTONORMAL_Modal>
   );
 }
