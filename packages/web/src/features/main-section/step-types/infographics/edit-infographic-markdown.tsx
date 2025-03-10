@@ -29,7 +29,7 @@ interface ContainerProps {
 }
 
 function Container(props: ContainerProps) {
-  return <div className={cn('flex w-full flex-col items-end gap-2 px-4 lg:px-0', props.className)}>{props.children}</div>;
+  return <div className={cn('flex w-full flex-col items-end gap-2 px-4 xl:px-0', props.className)}>{props.children}</div>;
 }
 
 type ContentProps = EditInfographicMarkdownProps &
@@ -70,7 +70,7 @@ function Content({ markdown, isAdmin, className, onChange, ...props }: ContentPr
 
   return (
     <>
-      <div className='prose w-full max-w-full lg:prose-xl'>
+      <div className='prose w-full max-w-full xl:prose-xl'>
         <Markdown className={cn('overflow-auto break-words', className)}>
           {/* if there is an error, show the original markdown */}
           {validationError ? markdown : controlledMarkdownValue}
