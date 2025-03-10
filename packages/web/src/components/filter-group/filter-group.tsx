@@ -49,9 +49,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   }, [props.filters, props.selected]);
 
   const [filtersToDisplay, hiddenFilterAmount] = useMemo(() => {
-    if (showAllFilters) return [props.filters, 0];
-
-    if (!showAllFiltersEnabled) return [props.filters, 0];
+    if (showAllFilters || !showAllFiltersEnabled) return [props.filters, 0];
 
     return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters!];
   }, [props.filters, props.maxFilters, showAllFilters, showAllFiltersEnabled]);
