@@ -3,34 +3,34 @@ import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { TextAreaInput } from '@/components/text-area-input';
-import { CreateInfographyBody, createInfographyBodySchema } from '@optimism-making-impact/schemas';
+import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-interface AddInfographyModalProps {
+interface AddInfographicModalProps {
   stepId: number;
   className?: string;
-  onClick?: (data: CreateInfographyBody) => void;
+  onClick?: (data: CreateInfographicBody) => void;
 }
 
-export function AddInfographyModal(props: AddInfographyModalProps) {
-  const defaultValues: CreateInfographyBody = {
+export function AddInfographicModal(props: AddInfographicModalProps) {
+  const defaultValues: CreateInfographicBody = {
     image: '',
     markdown: '',
     stepId: props.stepId,
   };
 
-  function handleSubmit(data: CreateInfographyBody) {
+  function handleSubmit(data: CreateInfographicBody) {
     props.onClick?.(data);
   }
 
   return (
     <FormModal
-      title='Add Infography'
+      title='Add Infographic'
       trigger={<IconButton variant='secondary' icon={<Plus strokeWidth={3} />} />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
-      schema={createInfographyBodySchema}
+      schema={createInfographicBodySchema}
     >
       <FormFields defaultValues={defaultValues} />
     </FormModal>
@@ -38,11 +38,11 @@ export function AddInfographyModal(props: AddInfographyModalProps) {
 }
 
 interface FormFieldsProps {
-  defaultValues: CreateInfographyBody;
+  defaultValues: CreateInfographicBody;
 }
 
 function FormFields({ defaultValues }: FormFieldsProps) {
-  const { control } = useFormContext<CreateInfographyBody>();
+  const { control } = useFormContext<CreateInfographicBody>();
 
   return (
     <div className='grid gap-4 py-4'>

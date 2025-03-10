@@ -1,15 +1,16 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
+import { CompleteStep } from '@/types';
 import {
-  BulkUpdateInfographyBody,
+  BulkUpdateInfographicBody,
   CreateAttributeBody,
-  CreateInfographyBody,
+  CreateCardBody,
+  CreateInfographicBody,
   CreateItemBody,
   UpdateAttributeBody,
-  UpdateInfographyBody,
+  UpdateCardBody,
+  UpdateInfographicBody,
   UpdateItemBody,
 } from '@optimism-making-impact/schemas';
-import { CompleteStep } from '@/types';
-import { CreateCardBody, UpdateCardBody } from '@optimism-making-impact/schemas';
 
 export interface MainSectionState {
   error: string | null;
@@ -23,10 +24,10 @@ export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
   updateStep: (step: Partial<CompleteStep>) => void;
-  addInfography: (data: CreateInfographyBody) => void;
-  deleteInfogrpahy: (infographyId: number) => void;
-  editInfogrpahy: (infographyId: number, data: Partial<UpdateInfographyBody>) => void;
-  saveInfographies: (data: BulkUpdateInfographyBody) => void;
+  addInfographic: (data: CreateInfographicBody) => void;
+  deleteInfographic: (infographicId: number) => void;
+  editInfographic: (infographicId: number, data: Partial<UpdateInfographicBody>) => void;
+  saveInfographics: (data: BulkUpdateInfographicBody) => void;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;
   deleteCard: (cardId: number) => void;

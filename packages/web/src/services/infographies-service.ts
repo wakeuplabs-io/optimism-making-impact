@@ -1,11 +1,11 @@
 import { fetcher } from '@/lib/fetcher';
-import { BulkUpdateInfographyBody } from '@optimism-making-impact/schemas';
+import { BulkUpdateInfographicBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
-const infographiesEndpoint = '/infographies';
+const infographicsEndpoint = '/infographics';
 
-export class InfographiesServiceClass {
-  private static instance: InfographiesServiceClass;
+export class InfographicsServiceClass {
+  private static instance: InfographicsServiceClass;
   private fetcher: AxiosInstance;
 
   constructor(fetcher: AxiosInstance) {
@@ -13,19 +13,19 @@ export class InfographiesServiceClass {
   }
 
   static getInstance(fetcher: AxiosInstance) {
-    if (!InfographiesServiceClass.instance) {
-      InfographiesServiceClass.instance = new InfographiesServiceClass(fetcher);
+    if (!InfographicsServiceClass.instance) {
+      InfographicsServiceClass.instance = new InfographicsServiceClass(fetcher);
     }
-    return InfographiesServiceClass.instance;
+    return InfographicsServiceClass.instance;
   }
 
-  async updateBulk(data: BulkUpdateInfographyBody) {
-    return this.fetcher.put(infographiesEndpoint + `/bulk`, data).then((res) => res.data);
+  async updateBulk(data: BulkUpdateInfographicBody) {
+    return this.fetcher.put(infographicsEndpoint + `/bulk`, data).then((res) => res.data);
   }
 
   async deleteOne(id: number) {
-    return this.fetcher.delete(infographiesEndpoint + `/${id}`).then((res) => res.data);
+    return this.fetcher.delete(infographicsEndpoint + `/${id}`).then((res) => res.data);
   }
 }
 
-export const InfographiesService = InfographiesServiceClass.getInstance(fetcher);
+export const InfographicsService = InfographicsServiceClass.getInstance(fetcher);

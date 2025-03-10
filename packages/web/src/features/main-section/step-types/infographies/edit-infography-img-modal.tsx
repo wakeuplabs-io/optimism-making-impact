@@ -1,30 +1,30 @@
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { Infography } from '@/types/infographies';
-import { updateInfographyBodySchema } from '@optimism-making-impact/schemas';
+import { Infographic } from '@/types/infographies';
+import { updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 
-const updateInfographyImageSchema = updateInfographyBodySchema.pick({
+const updateInfographicImageSchema = updateInfographicBodySchema.pick({
   image: true,
 });
 
-type UpdateInfographyImageBody = z.infer<typeof updateInfographyImageSchema>;
+type UpdateInfographicImageBody = z.infer<typeof updateInfographicImageSchema>;
 
-interface EditInfographyImageModalProps {
-  infography: Infography;
-  onClick?: (infographyId: number, image: string) => void;
+interface EditInfographicImageModalProps {
+  infographic: Infographic;
+  onClick?: (infographicId: number, image: string) => void;
   open: boolean;
   onClose: () => void;
 }
 
-export function EditInfographyImageModal(props: EditInfographyImageModalProps) {
-  const defaultValues: UpdateInfographyImageBody = {
-    image: props.infography.image,
+export function EditInfographicImageModal(props: EditInfographicImageModalProps) {
+  const defaultValues: UpdateInfographicImageBody = {
+    image: props.infographic.image,
   };
 
-  function handleSubmit(data: UpdateInfographyImageBody) {
-    props.onClick?.(props.infography.id, data.image);
+  function handleSubmit(data: UpdateInfographicImageBody) {
+    props.onClick?.(props.infographic.id, data.image);
   }
 
   return (
@@ -33,7 +33,7 @@ export function EditInfographyImageModal(props: EditInfographyImageModalProps) {
       title='Edit image'
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
-      schema={updateInfographyImageSchema}
+      schema={updateInfographicImageSchema}
       onOpenChange={(open) => {
         if (!open) {
           props.onClose();
@@ -46,11 +46,11 @@ export function EditInfographyImageModal(props: EditInfographyImageModalProps) {
 }
 
 interface FormFieldsProps {
-  defaultValues: UpdateInfographyImageBody;
+  defaultValues: UpdateInfographicImageBody;
 }
 
 function FormFields({ defaultValues }: FormFieldsProps) {
-  const { control } = useFormContext<UpdateInfographyImageBody>();
+  const { control } = useFormContext<UpdateInfographicImageBody>();
 
   return (
     <div className='grid gap-4 py-4'>

@@ -1,5 +1,5 @@
 import { completeCardSchema } from '@/types/cards';
-import { infographySchema } from '@/types/infographies';
+import { infographicSchema } from '@/types/infographies';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
 import { completeSmartListSchema } from '@/types/smart-lists';
@@ -22,7 +22,7 @@ export const stepArraySchema = z.array(stepSchema);
 export type Step = z.infer<typeof stepSchema>;
 
 export const completeStepSchema = stepSchema.extend({
-  infographies: z.array(infographySchema),
+  infographics: z.array(infographicSchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
   smartList: completeSmartListSchema.optional(),

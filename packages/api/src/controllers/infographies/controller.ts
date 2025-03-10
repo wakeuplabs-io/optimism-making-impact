@@ -1,36 +1,36 @@
-import {
-  BulkUpdateInfographyBody,
-  bulkUpdateInfographyBodySchema,
-  createInfographyBodySchema,
-  updateInfographyBodySchema,
-} from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import {
+  BulkUpdateInfographicBody,
+  bulkUpdateInfographicBodySchema,
+  createInfographicBodySchema,
+  updateInfographicBodySchema,
+} from '@optimism-making-impact/schemas';
 import { PrismaClient } from '@prisma/client/extension';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-async function getLastInfographyPosition(stepId: number, _prisma: PrismaClient) {
-  const lastInfography = await prisma.infography.findFirst({
+async function getLastInfographicPosition(stepId: number, _prisma: PrismaClient) {
+  const lastInfographic = await prisma.infographic.findFirst({
     where: { stepId },
     orderBy: { position: 'desc' },
   });
 
-  return lastInfography ? lastInfography.position : 0;
+  return lastInfographic ? lastInfographic.position : 0;
 }
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = createInfographyBodySchema.safeParse(req.body);
+    const parsed = createInfographicBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastPosition = await getLastInfographyPosition(parsed.data.stepId, prisma);
+    const lastPosition = await getLastInfographicPosition(parsed.data.stepId, prisma);
     const position = lastPosition > 0 ? lastPosition + 1 : 0;
 
-    const created = await prisma.infography.create({
+    const created = await prisma.infographic.create({
       data: { ...parsed.data, position },
     });
 
@@ -43,11 +43,11 @@ async function create(req: Request, res: Response, next: NextFunction) {
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const parsedId = idParamsSchema.safeParse(req.params);
-    const parsedBody = updateInfographyBodySchema.safeParse(req.body);
+    const parsedBody = updateInfographicBodySchema.safeParse(req.body);
 
     if (!parsedBody.success || !parsedId.success) throw ApiError.badRequest();
 
-    const updated = await prisma.infography.update({
+    const updated = await prisma.infographic.update({
       where: { id: parsedId.data.id },
       data: parsedBody.data,
     });
@@ -58,28 +58,28 @@ async function update(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-function getBulkUpdatesQueries(data: BulkUpdateInfographyBody, _prisma: PrismaClient) {
+function getBulkUpdatesQueries(data: BulkUpdateInfographicBody, _prisma: PrismaClient) {
   return data.map(async ({ id, ...data }) => {
-    return _prisma.infography.update({ where: { id }, data });
+    return _prisma.infographic.update({ where: { id }, data });
   });
 }
 
-async function getBulkNewInfographiesQueries(data: BulkUpdateInfographyBody, _prisma: PrismaClient) {
+async function getBulkNewInfographicsQueries(data: BulkUpdateInfographicBody, _prisma: PrismaClient) {
   if (data.length === 0) {
     return [];
   }
 
-  const lastPosition = await getLastInfographyPosition(data[0].stepId, _prisma);
-  const infographiesToInsert = [];
+  const lastPosition = await getLastInfographicPosition(data[0].stepId, _prisma);
+  const infographicsToInsert = [];
   let currentPosition = lastPosition > 0 ? lastPosition + 1 : 0;
 
-  for (const newInfography of data) {
-    infographiesToInsert.push(
-      _prisma.infography.create({
+  for (const newInfographic of data) {
+    infographicsToInsert.push(
+      _prisma.infographic.create({
         data: {
-          image: newInfography.image,
-          markdown: newInfography.markdown,
-          stepId: newInfography.stepId,
+          image: newInfographic.image,
+          markdown: newInfographic.markdown,
+          stepId: newInfographic.stepId,
           position: currentPosition,
         },
       }),
@@ -88,29 +88,29 @@ async function getBulkNewInfographiesQueries(data: BulkUpdateInfographyBody, _pr
     currentPosition++;
   }
 
-  return infographiesToInsert;
+  return infographicsToInsert;
 }
 
 export async function updateBulk(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsedBody = bulkUpdateInfographyBodySchema.safeParse(req.body);
+    const parsedBody = bulkUpdateInfographicBodySchema.safeParse(req.body);
 
     if (!parsedBody.success) {
       throw ApiError.badRequest();
     }
 
-    const infographiesToUpdate = parsedBody.data.filter(({ id }) => id && id >= 0);
-    const infographiesToInsert = parsedBody.data.filter(({ id }) => !id || id < 0);
+    const infographicsToUpdate = parsedBody.data.filter(({ id }) => id && id >= 0);
+    const infographicsToInsert = parsedBody.data.filter(({ id }) => !id || id < 0);
 
     //validate all has the same stepId
-    if (infographiesToInsert.some(({ stepId }) => stepId !== infographiesToInsert[0].stepId)) {
+    if (infographicsToInsert.some(({ stepId }) => stepId !== infographicsToInsert[0].stepId)) {
       throw ApiError.badRequest();
     }
 
     const bulk = await prisma.$transaction(async (prisma) => {
       const results = await Promise.all([
-        getBulkUpdatesQueries(infographiesToUpdate, prisma),
-        getBulkNewInfographiesQueries(infographiesToInsert, prisma),
+        getBulkUpdatesQueries(infographicsToUpdate, prisma),
+        getBulkNewInfographicsQueries(infographicsToInsert, prisma),
       ]).then(([toUpdate, toCreate]) => Promise.all([...toUpdate, ...toCreate]));
       return results;
     });
@@ -126,7 +126,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const deleted = await prisma.infography.delete({
+    const deleted = await prisma.infographic.delete({
       where: { id: parsed.data.id },
     });
 
@@ -136,7 +136,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export const infographiesController = {
+export const infographicsController = {
   create,
   update,
   updateBulk,

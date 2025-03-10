@@ -1,4 +1,4 @@
-import { Infography, PrismaClient, Step, StepType } from '@prisma/client';
+import { Infographic, PrismaClient, Step, StepType } from '@prisma/client';
 
 const infographicsData = [
   {
@@ -46,7 +46,7 @@ const infographicsData = [
 export async function seedInfographics(prisma: PrismaClient, steps: Step[]) {
   console.log('Seeding infographics...');
 
-  const infographicsToCreate: Omit<Infography, 'id' | 'createdAt' | 'updatedAt'>[] = [];
+  const infographicsToCreate: Omit<Infographic, 'id' | 'createdAt' | 'updatedAt'>[] = [];
 
   for (const step of steps) {
     if (step.type !== StepType.INFOGRAPHIC) continue;
@@ -63,11 +63,11 @@ export async function seedInfographics(prisma: PrismaClient, steps: Step[]) {
     }
   }
 
-  const { count } = await prisma.infography.createMany({
+  const { count } = await prisma.infographic.createMany({
     data: infographicsToCreate,
   });
 
   console.log(`${count} infographics seeded successfully!`);
 
-  return prisma.infography.findMany();
+  return prisma.infographic.findMany();
 }

@@ -50,13 +50,13 @@ describe('Duplicate round', async () => {
       expect(step.categoryId).not.toBe(originalStep.categoryId);
 
       // Infographics
-      expect(step.infographies.length).toBe(originalStep.infographies.length);
-      step.infographies.forEach((infography, i) => {
-        expect(infography.markdown).toBe(originalStep.infographies[i].markdown);
-        expect(infography.image).toBe(originalStep.infographies[i].image);
-        expect(infography.position).toBe(originalStep.infographies[i].position);
-        expect(infography.stepId).toBe(step.id);
-        expect(infography.id).not.toBe(originalStep.infographies[i].id);
+      expect(step.infographics.length).toBe(originalStep.infographics.length);
+      step.infographics.forEach((infographic, i) => {
+        expect(infographic.markdown).toBe(originalStep.infographics[i].markdown);
+        expect(infographic.image).toBe(originalStep.infographics[i].image);
+        expect(infographic.position).toBe(originalStep.infographics[i].position);
+        expect(infographic.stepId).toBe(step.id);
+        expect(infographic.id).not.toBe(originalStep.infographics[i].id);
       });
 
       // Items

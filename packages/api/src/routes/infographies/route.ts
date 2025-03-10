@@ -1,9 +1,9 @@
-import { infographiesController } from '@/controllers/infographies/controller.js';
+import { infographicsController } from '@/controllers/infographies/controller.js';
 import { Router } from 'express';
 
-export const infographiesRouter = Router();
+export const infographicsRouter = Router();
 
-infographiesRouter.post('/', infographiesController.create);
-infographiesRouter.put('/:id(\\d+)', infographiesController.update);
-infographiesRouter.put('/bulk', infographiesController.updateBulk);
-infographiesRouter.delete('/:id', infographiesController.deleteOne);
+infographicsRouter.post('/', infographicsController.create);
+infographicsRouter.put('/:id(\\d+)', infographicsController.update);
+infographicsRouter.put('/bulk', infographicsController.updateBulk);
+infographicsRouter.delete('/:id', infographicsController.deleteOne);

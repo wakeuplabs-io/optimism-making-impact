@@ -1,40 +1,40 @@
-import { InfographyCard } from '@/features/main-section/step-types/infographies/infography-card';
+import { InfographicCard } from '@/features/main-section/step-types/infographies/infography-card';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Infography } from '@/types';
+import { Infographic } from '@/types';
 
-interface InfographyListProps {
-  infographies: Infography[];
+interface InfographicListProps {
+  infographics: Infographic[];
   isAdmin?: boolean;
-  onDelete?: (infographyId: number) => void;
-  onChangeText?: (infographyId: number, markdown: string) => void;
-  onChangeImage?: (infographyId: number, image: string) => void;
+  onDelete?: (infographicId: number) => void;
+  onChangeText?: (infographicId: number, markdown: string) => void;
+  onChangeImage?: (infographicId: number, image: string) => void;
 }
 
-export function InfographyList(props: InfographyListProps) {
-  const { deleteInfogrpahy, editInfogrpahy } = useMainSectionStore((state) => state);
+export function InfographicList(props: InfographicListProps) {
+  const { deleteInfographic, editInfographic } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
-  if (props.infographies.length < 1) {
+  if (props.infographics.length < 1) {
     return (
-      <div className='flex items-center justify-center w-full h-full'>
-        <span>There are no infographies yet.</span>
+      <div className='flex h-full w-full items-center justify-center'>
+        <span>There are no infographics yet.</span>
       </div>
     );
   }
 
   return (
     <>
-      {props.infographies.map((infography, order) => {
+      {props.infographics.map((infographic, order) => {
         return (
-          <InfographyCard
-            infography={infography}
+          <InfographicCard
+            infographic={infographic}
             order={order}
-            key={`${infography.id}-${order}`}
+            key={`${infographic.id}-${order}`}
             isAdmin={isAdmin}
-            onDelete={deleteInfogrpahy}
-            onChangeText={(infographyId, markdown) => editInfogrpahy(infographyId, { markdown })}
-            onChangeImage={(infographyId, image) => editInfogrpahy(infographyId, { image })}
+            onDelete={deleteInfographic}
+            onChangeText={(infographicId, markdown) => editInfographic(infographicId, { markdown })}
+            onChangeImage={(infographicId, image) => editInfographic(infographicId, { image })}
           />
         );
       })}
