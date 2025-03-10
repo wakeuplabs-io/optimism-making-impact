@@ -2,7 +2,7 @@ import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { toast } from '@/hooks/use-toast';
 import { AttributesService } from '@/services/attributes-service';
 import { CardsService } from '@/services/cards-service';
-import { InfographicsService } from '@/services/infographies-service';
+import { InfographicsService } from '@/services/infographics-service';
 import { ItemsService } from '@/services/items-service';
 import { StepsService } from '@/services/steps-service';
 import { MainSectionStore } from '@/state/main-section/types';

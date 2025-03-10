@@ -1,5 +1,5 @@
 import { completeCardSchema } from '@/types/cards';
-import { infographicSchema } from '@/types/infographies';
+import { infographicSchema } from '@/types/infographics';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
 import { completeSmartListSchema } from '@/types/smart-lists';

@@ -1,4 +1,4 @@
-import { InfographicCard } from '@/features/main-section/step-types/infographies/infography-card';
+import { InfographicCard } from '@/features/main-section/step-types/infographics/infographic-card';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Infographic } from '@/types';

@@ -1,10 +1,10 @@
-import { EditInfographicMarkdown } from './edit-infography-markdown';
+import { EditInfographicMarkdown } from './edit-infographic-markdown';
 import { HoverOverlay } from '@/components/hover-overlay';
 import { ImageWithDefault } from '@/components/image-with-default';
-import { DeleteInfographicModal } from '@/features/main-section/step-types/infographies/delete-infography-modal';
-import { EditInfographicImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
+import { DeleteInfographicModal } from '@/features/main-section/step-types/infographics/delete-infographic-modal';
+import { EditInfographicImageModal } from '@/features/main-section/step-types/infographics/edit-infographic-img-modal';
 import { cn } from '@/lib/utils';
-import { Infographic } from '@/types/infographies';
+import { Infographic } from '@/types/infographics';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 

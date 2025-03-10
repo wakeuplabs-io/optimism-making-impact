@@ -1,5 +1,5 @@
-import { InfographicActionBar } from './infography-action-bar';
-import { InfographicList } from '@/features/main-section/step-types/infographies/infography-list';
+import { InfographicActionBar } from './infographic-action-bar';
+import { InfographicList } from '@/features/main-section/step-types/infographics/infographic-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';

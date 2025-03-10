@@ -3,7 +3,7 @@ import { usersRouter } from './users/route.js';
 import { attributesRouter } from '@/routes/attributes/route.js';
 import { cardsRouter } from '@/routes/cards/route.js';
 import { categoriesRouter } from '@/routes/categories/route.js';
-import { infographicsRouter } from '@/routes/infographies/route.js';
+import { infographicsRouter } from '@/routes/infographics/route.js';
 import { itemsRouter } from '@/routes/items/route.js';
 import { keywordsRouter } from '@/routes/keywords/route.js';
 import { roundsRouter } from '@/routes/rounds/route.js';

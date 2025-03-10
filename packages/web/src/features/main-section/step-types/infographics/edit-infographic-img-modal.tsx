@@ -1,6 +1,6 @@
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { Infographic } from '@/types/infographies';
+import { Infographic } from '@/types/infographics';
 import { updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { z } from 'zod';

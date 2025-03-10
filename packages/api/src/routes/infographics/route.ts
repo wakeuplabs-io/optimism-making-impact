@@ -1,4 +1,4 @@
-import { infographicsController } from '@/controllers/infographies/controller.js';
+import { infographicsController } from '@/controllers/infographics/controller.js';
 import { Router } from 'express';
 
 export const infographicsRouter = Router();

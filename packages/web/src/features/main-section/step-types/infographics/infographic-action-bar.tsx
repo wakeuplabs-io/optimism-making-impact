@@ -1,4 +1,4 @@
-import { AddInfographicModal } from './add-infogrpahy-modal';
+import { AddInfographicModal } from './add-infogrpahic-modal';
 import { AutoSaveIndicator } from '@/components/autosave-indicator/autosave-indicator';
 import { IconButton } from '@/components/icon-button';
 import { AUTOSAVE_INTERVAL } from '@/config';
