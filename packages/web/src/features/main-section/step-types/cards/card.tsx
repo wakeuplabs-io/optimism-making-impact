@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
@@ -16,6 +17,7 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   const { keywords, attributes } = useFiltersStore((state) => state);
+  const [isCardHovered, setIsCardHovered] = useState(false);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
@@ -23,9 +25,18 @@ export function Card(props: CardProps) {
   return (
     <div
       style={{ borderLeftColor: borderColor }}
-      className={`flex h-fit w-full min-h-[320px] flex-col gap-6 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]`}
+      className='flex h-fit w-full min-h-[320px] flex-col gap-6 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]'
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
     >
-      <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
+      <CardTitle
+        card={props.card}
+        stepId={props.stepId}
+        isAdmin={isAdmin}
+        keywords={keywords}
+        attributes={attributes}
+        isCardHovered={isCardHovered}
+      />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
     </div>
@@ -37,7 +48,8 @@ interface CardTitleProps {
   stepId: number;
   isAdmin: boolean;
   keywords: Keyword[];
-  atributes: Attribute[];
+  attributes: Attribute[];
+  isCardHovered: boolean;
 }
 
 function CardTitle(props: CardTitleProps) {
@@ -50,14 +62,14 @@ function CardTitle(props: CardTitleProps) {
         {props.card.title}
       </p>
       <StrengthIndicator strength={props.card.strength} />
-      {props.isAdmin && (
+      {props.isAdmin && props.isCardHovered && (
         <EditCardModal
           stepId={props.stepId}
           keywords={props.keywords}
           card={props.card}
           onSave={editCard}
           onDelete={deleteCard}
-          attributes={props.atributes}
+          attributes={props.attributes}
         />
       )}
     </div>
