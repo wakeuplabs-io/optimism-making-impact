@@ -15,9 +15,9 @@ datasource db {
 
 // Enums
 enum StepType {
-  INFOGRAPHIC @map("INFOGRAPHY")
-  SMARTLIST   @map("ITEMS")
-  CARDGRID    @map("CARD")
+  INFOGRAPHIC
+  SMARTLIST
+  CARDGRID
 }
 
 enum CardStrength {
