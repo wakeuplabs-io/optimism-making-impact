@@ -13,20 +13,24 @@ export default function LogosSection() {
 
   return (
     <div className='flex w-full gap-2'>
-      <SidebarLinkButton
-        src={VoteHere}
-        link={selectedRound.link1}
-        isAdmin={isAdmin}
-        onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
-        className='w-1/2'
-      />
-      <SidebarLinkButton
-        src={RetroList}
-        link={selectedRound.link2}
-        isAdmin={isAdmin}
-        onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
-        className='w-1/2'
-      />
+      {selectedRound.link1 && (
+        <SidebarLinkButton
+          src={VoteHere}
+          link={selectedRound.link1}
+          isAdmin={isAdmin}
+          onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
+          className='w-1/2'
+        />
+      )}
+      {selectedRound.link2 && (
+        <SidebarLinkButton
+          src={RetroList}
+          link={selectedRound.link2}
+          isAdmin={isAdmin}
+          onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
+          className='w-1/2'
+        />
+      )}
     </div>
   );
 }

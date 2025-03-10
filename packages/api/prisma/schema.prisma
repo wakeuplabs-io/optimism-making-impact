@@ -43,8 +43,8 @@ enum Color {
 model Round {
   id Int @id @default(autoincrement())
 
-  link1 String? @default("")
-  link2 String? @default("")
+  link1 String?
+  link2 String?
 
   categories Category[]
 
@@ -71,7 +71,7 @@ model Step {
   id Int @id @default(autoincrement())
 
   title       String
-  description String?  @default("")
+  description String?
   icon        String
   position    Int
   type        StepType

@@ -19,7 +19,7 @@ export function EditStepModal(props: EditIconProps) {
   const defaultValues: UpdateStepBody = {
     title: props.step.title,
     icon: props.step.icon,
-    description: props.step.description,
+    description: props.step.description ?? undefined,
   };
 
   function handleSubmit(data: UpdateStepBody) {

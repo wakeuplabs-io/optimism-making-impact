@@ -10,8 +10,8 @@ CREATE TYPE "Color" AS ENUM ('RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE',
 -- CreateTable
 CREATE TABLE "Round" (
     "id" SERIAL NOT NULL,
-    "link1" TEXT DEFAULT '',
-    "link2" TEXT DEFAULT '',
+    "link1" TEXT,
+    "link2" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -34,7 +34,7 @@ CREATE TABLE "Category" (
 CREATE TABLE "Step" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
-    "description" TEXT DEFAULT '',
+    "description" TEXT,
     "icon" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,

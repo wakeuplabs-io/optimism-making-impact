@@ -1,15 +1,15 @@
+import { DescriptionInlineText } from './description-inline-text';
+import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { CompleteStep } from '@/types';
 import { CompleteItem } from '@/types/items';
 import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
-import { EmptyState, NoAttributesEmptyState } from './empty-state';
-import { DescriptionInlineText } from './description-inline-text';
-import { CompleteStep } from '@/types';
 
 interface ItemsListProps {
   items: CompleteItem[];
@@ -30,7 +30,7 @@ export function ItemsList({ items, step, editStepDescription, attributes }: Item
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
       <div className='mb-6 flex items-start justify-between border-b border-[#D9D9D9] pb-3'>
-        <DescriptionInlineText description={step.description} onChange={editStepDescription} isAdmin={isAdmin} />
+        <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
       </div>
       {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
