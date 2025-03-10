@@ -32,7 +32,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   const [showAllFilters, toggleShowAllFilters] = useToggle(false);
   //only when a selected filter is present, the edition is allowed
   const editionIsAllowed = !!props.selected?.length;
-  const showAllFiltersEnabled = props.maxFilters && props.maxFilters < props.filters.length;
+  const showAllFiltersEnabled = props.maxFilters && props.maxFilters > 0 && props.maxFilters < props.filters.length;
 
   const selectedFilters = useMemo(() => {
     return props.filters.reduce(
@@ -49,9 +49,9 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   }, [props.filters, props.selected]);
 
   const [filtersToDisplay, hiddenFilterAmount] = useMemo(() => {
-    if (showAllFilters || !showAllFiltersEnabled) return [props.filters, 0];
+    if (showAllFilters || !showAllFiltersEnabled || !props.maxFilters) return [props.filters, 0];
 
-    return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters!];
+    return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters];
   }, [props.filters, props.maxFilters, showAllFilters, showAllFiltersEnabled]);
 
   return (
