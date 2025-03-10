@@ -1,11 +1,12 @@
-import { Attribute, CompleteCard, CompleteItem, Keyword, Strength } from '@/types';
+import { CompleteCard, CompleteItem, Keyword, StrengthItem } from '@/types';
+import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 type Data = CompleteCard | CompleteItem;
 
 type UseFilteredDataProps<T extends Data> = {
   data: T[];
-  selectedStrengths: Strength[];
+  selectedStrengths: StrengthItem[];
   selectedKeywords: Keyword[];
   selectedAttributes: Attribute[];
 };
@@ -41,9 +42,9 @@ export const useFilteredData = <T extends Data>({
 };
 
 // Helpers
-function filterByStrength(data: Data, selectedStrengths: Strength[]): boolean {
+function filterByStrength(data: Data, selectedStrengths: StrengthItem[]): boolean {
   if ('strength' in data) {
-    return !selectedStrengths.length || selectedStrengths.map((strength) => strength.value).includes(data.strength);
+    return !selectedStrengths.length || selectedStrengths.map((selectedStrength) => selectedStrength.value).includes(data.strength);
   }
   return true;
 }

@@ -1,5 +1,4 @@
 import React, { useId, useState } from 'react';
-import { Save } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, ModalActionButtonProps } from '@/components/modal';
@@ -10,6 +9,7 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
+  triggerClassname?: string;
   defaultValues?: DefaultValues<z.TypeOf<TFormSchema>>;
   children: React.ReactNode;
   submitButtonText?: string;
@@ -20,12 +20,12 @@ interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   onSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
   onSecondaryClick?: () => void;
   onOpenChange?: (open: boolean) => void;
+  controlledOpen?: boolean;
 }
 
 export function FormModal<TFormSchema extends z.AnyZodObject>({
-  submitButtonText = 'Save',
-  secondaryButtonText = 'Cancel',
-  submitButtonIcon = <Save />,
+  submitButtonText = 'Create',
+  submitButtonIcon,
   ...props
 }: FormModalProps<TFormSchema>) {
   const [open, setOpen] = useState(false);
@@ -33,40 +33,51 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
 
   const onInternalSubmit: SubmitHandler<z.infer<TFormSchema>> = async (data) => {
     await props.onSubmit(data);
-    setOpen(false);
+    if (!props.controlledOpen) {
+      setOpen(false);
+      return;
+    }
+    props.onOpenChange?.(false);
   };
 
   const onOpenChange = (open: boolean) => {
-    setOpen(open);
+    if (!props.controlledOpen) {
+      setOpen(open);
+    }
     props.onOpenChange?.(open);
   };
 
-  const buttons = React.useMemo<ModalActionButtonProps[]>(
-    () => [
-      {
+  const buttons = React.useMemo<ModalActionButtonProps[]>(() => {
+    const baseButtons: ModalActionButtonProps[] = [
+      { type: 'submit', variant: 'primary', icon: submitButtonIcon, label: submitButtonText, closeOnClick: false, form: formId },
+    ];
+    if (props.secondaryButtonText) {
+      baseButtons.push({
         type: 'button',
         variant: 'secondary',
-        label: secondaryButtonText,
+        label: props.secondaryButtonText,
         closeOnClick: true,
         icon: props.secondaryButtonIcon,
         onClick: () => props.onSecondaryClick?.(),
-      },
-      { type: 'submit', variant: 'primary', label: submitButtonText, closeOnClick: false, icon: submitButtonIcon, form: formId },
-    ],
-    [],
-  );
+      });
+    }
+    return baseButtons;
+  }, [formId, submitButtonText, props]);
+
+  const isOpen = props.controlledOpen ?? open;
 
   return (
     <Modal
-      open={open}
+      open={isOpen}
       onOpenChange={onOpenChange}
       title={props.title}
       subtitle={props.subtitle}
       trigger={props.trigger}
+      triggerClassname={props.triggerClassname}
       buttons={buttons}
       contentProps={props.contentProps}
     >
-      {open && (
+      {isOpen && (
         <InnerForm<TFormSchema>
           defaultValues={props.defaultValues}
           onInternalSubmit={onInternalSubmit}
@@ -88,13 +99,18 @@ interface InnerFormProps<TFormSchema extends z.AnyZodObject> {
   onInternalSubmit: SubmitHandler<z.TypeOf<TFormSchema>>;
 }
 
-function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFormSchema>) {
+export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFormSchema>) {
   const methods = useForm({ defaultValues: props.defaultValues, resolver: zodResolver(props.schema) });
   const { handleSubmit } = methods;
 
   return (
     <FormProvider {...methods}>
-      <form id={props.formId} onSubmit={handleSubmit(props.onInternalSubmit)} onError={(errors) => console.log(errors)} className='w-full'>
+      <form
+        id={props.formId}
+        onSubmit={handleSubmit(props.onInternalSubmit)}
+        onError={(errors) => console.log(errors)}
+        className='min-w-[300px]'
+      >
         {props.children}
       </form>
     </FormProvider>

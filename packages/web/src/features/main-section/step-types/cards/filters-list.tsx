@@ -2,7 +2,6 @@ import { FilterGroup } from '@/components/filter-group';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteSmartList } from '@/types/smart-lists';
 import { useMemo } from 'react';
@@ -62,8 +61,6 @@ function Content(props: ContentProps) {
     selectedAttributes,
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-
   return (
     <div className='flex flex-col w-full'>
       <h2 className='text-[20px] font-[500]'>Filters</h2>
@@ -75,35 +72,31 @@ function Content(props: ContentProps) {
             title={props.smartList.title}
             filters={props.smartList.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
-              selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
-              onClick: setSelectedAttributes,
               data: attr,
               prefixDot: attr.color,
               tooltipText: attr.description,
             }))}
+            onSelected={setSelectedAttributes}
+            selected={selectedAttributes}
           />
         )}
         <FilterGroup
           title='Strength'
           filters={strengths.map((strength) => ({
             label: strength.value.toLowerCase(),
-            selected: selectedStrengths.includes(strength),
-            onClick: setSelectedStrengths,
             data: strength,
           }))}
+          onSelected={setSelectedStrengths}
+          selected={selectedStrengths}
         />
         <FilterGroup
           title='Keywords'
-          filters={keywords.map((keyword) => {
-            const selected = selectedKeywords.map(({ id }) => id).includes(keyword.id);
-            return {
-              label: keyword.value.toLowerCase(),
-              selected,
-              onClick: setSelectedKeywords,
-              data: keyword,
-            };
-          })}
-          isAdmin={isAdmin}
+          filters={keywords.map((keyword) => ({
+            label: keyword.value.toLowerCase(),
+            data: keyword,
+          }))}
+          onSelected={setSelectedKeywords}
+          selected={selectedKeywords}
         />
       </div>
     </div>

@@ -1,11 +1,12 @@
 import { toast } from '@/hooks/use-toast';
-import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
-import { StepsService } from '@/services/steps/service';
+import { StepsService } from '@/services/steps-service';
 import { StepsStore } from '@/state/steps/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { stepArraySchema } from '@/types';
+import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
+import { useSidebarStore } from '../sidebar/sidebar-store';
 
 // TODO: review this component!!!! do we really need a global store?????
 
@@ -22,6 +23,14 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   },
   fetchByCategoryId: async (categoryId: number) => {
     try {
+      // check if category is in progress
+      const isCategoryInProgress = useSidebarStore.getState().isCategoryInProgress(categoryId);
+      if (isCategoryInProgress) {
+        // category is in progress, do not call api and return empty steps
+        set(() => ({ steps: [], selectedStep: null, searchSelectedStepId: null }));
+        return;
+      }
+
       const { data } = await StepsService.getByCategoryId(categoryId);
 
       const parsedSteps = stepArraySchema.parse(data.steps);
@@ -108,6 +117,43 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
       },
       onSuccess: () => {
         get().fetchByCategoryId(get().steps[0].categoryId);
+      },
+    });
+  },
+  editStepDescription: async (stepId: number, description: string) => {
+    const stepToUpdate = get().selectedStep;
+
+    if (!stepToUpdate || stepToUpdate.id !== stepId) {
+      toast({
+        title: 'Failed to update step',
+        description: 'Invalid step',
+        variant: 'destructive',
+      });
+
+      return;
+    }
+
+    await optimisticUpdate({
+      getStateSlice: () => {
+        const steps = get().steps;
+        const selectedStep = get().selectedStep;
+        return { steps, selectedStep };
+      },
+      updateFn: ({ steps, selectedStep }) => ({
+        steps: steps.map((cat) => (cat.id === stepId ? { ...cat, description } : cat)),
+        selectedStep: { ...selectedStep!, description },
+      }),
+      setStateSlice: ({ steps, selectedStep }) => set(() => ({ steps, selectedStep })),
+      apiCall: () => StepsService.update(stepId, { ...stepToUpdate, description }),
+      onError: (error) => {
+        const title = 'Failed to delete step';
+        let description = 'Unknown error';
+
+        if (error instanceof AxiosError) {
+          description = error.response?.data.error.message;
+        }
+
+        toast({ title, description, variant: 'destructive' });
       },
     });
   },

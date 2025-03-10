@@ -1,4 +1,4 @@
-import { createCardBodySchema, updateCardBodySchema } from '@/controllers/cards/schemas.js';
+import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
@@ -72,7 +72,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
-    const keywordsToRemove = keywordsWithId.length > 0 ? await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId) : [];
+    const keywordsToRemove = await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId);
 
     const updated = await prisma.$transaction(async (tx) => {
       //update card

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import tailwindcssAnimate from 'tailwindcss-animate';
+import tailwindcssTypography from '@tailwindcss/typography';
 
 export default {
   darkMode: ['class'],
@@ -29,6 +30,9 @@ export default {
         },
         slate: {
           500: 'var(--slate-500)',
+        },
+        ['mi-stone']: {
+          300: 'var(--mi-stone-300)',
         },
         // End of new custom colors
 
@@ -78,5 +82,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, tailwindcssTypography],
 };

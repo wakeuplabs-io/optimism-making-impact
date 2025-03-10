@@ -19,6 +19,7 @@ interface ModalProps extends DialogProps {
   children: React.ReactNode;
   buttons?: ModalActionButtonProps[];
   contentProps?: React.ComponentProps<typeof DialogContent>;
+  triggerClassname?: string;
 }
 
 /**
@@ -27,23 +28,25 @@ interface ModalProps extends DialogProps {
  * @param {ModalProps} props - The props for the Modal component.
  * @returns {JSX.Element} The rendered Modal component.
  */
-export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps) {
+export function Modal({ buttons = [], contentProps = {}, triggerClassname, ...props }: ModalProps) {
   return (
     <Dialog {...props}>
       <DialogTrigger asChild>
-        <button aria-label='Open modal'>{props.trigger}</button>
+        <button className={triggerClassname} aria-label='Open modal'>
+          {props.trigger}
+        </button>
       </DialogTrigger>
-        <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px] p-6' {...contentProps}>
-        <DialogHeader className='flex items-center justify-center w-full'>
-          {props.title && <DialogTitle className='text-lg text-center text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
+      <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px] p-6' {...contentProps}>
+        <DialogHeader className='flex w-full items-center justify-center'>
+          {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
           {props.subtitle && <DialogDescription className='text-center text-secondary'>{props.subtitle}</DialogDescription>}
         </DialogHeader>
         <div className='w-full'>{props.children}</div>
         {buttons.length > 0 && (
-          <DialogFooter className='mt-5'>
-            <div className='flex gap-4'>
-              {buttons.map((button) => (
-                <ModalActionButton key={button.id} {...button} />
+          <DialogFooter className='mt-5 w-full'>
+            <div className='flex w-full gap-4'>
+              {buttons.map((button, index) => (
+                <ModalActionButton key={index} {...button} className='w-full' />
               ))}
             </div>
           </DialogFooter>

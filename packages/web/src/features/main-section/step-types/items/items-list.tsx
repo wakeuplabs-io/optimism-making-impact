@@ -4,40 +4,42 @@ import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute } from '@/types';
 import { CompleteItem } from '@/types/items';
+import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
+import { EmptyState, NoAttributesEmptyState } from './empty-state';
+import { DescriptionInlineText } from './description-inline-text';
+import { CompleteStep } from '@/types';
 
 interface ItemsListProps {
   items: CompleteItem[];
-  stepId: number;
-  title: string;
+  step: CompleteStep;
+  editStepDescription: (description: string) => void;
   attributes?: Attribute[];
 }
 
-export function ItemsList(props: ItemsListProps) {
+export function ItemsList({ items, step, editStepDescription, attributes }: ItemsListProps) {
   const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const filteredItems = useFilteredData({ data: props.items, selectedStrengths, selectedKeywords, selectedAttributes });
+  const filteredItems = useFilteredData({ data: items, selectedStrengths, selectedKeywords, selectedAttributes });
+
+  const hasAttributes = !!attributes && attributes.length > 0;
 
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
-      <div className='mb-6 flex h-12 items-center justify-between border-b border-[#D9D9D9] pb-8'>
-        <h2 className='text-[20px] font-[500]'>{props.title}</h2>
-        {isAdmin && props.attributes && <AddItemModal stepId={props.stepId} onClick={addItem} attributes={props.attributes} />}
+      <div className='mb-6 flex items-start justify-between border-b border-[#D9D9D9] pb-3'>
+        <DescriptionInlineText description={step.description} onChange={editStepDescription} isAdmin={isAdmin} />
+        {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
       </div>
-      <List {...props} items={filteredItems} />
+      {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
     </div>
   );
 }
 
 interface ListProps {
   items: CompleteItem[];
-  stepId: number;
-  title: string;
-  attributes?: Attribute[];
 }
 
 function List(props: ListProps) {
@@ -57,14 +59,6 @@ function List(props: ListProps) {
           </React.Fragment>
         ))
       )}
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className='flex h-full w-full items-center justify-center'>
-      <p>No item matches applied filters</p>
     </div>
   );
 }

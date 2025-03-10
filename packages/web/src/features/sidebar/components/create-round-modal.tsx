@@ -1,5 +1,5 @@
 import { Modal } from '@/components/modal';
-import { SidebarActionButton } from '@/components/sidebar-acion-button';
+import { SidebarModalAddTrigger } from '@/features/sidebar/components/sidebar-modal-add-trigger';
 import { Plus } from 'lucide-react';
 
 interface CreateRoundModalProps {
@@ -10,7 +10,8 @@ export function CreateRoundModal(props: CreateRoundModalProps) {
   return (
     <Modal
       title='New round'
-      trigger={<SidebarActionButton label='New round' icon={<Plus size={12} className='font-bold text-white' />} />}
+      triggerClassname='w-full'
+      trigger={<SidebarModalAddTrigger label='New Round' />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
         { label: 'Save', variant: 'primary', icon: <Plus />, onClick: () => props.onSave() },

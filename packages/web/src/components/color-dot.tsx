@@ -1,8 +1,7 @@
+import { ExtendedColor } from '@/config';
 import { cn, getColor } from '@/lib/utils';
-import { Color } from '@/types';
-
 interface ColorDotProps {
-  color: Color;
+  color: ExtendedColor;
   className?: string;
 }
 

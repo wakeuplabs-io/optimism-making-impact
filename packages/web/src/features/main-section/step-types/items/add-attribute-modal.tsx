@@ -1,12 +1,12 @@
+import { FormModal } from '@/components/form-modal';
+import { FormInputWrapper } from '@/components/form/form-input';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { ColorSelectInput } from '@/components/inputs/color-select-input';
-import { Modal } from '@/components/modal';
 import { TextAreaInput } from '@/components/text-area-input';
-import { TextInput } from '@/components/text-input';
-import { CreateAttributeBody } from '@/services/attributes/schemas';
-import { Color } from '@/types';
-import { Plus, Save } from 'lucide-react';
-import { useState } from 'react';
+import { Color, CreateAttributeBody, createAttributeSchema } from '@optimism-making-impact/schemas';
+import { Plus } from 'lucide-react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddAttributeModalProps {
   smartListId: number;
@@ -14,44 +14,65 @@ interface AddAttributeModalProps {
 }
 
 export function AddAttributeModal(props: AddAttributeModalProps) {
-  const [value, setValue] = useState('');
-  const [description, setDescription] = useState('');
-  const [color, setColor] = useState(Color.RED);
+  const defaultValues: CreateAttributeBody = {
+    value: '',
+    description: '',
+    color: 'RED',
+    smartListId: props.smartListId,
+  };
 
-  function clearForm() {
-    setValue('');
-    setDescription('');
-    setColor(Color.RED);
-  }
-
-  function handleValueChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setValue(event.target.value);
-  }
-  function handleDescriptionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-    setDescription(event.target.value);
-  }
-
-  function handleSubmit() {
-    props.onClick({ smartListId: props.smartListId, value, color, description });
-
-    clearForm();
+  function handleSubmit(data: CreateAttributeBody) {
+    props.onClick(data);
   }
 
   return (
-    <Modal
-      onOpenChange={clearForm}
+    <FormModal
       title='Add attribute to Smart List'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
-      buttons={[
-        { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Save', variant: 'primary', disabled: false, closeOnClick: true, icon: <Save />, onClick: handleSubmit },
-      ]}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={createAttributeSchema}
     >
-      <div className='grid gap-4 py-4'>
-        <TextInput name='title' value={value} onChange={handleValueChange} placeholder='Title' />
-        <TextAreaInput name='description' value={description} onChange={handleDescriptionChange} placeholder='Description' />
-        <ColorSelectInput selected={color} onChange={setColor} />
-      </div>
-    </Modal>
+      <FormFields defaultValues={defaultValues} />
+    </FormModal>
+  );
+}
+
+interface FormFieldsProps {
+  defaultValues: CreateAttributeBody;
+}
+
+function FormFields({ defaultValues }: FormFieldsProps) {
+  const { control } = useFormContext<CreateAttributeBody>();
+
+  return (
+    <div className='grid gap-4 py-4'>
+      <Controller
+        name='value'
+        control={control}
+        defaultValue={defaultValues.value}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='description'
+        control={control}
+        defaultValue={defaultValues.description}
+        render={({ field, fieldState }) => (
+          <FormInputWrapper error={fieldState.error?.message}>
+            <TextAreaInput {...field} rows={5} placeholder='Description' />
+          </FormInputWrapper>
+        )}
+      />
+      <Controller
+        name='color'
+        control={control}
+        defaultValue={defaultValues.color}
+        render={({ field, fieldState }) => (
+          <FormInputWrapper error={fieldState.error?.message}>
+            <ColorSelectInput selected={field.value} onChange={(color: Color) => field.onChange(color)} />
+          </FormInputWrapper>
+        )}
+      />
+    </div>
   );
 }

@@ -1,18 +1,15 @@
-import { useMemo } from 'react';
 import OmiLogo from '@/assets/omi-logo.png';
-import WakeUpLogo from '@/assets/wake-up-logo.png';
-import { ImageButton } from '@/components/image-button';
-import { SelectInput } from '@/components/inputs/select-input';
 import { SideMenu } from '@/components/side-menu';
-import { WAKEUP_URL } from '@/config';
-import { AuthSection } from '@/features/sidebar/components/auth-section';
-import { CategoryList } from '@/features/sidebar/components/category-list';
-import { CreateRoundModal } from '@/features/sidebar/components/create-round-modal';
+import { CategoryList } from '@/features/sidebar/components/category-list/category-list';
 import LogosSection from '@/features/sidebar/components/logos-section';
+import { RoundList } from '@/features/sidebar/components/round-list/round-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
+import { useMemo } from 'react';
+import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
+import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 
 export function SidebarSection() {
   return (
@@ -46,66 +43,43 @@ function SidebarContainer(props: SidebarContainerProps) {
   }, [selectedRound, selectedCategoryId]);
 
   if (isMobile) {
-    // Render as a Sheet on Mobile
     return (
-      <nav className='flex w-full items-center justify-start gap-12 pt-14 px-8 pb-7 bg-[#F1F4F9] lg:static '>
+      <nav className='flex w-full items-center justify-start gap-12 bg-[#F1F4F9] px-8 pb-7 pt-14 lg:static'>
         <SideMenu
-          trigger={<Menu className='text-black w-[50px] h-[50px]' strokeWidth={1} />}
+          trigger={<Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />}
           description='Sidebar'
           side='left'
-          className='w-[320px]'
+          className='w-[320px] overflow-y-auto'
           triggerAsChild
         >
           {props.children}
         </SideMenu>
-        <span className='text-2xl text-secondary font-semibold  '>{title}</span>
+        <span className='text-2xl font-semibold text-secondary'>{title}</span>
       </nav>
     );
   }
 
-  // Render static sidebar on Desktop
-  return (
-    <div className='w-[320px] overflow-y-auto overflow-x-hidden p-6'>
-      <nav className='ml-auto h-full w-[220px] bg-white-high lg:static'>{props.children}</nav>
-    </div>
-  );
+  return <nav className='w-[320px] overflow-y-auto overflow-x-hidden h-full bg-white-high lg:static px-8 pt-10'>{props.children}</nav>;
 }
 
 function SidebarContent() {
-  const addRound = useSidebarStore((state) => state.addRound);
   const selectedRound = useSidebarStore((state) => state.selectedRound);
-  const rounds = useSidebarStore((state) => state.rounds);
-  const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const roundOptions = useMemo(() => rounds.map((round) => ({ label: getRoundName(round.id), value: round.id.toString() })), [rounds]);
 
   return (
-    <div className='flex h-full flex-col justify-between gap-6'>
+    <div className='flex h-full flex-col items-start gap-6 pb-16'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
-      <div className='flex flex-1 flex-col justify-start md:justify-between gap-8'>
+      <div className='flex flex-col justify-start md:justify-between gap-4'>
         <div className='flex flex-col gap-4'>
-          <SelectInput
-            name='round'
-            placeholder='Select Round'
-            items={roundOptions}
-            disabled={roundOptions.length === 0}
-            value={selectedRound?.id.toString()}
-            onValueChange={(val) => setSelectedRound(+val)}
-            triggerClassName='border-grey-[#F2F2F2]'
-          />
-          {isAdmin && (
-            <div className='flex w-full justify-center gap-1'>
-              <CreateRoundModal onSave={addRound} />
-            </div>
-          )}
+          <RoundList />
+          <hr />
           {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
+          <hr />
           <LogosSection />
+          <hr />
+          <SettingsSection />
         </div>
-        <AuthSection />
+        <WakeUpLogo />
       </div>
-      <a href={WAKEUP_URL} target='_blank' rel='noreferrer'>
-        <ImageButton src={WakeUpLogo} alt='WakeUp Logo' className='w-[124px]' />
-      </a>
     </div>
   );
 }

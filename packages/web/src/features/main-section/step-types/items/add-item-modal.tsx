@@ -1,13 +1,13 @@
-import { ColorDot } from '@/components/color-dot';
-import { FormModal } from '@/components/form-modal-old';
-import { IconButton } from '@/components/icon-button';
+import { FormModal } from '@/components/form-modal';
 import { SelectInput } from '@/components/inputs/select-input';
-import { TextAreaInput } from '@/components/text-area-input';
-import { CreateItemBody } from '@/services/items/schemas';
-import { Attribute } from '@/types';
+import { Attribute, CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
-import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useMemo } from 'react';
+import { IconButton } from '@/components/icon-button';
+import { AttributeOption, attributesOptionsMapper } from '../utils';
+import { FormInputWrapper } from '@/components/form/form-input';
+import { TextAreaInput } from '@/components/text-area-input';
 
 interface AddItemModalProps {
   attributes: Attribute[];
@@ -15,55 +15,44 @@ interface AddItemModalProps {
   onClick: (data: CreateItemBody) => void;
 }
 
-interface AddItemFormData {
-  markdown: string;
-  attributeId?: number;
-}
-
 export function AddItemModal(props: AddItemModalProps) {
-  const attributeOptions = useMemo(
-    () =>
-      props.attributes.map((a) => ({
-        value: a.id.toString(),
-        label: (
-          <div className='flex items-center gap-2'>
-            <ColorDot color={a.color} />
-            <span>{a.value}</span>
-          </div>
-        ),
-      })),
-    [props.attributes],
-  );
+  const attributeOptions = useMemo(() => attributesOptionsMapper(props.attributes), [props.attributes]);
 
-  const defaultValues: AddItemFormData = {
+  const defaultValues: CreateItemBody = {
     markdown: '',
-    attributeId: undefined,
+    attributeId: 0,
+    stepId: props.stepId,
   };
 
-  function handleSubmit(data: AddItemFormData) {
+  function handleSubmit(data: CreateItemBody) {
     if (!data.attributeId) return;
-    props.onClick({ markdown: data.markdown, attributeId: data.attributeId, stepId: props.stepId });
+    props.onClick({
+      markdown: data.markdown,
+      attributeId: +data.attributeId,
+      stepId: props.stepId,
+    });
   }
 
   return (
-    <FormModal<AddItemFormData>
+    <FormModal
       title='Add item'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
+      schema={createItemSchema}
     >
-      <FormFields attributeOptions={attributeOptions} defaultValues={defaultValues} />
+      <FormFields defaultValues={defaultValues} attributeOptions={attributeOptions} />
     </FormModal>
   );
 }
 
 interface FormFieldsProps {
-  attributeOptions: { value: string; label: React.ReactNode }[];
-  defaultValues: AddItemFormData;
+  attributeOptions: AttributeOption[];
+  defaultValues: CreateItemBody;
 }
 
 function FormFields({ attributeOptions, defaultValues }: FormFieldsProps) {
-  const { control } = useFormContext<AddItemFormData>();
+  const { control } = useFormContext<CreateItemBody>();
 
   return (
     <div className='grid gap-4 py-4'>
@@ -71,21 +60,26 @@ function FormFields({ attributeOptions, defaultValues }: FormFieldsProps) {
         name='markdown'
         control={control}
         defaultValue={defaultValues.markdown}
-        render={({ field }) => <TextAreaInput {...field} rows={5} placeholder='Content' />}
+        render={({ field, fieldState }) => (
+          <FormInputWrapper error={fieldState.error?.message}>
+            <TextAreaInput {...field} rows={5} placeholder='Content' />
+          </FormInputWrapper>
+        )}
       />
       {attributeOptions.length > 0 && (
         <Controller
           name='attributeId'
           control={control}
           defaultValue={defaultValues.attributeId}
-          render={({ field }) => (
-            <SelectInput
-              name='attributeId'
-              items={attributeOptions}
-              onValueChange={(val) => field.onChange(Number(val))}
-              value={String(field.value ?? '')}
-              placeholder='Select an attribute'
-            />
+          render={({ field, fieldState }) => (
+            <FormInputWrapper error={fieldState.error?.message}>
+              <SelectInput
+                name='attributeId'
+                items={attributeOptions}
+                onValueChange={(value) => field.onChange(+value)}
+                placeholder='Select an attribute'
+              />
+            </FormInputWrapper>
           )}
         />
       )}

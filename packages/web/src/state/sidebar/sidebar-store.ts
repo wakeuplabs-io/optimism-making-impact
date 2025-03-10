@@ -1,5 +1,4 @@
 import { toast } from '@/hooks/use-toast';
-// import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
@@ -15,6 +14,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   rounds: [],
   selectedRound: null,
   selectedCategoryId: -1,
+  categoriesInProgress: [],
   init: async () => {
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
@@ -25,7 +25,10 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
 
-    set(() => ({ rounds }));
+    // update selected round if it exists
+    const updatedSelectedRound = rounds.find((round) => round.id === get().selectedRound?.id);
+
+    set(() => ({ rounds, selectedRound: updatedSelectedRound ?? null }));
   },
   setSelectedRound: (roundId: number) => {
     const selectedRound = get().rounds.find((round) => round.id === roundId);
@@ -69,14 +72,16 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     set((state) => ({ ...state, selectedCategoryId: categoryId }));
   },
   addCategory: async (name: string, icon: string, roundId: number) => {
+    const provisoryCategoryId = Date.now();
+
     await optimisticUpdate({
-      getStateSlice: () => get().selectedRound?.categories,
-      updateFn: (categories) => {
-        if (categories) {
-          return [...categories, { id: Date.now(), name, icon: icon, roundId }];
-        }
-      },
-      setStateSlice: (categories) => set((state) => ({ selectedRound: { ...state.selectedRound, categories } })),
+      getStateSlice: () => ({ categories: get().selectedRound?.categories, categoriesInProgress: get().categoriesInProgress }),
+      updateFn: ({ categories, categoriesInProgress }) => ({
+        categories: categories ? [...categories, { id: provisoryCategoryId, name, icon: icon, roundId }] : [],
+        categoriesInProgress: [...categoriesInProgress, provisoryCategoryId],
+      }),
+      setStateSlice: ({ categories, categoriesInProgress }) =>
+        set((state) => ({ selectedRound: { ...state.selectedRound, categories }, categoriesInProgress })),
       apiCall: () => CategoriesService.createOne({ name, icon, roundId }),
       onError: (error) => {
         const title = 'Failed to add category';
@@ -89,6 +94,10 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         toast({ title, description, variant: 'destructive' });
       },
       onSuccess: () => {
+        // Remove the provisory category from the categoriesInProgress array
+        set((state) => ({
+          categoriesInProgress: state.categoriesInProgress.filter((id) => id !== provisoryCategoryId),
+        }));
         get().fetchData();
       },
     });
@@ -164,5 +173,8 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
         get().fetchData();
       },
     });
+  },
+  isCategoryInProgress: (categoryId: number) => {
+    return get().categoriesInProgress.includes(categoryId);
   },
 }));

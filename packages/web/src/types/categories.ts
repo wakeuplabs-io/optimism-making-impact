@@ -1,5 +1,5 @@
-import { attributeSchema } from '@/types/attributes';
 import { stepSchema } from '@/types/steps';
+import { attributeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const categorySchema = z.object({

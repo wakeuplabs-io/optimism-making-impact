@@ -8,8 +8,8 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { Attribute } from '@/types';
 import { CompleteSmartList } from '@/types/smart-lists';
+import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 interface ItemsFiltersProps {
@@ -48,7 +48,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white p-5'>{props.children}</div>;
+  return <div className='flex h-fit max-w-[250px] rounded-[22px] bg-white px-8 py-6'>{props.children}</div>;
 }
 
 interface ContentProps {
@@ -74,7 +74,7 @@ function Content(props: ContentProps) {
   return (
     <div className='flex w-full flex-col'>
       <div className='flex items-center justify-between'>
-        <h2 className='text-[20px] font-[500]'>Filters</h2>
+        <span className='text-base font-semibold'>Filters</span>
         {isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
       </div>
       <hr className='my-6 border-[#D9D9D9]' />
@@ -82,14 +82,14 @@ function Content(props: ContentProps) {
         // title={props.smartList.title} TODO: add title
         filters={props.smartList.attributes.map((attr) => ({
           label: attr.value.toLowerCase(),
-          selected: selectedAttributes.map(({ id }) => id).includes(attr.id),
-          onClick: setSelectedAttributes,
           data: attr,
           prefixDot: attr.color,
           editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
           deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
           tooltipText: attr.description,
         }))}
+        onSelected={setSelectedAttributes}
+        selected={selectedAttributes}
         isAdmin={isAdmin}
         spacing='xl'
       />

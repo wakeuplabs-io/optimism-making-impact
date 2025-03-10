@@ -1,12 +1,12 @@
-import { EditableText } from '@/components/editable-text';
 import { HoverOverlay } from '@/components/hover-overlay';
 import { ImageWithDefault } from '@/components/image-with-default';
 import { DeleteInfogrpahyModal } from '@/features/main-section/step-types/infographies/delete-infography-modal';
-import { EditInfogrpahyImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
+import { EditInfographyImageModal } from '@/features/main-section/step-types/infographies/edit-infography-img-modal';
 import { cn } from '@/lib/utils';
 import { Infography } from '@/types/infographies';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
+import { EditInfographyMarkdown } from './edit-infography-markdown';
 
 interface InfogrpahyCardProps {
   infography: Infography;
@@ -19,8 +19,8 @@ interface InfogrpahyCardProps {
 
 export function InfographyCard(props: InfogrpahyCardProps) {
   const [editImgModalOpen, setEditImgModalOpen] = useState(false);
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.onChangeText?.(props.infography.id, e.target.value);
+  const handleMarkdownChange = (newMarkdown: string) => {
+    props.onChangeText?.(props.infography.id, newMarkdown);
   };
 
   return (
@@ -47,8 +47,8 @@ export function InfographyCard(props: InfogrpahyCardProps) {
           defaultImgClassname='rounded-full'
         />
       </HoverOverlay>
-      <div className='flex h-full w-full items-center lg:max-w-[500px] lg:px-0'>
-        <EditableText value={props.infography.markdown} isAdmin={props.isAdmin} onChange={handleTextareaChange} />
+      <div className='flex items-center h-full w-full lg:px-0'>
+        <EditInfographyMarkdown isAdmin={props.isAdmin} markdown={props.infography.markdown} onChange={handleMarkdownChange} />
       </div>
       {props.isAdmin && (
         <div className='absolute right-5 top-5 '>
@@ -56,7 +56,7 @@ export function InfographyCard(props: InfogrpahyCardProps) {
         </div>
       )}
       {props.isAdmin && editImgModalOpen && (
-        <EditInfogrpahyImageModal
+        <EditInfographyImageModal
           infography={props.infography}
           onClick={props.onChangeImage}
           open={editImgModalOpen}

@@ -12,7 +12,7 @@ export function MainSection() {
   return (
     //we add overflow-y-auto so only the main section scrolls on mobile
     <main
-      className={cn('flex flex-col flex-1 gap-8 px-8 pb-36 lg:pb-0', {
+      className={cn('flex flex-col flex-1 gap-8 px-8 pb-36 lg:pb-0 lg:px-0', {
         'overflow-y-auto': isMobile,
       })}
     >

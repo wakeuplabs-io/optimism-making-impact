@@ -7,26 +7,23 @@ interface IconPickerProps {
 }
 
 export function IconPicker({ selectedIcon, modalIcons, onSelect }: IconPickerProps) {
-  const [search, setSearch] = useState('dot');
+  const [search, setSearch] = useState('');
 
   const filteredIcons = useMemo(() => {
-    return Object.keys(modalIcons).filter((iconName) =>
-      new RegExp(search, 'i').test(iconName)
-    );
+    return Object.keys(modalIcons).filter((iconName) => new RegExp(search, 'i').test(iconName));
   }, [search, modalIcons]);
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <div className="border border-gray-300 rounded-lg p-3">
+    <div className='flex h-full w-full flex-col gap-2'>
+      <div className='rounded-lg border border-gray-300 p-3'>
         <input
-          type="text"
-          placeholder="Search icon..."
-          className="text-sm text-gray-500 w-full px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+          type='text'
+          placeholder='Search icon...'
+          className='w-full rounded-md border border-gray-300 px-2 py-1 text-sm text-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500'
           value={search}
           onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
-
-        <div className="grid grid-cols-6 gap-2 mt-2 max-h-[200px] overflow-y-auto">
+        <div className='mt-2 grid max-h-[200px] grid-cols-4 gap-2 overflow-y-auto sm:grid-cols-6 md:grid-cols-8'>
           {filteredIcons.length > 0 ? (
             filteredIcons.slice(0, 30).map((iconName) => {
               const IconComponent = modalIcons[iconName];
@@ -34,10 +31,11 @@ export function IconPicker({ selectedIcon, modalIcons, onSelect }: IconPickerPro
               return (
                 <button
                   key={iconName}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     onSelect(iconName);
                   }}
-                  className={`flex items-center justify-center h-10 w-10 rounded-lg border ${
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border sm:h-10 sm:w-10 ${
                     selectedIcon === iconName ? 'border-red-500 bg-red-100' : 'border-gray-300 hover:bg-gray-200'
                   }`}
                 >
@@ -46,7 +44,7 @@ export function IconPicker({ selectedIcon, modalIcons, onSelect }: IconPickerPro
               );
             })
           ) : (
-            <p className="text-gray-500 text-sm col-span-6 text-center mt-2">No icons found</p>
+            <p className='col-span-full mt-2 text-center text-sm text-gray-500'>No icons found</p>
           )}
         </div>
       </div>
