@@ -1,9 +1,9 @@
 import { CardStrength } from '@optimism-making-impact/schemas';
 
 export const enum StepTypes {
-  INFOGRAPHY,
-  ITEMS,
-  CARD,
+  CARDGRID,
+  INFOGRAPHIC,
+  SMARTLIST,
 }
 
 export type StrengthItem = {

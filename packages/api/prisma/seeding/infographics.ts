@@ -48,9 +48,8 @@ export async function seedInfographics(prisma: PrismaClient, steps: Step[]) {
 
   const infographicsToCreate: Omit<Infography, 'id' | 'createdAt' | 'updatedAt'>[] = [];
 
-  // For each step, create exactly 4 infographics with incremental positions
   for (const step of steps) {
-    if (step.type !== StepType.INFOGRAPHY) continue; // Only create infographics for INFOGRAPHIC type steps
+    if (step.type !== StepType.INFOGRAPHIC) continue;
 
     for (let i = 0; i < 4; i++) {
       const infographicData = infographicsData[i % infographicsData.length];

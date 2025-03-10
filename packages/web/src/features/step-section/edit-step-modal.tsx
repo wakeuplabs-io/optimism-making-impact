@@ -1,13 +1,13 @@
-import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
-import { Step } from '@/types';
-import { Pencil, Trash } from 'lucide-react';
-import { FormModal } from '@/components/form-modal';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormTextInput } from '@/components/form/form-text-input';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { createElement, useState } from 'react';
 import { IconPicker } from '../sidebar/components/icon-picker';
+import { FormModal } from '@/components/form-modal';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
+import { Step } from '@/types';
+import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
+import { Pencil, Trash } from 'lucide-react';
+import { createElement, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface EditIconProps {
   step: Step;
@@ -67,7 +67,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           </div>
         </div>
 
-        <div className='flex flex-col gap-1 w-full'>
+        <div className='flex w-full flex-col gap-1'>
           <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
@@ -86,8 +86,8 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           />
         </div>
       </div>
-      {step.type === 'ITEMS' && (
-        <div className='flex flex-col col-span-2 gap-1'>
+      {step.type === 'SMARTLIST' && (
+        <div className='col-span-2 flex flex-col gap-1'>
           <span className='text-xs font-medium text-gray-500'>Description</span>
           <Controller
             name='description'
@@ -103,7 +103,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker
