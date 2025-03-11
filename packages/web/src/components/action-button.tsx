@@ -11,7 +11,7 @@ export function ActionButton({ label, icon, variant = 'primary', className, ...p
   return (
     <button
       className={cn(
-        'flex h-[46px] w-fit min-w-40 flex-row items-center justify-center gap-2 rounded-full bg-primary px-3 transition-all duration-500 ease-in-out hover:opacity-80',
+        'flex h-[46px] w-fit min-w-36 flex-row items-center justify-center gap-2 rounded-full bg-primary px-3 transition-all duration-500 ease-in-out hover:opacity-80',
         className,
         {
           'bg-primary': variant === 'primary',
