@@ -4,8 +4,8 @@ import { z } from 'zod';
 export const smartListFilterSchema = z.object({
   id: z.number(),
   title: z.string(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
+  createdAt: z.string().datetime().nullish(),
+  updatedAt: z.string().datetime().nullish(),
 });
 export type SmartListFilter = z.infer<typeof smartListFilterSchema>;
 

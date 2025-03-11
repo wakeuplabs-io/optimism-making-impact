@@ -7,8 +7,8 @@ export const categorySchema = z.object({
   name: z.string(),
   icon: z.string(),
   roundId: z.number(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
+  createdAt: z.string().datetime().nullish(),
+  updatedAt: z.string().datetime().nullish(),
 });
 export type Category = z.infer<typeof categorySchema>;
 

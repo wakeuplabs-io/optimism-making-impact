@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { idValidator } from './common';
+import { z } from 'zod';
 
 export const colorList = ['RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE', 'GREEN', 'LIGHTBLUE', 'BLUE', 'DARKBLUE'] as const;
 
@@ -13,8 +13,8 @@ export const attributeSchema = z.object({
   description: z.string(),
   categoryId: z.number(),
   color: colorSchema,
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
 });
 
 // Type inference from the schema

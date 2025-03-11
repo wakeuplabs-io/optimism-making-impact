@@ -14,7 +14,7 @@ export const stepSchema = z.object({
   position: z.number(), // Zero-based
   type: stepTypeSchema,
   categoryId: z.number(),
-  smartListId: z.number().nullable().optional(),
+  smartListId: z.number().nullish(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
@@ -25,7 +25,7 @@ export const completeStepSchema = stepSchema.extend({
   infographics: z.array(infographicSchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
-  smartListFilter: completeSmartListFilterSchema.optional(),
+  smartListFilter: completeSmartListFilterSchema.nullish(), // TODO:
   keywords: z.array(keywordSchema),
 });
 
