@@ -3,8 +3,8 @@ import { z } from 'zod';
 
 export const roundSchema = z.object({
   id: z.number(),
-  link1: z.string().optional().default(''),
-  link2: z.string().optional().default(''),
+  link1: z.string().optional(),
+  link2: z.string().optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
 });

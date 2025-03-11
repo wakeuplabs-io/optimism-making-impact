@@ -1,16 +1,15 @@
-import { z } from 'zod';
-import { stepTypeSchema } from '@optimism-making-impact/schemas';
-
 import { completeCardSchema } from '@/types/cards';
 import { infographySchema } from '@/types/infographies';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
 import { completeSmartListSchema } from '@/types/smart-lists';
+import { stepTypeSchema } from '@optimism-making-impact/schemas';
+import { z } from 'zod';
 
 export const stepSchema = z.object({
   id: z.number(),
   title: z.string(),
-  description: z.string(),
+  description: z.string().nullish(),
   icon: z.string(),
   position: z.number(), // Zero-based
   type: stepTypeSchema,
@@ -29,4 +28,5 @@ export const completeStepSchema = stepSchema.extend({
   smartList: completeSmartListSchema.optional(),
   keywords: z.array(keywordSchema),
 });
+
 export type CompleteStep = z.infer<typeof completeStepSchema>;
