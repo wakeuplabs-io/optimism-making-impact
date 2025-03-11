@@ -3,11 +3,11 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { CompleteSmartList } from '@/types/smart-lists';
+import { CompleteSmartListFilter } from '@/types/smart-lists';
 import { useMemo } from 'react';
 
 interface CardFiltersProps {
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
   stepId: number;
 }
 
@@ -33,7 +33,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 px-4 lg:static'>
+      <div className='flex w-full items-center justify-between gap-4 px-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -46,7 +46,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 interface ContentProps {
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
   stepId: number;
 }
 
@@ -62,15 +62,15 @@ function Content(props: ContentProps) {
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       <h2 className='text-[20px] font-[500]'>Filters</h2>
-      <hr className='border-[#D9D9D9] my-6' />
+      <hr className='my-6 border-[#D9D9D9]' />
       <div className='flex flex-col gap-8'>
-        {props.smartList && (
+        {props.smartListFilter && (
           <FilterGroup
             className='mt-4'
-            title={props.smartList.title}
-            filters={props.smartList.attributes.map((attr) => ({
+            title={props.smartListFilter.title}
+            filters={props.smartListFilter.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               data: attr,
               prefixDot: attr.color,

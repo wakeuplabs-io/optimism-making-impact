@@ -237,14 +237,14 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   addAttributeToSmartList: (data: CreateAttributeBody) => {
     const currentStep = get().step;
-    if (!currentStep || !currentStep.smartList) return;
+    if (!currentStep || !currentStep.smartListFilter) return;
 
     const stepId = currentStep.id;
 
     optimisticUpdate({
-      getStateSlice: () => currentStep.smartList!.attributes,
+      getStateSlice: () => currentStep.smartListFilter!.attributes,
       updateFn: (attributes) => [...attributes, { ...data, id: Date.now(), categoryId: 1 }],
-      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartListFilter: { ...currentStep.smartListFilter!, attributes } } }),
       apiCall: () => AttributesService.create(data),
       onError: (error) => {
         const title = 'Failed to create attribute';
@@ -263,14 +263,14 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   updateAttribute(data) {
     const currentStep = get().step;
-    if (!currentStep || !currentStep.smartList) return;
+    if (!currentStep || !currentStep.smartListFilter) return;
 
     const stepId = currentStep.id;
 
     optimisticUpdate({
-      getStateSlice: () => currentStep.smartList!.attributes,
+      getStateSlice: () => currentStep.smartListFilter!.attributes,
       updateFn: (attributes) => attributes.map((attribute) => (attribute.id === data.id ? { ...attribute, ...data } : attribute)),
-      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartListFilter: { ...currentStep.smartListFilter!, attributes } } }),
       apiCall: () => AttributesService.update(data),
       onError: (error) => {
         const title = 'Failed to update attribute';
@@ -294,9 +294,9 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     const stepId = currentStep.id;
 
     optimisticUpdate({
-      getStateSlice: () => currentStep.smartList!.attributes,
+      getStateSlice: () => currentStep.smartListFilter!.attributes,
       updateFn: (attributes) => attributes.filter((attribute) => attribute.id !== attributeId),
-      setStateSlice: (attributes) => set({ step: { ...currentStep, smartList: { ...currentStep.smartList!, attributes } } }),
+      setStateSlice: (attributes) => set({ step: { ...currentStep, smartListFilter: { ...currentStep.smartListFilter!, attributes } } }),
       apiCall: () => AttributesService.deleteOne(attributeId),
       onError: (error) => {
         const title = 'Failed to delete attribute';
@@ -315,11 +315,11 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   addItem(data: CreateItemBody) {
     const currentStep = get().step;
-    if (!currentStep || !currentStep.smartList) return;
+    if (!currentStep || !currentStep.smartListFilter) return;
 
     const stepId = currentStep.id;
 
-    const selectedAttribute = currentStep.smartList.attributes.find((attribute) => attribute.id === data.attributeId)!;
+    const selectedAttribute = currentStep.smartListFilter.attributes.find((attribute) => attribute.id === data.attributeId)!;
 
     if (!selectedAttribute) return;
 
@@ -348,7 +348,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   updateItem(itemId, data) {
     const currentStep = get().step;
-    if (!currentStep || !currentStep.smartList) return;
+    if (!currentStep || !currentStep.smartListFilter) return;
 
     const stepId = currentStep.id;
 
@@ -374,7 +374,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   deleteItem(itemId) {
     const currentStep = get().step;
-    if (!currentStep || !currentStep.smartList) return;
+    if (!currentStep || !currentStep.smartListFilter) return;
 
     const stepId = currentStep.id;
 

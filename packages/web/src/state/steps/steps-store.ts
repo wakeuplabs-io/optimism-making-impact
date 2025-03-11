@@ -1,3 +1,4 @@
+import { useSidebarStore } from '../sidebar/sidebar-store';
 import { toast } from '@/hooks/use-toast';
 import { StepsService } from '@/services/steps-service';
 import { StepsStore } from '@/state/steps/types';
@@ -6,7 +7,6 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { stepArraySchema } from '@/types';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
-import { useSidebarStore } from '../sidebar/sidebar-store';
 
 export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
   loading: false,
@@ -71,7 +71,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               position: 0,
               description: data.description ?? '',
               type: data.type,
-              smartListId: data.smartListId ?? null,
+              smartListFilterId: data.smartListFilterId ?? null,
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
             },

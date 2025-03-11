@@ -1,14 +1,14 @@
+import { attributesOptionsMapper } from '../utils';
 import { FormModal } from '@/components/form-modal';
+import { FormInputWrapper } from '@/components/form/form-input';
 import { SelectInput } from '@/components/inputs/select-input';
+import { TextAreaInput } from '@/components/text-area-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteItem } from '@/types';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
 import { Pencil } from 'lucide-react';
 import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { attributesOptionsMapper } from '../utils';
-import { FormInputWrapper } from '@/components/form/form-input';
-import { TextAreaInput } from '@/components/text-area-input';
 
 interface UpdateItemModalProps {
   item: CompleteItem;
@@ -16,7 +16,7 @@ interface UpdateItemModalProps {
 }
 
 export function UpdateItemModal(props: UpdateItemModalProps) {
-  const attributes = useMainSectionStore((state) => state.step?.smartList?.attributes);
+  const attributes = useMainSectionStore((state) => state.step?.smartListFilter?.attributes);
 
   const attributeOptions = useMemo(() => (attributes ? attributesOptionsMapper(attributes) : []), [attributes]);
 

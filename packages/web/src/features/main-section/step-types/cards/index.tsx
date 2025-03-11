@@ -18,12 +18,17 @@ export function CardStep(props: CardStepProps) {
 
   return (
     <div className={cn('flex flex-col gap-4')}>
-      <div className='flex flex-col w-full h-full lg:flex-row lg:gap-8'>
-        <div className='flex flex-col-reverse items-center gap-8 lg:flex-1 w-full mb-6 lg:mb-0 lg:flex-col lg:gap-6'>
+      <div className='flex h-full w-full flex-col lg:flex-row lg:gap-8'>
+        <div className='mb-6 flex w-full flex-col-reverse items-center gap-8 lg:mb-0 lg:flex-1 lg:flex-col lg:gap-6'>
           {adminMode && (
-            <AddCardModal stepId={props.step.id} onClick={addCard} keywords={keywords} attributes={props.step.smartList?.attributes} />
+            <AddCardModal
+              stepId={props.step.id}
+              onClick={addCard}
+              keywords={keywords}
+              attributes={props.step.smartListFilter?.attributes}
+            />
           )}
-          <CardFilters smartList={props.step.smartList} stepId={props.step.id} />
+          <CardFilters smartListFilter={props.step.smartListFilter} stepId={props.step.id} />
         </div>
         <CardList cards={props.step.cards} stepId={props.step.id} />
       </div>

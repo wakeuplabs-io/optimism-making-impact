@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-const smartLists = [
+const smartListFilters = [
   { title: 'Tech Innovations' },
   { title: 'Sustainability Initiatives' },
   { title: 'Future Trends' },
@@ -13,16 +13,15 @@ const smartLists = [
   { title: 'Smart Cities' },
 ];
 
-export async function seedSmartLists(prisma: PrismaClient) {
-  console.log('Seeding smart lists...');
+export async function seedSmartListFilters(prisma: PrismaClient) {
+  console.log('Seeding smart lists filters...');
 
-  const { count } = await prisma.smartList.createMany({
-    data: smartLists,
+  const { count } = await prisma.smartListFilter.createMany({
+    data: smartListFilters,
     skipDuplicates: true,
   });
 
   console.log(`${count} smart lists seeded successfully!`);
 
-  // Return created SmartLists for confirmation
-  return prisma.smartList.findMany();
+  return prisma.smartListFilter.findMany();
 }

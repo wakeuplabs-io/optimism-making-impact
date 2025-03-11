@@ -58,7 +58,7 @@ export async function seedSteps(prisma: PrismaClient, categories: Category[]) {
         type: step.type,
         categoryId: category.id, // Assign categoryId correctly
         position, // Maintain order
-        smartListId: null,
+        smartListFilterId: null,
         description: step.description ?? '',
       });
     });

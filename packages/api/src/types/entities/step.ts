@@ -5,6 +5,6 @@ export type CompleteStep = Prisma.StepGetPayload<{
     cards: { include: { attribute: true; keywords: true } };
     infographics: true;
     items: { include: { attribute: true } };
-    smartList: { include: { attributes: true } };
+    smartListFilter: { include: { attributes: true } };
   };
 }>;

@@ -97,24 +97,24 @@ describe('Duplicate round', async () => {
     duplicatedSteps.forEach((step, index) => {
       const originalStep = originalSteps[index];
 
-      if (step.smartList) {
-        expect(originalStep.smartList).toBeDefined();
-        expect(step.smartList.title).toBe(originalStep.smartList?.title);
-        expect(step.smartList.id).not.toBe(originalStep.smartList?.id);
+      if (step.smartListFilter) {
+        expect(originalStep.smartListFilter).toBeDefined();
+        expect(step.smartListFilter.title).toBe(originalStep.smartListFilter?.title);
+        expect(step.smartListFilter.id).not.toBe(originalStep.smartListFilter?.id);
 
-        // Compare attributes within the smart list
-        expect(step.smartList.attributes.length).toBe(originalStep.smartList?.attributes.length);
-        step.smartList.attributes.forEach((attribute, attrIndex) => {
-          const originalAttribute = originalStep.smartList?.attributes[attrIndex];
+        // Compare attributes within the smart list filter
+        expect(step.smartListFilter.attributes.length).toBe(originalStep.smartListFilter?.attributes.length);
+        step.smartListFilter.attributes.forEach((attribute, attrIndex) => {
+          const originalAttribute = originalStep.smartListFilter?.attributes[attrIndex];
 
           expect(attribute.value).toBe(originalAttribute?.value);
           expect(attribute.description).toBe(originalAttribute?.description);
           expect(attribute.color).toBe(originalAttribute?.color);
           expect(attribute.id).not.toBe(originalAttribute?.id);
-          expect(attribute.smartListId).toBe(step.smartList?.id);
+          expect(attribute.smartListFilterId).toBe(step.smartListFilter?.id);
         });
       } else {
-        expect(originalStep.smartList).toBeFalsy();
+        expect(originalStep.smartListFilter).toBeFalsy();
       }
     });
   });

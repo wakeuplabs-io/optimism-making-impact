@@ -1,15 +1,15 @@
 import { attributeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
-export const smartListSchema = z.object({
+export const smartListFilterSchema = z.object({
   id: z.number(),
   title: z.string(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
 });
-export type SmartList = z.infer<typeof smartListSchema>;
+export type SmartListFilter = z.infer<typeof smartListFilterSchema>;
 
-export const completeSmartListSchema = smartListSchema.extend({
+export const completeSmartListFilterSchema = smartListFilterSchema.extend({
   attributes: z.array(attributeSchema),
 });
-export type CompleteSmartList = z.infer<typeof completeSmartListSchema>;
+export type CompleteSmartListFilter = z.infer<typeof completeSmartListFilterSchema>;

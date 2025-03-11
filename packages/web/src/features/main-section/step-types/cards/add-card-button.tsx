@@ -1,13 +1,13 @@
-import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
-import { Plus } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { AttributeOption, strengthOptions } from '../utils';
+import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
-import { nonAssignedOption, useCardFormData } from './useCardFormData';
-import { strengthOptions, AttributeOption } from '../utils';
 import { MultiSelectInput } from '@/components/ui/multi-select';
+import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
+import { Plus } from 'lucide-react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddCardModalProps {
   stepId: number;
@@ -67,7 +67,7 @@ function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<CreateCardBody>();
 
   return (
-    <div className='flex flex-col w-[320px] max-w-full gap-4 py-4'>
+    <div className='flex w-[320px] max-w-full flex-col gap-4 py-4'>
       <Controller
         name='title'
         control={control}

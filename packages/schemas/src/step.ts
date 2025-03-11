@@ -18,13 +18,16 @@ export const createStepBodySchema = z.object({
   categoryId: z.number().refine((val) => !!val, {
     message: 'Category id is required',
   }),
-  smartListId: z.number().optional(),
+  smartListFilterId: z.number().optional(),
 });
 
-export const createStepBodySchemaWithValidation = createStepBodySchema.refine((data) => !(data.type !== 'CARDGRID' && data.smartListId), {
-  message: 'Smart list id is required only for card type',
-  path: ['smartListId'],
-});
+export const createStepBodySchemaWithValidation = createStepBodySchema.refine(
+  (data) => !(data.type !== 'CARDGRID' && data.smartListFilterId),
+  {
+    message: 'Smart list filter id is required only for card type',
+    path: ['smartListFilterId'],
+  },
+);
 
 export type CreateStepBody = z.infer<typeof createStepBodySchema>;
 

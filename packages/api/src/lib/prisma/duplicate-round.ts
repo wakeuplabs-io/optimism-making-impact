@@ -62,24 +62,24 @@ async function createSmartListsFromSteps(steps: CompleteStep[]): Promise<{
   const attributeMap: Record<number, number> = {};
 
   for (const step of steps) {
-    if (!step.smartList) {
+    if (!step.smartListFilter) {
       continue;
     }
 
-    const newSmartList = await prisma.smartList.create({
-      data: { title: step.smartList.title },
+    const newSmartList = await prisma.smartListFilter.create({
+      data: { title: step.smartListFilter.title },
     });
 
-    smartListMap[step.smartList.id] = newSmartList.id;
+    smartListMap[step.smartListFilter.id] = newSmartList.id;
 
-    for (const oldAttr of step.smartList.attributes) {
+    for (const oldAttr of step.smartListFilter.attributes) {
       const newAttr = await prisma.attribute.create({
         data: {
           value: oldAttr.value,
           description: oldAttr.description,
           color: oldAttr.color,
           categoryId: oldAttr.categoryId, // Ensure correct category linking
-          smartListId: newSmartList.id,
+          smartListFilterId: newSmartList.id,
         },
       });
 
@@ -108,7 +108,7 @@ async function createStepsWithRelationsForCategories(
             position: step.position,
             type: step.type,
             categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
-            smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
+            smartListFilterId: step.smartListFilter ? oldToNewSmartListIds[step.smartListFilter.id] : null,
             infographics: {
               create: step.infographics.map(({ image, markdown, position }) => ({
                 image,

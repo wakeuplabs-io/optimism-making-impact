@@ -16,7 +16,7 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
       include: {
         steps: {
           select: {
-            smartListId: true,
+            smartListFilterId: true,
           },
         },
       },
@@ -24,14 +24,14 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
 
     if (!category) throw new ApiError(404, 'Category not found.');
 
-    const smartlistIds = category.steps.map((step) => step.smartListId);
-    const stepsIds: number[] = smartlistIds.filter((id): id is number => id !== null);
+    const smartListFiltersIds = category.steps.map((step) => step.smartListFilterId);
+    const stepsIds: number[] = smartListFiltersIds.filter((id): id is number => id !== null);
 
-    const smartLists = await prisma.smartList.findMany({
+    const smartListFilters = await prisma.smartListFilter.findMany({
       where: { id: { in: stepsIds } },
     });
 
-    apiResponse.success(res, { smartLists }, StatusCodes.OK);
+    apiResponse.success(res, { smartListFilters }, StatusCodes.OK);
   } catch (error) {
     next(error);
   }

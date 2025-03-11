@@ -8,13 +8,13 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteSmartList } from '@/types/smart-lists';
+import { CompleteSmartListFilter } from '@/types/smart-lists';
 import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 
 interface ItemsFiltersProps {
   stepId: number;
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
 }
 
 export function ItemFilters(props: ItemsFiltersProps) {
@@ -53,7 +53,7 @@ function Container(props: { children: React.ReactNode }) {
 
 interface ContentProps {
   stepId: number;
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
 }
 
 function Content(props: ContentProps) {
@@ -63,10 +63,10 @@ function Content(props: ContentProps) {
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
   const { selectedAttributes, setSelectedAttributes } = useFiltersStore((state) => state);
 
-  if (!props.smartList) {
+  if (!props.smartListFilter) {
     return (
       <div className='flex w-full justify-center'>
-        <span>There is no Smart List for this step</span>
+        <span>There is no Smart List Filter for this step</span>
       </div>
     );
   }
@@ -75,12 +75,12 @@ function Content(props: ContentProps) {
     <div className='flex w-full flex-col'>
       <div className='flex items-center justify-between'>
         <span className='text-base font-semibold'>Filters</span>
-        {isAdmin && <AddAttributeModal smartListId={props.smartList.id} onClick={addAttributeToSmartList} />}
+        {isAdmin && <AddAttributeModal smartListFilterId={props.smartListFilter.id} onClick={addAttributeToSmartList} />}
       </div>
       <hr className='my-6 border-[#D9D9D9]' />
       <FilterGroup<Attribute>
         // title={props.smartList.title} TODO: add title
-        filters={props.smartList.attributes.map((attr) => ({
+        filters={props.smartListFilter.attributes.map((attr) => ({
           label: attr.value.toLowerCase(),
           data: attr,
           prefixDot: attr.color,
