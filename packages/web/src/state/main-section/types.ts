@@ -6,6 +6,7 @@ import {
   CreateCardBody,
   CreateInfographicBody,
   CreateItemBody,
+  Infographic,
   UpdateAttributeBody,
   UpdateCardBody,
   UpdateInfographicBody,
@@ -20,13 +21,18 @@ export interface MainSectionState {
   stepInitialState: CompleteStep | null;
 }
 
+interface EditInfographicResult {
+  infographic?: Infographic;
+  error?: unknown;
+}
+
 export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
   updateStep: (step: Partial<CompleteStep>) => void;
-  addInfographic: (data: CreateInfographicBody) => void;
-  deleteInfographic: (infographyId: number) => void;
-  editInfographic: (infographyId: number, data: Partial<UpdateInfographicBody>) => void;
+  addInfographic: (data: CreateInfographicBody) => Promise<void>;
+  deleteInfographic: (infographicId: number) => Promise<void>;
+  editInfographic: (infographicId: number, data: Partial<UpdateInfographicBody>) => Promise<EditInfographicResult>;
   saveInfographics: (data: BulkUpdateInfographicBody) => void;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;

@@ -78,7 +78,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   editInfographic: async (infographicId: number, data: Partial<UpdateInfographicBody>) => {
     const step = get().step;
 
-    if (!step) return;
+    if (!step) return {};
 
     const infographic = get().step?.infographics.find((infograhic) => infograhic.id === infographicId);
 
@@ -91,6 +91,9 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
         infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
       };
       set({ step: updatedStep });
+      return {
+        infography: updatedInfography,
+      };
     } catch (error) {
       const title = 'Failed to edit infographic';
       let description = 'Unknown error';
@@ -100,6 +103,10 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       }
 
       toast({ title, description, variant: 'destructive' });
+
+      return {
+        error,
+      };
     }
   },
   saveInfographics: async (data: BulkUpdateInfographicBody) => {

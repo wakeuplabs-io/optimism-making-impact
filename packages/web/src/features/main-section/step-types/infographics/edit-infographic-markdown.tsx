@@ -2,25 +2,26 @@ import { FormErrorMessage } from '@/components/form/form-error-message';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
-import { updateInfographicBodySchema } from '@optimism-making-impact/schemas';
+import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { useToggle } from 'usehooks-ts';
 import { EditInfographyActionBar } from './edit-infography-action-bar';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
 
 const markdownSchema = updateInfographicBodySchema.pick({ markdown: true });
 
 type EditInfographicMarkdownProps = Omit<React.HtmlHTMLAttributes<HTMLTextAreaElement>, 'onChange'> & {
-  markdown: string;
-  // onChange: (markdown: string) => void;
+  infographic: Infographic;
   isAdmin?: boolean;
   className?: string;
 };
 
-export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
+export function EditInfographicMarkdown({ infographic, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
+  const editInfographic = useMainSectionStore((state) => state.editInfographic);
   const [editMode, toggleEditMode] = useToggle(false);
   //using a controlled component to validate the markdown
-  const [controlledMarkdownValue, setControlledMarkdownValue] = useState(markdown);
+  const [controlledMarkdownValue, setControlledMarkdownValue] = useState(infographic.markdown);
   const [validationError, setValidationError] = useState<string>('');
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -36,12 +37,29 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props
     }
 
     setValidationError('');
-    // onChange(newMarkdown);
+  };
+
+  const resetMarkdown = () => {
+    setControlledMarkdownValue(infographic.markdown);
+    setValidationError('');
   };
 
   const handleCancelEdit = () => {
-    setControlledMarkdownValue(markdown);
-    setValidationError('');
+    resetMarkdown();
+    toggleEditMode();
+  };
+
+  const handleSubmit = async () => {
+    if (validationError) {
+      return;
+    }
+
+    const { error } = await editInfographic(infographic.id, { markdown: controlledMarkdownValue });
+
+    if (error) {
+      resetMarkdown();
+    }
+
     toggleEditMode();
   };
 
@@ -63,7 +81,7 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props
               invisible: !validationError,
             })}
           />
-          <EditInfographyActionBar onSubmit={() => {}} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
+          <EditInfographyActionBar onSubmit={handleSubmit} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
         </div>
       </div>
     );
@@ -73,7 +91,7 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props
     <InfographyMarkdown
       isAdmin={isAdmin}
       /* if there is an error, show the original markdown */
-      markdown={validationError ? markdown : controlledMarkdownValue}
+      markdown={validationError ? infography.markdown : controlledMarkdownValue}
       toggleEditMode={toggleEditMode}
       className={className}
     />
