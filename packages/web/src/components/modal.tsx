@@ -33,7 +33,7 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
       <DialogTrigger>{props.trigger}</DialogTrigger>
       <DialogContent className='flex w-fit min-w-[95%] sm:min-w-0 max-w-[95%] flex-col items-center rounded-[22px] p-6' {...contentProps}>
         <DialogHeader className='flex w-full items-center justify-center'>
-          {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
+          {props.title && <DialogTitle className='place-self-start text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}
           {props.subtitle && <DialogDescription className='text-center text-secondary'>{props.subtitle}</DialogDescription>}
         </DialogHeader>
         <div className='w-full'>{props.children}</div>
