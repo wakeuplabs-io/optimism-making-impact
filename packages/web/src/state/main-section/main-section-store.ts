@@ -125,18 +125,19 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
     const currentStep = get().step;
     if (!currentStep) return;
 
-    const newInfographics = [
-      ...currentStep.infographics,
-      {
-        ...data,
-        id: -1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        position: currentStep.infographics.length,
-      },
-    ];
+    try {
+      const { data: newInfographic } = await InfographicsService.create(data);
+      set({ step: { ...currentStep, infographics: [...currentStep.infographics, newInfographic] } });
+    } catch (error) {
+      const title = 'Failed to create Infographic';
+      let description = 'Unknown error';
 
-    set({ step: { ...currentStep, infographics: newInfographics } });
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
+
+      toast({ title, description, variant: 'destructive' });
+    }
   },
   addCard: (data: CreateCardBody) => {
     const currentStep = get().step;

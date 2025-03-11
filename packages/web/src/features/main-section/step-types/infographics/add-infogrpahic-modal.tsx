@@ -3,6 +3,7 @@ import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { TextAreaInput } from '@/components/text-area-input';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -11,10 +12,11 @@ interface AddInfographicModalProps {
   stepId: number;
   className?: string;
   triggerClassName?: string;
-  onClick?: (data: CreateInfographicBody) => void;
 }
 
 export function AddInfographicModal(props: AddInfographicModalProps) {
+  const addInfographic = useMainSectionStore((state) => state.addInfographic);
+
   const defaultValues: CreateInfographicBody = {
     image: '',
     markdown: '',
@@ -22,7 +24,7 @@ export function AddInfographicModal(props: AddInfographicModalProps) {
   };
 
   function handleSubmit(data: CreateInfographicBody) {
-    props.onClick?.(data);
+    addInfographic(data);
   }
 
   return (
