@@ -40,6 +40,9 @@ export default {
         ['mi-red']: {
           400: 'var(--mi-red-400)',
         },
+        ['mi-gray']: {
+          100: 'var(--mi-gray-100)',
+        },
         // End of new custom colors
 
         // Start of Card tag colors

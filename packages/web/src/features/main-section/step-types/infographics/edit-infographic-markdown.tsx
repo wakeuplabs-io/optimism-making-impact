@@ -1,5 +1,4 @@
 import { FormErrorMessage } from '@/components/form/form-error-message';
-// import { FormInputWrapper } from '@/components/form/form-input';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
@@ -13,12 +12,12 @@ const markdownSchema = updateInfographicBodySchema.pick({ markdown: true });
 
 type EditInfographicMarkdownProps = Omit<React.HtmlHTMLAttributes<HTMLTextAreaElement>, 'onChange'> & {
   markdown: string;
-  onChange: (markdown: string) => void;
+  // onChange: (markdown: string) => void;
   isAdmin?: boolean;
   className?: string;
 };
 
-export function EditInfographicMarkdown({ markdown, isAdmin, className, onChange, ...props }: EditInfographicMarkdownProps) {
+export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
   const [editMode, toggleEditMode] = useToggle(false);
   //using a controlled component to validate the markdown
   const [controlledMarkdownValue, setControlledMarkdownValue] = useState(markdown);
@@ -37,32 +36,36 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, onChange
     }
 
     setValidationError('');
-    onChange(newMarkdown);
+    // onChange(newMarkdown);
+  };
+
+  const handleCancelEdit = () => {
+    setControlledMarkdownValue(markdown);
+    setValidationError('');
+    toggleEditMode();
   };
 
   if (editMode && isAdmin) {
     return (
-      // <FormInputWrapper error={validationError} className='w-full border-'>
-      <>
+      <div className='flex flex-col w-full h-full justify-center p-6 border border-mi-gray-100 rounded-xl'>
         <TextAreaInput
           name='content'
           rows={7}
-          className='w-full border-0 focus-visible:outline-none active:border-0 resize-none overflow-hidden'
+          className='w-full border-0 focus-visible:outline-none active:border-0 resize-none'
           value={controlledMarkdownValue}
           {...props}
           onChange={handleTextareaChange}
         />
-        <div className='flex flex-between items-start'>
+        <div className='flex justify-between items-end gap-2'>
           <FormErrorMessage
             error={validationError}
-            className={cn('self-start', {
+            className={cn('h-full', {
               invisible: !validationError,
             })}
           />
-          <EditInfographyActionBar />
+          <EditInfographyActionBar onSubmit={() => {}} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
         </div>
-      </>
-      // </FormInputWrapper>
+      </div>
     );
   }
 
