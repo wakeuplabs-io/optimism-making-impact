@@ -39,7 +39,7 @@ CREATE TABLE "Step" (
     "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,
     "categoryId" INTEGER NOT NULL,
-    "smartListId" INTEGER,
+    "smartListFilterId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -105,7 +105,7 @@ CREATE TABLE "Attribute" (
     "description" TEXT NOT NULL,
     "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
     "categoryId" INTEGER NOT NULL,
-    "smartListId" INTEGER NOT NULL,
+    "smartListFilterId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -113,13 +113,13 @@ CREATE TABLE "Attribute" (
 );
 
 -- CreateTable
-CREATE TABLE "SmartList" (
+CREATE TABLE "SmartListFilter" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "SmartList_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "SmartListFilter_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -162,7 +162,7 @@ ALTER TABLE "Category" ADD CONSTRAINT "Category_roundId_fkey" FOREIGN KEY ("roun
 ALTER TABLE "Step" ADD CONSTRAINT "Step_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Step" ADD CONSTRAINT "Step_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Step" ADD CONSTRAINT "Step_smartListFilterId_fkey" FOREIGN KEY ("smartListFilterId") REFERENCES "SmartListFilter"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Infographic" ADD CONSTRAINT "Infographic_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -186,7 +186,7 @@ ALTER TABLE "Keyword" ADD CONSTRAINT "Keyword_stepId_fkey" FOREIGN KEY ("stepId"
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_smartListFilterId_fkey" FOREIGN KEY ("smartListFilterId") REFERENCES "SmartListFilter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CardToKeyword" ADD CONSTRAINT "_CardToKeyword_A_fkey" FOREIGN KEY ("A") REFERENCES "Card"("id") ON DELETE CASCADE ON UPDATE CASCADE;

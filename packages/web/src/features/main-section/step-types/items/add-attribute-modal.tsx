@@ -9,7 +9,7 @@ import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddAttributeModalProps {
-  smartListId: number;
+  smartListFilterId: number;
   onClick: (data: CreateAttributeBody) => void;
 }
 
@@ -18,7 +18,7 @@ export function AddAttributeModal(props: AddAttributeModalProps) {
     value: '',
     description: '',
     color: 'RED',
-    smartListId: props.smartListId,
+    smartListFilterId: props.smartListFilterId,
   };
 
   function handleSubmit(data: CreateAttributeBody) {
@@ -27,7 +27,7 @@ export function AddAttributeModal(props: AddAttributeModalProps) {
 
   return (
     <FormModal
-      title='Add attribute to Smart List'
+      title='Add attribute to Smart List Filter'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}

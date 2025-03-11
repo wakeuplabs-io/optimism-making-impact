@@ -30,8 +30,8 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
   for (const step of steps) {
     if (step.type !== StepType.SMARTLIST) continue;
 
-    // Create a new SmartList for the step
-    const smartList = await prisma.smartList.create({
+    // Create a new SmartListFilter for the step
+    const smartListFilter = await prisma.smartListFilter.create({
       data: {
         title: step.title,
         steps: { connect: { id: step.id } },
@@ -42,20 +42,20 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
     const shuffledAttributes = attributeValues.sort(() => 0.5 - Math.random()).slice(0, 5);
     const shuffledColors = COLORS_OPTIONS.sort(() => 0.5 - Math.random());
 
-    // Create attributes linked to the new SmartList with sequentially assigned shuffled colors
+    // Create attributes linked to the new SmartListFilter with sequentially assigned shuffled colors
     await prisma.attribute.createMany({
       data: shuffledAttributes.map((attr, index) => ({
         value: attr.value,
         description: attr.description,
         color: shuffledColors[index % shuffledColors.length], // Assign different colors in shuffled order
-        smartListId: smartList.id,
+        smartListFilterId: smartListFilter.id,
         categoryId: 1, // Placeholder category, adjust as needed
       })),
     });
 
     // Fetch the created attributes
     const createdAttributes = await prisma.attribute.findMany({
-      where: { smartListId: smartList.id },
+      where: { smartListFilterId: smartListFilter.id },
     });
 
     let position = 0;
@@ -75,13 +75,13 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
     }
   }
 
-  const totalSmartLists = await prisma.smartList.count();
+  const totalSmartListFilters = await prisma.smartListFilter.count();
   const totalAttributes = await prisma.attribute.count();
   const totalItems = await prisma.item.count();
 
   console.log('Seeding items with smart lists and attributes completed');
 
-  console.log(`${totalSmartLists} smart lists seeded successfully!`);
+  console.log(`${totalSmartListFilters} smart lists seeded successfully!`);
   console.log(`${totalAttributes} attributes seeded successfully!`);
   console.log(`${totalItems} items seeded successfully!`);
 }

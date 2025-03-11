@@ -24,12 +24,12 @@ export function ItemsStep() {
   return (
     <div className={'flex flex-col gap-4'}>
       <div className='flex h-full flex-col gap-6 lg:flex-row'>
-        <ItemFilters smartList={step.smartList} stepId={step.id} />
+        <ItemFilters smartListFilter={step.smartListFilter} stepId={step.id} />
         <div className='w-full pb-8'>
           <ItemsList
             items={step.items}
             step={step}
-            attributes={step.smartList?.attributes}
+            attributes={step.smartListFilter?.attributes}
             editStepDescription={handleStepDescriptionChange}
           />
         </div>

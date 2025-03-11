@@ -13,7 +13,7 @@ export function DeleteAttributeModal(props: DeleteAttributeModalProps) {
 
   return (
     <Modal
-      title='Remove attribute from Smart List'
+      title='Remove attribute from Smart List Filter'
       trigger={
         <button>
           <X size={14} className='stroke-[#8A8A8A] hover:stroke-black' />
@@ -24,7 +24,7 @@ export function DeleteAttributeModal(props: DeleteAttributeModalProps) {
         { label: 'Delete', variant: 'primary', disabled: false, closeOnClick: true, icon: <Trash />, onClick: handleSubmit },
       ]}
     >
-      <span>Are you sure you want to Remove this attribute from the Smart List?</span>
+      <span>Are you sure you want to Remove this attribute from the Smart List Filter?</span>
     </Modal>
   );
 }

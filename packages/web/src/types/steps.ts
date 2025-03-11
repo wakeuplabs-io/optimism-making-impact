@@ -2,7 +2,7 @@ import { completeCardSchema } from '@/types/cards';
 import { infographicSchema } from '@/types/infographics';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
-import { completeSmartListSchema } from '@/types/smart-lists';
+import { completeSmartListFilterSchema } from '@/types/smart-list-filters';
 import { stepTypeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
@@ -25,7 +25,7 @@ export const completeStepSchema = stepSchema.extend({
   infographics: z.array(infographicSchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
-  smartList: completeSmartListSchema.optional(),
+  smartListFilter: completeSmartListFilterSchema.optional(),
   keywords: z.array(keywordSchema),
 });
 

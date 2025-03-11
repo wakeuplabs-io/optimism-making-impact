@@ -1,17 +1,17 @@
+import { FilterStrengthIcon } from './filter-strength-icon';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useFiltersStore } from '@/state/main-section-filters/store';
-import { CompleteSmartList } from '@/types/smart-lists';
-import { useMemo } from 'react';
-import { FilterStrengthIcon } from './filter-strength-icon';
-import { Hash } from 'lucide-react';
 import { getRandomBadgeColor } from '@/lib/utils';
+import { useFiltersStore } from '@/state/main-section-filters/store';
+import { CompleteSmartListFilter } from '@/types/smart-list-filters';
+import { Hash } from 'lucide-react';
+import { useMemo } from 'react';
 
 interface CardFiltersProps {
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
   stepId: number;
 }
 
@@ -50,7 +50,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 interface ContentProps {
-  smartList?: CompleteSmartList;
+  smartListFilter?: CompleteSmartListFilter;
   stepId: number;
 }
 
@@ -70,10 +70,11 @@ function Content(props: ContentProps) {
       <h2 className='text-base font-semibold'>Filters</h2>
       <hr className='my-4' />
       <div className='flex flex-col gap-8'>
-        {props.smartList && (
+        {props.smartListFilter && (
           <FilterGroup
-            title={props.smartList.title}
-            filters={props.smartList.attributes.map((attr) => ({
+            className='mt-4'
+            title={props.smartListFilter.title}
+            filters={props.smartListFilter.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               data: attr,
               filterIcon: ({ selected }) => <FilterGroupColorDot selected={selected} color={attr.color} />,

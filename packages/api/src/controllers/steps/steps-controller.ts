@@ -26,7 +26,7 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
           include: { attribute: true },
           orderBy: { position: 'asc' },
         },
-        smartList: {
+        smartListFilter: {
           include: {
             attributes: {
               orderBy: { id: 'asc' },
@@ -82,7 +82,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
       const isItemType = parsed.data.type === StepType.SMARTLIST;
       if (isItemType) {
-        await prisma.smartList.create({
+        await prisma.smartListFilter.create({
           data: {
             title: parsed.data.title,
             steps: {
@@ -112,12 +112,12 @@ async function update(req: Request, res: Response, next: NextFunction) {
       const updated = await prisma.step.update({
         where: { id: parsedId.data.id },
         data: parsedBody.data,
-        select: { smartList: true },
+        select: { smartListFilter: true },
       });
 
-      if (updated.smartList) {
-        await prisma.smartList.update({
-          where: { id: updated.smartList.id },
+      if (updated.smartListFilter) {
+        await prisma.smartListFilter.update({
+          where: { id: updated.smartListFilter.id },
           data: { title: parsedBody.data.title },
         });
       }

@@ -79,12 +79,12 @@ model Step {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
 
-  infographics Infographic[]
-  items        Item[]
-  cards        Card[]
-  smartList    SmartList?    @relation(fields: [smartListId], references: [id])
-  smartListId  Int?
-  keywords     Keyword[]
+  infographics      Infographic[]
+  items             Item[]
+  cards             Card[]
+  smartListFilter   SmartListFilter? @relation(fields: [smartListFilterId], references: [id])
+  smartListFilterId Int?
+  keywords          Keyword[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -168,14 +168,14 @@ model Attribute {
   items      Item[]
   cards      Card[]
 
-  smartList   SmartList @relation(fields: [smartListId], references: [id])
-  smartListId Int
+  smartListFilter   SmartListFilter @relation(fields: [smartListFilterId], references: [id])
+  smartListFilterId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model SmartList {
+model SmartListFilter {
   id Int @id @default(autoincrement())
 
   title String

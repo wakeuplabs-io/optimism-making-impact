@@ -6,7 +6,7 @@ import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
 import { capitalizeFirst } from '@/lib/utils';
-import { SmartListsService } from '@/services/smart-lists-service';
+import { SmartListFiltersService } from '@/services/smart-list-filters-service';
 import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { createElement, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ const options = stepTypes.map((type) => ({
   label: capitalizeFirst(type),
 }));
 
-const emptySmartListOption = { label: 'None', value: '0' };
+const emptySmartListFilterOption = { label: 'None', value: '0' };
 interface AddStepModalProps {
   categoryId: number;
   onSave?: (categoryId: number, data: CreateStepBody) => void;
@@ -44,13 +44,16 @@ export function AddStepModal(props: AddStepModalProps) {
       return;
     }
     //load smart lists
-    SmartListsService.getByCategoryId(props.categoryId).then((res) => {
-      const smartListsOptions = res.smartLists.map((smartList) => ({ label: smartList.title, value: smartList.id.toString() }));
-      if (smartListsOptions.length === 0) {
+    SmartListFiltersService.getByCategoryId(props.categoryId).then((res) => {
+      const smartListsFiltersOptions = res.smartListFilters.map((smartListFilter) => ({
+        label: smartListFilter.title,
+        value: smartListFilter.id.toString(),
+      }));
+      if (smartListsFiltersOptions.length === 0) {
         return;
       }
 
-      setSmartListsOptions([emptySmartListOption, ...smartListsOptions]);
+      setSmartListsOptions([emptySmartListFilterOption, ...smartListsFiltersOptions]);
     });
   }
 
@@ -79,9 +82,10 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const modalIcons = useIcons();
   const selectedIcon = watch('icon');
+
   useEffect(() => {
     if (type !== 'CARDGRID') {
-      setValue('smartListId', undefined);
+      setValue('smartListFilterId', undefined);
     }
   }, [type, setValue]);
 
@@ -108,16 +112,16 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
 
       {type === 'CARDGRID' && smartListOptions.length > 0 && (
         <Controller
-          name='smartListId'
+          name='smartListFilterId'
           control={control}
           render={({ field }) => (
             <div className='flex flex-col gap-1'>
-              <span className='text-xs font-medium text-gray-500'>Smart List</span>
+              <span className='text-xs font-medium text-gray-500'>Smart List Filter</span>
               <SelectInput
-                name='smartListId'
+                name='smartListFilterId'
                 items={smartListOptions}
                 onValueChange={(value) => field.onChange(Number(value))}
-                placeholder='Select Smart List'
+                placeholder='Select Smart List Filter'
                 itemClassName='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
               />
             </div>

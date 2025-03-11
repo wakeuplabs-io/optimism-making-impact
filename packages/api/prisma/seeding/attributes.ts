@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { Attribute, Category, PrismaClient, SmartList } from '@prisma/client';
+import { Attribute, Category, PrismaClient, SmartListFilter } from '@prisma/client';
 
 const attributeValues = [
   { value: 'Cryptocurrency', description: 'Digital or virtual currency secured by cryptography.' },
@@ -14,14 +14,14 @@ const attributeValues = [
   { value: 'Decentralized Application', description: 'Applications that run on a blockchain network, providing decentralized services.' },
 ];
 
-export async function seedAttributes(prisma: PrismaClient, smartLists: Array<SmartList>, categories: Array<Category>) {
+export async function seedAttributes(prisma: PrismaClient, smartListFilters: Array<SmartListFilter>, categories: Array<Category>) {
   console.log('Seeding attributes...');
 
   const attributesData: Array<Omit<Attribute, 'id' | 'createdAt' | 'updatedAt'>> = [];
 
-  // Iterate through each smart list
-  for (const smartList of smartLists) {
-    // For each smart list, create 5 attributes with category-like values
+  // Iterate through each smart list filter
+  for (const smartListFilter of smartListFilters) {
+    // For each smart list filter, create 5 attributes with category-like values
     for (let i = 0; i < 5; i++) {
       const category = categories[i % categories.length]; // Dynamically assign categories (loop through if necessary)
       const color = COLORS_OPTIONS[i % COLORS_OPTIONS.length]; // Dynamically assign colors (loop through if necessary)
@@ -30,7 +30,7 @@ export async function seedAttributes(prisma: PrismaClient, smartLists: Array<Sma
         value: attributeValues[i % attributeValues.length].value, // Short, category-like value
         description: attributeValues[i % attributeValues.length].description, // Add the corresponding description
         categoryId: category.id, // Use dynamic category ID
-        smartListId: smartList.id, // Assign the attribute to the smart list
+        smartListFilterId: smartListFilter.id, // Assign the attribute to the smart list
         color,
       });
     }

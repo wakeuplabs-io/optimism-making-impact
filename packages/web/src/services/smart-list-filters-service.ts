@@ -1,8 +1,8 @@
 import { fetcher } from '@/lib/fetcher';
-import { SmartList } from '@/types/smart-lists';
+import { SmartListFilter } from '@/types/smart-list-filters';
 import { AxiosInstance } from 'axios';
 
-const smartListsEndpoint = '/smart-lists';
+const smartListFiltersEndpoint = '/smart-list-filters';
 
 class Service {
   private static instance: Service;
@@ -19,9 +19,9 @@ class Service {
     return Service.instance;
   }
 
-  async getByCategoryId(categoryId: number): Promise<{ smartLists: SmartList[] }> {
-    return this.fetcher.get(smartListsEndpoint + `/by-category/${categoryId}`).then((res) => res.data.data);
+  async getByCategoryId(categoryId: number): Promise<{ smartListFilters: SmartListFilter[] }> {
+    return this.fetcher.get(smartListFiltersEndpoint + `/by-category/${categoryId}`).then((res) => res.data.data);
   }
 }
 
-export const SmartListsService = Service.getInstance(fetcher);
+export const SmartListFiltersService = Service.getInstance(fetcher);

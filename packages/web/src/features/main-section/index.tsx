@@ -12,7 +12,7 @@ export function MainSection() {
   return (
     //we add overflow-y-auto so only the main section scrolls on mobile
     <main
-      className={cn('flex flex-col flex-1 gap-8 px-8 pb-36 lg:pb-0 lg:px-0', {
+      className={cn('flex flex-1 flex-col gap-8 px-8 pb-36 lg:px-0 lg:pb-0', {
         'overflow-y-auto': isMobile,
       })}
     >
@@ -51,8 +51,8 @@ function StepContent(props: { step: CompleteStep }) {
 
   useEffect(() => {
     setKeywords(props.step.keywords);
-    setAttributes(props.step.smartList?.attributes || []);
-  }, [props.step.keywords, props.step.smartList]);
+    setAttributes(props.step.smartListFilter?.attributes || []);
+  }, [props.step.keywords, props.step.smartListFilter]);
 
   return <StepTypeSelector {...props} />;
 }
