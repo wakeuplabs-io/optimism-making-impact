@@ -3,7 +3,7 @@ import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useToggle } from 'usehooks-ts';
 import { EditInfographyActionBar } from './edit-infography-action-bar';
@@ -23,6 +23,7 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
   //using a controlled component to validate the markdown
   const [controlledMarkdownValue, setControlledMarkdownValue] = useState(infographic.markdown);
   const [validationError, setValidationError] = useState<string>('');
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newMarkdown = e.target.value;
@@ -67,12 +68,14 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
     return (
       <div className='w-full h-full flex flex-col justify-center gap-4 p-6 border border-mi-gray-100 rounded-xl'>
         <TextAreaInput
+          ref={textAreaRef}
           name='content'
           rows={7}
           className='w-full border-0 focus-visible:outline-none active:border-0 resize-none'
           value={controlledMarkdownValue}
           {...props}
           onChange={handleTextareaChange}
+          // autoFocus={true}
         />
         <div className='flex justify-between items-end gap-2'>
           <FormErrorMessage
@@ -91,8 +94,18 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
     <InfographyMarkdown
       isAdmin={isAdmin}
       /* if there is an error, show the original markdown */
-      markdown={validationError ? infography.markdown : controlledMarkdownValue}
-      toggleEditMode={toggleEditMode}
+      markdown={validationError ? infographic.markdown : controlledMarkdownValue}
+      toggleEditMode={() => {
+        toggleEditMode();
+        setTimeout(() => {
+          if (!textAreaRef.current) {
+            return;
+          }
+          textAreaRef.current.focus();
+          textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
+          textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight;
+        }, 0);
+      }}
       className={className}
     />
   );
