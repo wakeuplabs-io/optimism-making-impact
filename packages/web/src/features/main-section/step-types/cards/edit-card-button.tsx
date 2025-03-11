@@ -59,7 +59,7 @@ export function EditCardModal(props: EditCardModalProps) {
     <>
       <FormModal
         title='Edit card'
-        trigger={<EditIcon />}
+        trigger={<EditIcon variant='lg' />}
         onSubmit={handleSubmit}
         submitButtonText='Save'
         submitButtonIcon={<Save />}

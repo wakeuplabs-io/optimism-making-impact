@@ -1,4 +1,5 @@
-import { FilterGroup } from '@/components/filter-group';
+import { FilterGroup } from '@/components/filter-group/filter-group';
+import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
@@ -84,6 +85,7 @@ function Content(props: ContentProps) {
           label: attr.value.toLowerCase(),
           data: attr,
           prefixDot: attr.color,
+          filterIcon: ({ selected }) => <FilterGroupColorDot color={attr.color} selected={selected} />,
           editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
           deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
           tooltipText: attr.description,
