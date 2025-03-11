@@ -1,10 +1,9 @@
-import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog-full-screen-mobile';
-import { Input } from '@/components/ui/input';
 import { useUserStore } from '@/state';
 import { User, UserCog } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { EditorList } from './editor-list';
+import { AddEditorForm } from './add-editor-form';
 
 interface SetupModalProps {
   open: boolean;
@@ -15,10 +14,6 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
   const isAdminModeEnabled = useUserStore((state) => state.isAdminModeEnabled);
   const getAdminUsers = useUserStore((state) => state.getAdminUsers);
   const toggleAdminMode = useUserStore((state) => state.toggleAdminMode);
-
-  const grantAdmin = useUserStore((state) => state.grantAdmin);
-
-  const [newEditor, setNewEditor] = useState('');
 
   useEffect(() => {
     getAdminUsers();
@@ -34,9 +29,9 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
         <div className='space-y-8'>
           <div>
             <p className='mb-4 text-xl text-[#bebebe]'>View Mode</p>
-            <div className='flex rounded-2xl bg-[#f1f4f9] p-1'>
+            <div className='flex rounded-xl bg-[#f1f4f9] p-1'>
               <button
-                className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
+                className={`flex flex-1 items-center justify-center gap-2 rounded-md py-3 transition-colors ${
                   isAdminModeEnabled ? 'text-[#9e9e9e] hover:text-[#4e4e4e]' : 'bg-white shadow-sm'
                 }`}
                 onClick={() => toggleAdminMode()}
@@ -45,7 +40,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 <span>User</span>
               </button>
               <button
-                className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3 transition-colors ${
+                className={`flex flex-1 items-center justify-center gap-2 rounded-md py-3 transition-colors ${
                   isAdminModeEnabled ? 'bg-white shadow-sm' : 'text-[#9e9e9e] hover:text-[#4e4e4e]'
                 }`}
                 onClick={() => toggleAdminMode()}
@@ -56,21 +51,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
             </div>
           </div>
           <EditorList />
-          <div>
-            <p className='mb-4 text-xl text-[#bebebe]'>New Editor</p>
-            <div className='flex gap-4'>
-              <Input
-                type='email'
-                placeholder='Email'
-                value={newEditor}
-                onChange={(e) => setNewEditor(e.target.value)}
-                className='flex-1 rounded-2xl border-[#d9d9d9]'
-              />
-              <Button onClick={() => grantAdmin(newEditor)} className='rounded-2xl bg-[#10111a] px-8 text-white hover:bg-[#10111a]/90'>
-                Add
-              </Button>
-            </div>
-          </div>
+          <AddEditorForm />
         </div>
       </DialogContent>
     </Dialog>

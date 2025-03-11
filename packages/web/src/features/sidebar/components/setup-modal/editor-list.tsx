@@ -12,7 +12,7 @@ export function EditorList() {
   return (
     <div>
       <p className='mb-4 text-xl text-[#bebebe]'>Manage Editors</p>
-      <div className='space-y-4 rounded-2xl border border-[#d9d9d9] bg-white p-4'>
+      <div className='space-y-4 rounded-xl border border-[#d9d9d9] bg-white p-4'>
         {adminUsers.map((user) => (
           <div key={user.email} className='flex items-center justify-between'>
             <span className='text-[#4e4e4e]'>{user.email}</span>
