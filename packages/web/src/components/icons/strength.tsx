@@ -1,3 +1,4 @@
+import { CARD_STRENGTH_COLOR_MAP } from '@/config';
 import { useId } from 'react';
 
 interface IconProps {
@@ -6,6 +7,7 @@ interface IconProps {
 
 export function StrengthLowIcon({ size = 20 }: IconProps) {
   const uniqueId = useId(); // Generate a unique ID
+  const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['LOW'].gradient;
 
   return (
     <svg width={size} height={size} viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -21,8 +23,8 @@ export function StrengthLowIcon({ size = 20 }: IconProps) {
       </g>
       <defs>
         <linearGradient id={uniqueId} x1='13' y1='0' x2='13' y2='26' gradientUnits='userSpaceOnUse'>
-          <stop stopColor='#FFCCC5' />
-          <stop offset='1' stopColor='#FF4E36' />
+          <stop stopColor={strengthColorGradient.start} />
+          <stop offset='1' stopColor={strengthColorGradient.end} />
         </linearGradient>
         <clipPath id={`clip-${uniqueId}`}>
           <rect width='14' height='14' fill='white' transform='translate(6 6)' />
@@ -34,6 +36,7 @@ export function StrengthLowIcon({ size = 20 }: IconProps) {
 
 export function StrengthMediumIcon({ size = 20 }: IconProps) {
   const uniqueId = useId(); // Generate a unique ID
+  const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['MEDIUM'].gradient;
 
   return (
     <svg width={size} height={size} viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -49,8 +52,8 @@ export function StrengthMediumIcon({ size = 20 }: IconProps) {
       </g>
       <defs>
         <linearGradient id={uniqueId} x1='13' y1='0' x2='13' y2='26' gradientUnits='userSpaceOnUse'>
-          <stop stopColor='#FFEEBE' />
-          <stop offset='1' stopColor='#FFC422' />
+          <stop stopColor={strengthColorGradient.start} />
+          <stop offset='1' stopColor={strengthColorGradient.end} />
         </linearGradient>
         <clipPath id={`clip-${uniqueId}`}>
           <rect width='14' height='14' fill='white' transform='translate(6 6)' />
@@ -62,6 +65,7 @@ export function StrengthMediumIcon({ size = 20 }: IconProps) {
 
 export function StrengthHighIcon({ size = 20 }: IconProps) {
   const uniqueId = useId(); // Generate a unique ID
+  const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['HIGH'].gradient;
 
   return (
     <svg width={size} height={size} viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -77,8 +81,8 @@ export function StrengthHighIcon({ size = 20 }: IconProps) {
       </g>
       <defs>
         <linearGradient id={uniqueId} x1='13' y1='0' x2='13' y2='26' gradientUnits='userSpaceOnUse'>
-          <stop stopColor='#87DEB2' />
-          <stop offset='1' stopColor='#AFBD9E' />
+          <stop stopColor={strengthColorGradient.start} />
+          <stop offset='1' stopColor={strengthColorGradient.end} />
         </linearGradient>
         <clipPath id={`clip-${uniqueId}`}>
           <rect width='14' height='14' fill='white' transform='translate(6 6)' />
