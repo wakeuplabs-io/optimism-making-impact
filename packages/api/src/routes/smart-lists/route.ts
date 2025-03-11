@@ -1,6 +1,6 @@
-import { smartListsController } from '@/controllers/smart-lists/controller.js';
+import { smartListFiltersController } from '@/controllers/smart-lists/controller.js';
 import { Router } from 'express';
 
-export const smartListsRouter = Router();
+export const smartListFiltersRouter = Router();
 
-smartListsRouter.get('/by-category/:id', smartListsController.getByCategoryId);
+smartListFiltersRouter.get('/by-category/:id', smartListFiltersController.getByCategoryId);

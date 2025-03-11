@@ -2,7 +2,7 @@ import { fetcher } from '@/lib/fetcher';
 import { SmartListFilter } from '@/types/smart-lists';
 import { AxiosInstance } from 'axios';
 
-const smartListFiltersEndpoint = '/smart-lists';
+const smartListFiltersEndpoint = '/smart-list-filters';
 
 class Service {
   private static instance: Service;

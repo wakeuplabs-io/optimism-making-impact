@@ -37,6 +37,6 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
   }
 }
 
-export const smartListsController = {
+export const smartListFiltersController = {
   getByCategoryId,
 };
