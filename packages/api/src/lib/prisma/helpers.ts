@@ -18,7 +18,7 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
           steps: {
             orderBy: { position: 'asc' },
             include: {
-              infographies: { orderBy: { position: 'asc' } },
+              infographics: { orderBy: { position: 'asc' } },
               items: { include: { attribute: true }, orderBy: { position: 'asc' } },
               cards: { include: { attribute: true, keywords: true }, orderBy: { position: 'asc' } },
               smartList: { include: { attributes: true } },

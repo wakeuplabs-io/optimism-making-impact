@@ -47,7 +47,7 @@ CREATE TABLE "Step" (
 );
 
 -- CreateTable
-CREATE TABLE "Infography" (
+CREATE TABLE "Infographic" (
     "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "image" TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE "Infography" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Infography_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Infographic_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,7 +165,7 @@ ALTER TABLE "Step" ADD CONSTRAINT "Step_categoryId_fkey" FOREIGN KEY ("categoryI
 ALTER TABLE "Step" ADD CONSTRAINT "Step_smartListId_fkey" FOREIGN KEY ("smartListId") REFERENCES "SmartList"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Infography" ADD CONSTRAINT "Infography_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Infographic" ADD CONSTRAINT "Infographic_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Item" ADD CONSTRAINT "Item_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

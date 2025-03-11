@@ -2,20 +2,20 @@ import { FormInputWrapper } from '@/components/form/form-input';
 import { EditPencilButton } from '@/components/pencil-edit-button';
 import { TextAreaInput } from '@/components/text-area-input';
 import { cn } from '@/lib/utils';
-import { updateInfographyBodySchema } from '@optimism-making-impact/schemas';
+import { updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { useToggle } from 'usehooks-ts';
 
-const markdownSchema = updateInfographyBodySchema.pick({ markdown: true });
+const markdownSchema = updateInfographicBodySchema.pick({ markdown: true });
 
-interface EditInfographyMarkdownProps {
+interface EditInfographicMarkdownProps {
   markdown: string;
   onChange: (markdown: string) => void;
   isAdmin?: boolean;
 }
 
-export function EditInfographyMarkdown(props: ContentProps): JSX.Element {
+export function EditInfographicMarkdown(props: ContentProps): JSX.Element {
   return (
     <Container>
       <Content {...props} />
@@ -32,7 +32,7 @@ function Container(props: ContainerProps) {
   return <div className={cn('flex w-full flex-col items-end gap-2 px-4 lg:px-0', props.className)}>{props.children}</div>;
 }
 
-type ContentProps = EditInfographyMarkdownProps &
+type ContentProps = EditInfographicMarkdownProps &
   Omit<React.HtmlHTMLAttributes<HTMLTextAreaElement>, 'onChange'> & {
     className?: string;
   };
@@ -70,7 +70,7 @@ function Content({ markdown, isAdmin, className, onChange, ...props }: ContentPr
 
   return (
     <>
-      <div className='w-full prose lg:prose-xl max-w-full'>
+      <div className='prose w-full max-w-full lg:prose-xl'>
         <Markdown className={cn('overflow-auto break-words', className)}>
           {/* if there is an error, show the original markdown */}
           {validationError ? markdown : controlledMarkdownValue}

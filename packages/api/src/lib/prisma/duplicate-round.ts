@@ -109,8 +109,8 @@ async function createStepsWithRelationsForCategories(
             type: step.type,
             categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
             smartListId: step.smartListId ? oldToNewSmartListIds[step.smartListId] : null,
-            infographies: {
-              create: step.infographies.map(({ image, markdown, position }) => ({
+            infographics: {
+              create: step.infographics.map(({ image, markdown, position }) => ({
                 image,
                 markdown,
                 position,

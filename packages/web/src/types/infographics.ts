@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const infographySchema = z.object({
+export const infographicSchema = z.object({
   id: z.number(),
   markdown: z.string(),
   image: z.string(),
@@ -11,4 +11,4 @@ export const infographySchema = z.object({
 });
 
 // Type inference from the schema
-export type Infography = z.infer<typeof infographySchema>;
+export type Infographic = z.infer<typeof infographicSchema>;

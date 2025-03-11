@@ -79,10 +79,10 @@ model Step {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
 
-  infographies Infography[]
+  infographics Infographic[]
   items        Item[]
   cards        Card[]
-  smartList    SmartList?   @relation(fields: [smartListId], references: [id])
+  smartList    SmartList?    @relation(fields: [smartListId], references: [id])
   smartListId  Int?
   keywords     Keyword[]
 
@@ -93,7 +93,7 @@ model Step {
   @@unique([title, categoryId])
 }
 
-model Infography {
+model Infographic {
   id Int @id @default(autoincrement())
 
   markdown String

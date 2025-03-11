@@ -7,7 +7,7 @@ export type CompleteRound = Prisma.RoundGetPayload<{
         steps: {
           include: {
             cards: { include: { attribute: true; keywords: true } };
-            infographies: true;
+            infographics: true;
             items: { include: { attribute: true } };
             smartList: { include: { attributes: true } };
           };
