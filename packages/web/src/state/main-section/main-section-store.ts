@@ -75,13 +75,17 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
-  editInfographic: async (infographicId: number, data: UpdateInfographicBody) => {
+  editInfographic: async (infographicId: number, data: Partial<UpdateInfographicBody>) => {
     const step = get().step;
 
     if (!step) return;
 
+    const infographic = get().step?.infographics.find((infograhic) => infograhic.id === infographicId);
+
+    if (!infographic) return;
+
     try {
-      const updatedInfographic = await InfographicsService.update(infographicId, data);
+      const { data: updatedInfographic } = await InfographicsService.update(infographicId, { ...infographic, ...data });
       const updatedStep = {
         ...step,
         infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),

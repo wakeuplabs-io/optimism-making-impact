@@ -24,10 +24,10 @@ export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
   updateStep: (step: Partial<CompleteStep>) => void;
-  addInfography: (data: CreateInfographicBody) => void;
-  deleteInfography: (infographyId: number) => void;
-  editInfography: (infographyId: number, data: UpdateInfographicBody) => void;
-  saveInfographies: (data: BulkUpdateInfographicBody) => void;
+  addInfographic: (data: CreateInfographicBody) => void;
+  deleteInfographic: (infographyId: number) => void;
+  editInfographic: (infographyId: number, data: Partial<UpdateInfographicBody>) => void;
+  saveInfographics: (data: BulkUpdateInfographicBody) => void;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;
   deleteCard: (cardId: number) => void;
