@@ -83,7 +83,7 @@ model Step {
   items             Item[]
   cards             Card[]
   smartListFilter   SmartListFilter? @relation(fields: [smartListFilterId], references: [id])
-  smartListFilterId Int?             @map("smartListId")
+  smartListFilterId Int?
   keywords          Keyword[]
 
   createdAt DateTime @default(now())
@@ -169,7 +169,7 @@ model Attribute {
   cards      Card[]
 
   smartListFilter   SmartListFilter @relation(fields: [smartListFilterId], references: [id])
-  smartListFilterId Int             @map("smartListId")
+  smartListFilterId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -185,8 +185,6 @@ model SmartListFilter {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@map("SmartList")
 }
 
 model UserWhitelist {
