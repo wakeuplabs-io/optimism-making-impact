@@ -3,6 +3,7 @@ import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { TextAreaInput } from '@/components/text-area-input';
+import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
@@ -31,7 +32,7 @@ export function AddInfographicModal(props: AddInfographicModalProps) {
     <FormModal
       title='Add Infographic'
       trigger={
-        <div className='w-full max-w-[320px] lg:w-[250px] absolute top-0 left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:-translate-x-0'>
+        <div className={cn('w-full max-w-[320px] lg:w-[250px]', props.triggerClassName)}>
           <ActionButton label='Create New' variant='secondary' icon={<Plus strokeWidth={3} />} className='w-full' />
         </div>
       }
