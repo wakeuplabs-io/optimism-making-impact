@@ -55,7 +55,7 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
             <div className='space-y-4 rounded-2xl border border-[#d9d9d9] bg-white p-4'>
               {userState.adminUsers.map((user) => (
                 <div key={user.email} className='flex items-center justify-between'>
-                  <span className='text-[#4e4e4e]'>{user.email}</span>
+                  <span className='text-[#4e4e4e] text-xs sm:text-base'>{user.email}</span>
                   <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => userState.revokeAdmin(user.email)}>
                     Delete
                   </Button>
