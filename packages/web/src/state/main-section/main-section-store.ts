@@ -19,7 +19,6 @@ import {
   UpdateInfographicBody,
 } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
-import isEqual from 'lodash.isequal';
 
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
@@ -76,20 +75,28 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       },
     });
   },
-  editInfographic: async (infographicId: number, data: Partial<UpdateInfographicBody>) => {
+  editInfographic: async (infographicId: number, data: UpdateInfographicBody) => {
     const step = get().step;
-    const stepInitialState = get().stepInitialState;
 
-    if (!step || !stepInitialState) return;
+    if (!step) return;
 
-    const newStep = {
-      ...step,
-      infographics: step.infographics.map((infographic) => (infographic.id === infographicId ? { ...infographic, ...data } : infographic)),
-    };
+    try {
+      const updatedInfographic = await InfographicsService.update(infographicId, data);
+      const updatedStep = {
+        ...step,
+        infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
+      };
+      set({ step: updatedStep });
+    } catch (error) {
+      const title = 'Failed to edit infographic';
+      let description = 'Unknown error';
 
-    const savingStatus = isEqual(newStep, stepInitialState) ? AutoSaveStatus.IDLE : AutoSaveStatus.UNSAVED;
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
 
-    set({ step: newStep, savingStatus });
+      toast({ title, description, variant: 'destructive' });
+    }
   },
   saveInfographics: async (data: BulkUpdateInfographicBody) => {
     try {

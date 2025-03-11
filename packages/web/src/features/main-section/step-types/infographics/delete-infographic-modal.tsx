@@ -1,5 +1,5 @@
 import { Modal } from '@/components/modal';
-import { Infographic } from '@/types/infographics';
+import { Infographic } from '@optimism-making-impact/schemas';
 import { Trash } from 'lucide-react';
 
 interface DeleteInfographicModalProps {
