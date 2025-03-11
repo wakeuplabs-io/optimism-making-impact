@@ -2,7 +2,7 @@ import { completeCardSchema } from '@/types/cards';
 import { infographicSchema } from '@/types/infographics';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
-import { completeSmartListFilterSchema } from '@/types/smart-lists';
+import { completeSmartListFilterSchema } from '@/types/smart-list-filters';
 import { stepTypeSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 

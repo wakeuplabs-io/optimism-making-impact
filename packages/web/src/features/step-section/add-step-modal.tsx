@@ -6,7 +6,7 @@ import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
 import { capitalizeFirst } from '@/lib/utils';
-import { SmartListsFiltersService } from '@/services/smart-lists-service';
+import { SmartListFiltersService } from '@/services/smart-list-filters-service';
 import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { createElement, useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ export function AddStepModal(props: AddStepModalProps) {
       return;
     }
     //load smart lists
-    SmartListsFiltersService.getByCategoryId(props.categoryId).then((res) => {
+    SmartListFiltersService.getByCategoryId(props.categoryId).then((res) => {
       const smartListsFiltersOptions = res.smartListFilters.map((smartListFilter) => ({
         label: smartListFilter.title,
         value: smartListFilter.id.toString(),

@@ -3,7 +3,7 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { CompleteSmartListFilter } from '@/types/smart-lists';
+import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { useMemo } from 'react';
 
 interface CardFiltersProps {

@@ -8,7 +8,7 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteSmartListFilter } from '@/types/smart-lists';
+import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 

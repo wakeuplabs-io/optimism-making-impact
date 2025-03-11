@@ -1,4 +1,4 @@
-import { smartListFiltersController } from '@/controllers/smart-lists/controller.js';
+import { smartListFiltersController } from '@/controllers/smart-list-filters/controller.js';
 import { Router } from 'express';
 
 export const smartListFiltersRouter = Router();

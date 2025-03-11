@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { SmartListFilter } from '@/types/smart-lists';
+import { SmartListFilter } from '@/types/smart-list-filters';
 import { AxiosInstance } from 'axios';
 
 const smartListFiltersEndpoint = '/smart-list-filters';
@@ -24,4 +24,4 @@ class Service {
   }
 }
 
-export const SmartListsFiltersService = Service.getInstance(fetcher);
+export const SmartListFiltersService = Service.getInstance(fetcher);
