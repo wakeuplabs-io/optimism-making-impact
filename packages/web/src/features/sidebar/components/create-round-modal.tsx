@@ -10,7 +10,6 @@ export function CreateRoundModal(props: CreateRoundModalProps) {
   return (
     <Modal
       title='New round'
-      triggerClassname='w-full'
       trigger={<SidebarModalAddTrigger label='New Round' />}
       buttons={[
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },

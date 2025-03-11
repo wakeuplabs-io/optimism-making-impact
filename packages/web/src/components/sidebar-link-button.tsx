@@ -21,7 +21,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
       className={cn(
         'relative',
         {
-          ' h-16': props.isAdmin,
+          'h-16': props.isAdmin,
         },
         props.className,
       )}
@@ -52,8 +52,11 @@ function EditLink(props: EditLinkProps) {
     <Modal
       title='Edit link'
       subtitle='Click save when you are done.'
-      triggerClassname='absolute w-full h-16 flex items-end justify-center mb-4 gap-2 bg-mi-stone-300 rounded-b-xl '
-      trigger={<span className='w-full text-center text-sm text-slate-500 hover:underline'>edit</span>}
+      trigger={
+        <button className='absolute mb-4 flex h-6 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
+          edit
+        </button>
+      }
     >
       <div className='grid gap-4 py-4'>
         <div>
