@@ -47,7 +47,7 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props
 
   if (editMode && isAdmin) {
     return (
-      <div className='flex flex-col w-full h-full justify-center p-6 border border-mi-gray-100 rounded-xl'>
+      <div className='w-full h-full flex flex-col justify-center gap-4 p-6 border border-mi-gray-100 rounded-xl'>
         <TextAreaInput
           name='content'
           rows={7}
@@ -70,14 +70,43 @@ export function EditInfographicMarkdown({ markdown, isAdmin, className, ...props
   }
 
   return (
-    <div className={cn('flex w-full flex-col items-end gap-2 px-4 xl:px-0 cursor-pointer', className)} onClick={toggleEditMode}>
+    <InfographyMarkdown
+      isAdmin={isAdmin}
+      /* if there is an error, show the original markdown */
+      markdown={validationError ? markdown : controlledMarkdownValue}
+      toggleEditMode={toggleEditMode}
+      className={className}
+    />
+  );
+}
+
+interface InfographyMarkdownProps {
+  isAdmin?: boolean;
+  markdown: string;
+  toggleEditMode: () => void;
+  className?: string;
+}
+
+function InfographyMarkdown({ markdown, isAdmin, toggleEditMode, className }: InfographyMarkdownProps) {
+  const [isHovered, toggleIsHovered] = useToggle(false);
+
+  return (
+    <div
+      className={cn('flex w-full flex-col items-end gap-2 px-4 xl:px-0 cursor-pointer', className)}
+      onClick={toggleEditMode}
+      onMouseEnter={() => toggleIsHovered()}
+      onMouseLeave={toggleIsHovered}
+    >
       <div className='w-full prose xl:prose-xl max-w-full '>
-        <Markdown className={cn('overflow-auto break-words', className)}>
-          {/* if there is an error, show the original markdown */}
-          {validationError ? markdown : controlledMarkdownValue}
-        </Markdown>
+        <Markdown className={cn('overflow-auto break-words', className)}>{markdown}</Markdown>
       </div>
-      {isAdmin && <EditIcon />}
+      {isAdmin && (
+        <EditIcon
+          className={cn({
+            invisible: !isHovered,
+          })}
+        />
+      )}
     </div>
   );
 }
