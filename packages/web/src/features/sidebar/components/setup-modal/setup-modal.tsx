@@ -22,10 +22,9 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className='md:max-w-xl gap-8 rounded-3xl p-8'>
-        <DialogHeader>
+        <DialogHeader className='mb-8 md:mb-0'>
           <DialogTitle className='text-2xl font-medium'>Setup</DialogTitle>
         </DialogHeader>
-
         <div className='space-y-8'>
           <div>
             <p className='mb-4 text-xl text-[#bebebe]'>View Mode</p>
