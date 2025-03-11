@@ -57,7 +57,7 @@ export async function seedCards(prisma: PrismaClient, steps: Array<Step>) {
   const createdCards: Array<Card> = [];
 
   for (const step of steps) {
-    if (step.type !== StepType.CARD) continue; // Only create cards for CARD type steps
+    if (step.type !== StepType.CARDGRID) continue;
 
     for (let i = 0; i < 5; i++) {
       const thisCardKeywords = selectTwoItems(keywords);

@@ -4,7 +4,7 @@ export const getAllStepsQueryParams = z.object({
   categoryId: z.string().transform(Number).optional(),
 });
 
-export const stepTypes = ['INFOGRAPHY', 'ITEMS', 'CARD'] as const;
+export const stepTypes = ['INFOGRAPHIC', 'SMARTLIST', 'CARDGRID'] as const;
 export const stepTypeSchema = z.enum(stepTypes);
 export type StepType = z.infer<typeof stepTypeSchema>;
 
@@ -21,7 +21,7 @@ export const createStepBodySchema = z.object({
   smartListId: z.number().optional(),
 });
 
-export const createStepBodySchemaWithValidation = createStepBodySchema.refine((data) => !(data.type !== 'CARD' && data.smartListId), {
+export const createStepBodySchemaWithValidation = createStepBodySchema.refine((data) => !(data.type !== 'CARDGRID' && data.smartListId), {
   message: 'Smart list id is required only for card type',
   path: ['smartListId'],
 });

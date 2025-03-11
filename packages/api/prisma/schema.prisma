@@ -15,9 +15,9 @@ datasource db {
 
 // Enums
 enum StepType {
-  INFOGRAPHY
-  ITEMS
-  CARD
+  INFOGRAPHIC
+  SMARTLIST
+  CARDGRID
 }
 
 enum CardStrength {

@@ -7,7 +7,7 @@ import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
 import { capitalizeFirst } from '@/lib/utils';
 import { SmartListsService } from '@/services/smart-lists-service';
-import { CreateStepBody, stepTypes, StepType, createStepBodySchema } from '@optimism-making-impact/schemas';
+import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { createElement, useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
@@ -80,13 +80,13 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
   const modalIcons = useIcons();
   const selectedIcon = watch('icon');
   useEffect(() => {
-    if (type !== 'CARD') {
+    if (type !== 'CARDGRID') {
       setValue('smartListId', undefined);
     }
   }, [type, setValue]);
 
   return (
-    <div className='flex flex-col w-full gap-4 py-4'>
+    <div className='flex w-full flex-col gap-4 py-4'>
       <Controller
         name='type'
         control={control}
@@ -106,7 +106,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         )}
       />
 
-      {type === 'CARD' && smartListOptions.length > 0 && (
+      {type === 'CARDGRID' && smartListOptions.length > 0 && (
         <Controller
           name='smartListId'
           control={control}
@@ -125,7 +125,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         />
       )}
 
-      {type === 'ITEMS' && (
+      {type === 'SMARTLIST' && (
         <Controller
           name='description'
           control={control}
@@ -180,7 +180,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

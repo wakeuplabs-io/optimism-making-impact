@@ -28,7 +28,7 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
   console.log('Seeding items with smart lists and attributes...');
 
   for (const step of steps) {
-    if (step.type !== StepType.ITEMS) continue;
+    if (step.type !== StepType.SMARTLIST) continue;
 
     // Create a new SmartList for the step
     const smartList = await prisma.smartList.create({

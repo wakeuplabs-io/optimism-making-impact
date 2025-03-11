@@ -9,11 +9,11 @@ interface StepTypeSelectorProps {
 
 export function StepTypeSelector(props: StepTypeSelectorProps) {
   switch (props.step.type) {
-    case 'INFOGRAPHY':
+    case 'INFOGRAPHIC':
       return <InfographyStep />;
-    case 'ITEMS':
+    case 'SMARTLIST':
       return <ItemsStep />;
-    case 'CARD':
+    case 'CARDGRID':
       return <CardStep {...props} />;
 
     default:

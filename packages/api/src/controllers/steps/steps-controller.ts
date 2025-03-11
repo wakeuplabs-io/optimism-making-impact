@@ -1,15 +1,15 @@
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import {
+  createStepBodySchemaWithValidation,
+  getAllStepsQueryParams,
+  idParamsSchema,
+  updateStepBodySchema,
+} from '@optimism-making-impact/schemas';
 import { StepType } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import {
-  idParamsSchema,
-  createStepBodySchemaWithValidation,
-  updateStepBodySchema,
-  getAllStepsQueryParams,
-} from '@optimism-making-impact/schemas';
 
 async function getOne(req: Request, res: Response, next: NextFunction) {
   try {
@@ -80,7 +80,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
         data: { ...parsed.data, position },
       });
 
-      const isItemType = parsed.data.type === StepType.ITEMS;
+      const isItemType = parsed.data.type === StepType.SMARTLIST;
       if (isItemType) {
         await prisma.smartList.create({
           data: {

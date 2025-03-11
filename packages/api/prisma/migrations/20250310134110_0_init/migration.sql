@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "StepType" AS ENUM ('INFOGRAPHY', 'ITEMS', 'CARD');
+CREATE TYPE "StepType" AS ENUM ('INFOGRAPHIC', 'SMARTLIST', 'CARDGRID');
 
 -- CreateEnum
 CREATE TYPE "CardStrength" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
@@ -123,6 +123,16 @@ CREATE TABLE "SmartList" (
 );
 
 -- CreateTable
+CREATE TABLE "UserWhitelist" (
+    "email" TEXT NOT NULL,
+    "whiteListed" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserWhitelist_pkey" PRIMARY KEY ("email")
+);
+
+-- CreateTable
 CREATE TABLE "_CardToKeyword" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
@@ -138,6 +148,9 @@ CREATE UNIQUE INDEX "Step_title_categoryId_key" ON "Step"("title", "categoryId")
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Keyword_value_stepId_key" ON "Keyword"("value", "stepId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserWhitelist_email_key" ON "UserWhitelist"("email");
 
 -- CreateIndex
 CREATE INDEX "_CardToKeyword_B_index" ON "_CardToKeyword"("B");
