@@ -107,7 +107,7 @@ export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormPr
         id={props.formId}
         onSubmit={handleSubmit(props.onInternalSubmit)}
         onError={(errors) => console.log(errors)}
-        className='min-w-[300px]'
+        className='min-w-[220px]'
       >
         {props.children}
       </form>
