@@ -25,7 +25,7 @@ export const completeStepSchema = stepSchema.extend({
   infographics: z.array(infographicSchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
-  smartListFilter: completeSmartListFilterSchema.nullish(), // TODO:
+  smartListFilter: completeSmartListFilterSchema.nullish(),
   keywords: z.array(keywordSchema),
 });
 

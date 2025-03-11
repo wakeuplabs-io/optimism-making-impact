@@ -72,6 +72,7 @@ function Content(props: ContentProps) {
       <div className='flex flex-col gap-8'>
         {props.smartListFilter && (
           <FilterGroup
+            className='mt-4'
             title={props.smartListFilter.title}
             filters={props.smartListFilter.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
