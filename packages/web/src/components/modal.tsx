@@ -19,7 +19,6 @@ interface ModalProps extends DialogProps {
   children: React.ReactNode;
   buttons?: ModalActionButtonProps[];
   contentProps?: React.ComponentProps<typeof DialogContent>;
-  triggerClassname?: string;
 }
 
 /**
@@ -28,14 +27,10 @@ interface ModalProps extends DialogProps {
  * @param {ModalProps} props - The props for the Modal component.
  * @returns {JSX.Element} The rendered Modal component.
  */
-export function Modal({ buttons = [], contentProps = {}, triggerClassname, ...props }: ModalProps) {
+export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps) {
   return (
     <Dialog {...props}>
-      <DialogTrigger asChild>
-        <button className={triggerClassname} aria-label='Open modal'>
-          {props.trigger}
-        </button>
-      </DialogTrigger>
+      <DialogTrigger>{props.trigger}</DialogTrigger>
       <DialogContent className='flex w-fit max-w-[95%] flex-col items-center rounded-[22px] p-6' {...contentProps}>
         <DialogHeader className='flex w-full items-center justify-center'>
           {props.title && <DialogTitle className='text-center text-lg text-dark-low 2xl:text-xl'>{props.title}</DialogTitle>}

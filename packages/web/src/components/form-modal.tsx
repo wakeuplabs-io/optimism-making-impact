@@ -1,15 +1,14 @@
-import React, { useId, useState } from 'react';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, ModalActionButtonProps } from '@/components/modal';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useId, useState } from 'react';
 import { DefaultValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   schema: TFormSchema;
   title?: string;
   subtitle?: string;
   trigger?: React.ReactNode;
-  triggerClassname?: string;
   defaultValues?: DefaultValues<z.TypeOf<TFormSchema>>;
   children: React.ReactNode;
   submitButtonText?: string;
@@ -73,7 +72,6 @@ export function FormModal<TFormSchema extends z.AnyZodObject>({
       title={props.title}
       subtitle={props.subtitle}
       trigger={props.trigger}
-      triggerClassname={props.triggerClassname}
       buttons={buttons}
       contentProps={props.contentProps}
     >
