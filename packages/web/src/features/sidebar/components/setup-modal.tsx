@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog-full-screen-mobile';
 import { Input } from '@/components/ui/input';
 import { useUserStore } from '@/state';
 import { User, UserCog } from 'lucide-react';
@@ -20,8 +20,8 @@ export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='max-w-xl gap-8 rounded-3xl p-8'>
-        <DialogHeader className='flex-row items-center justify-between space-y-0'>
+      <DialogContent className='md:max-w-xl gap-8 rounded-3xl p-8'>
+        <DialogHeader>
           <DialogTitle className='text-2xl font-medium'>Setup</DialogTitle>
         </DialogHeader>
 
