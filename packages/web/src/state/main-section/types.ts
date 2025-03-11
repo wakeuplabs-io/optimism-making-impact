@@ -33,7 +33,6 @@ export interface MainSectionActions {
   addInfographic: (data: CreateInfographicBody) => Promise<void>;
   deleteInfographic: (infographicId: number) => Promise<void>;
   editInfographic: (infographicId: number, data: Partial<UpdateInfographicBody>) => Promise<EditInfographicResult>;
-  saveInfographics: (data: BulkUpdateInfographicBody) => void;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;
   deleteCard: (cardId: number) => void;

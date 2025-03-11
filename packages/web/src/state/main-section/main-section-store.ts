@@ -10,7 +10,6 @@ import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { CompleteStep, Step } from '@/types';
 import {
-  BulkUpdateInfographicBody,
   CreateAttributeBody,
   CreateCardBody,
   CreateInfographicBody,
@@ -107,36 +106,6 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       return {
         error,
       };
-    }
-  },
-  saveInfographics: async (data: BulkUpdateInfographicBody) => {
-    try {
-      const currentStep = get().step;
-      if (!currentStep) return;
-
-      set({ savingStatus: AutoSaveStatus.SAVING });
-
-      const stepId = currentStep.id;
-
-      await InfographicsService.updateBulk(data);
-      await get().fetchData(stepId);
-
-      toast({ title: 'Saved', description: 'Infographics updated successfully' });
-    } catch (error) {
-      const title = 'Failed to edit infographics';
-      let description = 'Unknown error';
-
-      if (error instanceof AxiosError) {
-        description = error.response?.data.error.message;
-      }
-
-      toast({ title, description, variant: 'destructive' });
-    } finally {
-      set({ savingStatus: AutoSaveStatus.SAVED });
-
-      setTimeout(() => {
-        set({ savingStatus: AutoSaveStatus.IDLE });
-      }, 2000);
     }
   },
   addInfographic: async (data: CreateInfographicBody) => {
