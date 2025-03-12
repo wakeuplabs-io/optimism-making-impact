@@ -4,7 +4,7 @@ import React, { useId, useState } from 'react';
 import { DefaultValues, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-interface FormModalProps<TFormSchema extends z.AnyZodObject> {
+export interface FormModalProps<TFormSchema extends z.AnyZodObject> {
   schema: TFormSchema;
   title?: string;
   subtitle?: string;
