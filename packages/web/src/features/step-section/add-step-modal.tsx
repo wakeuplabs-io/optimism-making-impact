@@ -1,5 +1,5 @@
 import { IconPicker } from '../sidebar/components/icon-picker';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';

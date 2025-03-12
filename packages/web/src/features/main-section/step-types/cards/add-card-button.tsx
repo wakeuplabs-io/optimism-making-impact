@@ -1,7 +1,7 @@
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { ActionButton } from '@/components/action-button';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { SelectInput } from '@/components/inputs/select-input';
 import { MultiSelectInput } from '@/components/ui/multi-select';

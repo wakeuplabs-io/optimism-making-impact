@@ -1,6 +1,6 @@
 import { IconPicker } from './icon-picker';
 import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';

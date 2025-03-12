@@ -1,5 +1,5 @@
 import { ActionButton } from '@/components/action-button';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { TextAreaInput } from '@/components/text-area-input';

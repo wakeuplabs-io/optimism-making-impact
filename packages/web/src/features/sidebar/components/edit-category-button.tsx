@@ -1,6 +1,6 @@
 import { IconPicker } from './icon-picker';
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
