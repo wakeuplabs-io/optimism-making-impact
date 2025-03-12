@@ -32,8 +32,8 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
   return (
     <Dialog {...props}>
       <DialogTrigger>{props.trigger}</DialogTrigger>
-      <DialogContent className='flex! flex-col lg:max-w-[95%] rounded-[22px] p-6 md:p-12' hideCloseButton={true} {...contentProps}>
-        <DialogHeader className='flex flex-row items-center justify-between'>
+      <DialogContent className='flex flex-col gap-0 lg:max-w-[550px] rounded-[22px] p-6 md:p-12' hideCloseButton={true} {...contentProps}>
+        <DialogHeader className='flex flex-row items-center justify-between mb-8'>
           <div className='flex flex-col items-start justify-between'>
             {props.title && <DialogTitle className='text-xl text-dark-high font-medium'>{props.title}</DialogTitle>}
             {props.subtitle && <DialogDescription className='text-secondary'>{props.subtitle}</DialogDescription>}
@@ -45,7 +45,7 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
         </DialogHeader>
         <div className='w-full'>{props.children}</div>
         {buttons.length > 0 && (
-          <DialogFooter className='mt-5 w-full'>
+          <DialogFooter className='lg:mt-16 w-full'>
             <div className='flex w-full gap-2'>
               {buttons.map((button, index) => (
                 <ModalActionButton key={index} {...button} className='w-full' />
