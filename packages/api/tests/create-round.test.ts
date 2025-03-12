@@ -33,7 +33,7 @@ describe('Duplicate round', async () => {
     });
   });
 
-  test.only('Steps, infographics, items, cards, and keywords should be duplicated correctly', () => {
+  test('Steps, infographics, items, cards, and keywords should be duplicated correctly', () => {
     const originalSteps = originalRound.categories.flatMap((category) => category.steps);
     const duplicatedSteps = duplicatedRound.categories.flatMap((category) => category.steps);
 
@@ -60,16 +60,6 @@ describe('Duplicate round', async () => {
       // Items
       expect(step.items.length).toBe(originalStep.items.length);
       step.items.forEach((item, i) => {
-        console.log('----------------------------------------------');
-
-        if (item.markdown !== originalStep.items[i].markdown) {
-          console.log(
-            '🎈 ',
-            step.items.map((item) => item.markdown),
-            originalStep.items.map((item) => item.markdown),
-          );
-        }
-
         expect(item.markdown).toBe(originalStep.items[i].markdown);
         expect(item.id).not.toBe(originalStep.items[i].id);
         expect(item.stepId).toBe(step.id);

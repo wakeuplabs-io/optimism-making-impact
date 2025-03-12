@@ -1,154 +1,202 @@
 import { prisma } from '@/lib/prisma/instance.js';
-import { CompleteCategory } from '@/types/entities/categories.js';
-import { CompleteRound } from '@/types/entities/round.js';
-import { CompleteStep } from '@/types/entities/step.js';
-import { Category, Round } from '@prisma/client';
+import { Attribute, Card, Category, Infographic, Item, Keyword, PrismaClient, Round, SmartListFilter, Step } from '@prisma/client';
+
+type Tx = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
+
+type CompleteStep = Step & {
+  infographics: Infographic[];
+  items: (Item & { attribute: Attribute | null })[];
+  cards: (Card & { keywords: Keyword[]; attribute: Attribute | null })[];
+  smartListFilter?: (SmartListFilter & { attributes: Attribute[] }) | null;
+};
+
+type CompleteCategory = Category & {
+  steps: CompleteStep[];
+};
+
+type CompleteRound = Round & {
+  categories: CompleteCategory[];
+};
 
 /**
- * Duplicates an entire round, including categories, steps, items, cards, and related entities.
- * Ensures relationships remain intact.
- * @param lastRound The round to duplicate.
+ * Duplicates an entire round along with all its nested entities sequentially.
+ * @param originalRound The round to duplicate.
  * @returns The newly created round ID.
  */
-export async function duplicateRound(lastRound: CompleteRound): Promise<number> {
-  const newRound = await createRound(lastRound);
+export async function duplicateRound(originalRound: CompleteRound): Promise<number> {
+  return await prisma.$transaction(async (tx: Tx) => {
+    const newRound = await duplicateRoundRecord(tx, originalRound);
 
-  // Step 1: Duplicate Categories and store old-to-new mapping
-  const oldToNewCategoryMap = await createCategoriesForRound(lastRound.categories, newRound.id);
+    for (const category of originalRound.categories) {
+      const newCategory = await duplicateCategory(tx, category, newRound.id);
 
-  // Step 2: Duplicate Smart Lists and Attributes
-  const { oldToNewSmartListIds, oldToNewAttributeIds } = await createSmartListsFromSteps(
-    lastRound.categories.flatMap((category) => category.steps),
-  );
+      for (const step of category.steps) {
+        await duplicateStep(tx, step, newCategory);
+      }
+    }
 
-  // Step 3: Duplicate Items and Cards and infographics
-  await createStepsWithRelationsForCategories(lastRound.categories, oldToNewCategoryMap, oldToNewAttributeIds, oldToNewSmartListIds);
-
-  return newRound.id;
+    return newRound.id;
+  });
 }
 
-async function createRound(prevRound: Round): Promise<Round> {
-  return prisma.round.create({
+async function duplicateRoundRecord(tx: Tx, round: Round): Promise<Round> {
+  return tx.round.create({
     data: {
-      link1: prevRound.link1,
-      link2: prevRound.link2,
+      link1: round.link1,
+      link2: round.link2,
     },
   });
 }
 
-async function createCategoriesForRound(categories: Category[], newRoundId: number): Promise<Record<number, number>> {
-  const categoryMap: Record<number, number> = {};
-
-  for (const category of categories) {
-    const newCategory = await prisma.category.create({
-      data: {
-        name: category.name,
-        icon: category.icon,
-        roundId: newRoundId,
-      },
-    });
-
-    categoryMap[category.id] = newCategory.id;
-  }
-
-  return categoryMap;
+async function duplicateCategory(tx: Tx, category: CompleteCategory, newRoundId: number): Promise<Category> {
+  return tx.category.create({
+    data: {
+      name: category.name,
+      icon: category.icon,
+      roundId: newRoundId,
+    },
+  });
 }
 
-async function createSmartListsFromSteps(steps: CompleteStep[]): Promise<{
-  oldToNewSmartListIds: Record<number, number>;
-  oldToNewAttributeIds: Record<number, number>;
-}> {
-  const smartListMap: Record<number, number> = {};
-  const attributeMap: Record<number, number> = {};
-
-  for (const step of steps) {
-    if (!step.smartListFilter) {
-      continue;
-    }
-
-    const newSmartList = await prisma.smartListFilter.create({
-      data: { title: step.smartListFilter.title },
-    });
-
-    smartListMap[step.smartListFilter.id] = newSmartList.id;
-
-    for (const oldAttr of step.smartListFilter.attributes) {
-      const newAttr = await prisma.attribute.create({
-        data: {
-          value: oldAttr.value,
-          description: oldAttr.description,
-          color: oldAttr.color,
-          categoryId: oldAttr.categoryId, // Ensure correct category linking
-          smartListFilterId: newSmartList.id,
-        },
-      });
-
-      attributeMap[oldAttr.id] = newAttr.id;
-    }
-  }
-
-  return { oldToNewSmartListIds: smartListMap, oldToNewAttributeIds: attributeMap };
-}
-
-async function createStepsWithRelationsForCategories(
-  oldCategories: CompleteCategory[],
-  oldToNewCategoryMap: Record<number, number>,
-  oldToNewAttributeIds: Record<number, number>,
-  oldToNewSmartListIds: Record<number, number>,
-) {
-  const stepMap: Record<number, number> = [];
-
-  await prisma.$transaction(async (tx) => {
-    for (const oldCategory of oldCategories) {
-      for (const step of oldCategory.steps) {
-        const newStep = await tx.step.create({
-          data: {
-            title: step.title,
-            icon: step.icon,
-            type: step.type,
-            categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
-            smartListFilterId: step.smartListFilter ? oldToNewSmartListIds[step.smartListFilter.id] : null,
-            infographics: {
-              create: step.infographics.map(({ image, markdown }) => ({
-                image,
-                markdown,
-              })),
-            },
-            items: {
-              create: step.items.map(({ markdown, attributeId }) => ({
-                markdown,
-                ...(attributeId && {
-                  attribute: { connect: { id: oldToNewAttributeIds[attributeId] } },
-                }),
-              })),
-            },
-          },
-        });
-
-        await tx.step.update({
-          where: { id: newStep.id },
-          data: {
-            cards: {
-              create: step.cards.map(({ strength, markdown, title, attributeId, keywords }) => ({
-                strength,
-                markdown,
-                title,
-                attribute: attributeId ? { connect: { id: oldToNewAttributeIds[attributeId] } } : undefined,
-                keywords: {
-                  connectOrCreate: keywords.map((kw) => ({
-                    where: { value_stepId: { value: kw.value, stepId: newStep.id } },
-                    create: { value: kw.value, stepId: newStep.id },
-                  })),
-                },
-              })),
-            },
-          },
-        });
-
-        stepMap[step.id] = newStep.id;
-      }
-    }
+async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category): Promise<void> {
+  const newStep = await tx.step.create({
+    data: {
+      title: step.title,
+      icon: step.icon,
+      type: step.type,
+      categoryId: newCategory.id,
+    },
   });
 
-  return stepMap;
+  let newAttributes: Attribute[] = [];
+
+  if (step.smartListFilter != null) {
+    const { newSmartList, newAttributes: attrs } = await duplicateSmartListFilter(tx, step.smartListFilter, newCategory.id);
+    newAttributes = attrs;
+    await tx.step.update({
+      where: { id: newStep.id },
+      data: { smartListFilterId: newSmartList.id },
+    });
+  }
+
+  for (const infographic of step.infographics) {
+    await duplicateInfographic(tx, infographic, newStep.id);
+  }
+
+  for (const item of step.items) {
+    await duplicateItem(tx, item, newStep.id, newAttributes);
+  }
+
+  for (const card of step.cards) {
+    const newCard = await duplicateCard(tx, card, newStep.id, newAttributes);
+    for (const kw of card.keywords) {
+      await duplicateKeyword(tx, kw, newCard.id, newStep.id);
+    }
+  }
+}
+
+async function duplicateSmartListFilter(
+  tx: Tx,
+  smartListFilter: NonNullable<CompleteStep['smartListFilter']>,
+  newCategoryId: number,
+): Promise<{ newSmartList: SmartListFilter; newAttributes: Attribute[] }> {
+  const newSmartList = await tx.smartListFilter.create({
+    data: { title: smartListFilter.title },
+  });
+  const newAttributes: Attribute[] = [];
+  for (const attr of smartListFilter.attributes) {
+    const newAttr = await tx.attribute.create({
+      data: {
+        value: attr.value,
+        description: attr.description,
+        color: attr.color,
+        categoryId: newCategoryId,
+        smartListFilterId: newSmartList.id,
+      },
+    });
+    newAttributes.push(newAttr);
+  }
+  return { newSmartList, newAttributes };
+}
+
+async function duplicateInfographic(tx: Tx, infographic: Infographic, newStepId: number): Promise<void> {
+  await tx.infographic.create({
+    data: {
+      image: infographic.image,
+      markdown: infographic.markdown,
+      step: { connect: { id: newStepId } },
+    },
+  });
+}
+
+async function duplicateItem(
+  tx: Tx,
+  item: Item & { attribute: Attribute | null },
+  newStepId: number,
+  newAttributes: Attribute[],
+): Promise<void> {
+  let attributeConnect = undefined;
+
+  // Directly accessing item.attribute may not guarantee type narrowing because it might be re-read
+  // or considered mutable. The local constant 'attr' provides a stable reference that, once checked,
+  // is treated as non-null in the subsequent code.
+  const attr = item.attribute;
+
+  if (attr !== null && attr !== undefined) {
+    const match = newAttributes.find((a) => a.value === attr.value && a.description === attr.description && a.color === attr.color);
+    if (match) {
+      attributeConnect = { connect: { id: match.id } };
+    }
+  }
+  await tx.item.create({
+    data: {
+      markdown: item.markdown,
+      step: { connect: { id: newStepId } },
+      ...(attributeConnect ? { attribute: attributeConnect } : {}),
+    },
+  });
+}
+
+async function duplicateCard(
+  tx: Tx,
+  card: Card & { keywords: Keyword[]; attribute: Attribute | null },
+  newStepId: number,
+  newAttributes: Attribute[],
+): Promise<Card> {
+  let attributeConnect = undefined;
+
+  // Directly accessing card.attribute may not guarantee type narrowing because it might be re-read
+  // or considered mutable. The local constant 'attr' provides a stable reference that, once checked,
+  // is treated as non-null in the subsequent code.
+  const attr = card.attribute;
+
+  if (attr !== null && attr !== undefined) {
+    const match = newAttributes.find((a) => a.value === attr.value && a.description === attr.description && a.color === attr.color);
+    if (match) {
+      attributeConnect = { connect: { id: match.id } };
+    }
+  }
+  return await tx.card.create({
+    data: {
+      title: card.title,
+      markdown: card.markdown,
+      strength: card.strength,
+      step: { connect: { id: newStepId } },
+      ...(attributeConnect ? { attribute: attributeConnect } : {}),
+    },
+  });
+}
+
+async function duplicateKeyword(tx: Tx, keyword: Keyword, newCardId: number, newStepId: number): Promise<void> {
+  await tx.card.update({
+    where: { id: newCardId },
+    data: {
+      keywords: {
+        connectOrCreate: {
+          where: { value_stepId: { value: keyword.value, stepId: newStepId } },
+          create: { value: keyword.value, stepId: newStepId },
+        },
+      },
+    },
+  });
 }
