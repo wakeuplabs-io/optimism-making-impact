@@ -20,11 +20,11 @@ async function getOne(req: Request, res: Response, next: NextFunction) {
     const step = await prisma.step.findUnique({
       where: { id: parsedParams.data.id },
       include: {
-        cards: { orderBy: { position: 'asc' }, include: { attribute: true, keywords: true } },
-        infographics: { orderBy: { position: 'asc' } },
+        cards: { orderBy: { createdAt: 'asc' }, include: { attribute: true, keywords: true } },
+        infographics: { orderBy: { createdAt: 'asc' } },
         items: {
           include: { attribute: true },
-          orderBy: { position: 'asc' },
+          orderBy: { createdAt: 'asc' },
         },
         smartListFilter: {
           include: {
@@ -53,7 +53,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
     const steps = await prisma.step.findMany({
       where: { categoryId: parsed.data.categoryId },
-      orderBy: { position: 'asc' },
+      orderBy: { createdAt: 'asc' },
     });
 
     apiResponse.success(res, { steps });
@@ -68,19 +68,12 @@ async function create(req: Request, res: Response, next: NextFunction) {
     if (!parsed.success) throw ApiError.badRequest();
 
     const result = await prisma.$transaction(async (prisma) => {
-      const lastStep = await prisma.step.findFirst({
-        where: { categoryId: parsed.data.categoryId },
-        orderBy: { position: 'desc' },
-        select: { position: true },
-      });
-
-      const position = lastStep ? lastStep.position + 1 : 0;
-
       const created = await prisma.step.create({
-        data: { ...parsed.data, position },
+        data: { ...parsed.data },
       });
 
       const isItemType = parsed.data.type === StepType.SMARTLIST;
+
       if (isItemType) {
         await prisma.smartListFilter.create({
           data: {
@@ -137,27 +130,9 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const deleted = await prisma.$transaction(async (prisma) => {
-      // Delete the specified step
-      const deleted = await prisma.step.delete({
-        where: { id: parsed.data.id },
-      });
-
-      // Get all remaining steps ordered by position
-      const remainingSteps = await prisma.step.findMany({
-        where: { categoryId: deleted.categoryId },
-        orderBy: { position: 'asc' },
-      });
-
-      // Update their positions sequentially (zero-based)
-      for await (const step of remainingSteps) {
-        await prisma.step.update({
-          where: { id: step.id },
-          data: { position: remainingSteps.indexOf(step) },
-        });
-      }
-
-      return deleted;
+    // Delete the specified step
+    const deleted = await prisma.step.delete({
+      where: { id: parsed.data.id },
     });
 
     apiResponse.success(res, deleted);

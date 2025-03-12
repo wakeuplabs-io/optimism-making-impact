@@ -67,7 +67,6 @@ export async function seedCards(prisma: PrismaClient, steps: Array<Step>) {
           title: cardsData[i].title,
           markdown: cardsData[i].markdown,
           strength: cardsData[i].strength,
-          position: i,
           stepId: step.id,
           keywords: {
             connectOrCreate: thisCardKeywords.map((keyword) => ({

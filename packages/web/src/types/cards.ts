@@ -1,4 +1,4 @@
-import { cardStrengthList, keywordSchema, attributeSchema } from '@optimism-making-impact/schemas';
+import { attributeSchema, cardStrengthList, keywordSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const cardSchema = z.object({
@@ -6,7 +6,6 @@ export const cardSchema = z.object({
   title: z.string(),
   markdown: z.string(),
   strength: z.enum(cardStrengthList),
-  position: z.number(),
   stepId: z.number(),
   attributeId: z.number().nullable().optional(),
 });

@@ -105,26 +105,21 @@ async function createStepsWithRelationsForCategories(
           data: {
             title: step.title,
             icon: step.icon,
-            position: step.position,
             type: step.type,
             categoryId: oldToNewCategoryMap[step.categoryId], // ✅ Correct category mapping
             smartListFilterId: step.smartListFilter ? oldToNewSmartListIds[step.smartListFilter.id] : null,
             infographics: {
-              create: step.infographics.map(({ image, markdown, position }) => ({
+              create: step.infographics.map(({ image, markdown }) => ({
                 image,
                 markdown,
-                position,
               })),
             },
             items: {
-              create: step.items.map(({ markdown, position, attributeId }) => ({
+              create: step.items.map(({ markdown, attributeId }) => ({
                 markdown,
-                position,
-                attribute: {
-                  connect: {
-                    id: attributeId ? oldToNewAttributeIds[attributeId] : null,
-                  },
-                },
+                ...(attributeId && {
+                  attribute: { connect: { id: oldToNewAttributeIds[attributeId] } },
+                }),
               })),
             },
           },
@@ -134,10 +129,9 @@ async function createStepsWithRelationsForCategories(
           where: { id: newStep.id },
           data: {
             cards: {
-              create: step.cards.map(({ strength, markdown, position, title, attributeId, keywords }) => ({
+              create: step.cards.map(({ strength, markdown, title, attributeId, keywords }) => ({
                 strength,
                 markdown,
-                position,
                 title,
                 attribute: attributeId ? { connect: { id: oldToNewAttributeIds[attributeId] } } : undefined,
                 keywords: {

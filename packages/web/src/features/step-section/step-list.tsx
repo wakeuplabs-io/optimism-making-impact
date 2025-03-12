@@ -6,9 +6,11 @@ import { Step } from '@/types';
 import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { Fragment, useMemo } from 'react';
 
+export type StepListStep = Step & { position: number };
+
 interface StepsListProps {
-  steps: Step[];
-  selectedStep: Step | null;
+  steps: StepListStep[];
+  selectedStep: StepListStep | null;
   onEditStep: (stepId: number, data: UpdateStepBody) => void;
   onDeleteStep: (stepId: number) => void;
   onSelectStep: (stepId: number) => void;
@@ -24,7 +26,7 @@ export function StepsList(props: StepsListProps) {
 
   if (props.steps.length === 0) {
     return (
-      <div className='flex max-w-full flex-1 justify-center overflow-hidden'>
+      <div className='flex justify-center flex-1 max-w-full overflow-hidden'>
         <span>There are no steps for this round.</span>
       </div>
     );

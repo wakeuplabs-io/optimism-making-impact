@@ -11,7 +11,6 @@ export const stepSchema = z.object({
   title: z.string(),
   description: z.string().nullish(),
   icon: z.string(),
-  position: z.number(), // Zero-based
   type: stepTypeSchema,
   categoryId: z.number(),
   smartListId: z.number().nullable().optional(),

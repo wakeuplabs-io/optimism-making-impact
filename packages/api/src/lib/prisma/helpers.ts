@@ -16,11 +16,11 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
         include: {
           attributes: true,
           steps: {
-            orderBy: { position: 'asc' },
+            orderBy: { createdAt: 'asc' },
             include: {
-              infographics: { orderBy: { position: 'asc' } },
-              items: { include: { attribute: true }, orderBy: { position: 'asc' } },
-              cards: { include: { attribute: true, keywords: true }, orderBy: { position: 'asc' } },
+              infographics: { orderBy: { createdAt: 'asc' } },
+              items: { include: { attribute: true }, orderBy: [{ createdAt: 'desc' }] },
+              cards: { include: { attribute: true, keywords: true }, orderBy: { createdAt: 'asc' } },
               smartListFilter: { include: { attributes: true } },
             },
           },
@@ -36,7 +36,7 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
  * @throws If no round exists.
  */
 export async function getLastCompleteRound(): Promise<CompleteRound | null> {
-  const lastRoundId = await prisma.round.findFirst({ orderBy: { id: 'desc' }, select: { id: true } });
+  const lastRoundId = await prisma.round.findFirst({ orderBy: { createdAt: 'desc' }, select: { id: true } });
 
   if (!lastRoundId) return null;
 

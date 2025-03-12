@@ -58,16 +58,13 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
       where: { smartListFilterId: smartListFilter.id },
     });
 
-    let position = 0;
-
     // Create items and link them to attributes
-    for (const itemData of itemsData) {
-      const attribute = createdAttributes[position % createdAttributes.length];
+    for (const [index, itemData] of itemsData.entries()) {
+      const attribute = createdAttributes[index % createdAttributes.length];
 
       await prisma.item.create({
         data: {
           markdown: itemData.markdown,
-          position: position++,
           stepId: step.id,
           attributeId: attribute.id,
         },

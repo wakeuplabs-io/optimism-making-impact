@@ -5,7 +5,6 @@ export const infographicSchema = z.object({
   markdown: z.string(),
   image: z.string(),
   stepId: z.number(),
-  position: z.number(),
   createdAt: z.string(), // Assuming ISO 8601 date format as a string
   updatedAt: z.string(), // Assuming ISO 8601 date format as a string
 });

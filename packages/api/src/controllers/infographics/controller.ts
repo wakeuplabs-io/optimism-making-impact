@@ -12,26 +12,14 @@ import { PrismaClient } from '@prisma/client/extension';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-async function getLastInfographicPosition(stepId: number, _prisma: PrismaClient) {
-  const lastInfographic = await prisma.infographic.findFirst({
-    where: { stepId },
-    orderBy: { position: 'desc' },
-  });
-
-  return lastInfographic ? lastInfographic.position : 0;
-}
-
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = createInfographicBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastPosition = await getLastInfographicPosition(parsed.data.stepId, prisma);
-    const position = lastPosition > 0 ? lastPosition + 1 : 0;
-
     const created = await prisma.infographic.create({
-      data: { ...parsed.data, position },
+      data: { ...parsed.data },
     });
 
     apiResponse.success(res, created, StatusCodes.CREATED);
@@ -69,9 +57,7 @@ async function getBulkNewInfographicsQueries(data: BulkUpdateInfographicBody, _p
     return [];
   }
 
-  const lastPosition = await getLastInfographicPosition(data[0].stepId, _prisma);
   const infographicsToInsert = [];
-  let currentPosition = lastPosition > 0 ? lastPosition + 1 : 0;
 
   for (const newInfographic of data) {
     infographicsToInsert.push(
@@ -80,12 +66,9 @@ async function getBulkNewInfographicsQueries(data: BulkUpdateInfographicBody, _p
           image: newInfographic.image,
           markdown: newInfographic.markdown,
           stepId: newInfographic.stepId,
-          position: currentPosition,
         },
       }),
     );
-
-    currentPosition++;
   }
 
   return infographicsToInsert;

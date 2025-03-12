@@ -1,8 +1,8 @@
-import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { Keyword } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
@@ -11,14 +11,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
     const parsed = createCardBodySchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
-
-    const lastCard = await prisma.card.findFirst({
-      where: { stepId: parsed.data.stepId },
-      orderBy: { position: 'desc' },
-      select: { position: true },
-    });
-
-    const lastCardPosition = lastCard ? lastCard.position + 1 : 0;
 
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
@@ -30,7 +22,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
         title: parsed.data.title,
         stepId: parsed.data.stepId,
         attributeId: parsed.data.attributeId,
-        position: lastCardPosition,
         keywords: {
           connect: keywordsWithId.map(({ id }) => ({ id })),
           create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),

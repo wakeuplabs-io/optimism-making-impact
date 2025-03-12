@@ -73,7 +73,6 @@ model Step {
   title       String
   description String?
   icon        String
-  position    Int
   type        StepType
 
   categoryId Int
@@ -89,7 +88,6 @@ model Step {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([position, categoryId])
   @@unique([title, categoryId])
 }
 
@@ -98,7 +96,6 @@ model Infographic {
 
   markdown String
   image    String
-  position Int
 
   stepId Int
   step   Step @relation(fields: [stepId], references: [id])
@@ -111,7 +108,6 @@ model Item {
   id Int @id @default(autoincrement())
 
   markdown String
-  position Int
 
   stepId      Int
   step        Step       @relation(fields: [stepId], references: [id])
@@ -128,7 +124,6 @@ model Card {
   title    String
   markdown String
   strength CardStrength
-  position Int
 
   stepId      Int
   step        Step       @relation(fields: [stepId], references: [id])

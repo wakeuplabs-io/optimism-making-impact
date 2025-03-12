@@ -36,7 +36,7 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
       let selectedStep = parsedSteps.find((step) => step.id === get().searchSelectedStepId);
 
       if (!selectedStep) {
-        selectedStep = parsedSteps.sort((a, b) => a.position - b.position)[0];
+        selectedStep = parsedSteps[0];
       }
       // reset searchSelectedStepId
       set(() => ({ steps: parsedSteps, selectedStep, searchSelectedStepId: null }));
@@ -58,7 +58,6 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
               ...data,
               id: lastStep.id,
               type: data.type,
-              position: lastStep.position + 1,
               description: data.description ?? '',
             },
           ];
@@ -68,7 +67,6 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
             {
               ...data,
               id: 1,
-              position: 0,
               description: data.description ?? '',
               type: data.type,
               smartListFilterId: data.smartListFilterId ?? null,

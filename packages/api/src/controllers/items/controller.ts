@@ -1,8 +1,8 @@
-import { createItemSchema, updateItemSchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import { createItemSchema, updateItemSchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 
 async function create(req: Request, res: Response, next: NextFunction) {
@@ -11,17 +11,9 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastItem = await prisma.item.findFirst({
-      where: { stepId: parsed.data.stepId },
-      orderBy: { position: 'desc' },
-    });
-
-    const position = lastItem ? lastItem.position + 1 : 0;
-
     const attribute = await prisma.item.create({
       data: {
         ...parsed.data,
-        position,
       },
     });
 
