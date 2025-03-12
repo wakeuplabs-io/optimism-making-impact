@@ -6,7 +6,11 @@ import { cn } from '@/lib/utils';
 import { AddInfographicModal } from './add-infographic-modal';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
-  return <div className='flex w-full flex-col bg-white px-8 py-12 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>{children}</div>;
+  return (
+    <div className='flex w-full flex-col items-center bg-white px-8 py-12 lg:gap-8 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>
+      {children}
+    </div>
+  );
 }
 
 export function InfographicStep() {

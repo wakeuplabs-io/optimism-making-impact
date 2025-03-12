@@ -75,7 +75,6 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
           value={controlledMarkdownValue}
           {...props}
           onChange={handleTextareaChange}
-          // autoFocus={true}
         />
         <div className='flex justify-between items-end gap-2'>
           <FormErrorMessage
