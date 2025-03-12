@@ -64,12 +64,7 @@ function FormFields(props: FormFieldsProps) {
           defaultValue={props.defaultValues.name}
           render={({ field, fieldState }) => (
             <div className='w-full'>
-              <FormTextInput
-                {...field}
-                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
-                placeholder='Write here...'
-                error={fieldState.error?.message}
-              />
+              <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />
             </div>
           )}
         />
