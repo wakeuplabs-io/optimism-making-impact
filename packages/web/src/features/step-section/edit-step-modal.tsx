@@ -1,22 +1,21 @@
 import { IconPicker } from '../sidebar/components/icon-picker';
-import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
 import { Step } from '@/types';
 import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
-import { Pencil, Save, Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
 
-interface EditIconProps {
+interface EditStepModalProps {
   step: Step;
   onSave?: (stepId: number, data: UpdateStepBody) => void;
-  onDelete?: () => void;
+  onDelete: () => void;
 }
 
-export function EditStepModal(props: EditIconProps) {
+export function EditStepModal(props: EditStepModalProps) {
   const defaultValues: UpdateStepBody = {
     title: props.step.title,
     icon: props.step.icon,
@@ -28,20 +27,20 @@ export function EditStepModal(props: EditIconProps) {
   }
 
   return (
-    <FormModal
-      title='Edit tab'
-      trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
+    <EditEntityModal
+      entity='tab'
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={updateStepBodySchema}
-      onSecondaryClick={props.onDelete}
-      submitButtonIcon={<Save />}
-      submitButtonText='Save'
-      secondaryButtonText='Delete'
-      secondaryButtonIcon={<Trash />}
+      deleteDescription={
+        <span>
+          Are you sure you want to delete <b>{props.step.title}</b> step?
+        </span>
+      }
+      onDelete={props.onDelete}
     >
       <FormFields defaultValues={defaultValues} step={props.step} />
-    </FormModal>
+    </EditEntityModal>
   );
 }
 
