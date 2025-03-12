@@ -1,8 +1,9 @@
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { createCategoryBodySchema, editCategoryBodySchema, getAllCategoriesSchema, idParamsSchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
-import { createCategoryBodySchema, getAllCategoriesSchema, idParamsSchema, editCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { StatusCodes } from 'http-status-codes';
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
@@ -31,7 +32,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       data: parsed.data,
     });
 
-    apiResponse.success(res, { message: 'Category created successfully.' }, 201);
+    apiResponse.success(res, { message: 'Category created successfully.' }, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -49,7 +50,7 @@ async function editOne(req: Request, res: Response, next: NextFunction) {
       data: parsedBody.data,
     });
 
-    apiResponse.success(res, edited, 201);
+    apiResponse.success(res, edited, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -65,7 +66,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       where: { id: parsedParams.data.id },
     });
 
-    apiResponse.success(res, { message: 'Category deleted.', data: deleted }, 201);
+    apiResponse.success(res, { message: 'Category deleted.', data: deleted }, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

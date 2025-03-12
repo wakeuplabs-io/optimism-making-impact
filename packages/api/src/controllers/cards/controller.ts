@@ -1,10 +1,11 @@
-import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { Keyword } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
@@ -38,7 +39,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    apiResponse.success(res, created, 201);
+    apiResponse.success(res, created, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -106,7 +107,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
       return updated;
     });
 
-    apiResponse.success(res, updated, 201);
+    apiResponse.success(res, updated, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -138,7 +139,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       return deleted;
     });
 
-    apiResponse.success(res, deleted, 201);
+    apiResponse.success(res, deleted, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

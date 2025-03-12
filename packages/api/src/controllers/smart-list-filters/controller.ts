@@ -22,7 +22,7 @@ async function getByCategoryId(req: Request, res: Response, next: NextFunction) 
       },
     });
 
-    if (!category) throw new ApiError(404, 'Category not found.');
+    if (!category) throw ApiError.notFound('Category not found.');
 
     const smartListFiltersIds = category.steps.map((step) => step.smartListFilterId);
     const stepsIds: number[] = smartListFiltersIds.filter((id): id is number => id !== null);

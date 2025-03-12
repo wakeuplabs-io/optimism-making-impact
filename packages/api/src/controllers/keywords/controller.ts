@@ -3,7 +3,6 @@ import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
 import { NextFunction, Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
 
 async function getByStepId(req: Request, res: Response, next: NextFunction) {
   try {
@@ -15,7 +14,7 @@ async function getByStepId(req: Request, res: Response, next: NextFunction) {
       where: { stepId: parsed.data.id },
     });
 
-    apiResponse.success(res, { keywords }, StatusCodes.OK);
+    apiResponse.success(res, { keywords });
   } catch (error) {
     next(error);
   }
@@ -31,7 +30,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       where: { id: parsed.data.id },
     });
 
-    apiResponse.success(res, deleted, StatusCodes.OK);
+    apiResponse.success(res, deleted);
   } catch (error) {
     next(error);
   }
