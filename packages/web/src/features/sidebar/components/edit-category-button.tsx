@@ -1,18 +1,13 @@
 import { IconPicker } from './icon-picker';
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { EditIcon } from '@/components/icons/edit-icon';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
 import { Category } from '@/types';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
-import { Save } from 'lucide-react';
-import { Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useToggle } from 'usehooks-ts';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
@@ -21,7 +16,6 @@ interface EditCategoryButtonProps {
 }
 
 export function EditCategoryButton(props: EditCategoryButtonProps) {
-  const [isDeleteConfirmationModalOpen, toggleDeleteConfirmationModal] = useToggle();
   const defaultValues: EditCategoryBody = { name: props.category.name, icon: props.category.icon };
 
   function handleSubmit(data: EditCategoryBody) {
@@ -29,35 +23,20 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
   }
 
   return (
-    <>
-      <FormModal
-        title='Edit category'
-        trigger={<EditIcon />}
-        onSubmit={handleSubmit}
-        defaultValues={defaultValues}
-        schema={editCategoryBodySchema}
-        submitButtonIcon={<Save />}
-        submitButtonText='Save'
-        secondaryButtonText='Delete'
-        secondaryButtonIcon={<Trash />}
-        onSecondaryClick={toggleDeleteConfirmationModal}
-      >
-        <FormFields defaultValues={defaultValues} />
-      </FormModal>
-      {isDeleteConfirmationModalOpen && (
-        <DeleteConfirmationModal
-          isOpen={isDeleteConfirmationModalOpen}
-          title='Delete category'
-          description={
-            <span>
-              Are you sure you want to delete <b>{props.category.name}</b> category?
-            </span>
-          }
-          onConfirm={() => props.onDelete(props.category)}
-          onOpenChange={toggleDeleteConfirmationModal}
-        />
-      )}
-    </>
+    <EditEntityModal
+      entity='category'
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={editCategoryBodySchema}
+      deleteDescription={
+        <span>
+          Are you sure you want to delete <b>{props.category.name}</b> category?
+        </span>
+      }
+      onDelete={() => props.onDelete(props.category)}
+    >
+      <FormFields defaultValues={defaultValues} />
+    </EditEntityModal>
   );
 }
 
