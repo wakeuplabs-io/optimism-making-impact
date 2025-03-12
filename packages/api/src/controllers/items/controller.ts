@@ -1,9 +1,10 @@
-import { createItemSchema, updateItemSchema } from '@optimism-making-impact/schemas';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
+import { createItemSchema, updateItemSchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
@@ -25,7 +26,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    apiResponse.success(res, attribute, 201);
+    apiResponse.success(res, attribute, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -43,7 +44,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
       data: parsedBody.data,
     });
 
-    apiResponse.success(res, attribute, 201);
+    apiResponse.success(res, attribute, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -59,7 +60,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       where: { id: parsedParams.data.id },
     });
 
-    apiResponse.success(res, deleted, 201);
+    apiResponse.success(res, deleted, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
