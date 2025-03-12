@@ -4,6 +4,7 @@ import { FormModal } from '@/components/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
+import { cn } from '@/lib/utils';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -44,12 +45,14 @@ function FormFields(props: FormFieldsProps) {
   const modalIcons = useIcons();
 
   return (
-    <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
-      <div className='col-span-2 flex gap-2'>
+    <div className='flex flex-col items-center gap-2'>
+      <div className='flex gap-4 w-full'>
         <div className='flex flex-col gap-1.5'>
           <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className={`flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ${isIconPickerOpen && 'text-[#FF0420]'}`}
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+              'text-[#FF0420]': !!selectedIcon,
+            })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
             {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
@@ -63,8 +66,8 @@ function FormFields(props: FormFieldsProps) {
             <div className='w-full'>
               <FormTextInput
                 {...field}
-                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
-                placeholder='Name'
+                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
+                placeholder='Write here...'
                 error={fieldState.error?.message}
               />
             </div>
@@ -76,7 +79,7 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='col-span-2 mt-2 flex h-[250px] flex-col gap-2'>
+          <div className='w-full col-span-2 mt-2 flex flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker
