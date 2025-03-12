@@ -3,9 +3,10 @@ import { FormModal } from '@/components/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
+import { cn } from '@/lib/utils';
 import { Step } from '@/types';
 import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Save, Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -34,6 +35,7 @@ export function EditStepModal(props: EditIconProps) {
       defaultValues={defaultValues}
       schema={updateStepBodySchema}
       onSecondaryClick={props.onDelete}
+      submitButtonIcon={<Save />}
       submitButtonText='Save'
       secondaryButtonText='Delete'
       secondaryButtonIcon={<Trash />}
@@ -55,12 +57,14 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
   const selectedIcon = watch('icon');
 
   return (
-    <div className='grid gap-4 py-4'>
-      <div className='col-span-2 flex gap-2'>
-        <div className='flex flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Icon</span>
+    <div className='flex w-full flex-col'>
+      <div className='flex gap-4'>
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+              'text-[#FF0420]': !!selectedIcon,
+            })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
             {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
@@ -68,27 +72,20 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         </div>
 
         <div className='flex w-full flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
             control={control}
             defaultValue={defaultValues.title}
             render={({ field, fieldState }) => (
               <div className='w-full'>
-                <FormTextInput
-                  {...field}
-                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
-                  placeholder='Write here...'
-                  error={fieldState.error?.message}
-                />
+                <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />
               </div>
             )}
           />
         </div>
       </div>
       {step.type === 'SMARTLIST' && (
-        <div className='col-span-2 flex flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Description</span>
+        <div className='flex flex-col gap-1'>
           <Controller
             name='description'
             control={control}
@@ -103,7 +100,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
+          <div className='mt-2 flex flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

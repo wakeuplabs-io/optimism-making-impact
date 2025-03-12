@@ -133,12 +133,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           defaultValue={defaultValues.description}
           render={({ field, fieldState }) => (
             <div className='flex flex-col gap-1'>
-              <FormTextInput
-                {...field}
-                error={fieldState.error?.message}
-                placeholder='Write here...'
-                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
-              />
+              <FormTextInput {...field} error={fieldState.error?.message} placeholder='Write here...' />
             </div>
           )}
         />
@@ -165,12 +160,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
             defaultValue={defaultValues.title}
             render={({ field, fieldState }) => (
               <div className='w-full'>
-                <FormTextInput
-                  {...field}
-                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
-                  placeholder='Write here...'
-                  error={fieldState.error?.message}
-                />
+                <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />
               </div>
             )}
           />
