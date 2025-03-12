@@ -12,8 +12,8 @@ export function CreateRoundModal(props: CreateRoundModalProps) {
       title='New round'
       trigger={<SidebarModalAddTrigger label='New Round' />}
       buttons={[
+        { label: 'Create', variant: 'primary', icon: <Plus />, onClick: () => props.onSave() },
         { label: 'Cancel', variant: 'secondary', closeOnClick: true },
-        { label: 'Save', variant: 'primary', icon: <Plus />, onClick: () => props.onSave() },
       ]}
     >
       <span>You are about to create a new round. Are you sure?</span>

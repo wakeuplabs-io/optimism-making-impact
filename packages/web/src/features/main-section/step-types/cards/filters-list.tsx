@@ -1,9 +1,13 @@
-import { FilterGroup } from '@/components/filter-group';
+import { FilterStrengthIcon } from './filter-strength-icon';
+import { FilterGroup } from '@/components/filter-group/filter-group';
+import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useIsMobile } from '@/hooks/use-tresholds';
+import { getRandomBadgeColor } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
+import { Hash } from 'lucide-react';
 import { useMemo } from 'react';
 
 interface CardFiltersProps {
@@ -42,7 +46,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white p-5'>{props.children}</div>;
+  return <div className='flex h-fit w-[250px] min-w-[250px] rounded-[22px] bg-white px-8 py-6'>{props.children}</div>;
 }
 
 interface ContentProps {
@@ -63,8 +67,8 @@ function Content(props: ContentProps) {
   } = useFiltersStore((state) => state);
   return (
     <div className='flex w-full flex-col'>
-      <h2 className='text-[20px] font-[500]'>Filters</h2>
-      <hr className='my-6 border-[#D9D9D9]' />
+      <h2 className='text-base font-semibold'>Filters</h2>
+      <hr className='my-4' />
       <div className='flex flex-col gap-8'>
         {props.smartListFilter && (
           <FilterGroup
@@ -73,7 +77,7 @@ function Content(props: ContentProps) {
             filters={props.smartListFilter.attributes.map((attr) => ({
               label: attr.value.toLowerCase(),
               data: attr,
-              prefixDot: attr.color,
+              filterIcon: ({ selected }) => <FilterGroupColorDot selected={selected} color={attr.color} />,
               tooltipText: attr.description,
             }))}
             onSelected={setSelectedAttributes}
@@ -85,6 +89,7 @@ function Content(props: ContentProps) {
           filters={strengths.map((strength) => ({
             label: strength.value.toLowerCase(),
             data: strength,
+            filterIcon: ({ selected }) => <FilterStrengthIcon strength={strength.value} selected={selected} />,
           }))}
           onSelected={setSelectedStrengths}
           selected={selectedStrengths}
@@ -94,9 +99,18 @@ function Content(props: ContentProps) {
           filters={keywords.map((keyword) => ({
             label: keyword.value.toLowerCase(),
             data: keyword,
+            filterIcon: ({ selected }) => (
+              <FilterGroupIcon
+                selected={selected}
+                icon={Hash}
+                color={getRandomBadgeColor(keyword.value.toLowerCase()).color}
+                strokeWidth={3}
+              />
+            ),
           }))}
           onSelected={setSelectedKeywords}
           selected={selectedKeywords}
+          maxFilters={3}
         />
       </div>
     </div>

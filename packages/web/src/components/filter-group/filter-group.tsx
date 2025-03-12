@@ -1,18 +1,17 @@
-import { ColorDot } from '@/components/color-dot';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { Color } from '@optimism-making-impact/schemas';
 import { Info } from 'lucide-react';
 import { ComponentProps, useMemo } from 'react';
+import { useToggle } from 'usehooks-ts';
 
+type FilterIcon = React.ComponentType<{ selected: boolean }>;
 interface FilterData {
   id: number;
 }
-
 interface Filter<T extends FilterData> {
   data: T;
   label: string;
-  prefixDot?: Color | undefined;
+  filterIcon?: FilterIcon;
   editComponent?: React.ReactNode;
   deleteComponent?: React.ReactNode;
   tooltipText?: string;
@@ -25,12 +24,15 @@ interface FilterGroupProps<T extends FilterData> {
   isAdmin?: boolean;
   spacing?: 'md' | 'lg' | 'xl';
   selected?: T[];
+  maxFilters?: number;
   onSelected: (data: T) => void;
 }
 
 export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
+  const [showAllFilters, toggleShowAllFilters] = useToggle(false);
   //only when a selected filter is present, the edition is allowed
   const editionIsAllowed = !!props.selected?.length;
+  const showAllFiltersEnabled = props.maxFilters && props.maxFilters > 0 && props.maxFilters < props.filters.length;
 
   const selectedFilters = useMemo(() => {
     return props.filters.reduce(
@@ -46,12 +48,18 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
     );
   }, [props.filters, props.selected]);
 
+  const [filtersToDisplay, hiddenFilterAmount] = useMemo(() => {
+    if (showAllFilters || !showAllFiltersEnabled || !props.maxFilters) return [props.filters, 0];
+
+    return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters];
+  }, [props.filters, props.maxFilters, showAllFilters, showAllFiltersEnabled]);
+
   return (
-    <div className={cn('flex flex-col gap-2', props.className)}>
-      {props.title && <h3 className='text-[16px] font-[400] text-[#68778D]'>{props.title}</h3>}
+    <div className={cn('flex flex-col gap-4', props.className)}>
+      {props.title && <h3 className='text-sm font-semibold text-gray-700'>{props.title}</h3>}
       <div
         className={cn('flex flex-col gap-1', {
-          'gap-1': !props.spacing || props.spacing === 'md',
+          'gap-2': !props.spacing || props.spacing === 'md',
           'gap-4': props.spacing === 'lg',
           'gap-8': props.spacing === 'xl',
         })}
@@ -59,21 +67,28 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
         {props.filters.length === 0 ? (
           <EmptyState />
         ) : (
-          props.filters.map((filter, i) => (
-            <FilterButton
-              key={`${filter.label}-${i}`}
-              label={filter.label}
-              data={filter.data}
-              editable={selectedFilters[filter.data.id] && editionIsAllowed}
-              selected={selectedFilters[filter.data.id]}
-              onClick={props.onSelected}
-              prefixDot={filter.prefixDot}
-              isAdmin={props.isAdmin}
-              editComponent={filter.editComponent}
-              tooltipText={filter.tooltipText}
-              deleteComponent={filter.deleteComponent}
-            />
-          ))
+          <>
+            {filtersToDisplay.map((filter, i) => (
+              <FilterButton
+                key={`${filter.label}-${i}`}
+                label={filter.label}
+                data={filter.data}
+                editable={selectedFilters[filter.data.id] && editionIsAllowed}
+                selected={!!selectedFilters[filter.data.id]}
+                onClick={props.onSelected}
+                filterIcon={filter.filterIcon}
+                isAdmin={props.isAdmin}
+                editComponent={filter.editComponent}
+                tooltipText={filter.tooltipText}
+                deleteComponent={filter.deleteComponent}
+              />
+            ))}
+            {showAllFiltersEnabled && (
+              <button className='text-sm text-left underline pl-6' onClick={() => toggleShowAllFilters()}>
+                {showAllFilters ? 'Collapse' : `View all (${hiddenFilterAmount})`}
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -91,10 +106,10 @@ function EmptyState() {
 interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'button'>, 'onClick'> {
   label: string; // Label displayed on the button.
   editable: boolean;
-  selected?: boolean; // Whether the button is in a "selected" state.
+  selected: boolean; // Whether the button is in a "selected" state.
   data: T; // Data payload associated with this button.
   onClick?: (data: T) => void; // Callback when the button is clicked.
-  prefixDot?: Color | undefined;
+  filterIcon?: FilterIcon;
   isAdmin?: boolean;
   editComponent?: React.ReactNode;
   deleteComponent?: React.ReactNode;
@@ -107,7 +122,7 @@ function FilterButton<T extends FilterData>({
   className,
   data,
   onClick,
-  prefixDot,
+  filterIcon: FilterIcon,
   editable = false,
   deleteComponent,
   editComponent,
@@ -125,7 +140,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'border-1 flex w-fit max-w-full items-center justify-start gap-2 rounded-full border border-transparent px-2 py-0.5',
+        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full py-0.5 border-1 border border-transparent',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -133,8 +148,13 @@ function FilterButton<T extends FilterData>({
       )}
       onClick={handleClick}
     >
-      {prefixDot && <ColorDot color={selected ? prefixDot : 'GRAY'} />}
-      <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-[14px] font-[400] capitalize hover:underline'>
+      {FilterIcon && (
+        // All icons have the same size, so we can use a fixed size for the container.
+        <div className='h-4 w-4 flex items-center justify-center'>
+          <FilterIcon selected={selected} />
+        </div>
+      )}
+      <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
         {label}
       </span>
       {tooltipText && <InfoIcon tooltipText={tooltipText} />}

@@ -1,5 +1,22 @@
-import { LucideProps, Pencil } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { LucideProps, PencilLine } from 'lucide-react';
 
-export function EditIcon(props: Omit<LucideProps, 'ref'>) {
-  return <Pencil size={14} className='stroke-[#4E4E4E] hover:cursor-pointer hover:stroke-black' {...props} />;
+interface EditIconProps extends Omit<LucideProps, 'ref'> {
+  variant?: 'md' | 'lg';
+}
+
+export function EditIcon({ variant = 'md', className, ...props }: EditIconProps) {
+  return (
+    <PencilLine
+      className={cn(
+        'stroke-gray-700 hover:cursor-pointer hover:stroke-black',
+        {
+          'w-[20px] h-[20px]': variant === 'md',
+          'w-[24px] h-[24px]': variant === 'lg',
+        },
+        className,
+      )}
+      {...props}
+    />
+  );
 }

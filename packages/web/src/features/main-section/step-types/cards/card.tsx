@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
-import { getRandomBadgeColor } from '@/lib/utils';
+import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -16,11 +17,26 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   const { keywords, attributes } = useFiltersStore((state) => state);
+  const [isCardHovered, setIsCardHovered] = useState(false);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
+  const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
+
   return (
-    <div className='flex h-fit w-full min-h-[320px] flex-col gap-4 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] '>
-      <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} atributes={attributes} />
+    <div
+      style={{ borderLeftColor: borderColor }}
+      className='flex h-fit w-full min-h-[320px] flex-col gap-6 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]'
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
+    >
+      <CardTitle
+        card={props.card}
+        stepId={props.stepId}
+        isAdmin={isAdmin}
+        keywords={keywords}
+        attributes={attributes}
+        isCardHovered={isCardHovered}
+      />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
     </div>
@@ -32,7 +48,8 @@ interface CardTitleProps {
   stepId: number;
   isAdmin: boolean;
   keywords: Keyword[];
-  atributes: Attribute[];
+  attributes: Attribute[];
+  isCardHovered: boolean;
 }
 
 function CardTitle(props: CardTitleProps) {
@@ -41,21 +58,18 @@ function CardTitle(props: CardTitleProps) {
 
   return (
     <div className='flex items-center max-w-full gap-4'>
-      <p
-        className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-[18px] font-[400] leading-[22px]'
-        title={props.card.title}
-      >
+      <p className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-base font-medium' title={props.card.title}>
         {props.card.title}
       </p>
       <StrengthIndicator strength={props.card.strength} />
-      {props.isAdmin && (
+      {props.isAdmin && props.isCardHovered && (
         <EditCardModal
           stepId={props.stepId}
           keywords={props.keywords}
           card={props.card}
           onSave={editCard}
           onDelete={deleteCard}
-          attributes={props.atributes}
+          attributes={props.attributes}
         />
       )}
     </div>
@@ -84,8 +98,15 @@ interface CardBodyProps {
 
 function CardBody(props: CardBodyProps) {
   return (
-    <div className='flex flex-1'>
-      <Markdown className='overflow-auto break-words'>{props.markdown}</Markdown>
+    <div className='prose prose-s flex flex-1 w-full'>
+      <Markdown
+        className='w-full overflow-auto break-words'
+        components={{
+          p: (props) => <p className='text-sm m-0' {...props} />,
+        }}
+      >
+        {props.markdown}
+      </Markdown>
     </div>
   );
 }
@@ -96,13 +117,13 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex flex-wrap justify-between w-full gap-2'>
+    <div className='flex justify-between w-full h-[50px] p-1 gap-2 overflow-x-auto scroll-s'>
       {props.keywords.map((keyword, i) => {
         return (
           <Badge
             key={`${keyword.id}-${i}`}
-            style={{ backgroundColor: getRandomBadgeColor(keyword.value) }}
-            className='inline-block w-[48%] truncate rounded-full px-6 py-1 text-center'
+            style={{ backgroundColor: getRandomBadgeColor(keyword.value).background }}
+            className='inline-block w-[48%] h-fit rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}
           </Badge>

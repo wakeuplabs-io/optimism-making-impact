@@ -46,11 +46,14 @@ function FormFields(props: FormFieldsProps) {
   return (
     <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
       <div className='col-span-2 flex gap-2'>
-        <div
-          className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
-          onClick={() => setIsIconPickerOpen((prev) => !prev)}
-        >
-          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
+          <div
+            className={`flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ${isIconPickerOpen && 'text-[#FF0420]'}`}
+            onClick={() => setIsIconPickerOpen((prev) => !prev)}
+          >
+            {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+          </div>
         </div>
         <Controller
           name='name'
@@ -73,7 +76,7 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
+          <div className='col-span-2 mt-2 flex h-[250px] flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

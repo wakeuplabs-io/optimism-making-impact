@@ -1,15 +1,17 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { IconPicker } from './icon-picker';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { FormModal } from '@/components/form-modal';
+import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
+import { useIcons } from '@/hooks/use-icons';
 import { Category } from '@/types';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
-import { FormTextInput } from '@/components/form/form-text-input';
+import { Save } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
-import { FormErrorMessage } from '@/components/form/form-error-message';
-import { IconPicker } from './icon-picker';
-import { useIcons } from '@/hooks/use-icons';
+import { Controller, useFormContext } from 'react-hook-form';
 import { useToggle } from 'usehooks-ts';
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
@@ -33,8 +35,10 @@ export function EditCategoryButton(props: EditCategoryButtonProps) {
         onSubmit={handleSubmit}
         defaultValues={defaultValues}
         schema={editCategoryBodySchema}
+        submitButtonIcon={<Save />}
         submitButtonText='Save'
         secondaryButtonText='Delete'
+        secondaryButtonIcon={<Trash />}
         onSecondaryClick={toggleDeleteConfirmationModal}
       >
         <FormFields defaultValues={defaultValues} />
@@ -69,11 +73,14 @@ function FormFields({ defaultValues }: FormFieldsProps) {
   return (
     <div className='grid grid-cols-[50px_1fr] items-center gap-2'>
       <div className='col-span-2 flex gap-2'>
-        <div
-          className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
-          onClick={() => setIsIconPickerOpen((prev) => !prev)}
-        >
-          {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
+          <div
+            className={`flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ${isIconPickerOpen && 'text-[#FF0420]'}`}
+            onClick={() => setIsIconPickerOpen((prev) => !prev)}
+          >
+            {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+          </div>
         </div>
         <Controller
           name='name'
@@ -96,7 +103,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='flex flex-col col-span-2 gap-2 w-[450px] h-[250px] mt-2'>
+          <div className='col-span-2 mt-2 flex h-[250px] flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker
