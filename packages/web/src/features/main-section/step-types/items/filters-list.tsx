@@ -3,7 +3,6 @@ import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
-import { DeleteAttributeModal } from '@/features/main-section/step-types/items/delete-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUserStore } from '@/state';
