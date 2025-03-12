@@ -1,10 +1,10 @@
+import { z } from 'zod';
+import { stepTypeSchema, infographicSchema } from '@optimism-making-impact/schemas';
+
 import { completeCardSchema } from '@/types/cards';
-import { infographicSchema } from '@/types/infographics';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
 import { completeSmartListFilterSchema } from '@/types/smart-list-filters';
-import { stepTypeSchema } from '@optimism-making-impact/schemas';
-import { z } from 'zod';
 
 export const stepSchema = z.object({
   id: z.number(),
