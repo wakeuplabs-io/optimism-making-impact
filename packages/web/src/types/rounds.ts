@@ -3,10 +3,10 @@ import { z } from 'zod';
 
 export const roundSchema = z.object({
   id: z.number(),
-  link1: z.string().optional(),
-  link2: z.string().optional(),
-  createdAt: z.string().datetime().optional(),
-  updatedAt: z.string().datetime().optional(),
+  link1: z.string().nullish(),
+  link2: z.string().nullish(),
+  createdAt: z.string().datetime().nullish(),
+  updatedAt: z.string().datetime().nullish(),
 });
 export type Round = z.infer<typeof roundSchema>;
 
