@@ -1,21 +1,25 @@
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { attributesOptionsMapper } from '../utils';
 import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { SelectInput } from '@/components/inputs/select-input';
 import { TextAreaInput } from '@/components/text-area-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteItem } from '@/types';
+import { CompleteItem, Item } from '@/types';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
-import { Pencil } from 'lucide-react';
+import { Pencil, Save, Trash } from 'lucide-react';
 import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useToggle } from 'usehooks-ts';
 
 interface UpdateItemModalProps {
   item: CompleteItem;
-  onClick: (itemId: number, data: UpdateItemBody) => void;
+  onSave: (itemId: number, data: UpdateItemBody) => void;
+  onDelete: (item: Item) => void;
 }
 
 export function UpdateItemModal(props: UpdateItemModalProps) {
+  const [isDeleteConfirmationModalOpen, toggleDeleteConfirmationModal] = useToggle();
   const attributes = useMainSectionStore((state) => state.step?.smartListFilter?.attributes);
 
   const attributeOptions = useMemo(() => (attributes ? attributesOptionsMapper(attributes) : []), [attributes]);
@@ -26,23 +30,43 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
   };
 
   function handleSubmit(data: UpdateItemBody) {
-    props.onClick(props.item.id, data);
+    props.onSave(props.item.id, data);
   }
 
   return (
-    <FormModal
-      title='Edit item'
-      trigger={
-        <button>
-          <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
-        </button>
-      }
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-      schema={updateItemSchema}
-    >
-      <FormFields defaultValues={defaultValues} attributeOptions={attributeOptions} />
-    </FormModal>
+    <>
+      <FormModal
+        title='Edit item'
+        trigger={
+          <button>
+            <Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />
+          </button>
+        }
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+        schema={updateItemSchema}
+        submitButtonIcon={<Save />}
+        submitButtonText='Save'
+        secondaryButtonText='Delete'
+        secondaryButtonIcon={<Trash />}
+        onSecondaryClick={toggleDeleteConfirmationModal}
+      >
+        <FormFields defaultValues={defaultValues} attributeOptions={attributeOptions} />
+      </FormModal>
+      {isDeleteConfirmationModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isDeleteConfirmationModalOpen}
+          title='Delete item'
+          description={
+            <span>
+              Are you sure you want to delete this item?
+            </span>
+          }
+          onConfirm={() => props.onDelete(props.item)}
+          onOpenChange={toggleDeleteConfirmationModal}
+        />
+      )}
+    </>
   );
 }
 

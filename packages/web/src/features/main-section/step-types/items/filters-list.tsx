@@ -86,8 +86,9 @@ function Content(props: ContentProps) {
           data: attr,
           prefixDot: attr.color,
           filterIcon: ({ selected }) => <FilterGroupColorDot color={attr.color} selected={selected} />,
-          editComponent: <UpdateAttributeModal attribute={attr} onClick={updateAttribute} />,
-          deleteComponent: <DeleteAttributeModal attributeId={attr.id} onClick={deleteAttribute} />,
+          editComponent: (
+            <UpdateAttributeModal attribute={attr} onSave={updateAttribute} onDelete={(attribute) => deleteAttribute(attribute.id)} />
+          ),
           tooltipText: attr.description,
         }))}
         onSelected={setSelectedAttributes}

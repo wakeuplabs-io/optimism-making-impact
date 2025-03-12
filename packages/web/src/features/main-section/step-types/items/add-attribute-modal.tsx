@@ -27,7 +27,7 @@ export function AddAttributeModal(props: AddAttributeModalProps) {
 
   return (
     <FormModal
-      title='Add attribute to Smart List Filter'
+      title='New filter'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
@@ -59,7 +59,8 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         defaultValue={defaultValues.description}
         render={({ field, fieldState }) => (
           <FormInputWrapper error={fieldState.error?.message}>
-            <TextAreaInput {...field} rows={5} placeholder='Description' />
+            <span className='text-xs text-[#BEBEBE] font-normal'>Definition</span>
+            <TextAreaInput {...field} rows={5} placeholder='Definition' />
           </FormInputWrapper>
         )}
       />
@@ -69,6 +70,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         defaultValue={defaultValues.color}
         render={({ field, fieldState }) => (
           <FormInputWrapper error={fieldState.error?.message}>
+            <span className='text-xs text-[#BEBEBE] font-normal'>Select color</span>
             <ColorSelectInput selected={field.value} onChange={(color: Color) => field.onChange(color)} />
           </FormInputWrapper>
         )}
