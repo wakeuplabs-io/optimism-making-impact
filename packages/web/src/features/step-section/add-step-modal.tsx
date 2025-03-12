@@ -5,7 +5,7 @@ import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
-import { capitalizeFirst } from '@/lib/utils';
+import { capitalizeFirst, cn } from '@/lib/utils';
 import { SmartListFiltersService } from '@/services/smart-list-filters-service';
 import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
@@ -90,21 +90,19 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
   }, [type, setValue]);
 
   return (
-    <div className='flex flex-col w-full gap-4 py-4'>
+    <div className='flex w-full flex-col'>
       <Controller
         name='type'
         control={control}
         defaultValue={defaultValues.type}
         render={({ field, formState }) => (
-          <div className='flex flex-col gap-1'>
-            <span className='text-xs font-medium text-gray-500'>Type</span>
+          <div className='w-full mb-6'>
             <SelectInput
-              name='type'
+              name='Type'
               items={options}
               onValueChange={field.onChange}
               defaultValue={formState.defaultValues?.type}
               placeholder='Select type'
-              triggerClassName='h-[42px] w-full rounded-md border px-3 text-sm focus:ring-0'
             />
           </div>
         )}
@@ -115,13 +113,12 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           name='smartListFilterId'
           control={control}
           render={({ field }) => (
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs font-medium text-gray-500'>Smart List Filter</span>
+            <div className='w-full mb-8'>
               <SelectInput
-                name='smartListFilterId'
+                name='Smart List Filter'
                 items={smartListOptions}
                 onValueChange={(value) => field.onChange(Number(value))}
-                placeholder='Select Smart List Filter'
+                placeholder='Select Smart List filter'
                 itemClassName='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
               />
             </div>
@@ -136,23 +133,24 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           defaultValue={defaultValues.description}
           render={({ field, fieldState }) => (
             <div className='flex flex-col gap-1'>
-              <span className='text-xs font-medium text-gray-500'>Description</span>
               <FormTextInput
                 {...field}
                 error={fieldState.error?.message}
-                placeholder='Description'
-                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                placeholder='Write here...'
+                className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
               />
             </div>
           )}
         />
       )}
 
-      <div className='flex col-span-2 gap-2'>
-        <div className='flex flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Icon</span>
+      <div className='w-full flex gap-4'>
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+              'text-[#FF0420]': !!selectedIcon,
+            })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
             {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
@@ -169,7 +167,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
               <div className='w-full'>
                 <FormTextInput
                   {...field}
-                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
+                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm'
                   placeholder='Write here...'
                   error={fieldState.error?.message}
                 />
@@ -184,7 +182,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
+          <div className='col-span-2 mt-2 flex flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker
