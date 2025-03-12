@@ -81,7 +81,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     const infographic = get().step?.infographics.find((infograhic) => infograhic.id === infographicId);
 
-    if (!infographic) return;
+    if (!infographic) return {};
 
     try {
       const { data: updatedInfographic } = await InfographicsService.update(infographicId, { ...infographic, ...data });
@@ -91,7 +91,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       };
       set({ step: updatedStep });
       return {
-        infography: updatedInfography,
+        infographic: updatedInfographic,
       };
     } catch (error) {
       const title = 'Failed to edit infographic';

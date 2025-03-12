@@ -1,7 +1,6 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CompleteStep } from '@/types';
 import {
-  BulkUpdateInfographicBody,
   CreateAttributeBody,
   CreateCardBody,
   CreateInfographicBody,

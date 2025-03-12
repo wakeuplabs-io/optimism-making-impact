@@ -6,7 +6,7 @@ import { Infographic, updateInfographicBodySchema } from '@optimism-making-impac
 import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import { useToggle } from 'usehooks-ts';
-import { EditInfographyActionBar } from './edit-infography-action-bar';
+import { EditInfographicActionBar } from './edit-infographic-action-bar';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 
 const markdownSchema = updateInfographicBodySchema.pick({ markdown: true });
@@ -84,14 +84,14 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
               invisible: !validationError,
             })}
           />
-          <EditInfographyActionBar onSubmit={handleSubmit} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
+          <EditInfographicActionBar onSubmit={handleSubmit} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
         </div>
       </div>
     );
   }
 
   return (
-    <InfographyMarkdown
+    <InfographicMarkdown
       isAdmin={isAdmin}
       /* if there is an error, show the original markdown */
       markdown={validationError ? infographic.markdown : controlledMarkdownValue}
@@ -111,14 +111,14 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
   );
 }
 
-interface InfographyMarkdownProps {
+interface InfographicMarkdownProps {
   isAdmin?: boolean;
   markdown: string;
   toggleEditMode: () => void;
   className?: string;
 }
 
-function InfographyMarkdown({ markdown, isAdmin, toggleEditMode, className }: InfographyMarkdownProps) {
+function InfographicMarkdown({ markdown, isAdmin, toggleEditMode, className }: InfographicMarkdownProps) {
   const [isHovered, toggleIsHovered] = useToggle(false);
 
   return (

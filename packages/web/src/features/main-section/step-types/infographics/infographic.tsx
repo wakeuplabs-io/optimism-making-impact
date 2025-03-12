@@ -1,9 +1,9 @@
-import { InfographicActionBar } from './infographic-action-bar';
-import { InfographicList } from '@/features/main-section/step-types/infographics/infographic-list';
-import { useIsMobile } from '@/hooks/use-tresholds';
+import { ReactNode } from 'react';
+import { InfographicList } from './infographic-list';
 import { useUserStore } from '@/state';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import { AddInfographicModal } from './add-infographic-modal';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
   return <div className='flex w-full flex-col bg-white px-8 py-12 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>{children}</div>;
@@ -12,7 +12,6 @@ function InfographicStepWrapper({ children }: { children: ReactNode }) {
 export function InfographicStep() {
   const { step } = useMainSectionStore((state) => state);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const isMobile = useIsMobile();
 
   if (!step) {
     return (
@@ -22,25 +21,16 @@ export function InfographicStep() {
     );
   }
 
-  if (isMobile) {
-    return (
-      <div className='flex flex-col gap-6'>
-        {isAdmin && <InfographicActionBar />}
-        <InfographicStepWrapper>
-          <div className='flex w-full flex-col gap-y-16'>
-            <InfographicList infographics={step.infographics} />
-          </div>
-        </InfographicStepWrapper>
-      </div>
-    );
-  }
-
   return (
-    <InfographicStepWrapper>
-      {isAdmin && <InfographicActionBar className='lg:mb-7' />}
-      <div className='flex w-full flex-col gap-y-16'>
+    <div
+      className={cn('relative flex flex-col lg:pt-0', {
+        'pt-20': isAdmin,
+      })}
+    >
+      <InfographicStepWrapper>
+        {isAdmin && <AddInfographicModal stepId={step.id} />}
         <InfographicList infographics={step.infographics} />
-      </div>
-    </InfographicStepWrapper>
+      </InfographicStepWrapper>
+    </div>
   );
 }
