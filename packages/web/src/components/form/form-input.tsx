@@ -12,7 +12,7 @@ export function FormInputWrapper(props: FormInputWrapperProps) {
     <div className={cn('flex flex-col gap-1', props.className)}>
       {props.children}
       <FormErrorMessage
-        error={props.error}
+        error={props.error ?? ''}
         className={cn({
           invisible: !props.error,
         })}
