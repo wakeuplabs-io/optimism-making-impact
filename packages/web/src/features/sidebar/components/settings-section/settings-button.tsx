@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SidebarListButton } from '../sidebar-list-button';
 import { Settings } from 'lucide-react';
-import SetupModal from '../setup-modal/setup-modal';
+import { SetupModal } from '../setup-modal/setup-modal';
 
 export function SettingsButton() {
   const [open, setOpen] = useState(false);

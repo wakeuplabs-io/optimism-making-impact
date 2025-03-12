@@ -10,7 +10,7 @@ interface SetupModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function SetupModal({ open, onOpenChange }: SetupModalProps) {
+export function SetupModal({ open, onOpenChange }: SetupModalProps) {
   const isAdminModeEnabled = useUserStore((state) => state.isAdminModeEnabled);
   const getAdminUsers = useUserStore((state) => state.getAdminUsers);
   const toggleAdminMode = useUserStore((state) => state.toggleAdminMode);

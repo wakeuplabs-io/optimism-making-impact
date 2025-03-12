@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { authGrantOrRevokeSchema } from '@optimism-making-impact/schemas';
+import { userSchema } from '@optimism-making-impact/schemas';
 import { useUserStore } from '@/state';
 import { Input } from '@/components/ui/input';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { cn } from '@/lib/utils';
 
 export function AddEditorForm() {
-  const { handleSubmit, control, formState, reset } = useForm({ resolver: zodResolver(authGrantOrRevokeSchema) });
+  const { handleSubmit, control, formState, reset } = useForm({ resolver: zodResolver(userSchema) });
   const grantAdmin = useUserStore((state) => state.grantAdmin);
 
   const emailError = formState.errors.email?.message;
