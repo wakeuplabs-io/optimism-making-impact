@@ -70,7 +70,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
             error={fieldState.error?.message}
             selected={field.value}
             onChange={(color: Color) => field.onChange(color)}
-            containerClassName='w-full max-w-[500px]'
+            containerClassName='w-full'
           />
         )}
       />
