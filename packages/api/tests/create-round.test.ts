@@ -102,7 +102,6 @@ describe('Duplicate round', async () => {
         expect(step.smartListFilter.title).toBe(originalStep.smartListFilter?.title);
         expect(step.smartListFilter.id).not.toBe(originalStep.smartListFilter?.id);
 
-        // Compare attributes within the smart list filter
         expect(step.smartListFilter.attributes.length).toBe(originalStep.smartListFilter?.attributes.length);
         step.smartListFilter.attributes.forEach((attribute, attrIndex) => {
           const originalAttribute = originalStep.smartListFilter?.attributes[attrIndex];
