@@ -1,12 +1,11 @@
 import { FormModal } from '@/components/form/form-modal';
-import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
-import { ColorSelectInput } from '@/components/inputs/color-select-input';
-import { TextAreaInput } from '@/components/text-area-input';
 import { Color, CreateAttributeBody, createAttributeSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { FormTextArea } from '@/components/form/form-text-area';
+import { FormColorSelect } from '@/components/form/form-color-select';
 
 interface AddAttributeModalProps {
   smartListFilterId: number;
@@ -27,7 +26,7 @@ export function AddAttributeModal(props: AddAttributeModalProps) {
 
   return (
     <FormModal
-      title='New Smart List Filter'
+      title='New filter'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
@@ -46,22 +45,19 @@ function FormFields({ defaultValues }: FormFieldsProps) {
   const { control } = useFormContext<CreateAttributeBody>();
 
   return (
-    <div className='grid gap-4 py-4'>
+    <div className='grid gap-3'>
       <Controller
         name='value'
         control={control}
         defaultValue={defaultValues.value}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+        render={({ field, fieldState }) => <FormTextInput label='Title' {...field} error={fieldState.error?.message} placeholder='Title' />}
       />
       <Controller
         name='description'
         control={control}
         defaultValue={defaultValues.description}
         render={({ field, fieldState }) => (
-          <FormInputWrapper error={fieldState.error?.message}>
-            <span className='text-xs text-[#BEBEBE] font-normal'>Definition</span>
-            <TextAreaInput {...field} rows={5} placeholder='Definition' />
-          </FormInputWrapper>
+          <FormTextArea error={fieldState.error?.message} label='Definition' rows={5} placeholder='Definition' {...field} />
         )}
       />
       <Controller
@@ -69,10 +65,13 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.color}
         render={({ field, fieldState }) => (
-          <FormInputWrapper error={fieldState.error?.message}>
-            <span className='text-xs text-[#BEBEBE] font-normal'>Select color</span>
-            <ColorSelectInput selected={field.value} onChange={(color: Color) => field.onChange(color)} />
-          </FormInputWrapper>
+          <FormColorSelect
+            label='Select color'
+            error={fieldState.error?.message}
+            selected={field.value}
+            onChange={(color: Color) => field.onChange(color)}
+            containerClassName='w-full max-w-[500px]'
+          />
         )}
       />
     </div>
