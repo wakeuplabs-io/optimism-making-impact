@@ -27,7 +27,7 @@ export function AddAttributeModal(props: AddAttributeModalProps) {
 
   return (
     <FormModal
-      title='New filter'
+      title='New Smart List Filter'
       trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
