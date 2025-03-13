@@ -19,30 +19,27 @@ export async function seedAttributes(prisma: PrismaClient, smartListFilters: Arr
 
   const attributesData: Array<Omit<Attribute, 'id' | 'createdAt' | 'updatedAt'>> = [];
 
-  // Iterate through each smart list filter
   for (const smartListFilter of smartListFilters) {
     // For each smart list filter, create 5 attributes with category-like values
     for (let i = 0; i < 5; i++) {
-      const category = categories[i % categories.length]; // Dynamically assign categories (loop through if necessary)
-      const color = COLORS_OPTIONS[i % COLORS_OPTIONS.length]; // Dynamically assign colors (loop through if necessary)
+      const category = categories[i % categories.length];
+      const color = COLORS_OPTIONS[i % COLORS_OPTIONS.length];
 
       attributesData.push({
-        value: attributeValues[i % attributeValues.length].value, // Short, category-like value
-        description: attributeValues[i % attributeValues.length].description, // Add the corresponding description
-        categoryId: category.id, // Use dynamic category ID
-        smartListFilterId: smartListFilter.id, // Assign the attribute to the smart list
+        value: attributeValues[i % attributeValues.length].value,
+        description: attributeValues[i % attributeValues.length].description,
+        categoryId: category.id,
+        smartListFilterId: smartListFilter.id,
         color,
       });
     }
   }
 
-  // Create many attributes at once
   const { count } = await prisma.attribute.createMany({
     data: attributesData,
   });
 
   console.log(`Attributes seeded successfully! Count: ${count}`);
 
-  // Query the database to fetch all attributes
   return await prisma.attribute.findMany();
 }

@@ -1,4 +1,4 @@
-import { ApiSuccessResponseData, SuccessResponse } from '@/types/api-response.js'; // Adjust the import path as needed
+import { ApiSuccessResponseData, SuccessResponse } from '@/types/api-response.js';
 import { Response } from 'express';
 import { getReasonPhrase } from 'http-status-codes';
 

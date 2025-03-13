@@ -1,9 +1,9 @@
-import { X } from 'lucide-react';
-import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import { useCallback, useRef, useState } from 'react';
 import { Input } from './input';
+import { Badge } from '@/components/ui/badge';
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
+import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
 
 const ENTER_CHARACTER = 'Enter';
 const SPACE_CHARACTER = ' ';
@@ -63,7 +63,7 @@ export function MultiSelectInput<T extends Tag>({
       }, 0);
     },
     [value, onChange, createTag],
-  ); // Removed predefinedTags from dependencies
+  );
 
   const onInputChange = useCallback((newInput: string) => {
     setInputValue(newInput);
@@ -99,7 +99,7 @@ export function MultiSelectInput<T extends Tag>({
   return (
     <div className={cn('relative', className)}>
       <div
-        className='flex min-h-[40px] max-h-[90px] overflow-y-auto w-full flex-wrap gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
+        className='flex max-h-[90px] min-h-[40px] w-full flex-wrap gap-2 overflow-y-auto rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
         onClick={() => inputRef.current?.focus()}
         onFocus={() => scrollInputIntoView()}
       >
@@ -124,7 +124,7 @@ export function MultiSelectInput<T extends Tag>({
                 handleRemove(tag);
               }}
             >
-              <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+              <X className='w-3 h-3 text-muted-foreground hover:text-foreground' />
               <span className='sr-only'>Remove {tag.value}</span>
             </button>
           </Badge>
@@ -141,11 +141,11 @@ export function MultiSelectInput<T extends Tag>({
             setTimeout(() => setOpen(false), 200);
           }}
           placeholder={placeholder}
-          className='w-auto h-7 flex-[1_0_auto] bg-transparent border-none focus-visible:ring-0 outline-none shadow-none p-0'
+          className='h-7 w-auto flex-[1_0_auto] border-none bg-transparent p-0 shadow-none outline-none focus-visible:ring-0'
         />
       </div>
       {showOptions ? (
-        <div className='absolute z-10 mt-2 w-full rounded-md border bg-popover text-popover-foreground shadow-md'>
+        <div className='absolute z-10 w-full mt-2 border rounded-md shadow-md bg-popover text-popover-foreground'>
           <Command key={commandKey}>
             <CommandList>
               {filteredOptions.length > 0 && (

@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import { updateStepBodySchema } from '@optimism-making-impact/schemas';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { TextInput } from '@/components/text-input';
 import { EditPencilButton } from '@/components/pencil-edit-button';
-import { useToggle } from 'usehooks-ts';
-import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
 import { SimpleIconButton } from '@/components/simple-icon-button';
+import { TextInput } from '@/components/text-input';
+import { cn } from '@/lib/utils';
+import { updateStepBodySchema } from '@optimism-making-impact/schemas';
+import { Check } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { useToggle } from 'usehooks-ts';
 
 const updateStepDescriptionSchema = updateStepBodySchema.pick({ description: true });
 
@@ -23,7 +23,6 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
 
   const handleToggleEdit = useCallback(() => {
     if (editMode === true && !validationError && controlledDescription !== description) {
-      // trigger the onChange function with the new description when has no errors
       onChange(controlledDescription);
     }
 
@@ -34,7 +33,6 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
     const newText = e.target.value;
     setControlledDescription(newText);
 
-    //validate schema
     const result = updateStepDescriptionSchema.safeParse({ description: newText });
 
     if (!result.success) {
@@ -61,9 +59,9 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
   }, [editMode, handleToggleEdit]);
 
   return (
-    <div className='w-[50%] h-14'>
+    <div className='h-14 w-[50%]'>
       {editMode ? (
-        <div className='flex gap-2 items-start'>
+        <div className='flex items-start gap-2'>
           <FormTextInput
             className={cn({
               'border-red-500 focus-visible:ring-0': validationError,
@@ -74,12 +72,12 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
             onChange={handleChange}
             {...field}
           />
-          {isAdmin && <SimpleIconButton className='flex h-9 items-center' icon={<Check />} onClick={handleToggleEdit} />}
+          {isAdmin && <SimpleIconButton className='flex items-center h-9' icon={<Check />} onClick={handleToggleEdit} />}
         </div>
       ) : (
-        <div className='flex h-full items-start'>
+        <div className='flex items-start h-full'>
           <div className='flex items-center gap-2'>
-            <p className='text-[20px] font-[500] truncate text-ellipsis whitespace-nowrap'>
+            <p className='truncate text-ellipsis whitespace-nowrap text-[20px] font-[500]'>
               {validationError ? description : controlledDescription}
             </p>
             {isAdmin && <EditPencilButton onClick={toggleEditMode} />}

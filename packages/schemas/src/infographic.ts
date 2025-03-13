@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { idValidator } from './common';
+import { z } from 'zod';
 
 export const infographicSchema = z.object({
   id: z.number(),
@@ -7,8 +7,8 @@ export const infographicSchema = z.object({
   image: z.string(),
   stepId: z.number(),
   position: z.number(),
-  createdAt: z.string(), // Assuming ISO 8601 date format as a string
-  updatedAt: z.string(), // Assuming ISO 8601 date format as a string
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export type Infographic = z.infer<typeof infographicSchema>;

@@ -5,5 +5,4 @@ export const keywordSchema = z.object({
   value: z.string(),
 });
 
-// Type inference from the schema
 export type Keyword = z.infer<typeof keywordSchema>;

@@ -18,7 +18,6 @@ export const useFilteredCards = ({ cards, selectedStrengths, selectedKeywords }:
   return filtered;
 };
 
-// Helpers
 function filterByStrength(card: CompleteCard, selectedStrengths: CardStrength[]) {
   return !selectedStrengths.length || selectedStrengths.includes(card.strength);
 }

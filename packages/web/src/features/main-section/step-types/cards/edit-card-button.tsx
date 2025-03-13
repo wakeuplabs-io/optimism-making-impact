@@ -1,16 +1,16 @@
+import { AttributeOption, strengthOptions } from '../utils';
+import { nonAssignedOption, useCardFormData } from './useCardFormData';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { FormModal } from '@/components/form-modal';
+import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';
+import { MultiSelectInput } from '@/components/ui/multi-select';
 import { CompleteCard, Keyword } from '@/types';
+import { Attribute, UpdateCardBody, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { Save, Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { nonAssignedOption, useCardFormData } from './useCardFormData';
-import { UpdateCardBody, updateCardBodySchema, Attribute } from '@optimism-making-impact/schemas';
-import { FormTextInput } from '@/components/form/form-text-input';
-import { AttributeOption, strengthOptions } from '../utils';
 import { useToggle } from 'usehooks-ts';
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { MultiSelectInput } from '@/components/ui/multi-select';
 
 interface EditCardModalProps {
   stepId: number;
@@ -99,13 +99,11 @@ interface FormFieldsProps {
   defaultValues: UpdateCardBody;
 }
 
-// The inner form fields use react-hook-form's context.
-// We use Controller for inputs that work as controlled components.
 function FormFields({ attributeOptions, keywords, defaultValues }: FormFieldsProps) {
   const { control } = useFormContext<UpdateCardBody>();
 
   return (
-    <div className='flex flex-col w-[320px] max-w-full gap-4 py-4'>
+    <div className='flex w-[320px] max-w-full flex-col gap-4 py-4'>
       <Controller
         name='title'
         control={control}
