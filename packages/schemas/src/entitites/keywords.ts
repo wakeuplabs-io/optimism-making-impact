@@ -1,10 +1,8 @@
+import { commonFieldsSchema } from './helpers';
 import { z } from 'zod';
 
-export const keywordSchema = z.object({
-  id: z.number(),
+export const keywordSchema = commonFieldsSchema.extend({
   value: z.string(),
   stepId: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 });
 export type Keyword = z.infer<typeof keywordSchema>;

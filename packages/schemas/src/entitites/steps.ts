@@ -1,19 +1,20 @@
+import { cardSchema } from './cards';
 import { categorySchema } from './category';
 import { stepTypeSchema } from './enums';
+import { commonFieldsSchema } from './helpers';
+import { infographicSchema } from './infographics';
+import { itemSchema } from './items';
 import { keywordSchema } from './keywords';
 import { z } from 'zod';
 
 // Basic
-export const baseStepSchema = z.object({
-  id: z.number(),
+export const baseStepSchema = commonFieldsSchema.extend({
   title: z.string(),
   description: z.string().nullable(),
   icon: z.string(),
   position: z.number(),
   type: stepTypeSchema,
   categoryId: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 });
 export type BaseStep = z.infer<typeof baseStepSchema>;
 
@@ -23,3 +24,38 @@ export const completeBaseStepSchema = baseStepSchema.extend({
   smartListFilterId: z.number().nullable(),
 });
 export type CompleteBaseStep = z.infer<typeof completeBaseStepSchema>;
+
+// Specifics
+
+// INFOGRAPHIC step
+export const infographicStepSchema = baseStepSchema.extend({
+  type: z.literal('INFOGRAPHIC'),
+});
+export type InfographicStep = z.infer<typeof infographicStepSchema>;
+
+export const completeInfographicStepSchema = infographicStepSchema.extend({
+  infographics: z.array(infographicSchema),
+});
+export type CompleteInfographicStep = z.infer<typeof completeInfographicStepSchema>;
+
+// CARDGRID step
+export const cardGridStepSchema = baseStepSchema.extend({
+  type: z.literal('CARDGRID'),
+});
+export type CardGridStep = z.infer<typeof cardGridStepSchema>;
+
+export const completeCardGridStepSchema = cardGridStepSchema.extend({
+  cards: z.array(cardSchema),
+});
+export type CompleteCardGridStep = z.infer<typeof completeCardGridStepSchema>;
+
+// SMARTLIST step
+export const smartListStepSchema = baseStepSchema.extend({
+  type: z.literal('SMARTLIST'),
+});
+export type SmartListStep = z.infer<typeof smartListStepSchema>;
+
+export const completeSmartListStepSchema = smartListStepSchema.extend({
+  items: z.array(itemSchema),
+});
+export type CompleteSmartListStep = z.infer<typeof completeSmartListStepSchema>;
