@@ -17,6 +17,5 @@ export async function seedUserWhitelist(prisma: PrismaClient) {
 
   console.log(`${count} users seeded successfully!`);
 
-  // Return created users for confirmation (optional)
   return prisma.userWhitelist.findMany();
 }
