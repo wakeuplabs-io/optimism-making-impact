@@ -47,13 +47,12 @@ export async function seedSteps(prisma: PrismaClient, categories: Category[]) {
   for (const [index, category] of sortedCategories.entries()) {
     const group = groups[index % groups.length];
 
-    group.forEach((step, position) => {
+    group.forEach((step) => {
       stepsToSeed.push({
         title: step.title,
         icon: step.icon,
         type: step.type,
-        categoryId: category.id,
-        position,
+        categoryId: category.id, // Assign categoryId correctly
         smartListFilterId: null,
         description: step.description ?? '',
       });

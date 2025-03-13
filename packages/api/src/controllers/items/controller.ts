@@ -12,17 +12,9 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastItem = await prisma.item.findFirst({
-      where: { stepId: parsed.data.stepId },
-      orderBy: { position: 'desc' },
-    });
-
-    const position = lastItem ? lastItem.position + 1 : 0;
-
     const attribute = await prisma.item.create({
       data: {
         ...parsed.data,
-        position,
       },
     });
 

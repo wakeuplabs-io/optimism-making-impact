@@ -12,16 +12,29 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
     where: { id: roundId },
     include: {
       categories: {
-        orderBy: { id: 'asc' },
+        orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         include: {
-          attributes: true,
+          attributes: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
           steps: {
-            orderBy: { position: 'asc' },
+            orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
             include: {
-              infographics: { orderBy: { position: 'asc' } },
-              items: { include: { attribute: true }, orderBy: { position: 'asc' } },
-              cards: { include: { attribute: true, keywords: true }, orderBy: { position: 'asc' } },
-              smartListFilter: { include: { attributes: true } },
+              infographics: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
+              items: {
+                include: { attribute: true },
+                orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+              },
+              cards: {
+                include: {
+                  attribute: true,
+                  keywords: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
+                },
+                orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+              },
+              smartListFilter: {
+                include: {
+                  attributes: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
+                },
+              },
             },
           },
         },
@@ -36,7 +49,10 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
  * @throws If no round exists.
  */
 export async function getLastCompleteRound(): Promise<CompleteRound | null> {
-  const lastRoundId = await prisma.round.findFirst({ orderBy: { id: 'desc' }, select: { id: true } });
+  const lastRoundId = await prisma.round.findFirst({
+    orderBy: { id: 'desc' },
+    select: { id: true },
+  });
 
   if (!lastRoundId) return null;
 

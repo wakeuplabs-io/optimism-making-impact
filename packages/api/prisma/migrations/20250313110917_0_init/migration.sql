@@ -36,7 +36,6 @@ CREATE TABLE "Step" (
     "title" TEXT NOT NULL,
     "description" TEXT,
     "icon" TEXT NOT NULL,
-    "position" INTEGER NOT NULL,
     "type" "StepType" NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "smartListFilterId" INTEGER,
@@ -51,7 +50,6 @@ CREATE TABLE "Infographic" (
     "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "position" INTEGER NOT NULL,
     "stepId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -63,7 +61,6 @@ CREATE TABLE "Infographic" (
 CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "markdown" TEXT NOT NULL,
-    "position" INTEGER NOT NULL,
     "stepId" INTEGER NOT NULL,
     "attributeId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -78,7 +75,6 @@ CREATE TABLE "Card" (
     "title" TEXT NOT NULL,
     "markdown" TEXT NOT NULL,
     "strength" "CardStrength" NOT NULL,
-    "position" INTEGER NOT NULL,
     "stepId" INTEGER NOT NULL,
     "attributeId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -139,9 +135,6 @@ CREATE TABLE "_CardToKeyword" (
 
     CONSTRAINT "_CardToKeyword_AB_pkey" PRIMARY KEY ("A","B")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Step_position_categoryId_key" ON "Step"("position", "categoryId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Step_title_categoryId_key" ON "Step"("title", "categoryId");

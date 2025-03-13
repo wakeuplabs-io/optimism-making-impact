@@ -57,7 +57,6 @@ export async function seedInfographics(prisma: PrismaClient, steps: Step[]) {
       infographicsToCreate.push({
         markdown: infographicData.markdown,
         image: infographicData.image,
-        position: i,
         stepId: step.id,
       });
     }

@@ -4,7 +4,6 @@ import { z } from 'zod';
 export const itemSchema = z.object({
   id: z.number(),
   markdown: z.string(),
-  position: z.number(),
   stepId: z.number(),
   attributeId: z.number(),
   createdAt: z.string().nullish(),

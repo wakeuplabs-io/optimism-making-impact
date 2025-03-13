@@ -13,14 +13,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastCard = await prisma.card.findFirst({
-      where: { stepId: parsed.data.stepId },
-      orderBy: { position: 'desc' },
-      select: { position: true },
-    });
-
-    const lastCardPosition = lastCard ? lastCard.position + 1 : 0;
-
     const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
 
@@ -31,7 +23,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
         title: parsed.data.title,
         stepId: parsed.data.stepId,
         attributeId: parsed.data.attributeId,
-        position: lastCardPosition,
         keywords: {
           connect: keywordsWithId.map(({ id }) => ({ id })),
           create: newKeywords.map(({ value }) => ({ value, stepId: parsed.data.stepId })),

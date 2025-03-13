@@ -3,18 +3,8 @@ import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas/common.js';
 import { createInfographicBodySchema, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
-import { PrismaClient } from '@prisma/client/extension';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-
-async function getLastInfographicPosition(stepId: number, _prisma: PrismaClient) {
-  const lastInfographic = await prisma.infographic.findFirst({
-    where: { stepId },
-    orderBy: { position: 'desc' },
-  });
-
-  return lastInfographic ? lastInfographic.position : 0;
-}
 
 async function create(req: Request, res: Response, next: NextFunction) {
   try {
@@ -22,11 +12,8 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const lastPosition = await getLastInfographicPosition(parsed.data.stepId, prisma);
-    const position = lastPosition > 0 ? lastPosition + 1 : 0;
-
     const created = await prisma.infographic.create({
-      data: { ...parsed.data, position },
+      data: { ...parsed.data },
     });
 
     apiResponse.success(res, created, StatusCodes.CREATED);
