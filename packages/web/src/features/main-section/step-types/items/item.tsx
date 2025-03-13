@@ -1,5 +1,4 @@
 import { ColorDot } from '@/components/color-dot';
-import { DeleteItemModal } from '@/features/main-section/step-types/items/delete-item-modal';
 import { UpdateItemModal } from '@/features/main-section/step-types/items/update-item-modal';
 import { CompleteItem } from '@/types/items';
 import { UpdateItemBody } from '@optimism-making-impact/schemas';
@@ -18,9 +17,8 @@ export function Item(props: ItemProps) {
       <ColorDot color={props.item.attribute.color} className='mt-2' />
       <Markdown className='w-full overflow-auto break-words'>{props.item.markdown}</Markdown>
       {props.isAdmin && (
-        <div className='flex items-center self-center gap-2'>
-          <UpdateItemModal item={props.item} onClick={props.onEdit} />
-          <DeleteItemModal item={props.item} onClick={props.onDelete} />
+        <div className='flex items-center gap-2 self-center'>
+          <UpdateItemModal item={props.item} onSave={props.onEdit} onDelete={(item) => props.onDelete(item.id)} />
         </div>
       )}
     </div>
