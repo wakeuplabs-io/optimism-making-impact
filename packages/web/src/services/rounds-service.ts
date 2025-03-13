@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { Round } from '@/types';
+import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const roundsEndpoint = '/rounds';
@@ -27,7 +27,7 @@ export class RoundsServiceClass {
     return this.fetcher.post(roundsEndpoint).then((res) => res.data);
   }
 
-  async editOne(id: number, data: Partial<Round>) {
+  async editOne(id: number, data: UpdateRoundBody) {
     return this.fetcher.put(roundsEndpoint + `/${id}`, { ...data }).then((res) => res.data);
   }
 }
