@@ -87,7 +87,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       const { data: updatedInfographic } = await InfographicsService.update(infographicId, { ...infographic, ...data });
       const updatedStep = {
         ...step,
-        infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
+        infographics: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
       };
       set({ step: updatedStep });
       return {
