@@ -77,12 +77,7 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
           onChange={handleTextareaChange}
         />
         <div className='flex justify-between items-end gap-2'>
-          <FormErrorMessage
-            error={validationError}
-            className={cn('h-full', {
-              invisible: !validationError,
-            })}
-          />
+          <FormErrorMessage error={validationError} className='h-full' />
           <EditInfographicActionBar onSubmit={handleSubmit} onCancel={handleCancelEdit} isSubmitDisabled={!!validationError} />
         </div>
       </div>
