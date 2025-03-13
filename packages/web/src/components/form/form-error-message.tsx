@@ -1,18 +1,22 @@
 import { cn } from '@/lib/utils';
 
 interface FormErrorMessageProps {
-  error: string;
+  error?: string;
   className?: string;
 }
 
 export function FormErrorMessage({ error, className }: FormErrorMessageProps) {
   return (
     <p
-      className={cn('text-xs text-red-500 min-h-[20px]', {
+      className={cn(
+        'text-xs text-red-500 min-h-[20px]',
+        {
+          invisible: !error,
+        },
         className,
-      })}
+      )}
     >
-      {error || ' '}
+      {error}
     </p>
   );
 }
