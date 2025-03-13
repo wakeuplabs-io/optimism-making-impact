@@ -1,3 +1,6 @@
+import { cardSchema } from './cards';
+import { infographicSchema } from './infographics';
+import { itemSchema } from './items';
 import { baseStepSchema } from './steps';
 import { z } from 'zod';
 
@@ -8,7 +11,7 @@ export const infographicStepSchema = baseStepSchema.extend({
 export type InfographicStep = z.infer<typeof infographicStepSchema>;
 
 export const completeInfographicStepSchema = infographicStepSchema.extend({
-  infographics: z.array(z.any()), // TODO: add type
+  infographics: z.array(infographicSchema),
 });
 export type CompleteInfographicStep = z.infer<typeof completeInfographicStepSchema>;
 
@@ -19,7 +22,7 @@ export const cardGridStepSchema = baseStepSchema.extend({
 export type CardGridStep = z.infer<typeof cardGridStepSchema>;
 
 export const completeCardGridStepSchema = cardGridStepSchema.extend({
-  cards: z.array(z.any()), // TODO: add type
+  cards: z.array(cardSchema),
 });
 export type CompleteCardGridStep = z.infer<typeof completeCardGridStepSchema>;
 
@@ -30,6 +33,6 @@ export const smartListStepSchema = baseStepSchema.extend({
 export type SmartListStep = z.infer<typeof smartListStepSchema>;
 
 export const completeSmartListStepSchema = smartListStepSchema.extend({
-  items: z.array(z.any()),
+  items: z.array(itemSchema),
 });
 export type CompleteSmartListStep = z.infer<typeof completeSmartListStepSchema>;

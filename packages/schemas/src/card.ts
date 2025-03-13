@@ -1,7 +1,5 @@
+import { cardStrengthList } from './entitites';
 import { z } from 'zod';
-
-export const cardStrengthList = ['LOW', 'MEDIUM', 'HIGH'] as const;
-export type CardStrength = (typeof cardStrengthList)[number];
 
 export const keywordValueSchema = z.object({
   value: z.string().min(1, { message: 'Keyword is required' }),
