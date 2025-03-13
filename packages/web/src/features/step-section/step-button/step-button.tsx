@@ -48,10 +48,10 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           <IconWithDefault src={props.step.icon} size='lg' />
         </div>
       ) : (
-        <div className='w-full h-full flex justify-between items-center'>
+        <div className='w-full h-full flex justify-between items-center gap-2'>
           <div
             className={cn('flex items-center justify-center gap-3', {
-              'w-[90%]': showActionIcons,
+              'w-[85%]': showActionIcons,
               'w-full': !showActionIcons,
             })}
           >
@@ -61,7 +61,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
           </div>
           {showActionIcons && (
-            <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
+            <div className={cn('h-full')} onClick={(e) => e.stopPropagation()}>
               <EditStepModal step={props.step} onSave={onEdit} onDelete={() => onDelete?.(props.step.id)} />
             </div>
           )}
