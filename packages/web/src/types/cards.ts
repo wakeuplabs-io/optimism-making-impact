@@ -6,7 +6,6 @@ export const cardSchema = z.object({
   title: z.string(),
   markdown: z.string(),
   strength: z.enum(cardStrengthList),
-  position: z.number(),
   stepId: z.number(),
   attributeId: z.number().nullish(),
 });

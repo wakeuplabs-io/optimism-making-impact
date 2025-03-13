@@ -139,7 +139,6 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
         {
           ...data,
           id: Date.now(),
-          position: currentStep.cards.length,
           keywords: data.keywords.map((keyword) => ({
             id: Date.now(),
             value: keyword.value,
@@ -312,10 +311,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
 
     optimisticUpdate({
       getStateSlice: () => currentStep.items,
-      updateFn: (items) => [
-        ...items,
-        { ...data, id: Date.now(), position: Date.now(), stepId: currentStep.id, attribute: selectedAttribute },
-      ],
+      updateFn: (items) => [...items, { ...data, id: Date.now(), stepId: currentStep.id, attribute: selectedAttribute }],
       setStateSlice: (items) => set({ step: { ...currentStep, items } }),
       apiCall: () => ItemsService.create(data),
       onError: (error) => {

@@ -37,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 px-4 lg:static'>
+      <div className='flex w-full items-center justify-between gap-4 px-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[250px]'>
           {props.children}
@@ -66,7 +66,7 @@ function Content(props: ContentProps) {
     setSelectedAttributes,
   } = useFiltersStore((state) => state);
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       <h2 className='text-base font-semibold'>Filters</h2>
       <hr className='my-4' />
       <div className='flex flex-col gap-8'>
