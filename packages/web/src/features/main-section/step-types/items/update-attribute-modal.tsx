@@ -1,18 +1,23 @@
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { ColorSelectInput } from '@/components/inputs/color-select-input';
 import { TextAreaInput } from '@/components/text-area-input';
 import { Attribute, Color, UpdateAttributeBody, updateAttributeSchema } from '@optimism-making-impact/schemas';
-import { Pencil } from 'lucide-react';
+import { Pencil, Save, Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useToggle } from 'usehooks-ts';
 
 interface UpdateAttributeModalProps {
   attribute: Attribute;
-  onClick: (data: UpdateAttributeBody) => void;
+  onSave: (data: UpdateAttributeBody) => void;
+  onDelete: (attribute: Attribute) => void;
 }
 
 export function UpdateAttributeModal(props: UpdateAttributeModalProps) {
+  const [isDeleteConfirmationModalOpen, toggleDeleteConfirmationModal] = useToggle();
+
   const defaultValues: UpdateAttributeBody = {
     id: props.attribute.id,
     value: props.attribute.value,
@@ -21,23 +26,43 @@ export function UpdateAttributeModal(props: UpdateAttributeModalProps) {
   };
 
   function handleSubmit(data: UpdateAttributeBody) {
-    props.onClick(data);
+    props.onSave(data);
   }
 
   return (
-    <FormModal
-      title='Edit attribute'
-      trigger={
-        <button>
-          <Pencil size={14} className='stroke-[#8A8A8A] hover:stroke-black' />
-        </button>
-      }
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-      schema={updateAttributeSchema}
-    >
-      <FormFields defaultValues={defaultValues} />
-    </FormModal>
+    <>
+      <FormModal
+        title='Edit filter'
+        trigger={
+          <button>
+            <Pencil size={14} className='stroke-[#8A8A8A] hover:stroke-black' />
+          </button>
+        }
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+        schema={updateAttributeSchema}
+        submitButtonIcon={<Save />}
+        submitButtonText='Save'
+        secondaryButtonText='Delete'
+        secondaryButtonIcon={<Trash />}
+        onSecondaryClick={toggleDeleteConfirmationModal}
+      >
+        <FormFields defaultValues={defaultValues} />
+      </FormModal>
+      {isDeleteConfirmationModalOpen && (
+        <DeleteConfirmationModal
+          isOpen={isDeleteConfirmationModalOpen}
+          title='Delete filter'
+          description={
+            <span>
+              Are you sure you want to remove this Smart List filter?
+            </span>
+          }
+          onConfirm={() => props.onDelete(props.attribute)}
+          onOpenChange={toggleDeleteConfirmationModal}
+        />
+      )}
+    </>
   );
 }
 
@@ -62,7 +87,8 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         defaultValue={defaultValues.description}
         render={({ field, fieldState }) => (
           <FormInputWrapper error={fieldState.error?.message}>
-            <TextAreaInput {...field} rows={5} placeholder='Description' />
+            <span className='text-xs font-normal text-[#BEBEBE]'>Definition</span>
+            <TextAreaInput {...field} rows={5} placeholder='Definition' />
           </FormInputWrapper>
         )}
       />
@@ -72,6 +98,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         defaultValue={defaultValues.color}
         render={({ field, fieldState }) => (
           <FormInputWrapper error={fieldState.error?.message}>
+            <span className='text-xs font-normal text-[#BEBEBE]'>Select color</span>
             <ColorSelectInput selected={field.value} onChange={(color: Color) => field.onChange(color)} />
           </FormInputWrapper>
         )}

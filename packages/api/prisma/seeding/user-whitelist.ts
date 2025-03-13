@@ -1,10 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
 const userWhiteListData = [
-  { email: 'matias.barro@gmail.com' },
-  { email: 'martincatala14@gmail.com' },
-  { email: 'perezcerraluciano@gmail.com' },
+  { email: 'chris@wakeuplabs.io' },
   { email: 'fdelorenzo.dev@gmail.com' },
+  { email: 'gonza@wakeuplabs.io' },
+  { email: 'kleckiax@gmail.com' },
+  { email: 'martincatala14@gmail.com' },
+  { email: 'matias.barro@gmail.com' },
+  { email: 'milton@wakeuplabs.io' },
+  { email: 'perezcerraluciano@gmail.com' },
 ];
 
 export async function seedUserWhitelist(prisma: PrismaClient) {
