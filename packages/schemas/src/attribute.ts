@@ -1,12 +1,10 @@
 import { idValidator } from './common';
+import { colorSchema } from './entitites';
 import { z } from 'zod';
 
-export const colorList = ['RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE', 'GREEN', 'LIGHTBLUE', 'BLUE', 'DARKBLUE'] as const;
-
-export type Color = (typeof colorList)[number];
-
-const colorSchema = z.enum(colorList);
-
+/**
+ * @deprecated Use NEW_attributeSchema from the entities folder instead.
+ */
 export const attributeSchema = z.object({
   id: z.number(),
   value: z.string(),
@@ -17,6 +15,9 @@ export const attributeSchema = z.object({
   updatedAt: z.string().nullish(),
 });
 
+/**
+ * @deprecated Use NEW_attributeSchema from the entities folder instead.
+ */
 export type Attribute = z.infer<typeof attributeSchema>;
 
 export const createAttributeSchema = z.object({

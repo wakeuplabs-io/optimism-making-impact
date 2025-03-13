@@ -1,3 +1,4 @@
+export * from './attribute';
 export * from './cards';
 export * from './enums';
 export * from './infographics';
