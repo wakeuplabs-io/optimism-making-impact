@@ -55,7 +55,9 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         name='markdown'
         control={control}
         defaultValue={defaultValues.markdown}
-        render={({ field, fieldState }) => <FormTextArea error={fieldState.error?.message} {...field} rows={7} placeholder='Content' />}
+        render={({ field, fieldState }) => (
+          <FormTextArea label='Content' error={fieldState.error?.message} {...field} rows={7} placeholder='Content' />
+        )}
       />
       <Controller
         name='image'
