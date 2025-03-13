@@ -43,7 +43,7 @@ export function AddStepModal(props: AddStepModalProps) {
     if (!open) {
       return;
     }
-    //load smart lists
+
     SmartListFiltersService.getByCategoryId(props.categoryId).then((res) => {
       const smartListsFiltersOptions = res.smartListFilters.map((smartListFilter) => ({
         label: smartListFilter.title,
@@ -90,7 +90,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
   }, [type, setValue]);
 
   return (
-    <div className='flex w-full flex-col gap-4 py-4'>
+    <div className='flex flex-col w-full gap-4 py-4'>
       <Controller
         name='type'
         control={control}
@@ -148,7 +148,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         />
       )}
 
-      <div className='col-span-2 flex gap-2'>
+      <div className='flex col-span-2 gap-2'>
         <div className='flex flex-col gap-1'>
           <span className='text-xs font-medium text-gray-500'>Icon</span>
           <div
@@ -159,7 +159,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           </div>
         </div>
 
-        <div className='flex w-full flex-col gap-1'>
+        <div className='flex flex-col w-full gap-1'>
           <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'

@@ -61,8 +61,6 @@ interface FormFieldsProps {
   attributeOptions: AttributeOption[];
 }
 
-// The inner form fields use react-hook-form's context.
-// We use Controller for inputs that work as controlled components.
 function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<CreateCardBody>();
 

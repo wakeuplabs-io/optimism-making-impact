@@ -3,7 +3,7 @@ import { CardStrength, Color } from '@optimism-making-impact/schemas';
 export const IS_DEVELOPMENT = import.meta.env.DEV;
 
 export const MOBILE_THRESHOLD = 1024;
-export const DESKTOP_XL_THRESHOLD = 1536; //Tailwind 2XL threshold
+export const DESKTOP_XL_THRESHOLD = 1536;
 export const WAKEUP_URL = 'https://www.wakeuplabs.io/';
 
 export const AUTOSAVE_INTERVAL = 30 * 1000;
@@ -14,11 +14,11 @@ export type BadgeColorType = {
 };
 
 export const BADGE_COLORS: BadgeColorType[] = [
-  { color: '#6DCBFF', background: '#D6E8F2' }, //blue
-  { color: '#91c987', background: '#DDEFDA' }, //green
-  { color: '#C4C4C4', background: '#F1F0EF' }, //gray
-  { color: '#E2B2FF', background: '#E8DEEE' }, //purple
-  { color: '#FFB781', background: '#FADEC9' }, //orange
+  { color: '#6DCBFF', background: '#D6E8F2' },
+  { color: '#91c987', background: '#DDEFDA' },
+  { color: '#C4C4C4', background: '#F1F0EF' },
+  { color: '#E2B2FF', background: '#E8DEEE' },
+  { color: '#FFB781', background: '#FADEC9' },
 ];
 
 export type ExtendedColor = Color | 'GRAY';

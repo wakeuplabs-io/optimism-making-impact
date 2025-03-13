@@ -30,7 +30,6 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
   for (const step of steps) {
     if (step.type !== StepType.SMARTLIST) continue;
 
-    // Create a new SmartListFilter for the step
     const smartListFilter = await prisma.smartListFilter.create({
       data: {
         title: step.title,
@@ -38,22 +37,19 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
       },
     });
 
-    // Select a random subset of 5 attributes
     const shuffledAttributes = attributeValues.sort(() => 0.5 - Math.random()).slice(0, 5);
     const shuffledColors = COLORS_OPTIONS.sort(() => 0.5 - Math.random());
 
-    // Create attributes linked to the new SmartListFilter with sequentially assigned shuffled colors
     await prisma.attribute.createMany({
       data: shuffledAttributes.map((attr, index) => ({
         value: attr.value,
         description: attr.description,
-        color: shuffledColors[index % shuffledColors.length], // Assign different colors in shuffled order
+        color: shuffledColors[index % shuffledColors.length],
         smartListFilterId: smartListFilter.id,
-        categoryId: 1, // Placeholder category, adjust as needed
+        categoryId: 1, // HARDCODED:
       })),
     });
 
-    // Fetch the created attributes
     const createdAttributes = await prisma.attribute.findMany({
       where: { smartListFilterId: smartListFilter.id },
     });

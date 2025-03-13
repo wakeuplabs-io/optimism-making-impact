@@ -23,7 +23,7 @@ export async function seedCategories(prisma: PrismaClient, rounds: Round[]) {
 
   // Prepare category data with dynamic round assignments
   const categoriesWithRoundIds = categoriesData.map((category, index) => {
-    const roundId = rounds[index % rounds.length].id; // Distribute categories across rounds
+    const roundId = rounds[index % rounds.length].id;
 
     return {
       ...category,

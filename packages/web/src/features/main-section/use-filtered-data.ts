@@ -41,7 +41,6 @@ export const useFilteredData = <T extends Data>({
   return filtered;
 };
 
-// Helpers
 function filterByStrength(data: Data, selectedStrengths: StrengthItem[]): boolean {
   if ('strength' in data) {
     return !selectedStrengths.length || selectedStrengths.map((selectedStrength) => selectedStrength.value).includes(data.strength);

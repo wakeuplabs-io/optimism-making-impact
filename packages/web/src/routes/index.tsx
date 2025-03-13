@@ -32,7 +32,6 @@ function Index() {
   const isMobile = useIsMobile();
   const { initializeObserver } = useRouterObserver();
 
-  // Set the initial state
   useEffect(() => {
     (async () => {
       await useSidebarStore.getState().init();

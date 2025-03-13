@@ -1,7 +1,5 @@
 import { Category, Prisma, PrismaClient, StepType } from '@prisma/client';
 
-// Hardcoded steps data
-
 const groups = [
   [
     { title: '(IN) Introduction', icon: 'blocks', type: StepType.INFOGRAPHIC },
@@ -35,8 +33,6 @@ const groups = [
   ],
 ];
 
-// Helper function to shuffle an array
-
 export async function seedSteps(prisma: PrismaClient, categories: Category[]) {
   console.log('Seeding steps...');
 
@@ -49,7 +45,7 @@ export async function seedSteps(prisma: PrismaClient, categories: Category[]) {
   const sortedCategories = categories.sort((a, b) => a.roundId - b.roundId);
 
   for (const [index, category] of sortedCategories.entries()) {
-    const group = groups[index % groups.length]; // Cycle through the hardcoded groups
+    const group = groups[index % groups.length];
 
     group.forEach((step) => {
       stepsToSeed.push({

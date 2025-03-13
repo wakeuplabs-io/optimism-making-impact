@@ -16,6 +16,5 @@ export async function seedRounds(prisma: PrismaClient) {
 
   console.log(`${count} rounds seeded successfully!`);
 
-  // Return created rounds for confirmation (optional)
   return prisma.round.findMany();
 }

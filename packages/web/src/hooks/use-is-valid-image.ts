@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react';
  * @returns An object with `isValid` and `isLoading` states.
  */
 export function useImageIsValid(src: string) {
-  const [isValid, setIsValid] = useState<boolean>(false); // Default to false (not valid)
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Initially loading
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function validateImageUrl() {

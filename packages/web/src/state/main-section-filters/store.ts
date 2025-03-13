@@ -1,7 +1,7 @@
-import { Attribute, Keyword } from '@optimism-making-impact/schemas';
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { StrengthItem, strengthItems } from '@/types';
+import { Attribute, Keyword } from '@optimism-making-impact/schemas';
 
 const initialSelectedFilters = {
   selectedStrengths: [],
@@ -16,7 +16,6 @@ export const useFiltersStore = createWithMiddlewares<FiltersStore>((set, get) =>
   strengths: strengthItems,
   setKeywords: (keywords: Keyword[]) => {
     set({ keywords });
-    // Remove selected keywords that are not in the updated keyword list
     const updatedSelectedKeywords = get().selectedKeywords.filter((selectedKeyword) =>
       keywords.some((keyword) => selectedKeyword.id === keyword.id),
     );

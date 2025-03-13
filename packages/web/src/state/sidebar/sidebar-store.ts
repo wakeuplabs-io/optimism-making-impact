@@ -23,7 +23,6 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
     const response = await RoundsService.getRounds();
     const rounds: CompleteRound[] = response.data.rounds;
 
-    // update selected round if it exists
     const updatedSelectedRound = rounds.find((round) => round.id === get().selectedRound?.id);
 
     set(() => ({ rounds, selectedRound: updatedSelectedRound ?? null }));

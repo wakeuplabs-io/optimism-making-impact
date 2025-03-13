@@ -3,13 +3,13 @@ import { SideMenu } from '@/components/side-menu';
 import { CategoryList } from '@/features/sidebar/components/category-list/category-list';
 import LogosSection from '@/features/sidebar/components/logos-section';
 import { RoundList } from '@/features/sidebar/components/round-list/round-list';
+import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
+import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
 import { useSidebarStore } from '@/state';
 import { Menu } from 'lucide-react';
 import { useMemo } from 'react';
-import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
-import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 
 export function SidebarSection() {
   return (
@@ -27,7 +27,6 @@ function SidebarContainer(props: SidebarContainerProps) {
   const isMobile = useIsMobile();
   const { selectedRound, selectedCategoryId } = useSidebarStore((state) => state);
 
-  //Check if category is selected
   const title = useMemo(() => {
     if (!selectedRound) {
       return 'Round';
@@ -59,16 +58,16 @@ function SidebarContainer(props: SidebarContainerProps) {
     );
   }
 
-  return <nav className='w-[320px] overflow-y-auto overflow-x-hidden h-full bg-white-high lg:static px-8 pt-10'>{props.children}</nav>;
+  return <nav className='h-full w-[320px] overflow-y-auto overflow-x-hidden bg-white-high px-8 pt-10 lg:static'>{props.children}</nav>;
 }
 
 function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   return (
-    <div className='flex h-full flex-col items-start gap-6 pb-16'>
+    <div className='flex flex-col items-start h-full gap-6 pb-16'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
-      <div className='flex flex-col justify-start md:justify-between gap-4'>
+      <div className='flex flex-col justify-start gap-4 md:justify-between'>
         <div className='flex flex-col gap-4'>
           <RoundList />
           <hr />

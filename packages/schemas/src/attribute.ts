@@ -17,7 +17,6 @@ export const attributeSchema = z.object({
   updatedAt: z.string().nullish(),
 });
 
-// Type inference from the schema
 export type Attribute = z.infer<typeof attributeSchema>;
 
 export const createAttributeSchema = z.object({

@@ -1,4 +1,3 @@
-// packages/web/src/services/categories-service.ts
 import { fetcher } from '@/lib/fetcher';
 import { AxiosInstance } from 'axios';
 

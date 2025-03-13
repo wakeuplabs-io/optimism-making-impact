@@ -29,12 +29,12 @@ export async function optimisticUpdate<T>({
   onError,
   onSuccess,
 }: OptimisticUpdateParams<T>) {
-  const stateSlice = getStateSlice(); // Retrieve the current state slice
-  const newStateSlice = updateFn(stateSlice); // Compute the new state based on the current state slice
-  setStateSlice(newStateSlice); // Apply the optimistic update
+  const stateSlice = getStateSlice();
+  const newStateSlice = updateFn(stateSlice);
+  setStateSlice(newStateSlice);
 
   try {
-    const response = await apiCall(); // Perform the API call
+    const response = await apiCall();
     onSuccess?.(response, newStateSlice);
   } catch (error) {
     setStateSlice(stateSlice); // Rollback to the original state if the API call fails
