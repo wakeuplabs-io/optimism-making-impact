@@ -30,7 +30,7 @@ interface FilterGroupProps<T extends FilterData> {
 
 export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   const [showAllFilters, toggleShowAllFilters] = useToggle(false);
-  //only when a selected filter is present, the edition is allowed
+
   const editionIsAllowed = !!props.selected?.length;
   const showAllFiltersEnabled = props.maxFilters && props.maxFilters > 0 && props.maxFilters < props.filters.length;
 
@@ -84,7 +84,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
               />
             ))}
             {showAllFiltersEnabled && (
-              <button className='text-sm text-left underline pl-6' onClick={() => toggleShowAllFilters()}>
+              <button className='pl-6 text-sm text-left underline' onClick={() => toggleShowAllFilters()}>
                 {showAllFilters ? 'Collapse' : `View all (${hiddenFilterAmount})`}
               </button>
             )}
@@ -97,18 +97,18 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-center text-sm'>
+    <div className='text-sm text-center'>
       <span>No filters available</span>
     </div>
   );
 }
 
 interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'button'>, 'onClick'> {
-  label: string; // Label displayed on the button.
+  label: string;
   editable: boolean;
-  selected: boolean; // Whether the button is in a "selected" state.
-  data: T; // Data payload associated with this button.
-  onClick?: (data: T) => void; // Callback when the button is clicked.
+  selected: boolean;
+  data: T;
+  onClick?: (data: T) => void;
   filterIcon?: FilterIcon;
   isAdmin?: boolean;
   editComponent?: React.ReactNode;
@@ -140,7 +140,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'flex w-fit max-w-full items-center justify-start gap-2 rounded-full py-0.5 border-1 border border-transparent',
+        'border-1 flex w-fit max-w-full items-center justify-start gap-2 rounded-full border border-transparent py-0.5',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -150,11 +150,11 @@ function FilterButton<T extends FilterData>({
     >
       {FilterIcon && (
         // All icons have the same size, so we can use a fixed size for the container.
-        <div className='h-4 w-4 flex items-center justify-center'>
+        <div className='flex items-center justify-center w-4 h-4'>
           <FilterIcon selected={selected} />
         </div>
       )}
-      <span className='w-fit max-w-44 overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
+      <span className='overflow-hidden text-sm font-normal text-left capitalize w-fit max-w-44 text-ellipsis text-nowrap hover:underline'>
         {label}
       </span>
       {tooltipText && <InfoIcon tooltipText={tooltipText} />}

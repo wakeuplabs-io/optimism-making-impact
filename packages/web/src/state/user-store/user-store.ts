@@ -70,7 +70,6 @@ export const useUserStore = createWithMiddlewares<UserStore>(
       set(() => ({ isLoading: false, user }));
 
       if (!userWasLoggedIn) {
-        // Display success toast if the user wasn't logged in before.
         toast({
           title: AUTHENTICATION_SUCCESS_TITLE,
           description: AUTHENTICATION_SUCCESS_DESCRIPTION,

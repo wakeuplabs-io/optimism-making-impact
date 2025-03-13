@@ -6,7 +6,7 @@ interface IconProps {
 }
 
 export function StrengthLowIcon({ size = 20 }: IconProps) {
-  const uniqueId = useId(); // Generate a unique ID
+  const uniqueId = useId();
   const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['LOW'].gradient;
 
   return (
@@ -35,7 +35,7 @@ export function StrengthLowIcon({ size = 20 }: IconProps) {
 }
 
 export function StrengthMediumIcon({ size = 20 }: IconProps) {
-  const uniqueId = useId(); // Generate a unique ID
+  const uniqueId = useId();
   const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['MEDIUM'].gradient;
 
   return (
@@ -64,7 +64,7 @@ export function StrengthMediumIcon({ size = 20 }: IconProps) {
 }
 
 export function StrengthHighIcon({ size = 20 }: IconProps) {
-  const uniqueId = useId(); // Generate a unique ID
+  const uniqueId = useId();
   const strengthColorGradient = CARD_STRENGTH_COLOR_MAP['HIGH'].gradient;
 
   return (

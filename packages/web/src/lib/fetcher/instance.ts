@@ -9,7 +9,6 @@ const fetcher = axios.create({
 });
 
 fetcher.interceptors.request.use((config) => {
-  //interceptor that adds the auth token to the request
   const authToken = useUserStore.getState().user?.authToken;
 
   if (authToken) {
@@ -23,7 +22,6 @@ fetcher.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      //sign out the user
       setTimeout(() => {
         useUserStore
           .getState()
