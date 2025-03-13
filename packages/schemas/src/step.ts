@@ -18,6 +18,9 @@ export const createStepBodySchema = z.object({
   smartListFilterId: z.number().optional(),
 });
 
+/**
+ * Schema for creating a step, with validation that smartListFilterId is required only for CARDGRID type.
+ */
 export const createStepBodySchemaWithValidation = createStepBodySchema.refine(
   (data) => !(data.type !== 'CARDGRID' && data.smartListFilterId),
   {
