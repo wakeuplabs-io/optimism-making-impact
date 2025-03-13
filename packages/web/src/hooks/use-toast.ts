@@ -1,5 +1,3 @@
-'use client';
-
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
 import * as React from 'react';
 
