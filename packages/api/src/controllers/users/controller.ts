@@ -1,12 +1,12 @@
-import { authGrantOrRevokeSchema } from './schemas.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { userSchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 
 async function grantAdminRole(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = authGrantOrRevokeSchema.safeParse(req.body);
+    const parsed = userSchema.safeParse(req.body);
 
     if (!parsed.success) throw ApiError.badRequest();
     await prisma.userWhitelist.create({
@@ -23,7 +23,7 @@ async function grantAdminRole(req: Request, res: Response, next: NextFunction) {
 
 async function revokeAdminRole(req: Request, res: Response, next: NextFunction) {
   try {
-    const parsed = authGrantOrRevokeSchema.safeParse(req.body);
+    const parsed = userSchema.safeParse(req.body);
     // Prevent revoking admin role for current user
     if (!parsed.success) throw ApiError.badRequest();
     if (parsed.data.email === req.app.locals.authUser.email) throw ApiError.unauthorized('You cannot revoke your own admin role.');

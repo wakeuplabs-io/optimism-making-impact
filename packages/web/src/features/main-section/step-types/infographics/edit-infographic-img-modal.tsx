@@ -1,7 +1,7 @@
 import { FormModal } from '@/components/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { Infographic } from '@/types/infographics';
-import { updateInfographicBodySchema } from '@optimism-making-impact/schemas';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -13,18 +13,19 @@ type UpdateInfographicImageBody = z.infer<typeof updateInfographicImageSchema>;
 
 interface EditInfographicImageModalProps {
   infographic: Infographic;
-  onClick?: (infographicId: number, image: string) => void;
   open: boolean;
   onClose: () => void;
 }
 
 export function EditInfographicImageModal(props: EditInfographicImageModalProps) {
+  const editInfographic = useMainSectionStore((state) => state.editInfographic);
+
   const defaultValues: UpdateInfographicImageBody = {
     image: props.infographic.image,
   };
 
   function handleSubmit(data: UpdateInfographicImageBody) {
-    props.onClick?.(props.infographic.id, data.image);
+    editInfographic(props.infographic.id, { image: data.image });
   }
 
   return (

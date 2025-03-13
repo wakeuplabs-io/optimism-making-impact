@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { BulkUpdateInfographicBody } from '@optimism-making-impact/schemas';
+import { CreateInfographicBody, UpdateInfographicBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
 const infographicsEndpoint = '/infographics';
@@ -19,8 +19,12 @@ export class InfographicsServiceClass {
     return InfographicsServiceClass.instance;
   }
 
-  async updateBulk(data: BulkUpdateInfographicBody) {
-    return this.fetcher.put(infographicsEndpoint + `/bulk`, data).then((res) => res.data);
+  async create(data: CreateInfographicBody) {
+    return this.fetcher.post(infographicsEndpoint, data).then((res) => res.data);
+  }
+
+  async update(id: number, data: UpdateInfographicBody) {
+    return this.fetcher.put(`${infographicsEndpoint}/${id}`, data).then((res) => res.data);
   }
 
   async deleteOne(id: number) {

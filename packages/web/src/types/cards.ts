@@ -7,12 +7,12 @@ export const cardSchema = z.object({
   markdown: z.string(),
   strength: z.enum(cardStrengthList),
   stepId: z.number(),
-  attributeId: z.number().nullable().optional(),
+  attributeId: z.number().nullish(),
 });
 export type Card = z.infer<typeof cardSchema>;
 
 export const completeCardSchema = cardSchema.extend({
-  attribute: attributeSchema.optional(),
+  attribute: attributeSchema.nullish(),
   keywords: z.array(keywordSchema),
 });
 

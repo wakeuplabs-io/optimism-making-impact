@@ -1,11 +1,11 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
 import { CompleteStep } from '@/types';
 import {
-  BulkUpdateInfographicBody,
   CreateAttributeBody,
   CreateCardBody,
   CreateInfographicBody,
   CreateItemBody,
+  Infographic,
   UpdateAttributeBody,
   UpdateCardBody,
   UpdateInfographicBody,
@@ -20,14 +20,18 @@ export interface MainSectionState {
   stepInitialState: CompleteStep | null;
 }
 
+interface EditInfographicResult {
+  infographic?: Infographic;
+  error?: unknown;
+}
+
 export interface MainSectionActions {
   init: (stepId: number) => void;
   fetchData: (stepId: number) => void;
   updateStep: (step: Partial<CompleteStep>) => void;
-  addInfographic: (data: CreateInfographicBody) => void;
-  deleteInfographic: (infographicId: number) => void;
-  editInfographic: (infographicId: number, data: Partial<UpdateInfographicBody>) => void;
-  saveInfographics: (data: BulkUpdateInfographicBody) => void;
+  addInfographic: (data: CreateInfographicBody) => Promise<void>;
+  deleteInfographic: (infographicId: number) => Promise<void>;
+  editInfographic: (infographicId: number, data: Partial<UpdateInfographicBody>) => Promise<EditInfographicResult>;
   addCard: (data: CreateCardBody) => void;
   editCard: (cardId: number, data: UpdateCardBody) => void;
   deleteCard: (cardId: number) => void;

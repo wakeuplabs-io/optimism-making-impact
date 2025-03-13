@@ -34,6 +34,15 @@ export default {
         ['mi-stone']: {
           300: 'var(--mi-stone-300)',
         },
+        ['mi-lime']: {
+          400: 'var(--mi-lime-400)',
+        },
+        ['mi-red']: {
+          400: 'var(--mi-red-400)',
+        },
+        ['mi-gray']: {
+          100: 'var(--mi-gray-100)',
+        },
         // End of new custom colors
 
         // Start of Card tag colors

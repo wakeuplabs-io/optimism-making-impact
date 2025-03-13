@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 
 interface ItemsFiltersProps {
   stepId: number;
-  smartListFilter?: CompleteSmartListFilter;
+  smartListFilter?: CompleteSmartListFilter | null;
 }
 
 export function ItemFilters(props: ItemsFiltersProps) {
@@ -40,7 +40,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex h-14 w-full items-center justify-between gap-4 px-4 lg:static'>
+      <div className='flex items-center justify-between w-full gap-4 px-4 h-14 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[300px]'>
           {props.children}
@@ -54,7 +54,7 @@ function Container(props: { children: React.ReactNode }) {
 
 interface ContentProps {
   stepId: number;
-  smartListFilter?: CompleteSmartListFilter;
+  smartListFilter?: CompleteSmartListFilter | null;
 }
 
 function Content(props: ContentProps) {
@@ -66,14 +66,14 @@ function Content(props: ContentProps) {
 
   if (!props.smartListFilter) {
     return (
-      <div className='flex w-full justify-center'>
+      <div className='flex justify-center w-full'>
         <span>There is no Smart List Filter for this step</span>
       </div>
     );
   }
 
   return (
-    <div className='flex w-full flex-col'>
+    <div className='flex flex-col w-full'>
       <div className='flex items-center justify-between'>
         <span className='text-base font-semibold'>Filters</span>
         {isAdmin && <AddAttributeModal smartListFilterId={props.smartListFilter.id} onClick={addAttributeToSmartList} />}

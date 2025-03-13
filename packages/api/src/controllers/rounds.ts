@@ -3,6 +3,7 @@ import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
 import { getLastCompleteRound } from '@/lib/prisma/helpers.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
   try {
@@ -29,12 +30,12 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
       // First round creation
       if (!lastRound) {
         const createdRound = await prisma.round.create({ data: {} });
-        return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, 201);
+        return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, StatusCodes.CREATED);
       }
 
       await duplicateRound(lastRound);
 
-      apiResponse.success(res, { message: 'Round created successfully' }, 201);
+      apiResponse.success(res, { message: 'Round created successfully' }, StatusCodes.CREATED);
     });
   } catch (error) {
     next(error);
@@ -53,7 +54,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
       data,
     });
 
-    apiResponse.success(res, { message: 'Round edited successfully', data: edited }, 201);
+    apiResponse.success(res, { message: 'Round edited successfully', data: edited }, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }
@@ -69,7 +70,7 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    apiResponse.success(res, { message: 'Round deleted.', data: deleted }, 201);
+    apiResponse.success(res, { message: 'Round deleted.', data: deleted }, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

@@ -118,7 +118,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
       return updated;
     });
 
-    apiResponse.success(res, result, 201);
+    apiResponse.success(res, result, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

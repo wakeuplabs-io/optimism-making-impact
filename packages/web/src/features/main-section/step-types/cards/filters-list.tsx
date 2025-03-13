@@ -11,7 +11,7 @@ import { Hash } from 'lucide-react';
 import { useMemo } from 'react';
 
 interface CardFiltersProps {
-  smartListFilter?: CompleteSmartListFilter;
+  smartListFilter?: CompleteSmartListFilter | null;
   stepId: number;
 }
 
@@ -50,7 +50,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 interface ContentProps {
-  smartListFilter?: CompleteSmartListFilter;
+  smartListFilter?: CompleteSmartListFilter | null;
   stepId: number;
 }
 

@@ -1,8 +1,9 @@
+import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { IconButton } from '@/components/icon-button';
 import { TextAreaInput } from '@/components/text-area-input';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -10,10 +11,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 interface AddInfographicModalProps {
   stepId: number;
   className?: string;
-  onClick?: (data: CreateInfographicBody) => void;
 }
 
 export function AddInfographicModal(props: AddInfographicModalProps) {
+  const addInfographic = useMainSectionStore((state) => state.addInfographic);
+
   const defaultValues: CreateInfographicBody = {
     image: '',
     markdown: '',
@@ -21,13 +23,17 @@ export function AddInfographicModal(props: AddInfographicModalProps) {
   };
 
   function handleSubmit(data: CreateInfographicBody) {
-    props.onClick?.(data);
+    addInfographic(data);
   }
 
   return (
     <FormModal
       title='Add Infographic'
-      trigger={<IconButton variant='secondary' icon={<Plus strokeWidth={3} />} />}
+      trigger={
+        <div className='w-full max-w-[320px] lg:w-[250px] absolute top-0 left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:-translate-x-0'>
+          <ActionButton label='Create New' variant='secondary' icon={<Plus strokeWidth={3} />} className='w-full' />
+        </div>
+      }
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={createInfographicBodySchema}

@@ -6,8 +6,8 @@ export const itemSchema = z.object({
   markdown: z.string(),
   stepId: z.number(),
   attributeId: z.number(),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
+  createdAt: z.string().nullish(),
+  updatedAt: z.string().nullish(),
 });
 
 export type Item = z.infer<typeof itemSchema>;

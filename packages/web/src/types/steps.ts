@@ -1,10 +1,10 @@
+import { z } from 'zod';
+import { stepTypeSchema, infographicSchema } from '@optimism-making-impact/schemas';
+
 import { completeCardSchema } from '@/types/cards';
-import { infographicSchema } from '@/types/infographics';
 import { completeItemSchema } from '@/types/items';
 import { keywordSchema } from '@/types/keywords';
 import { completeSmartListFilterSchema } from '@/types/smart-list-filters';
-import { stepTypeSchema } from '@optimism-making-impact/schemas';
-import { z } from 'zod';
 
 export const stepSchema = z.object({
   id: z.number(),
@@ -13,7 +13,7 @@ export const stepSchema = z.object({
   icon: z.string(),
   type: stepTypeSchema,
   categoryId: z.number(),
-  smartListId: z.number().nullable().optional(),
+  smartListId: z.number().nullish(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
@@ -24,7 +24,7 @@ export const completeStepSchema = stepSchema.extend({
   infographics: z.array(infographicSchema),
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
-  smartListFilter: completeSmartListFilterSchema.optional(),
+  smartListFilter: completeSmartListFilterSchema.nullish(),
   keywords: z.array(keywordSchema),
 });
 

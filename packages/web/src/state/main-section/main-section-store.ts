@@ -10,7 +10,6 @@ import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { CompleteStep, Step } from '@/types';
 import {
-  BulkUpdateInfographicBody,
   CreateAttributeBody,
   CreateCardBody,
   CreateInfographicBody,
@@ -19,7 +18,6 @@ import {
   UpdateInfographicBody,
 } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
-import isEqual from 'lodash.isequal';
 
 export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set, get) => ({
   error: null,
@@ -78,34 +76,25 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
   },
   editInfographic: async (infographicId: number, data: Partial<UpdateInfographicBody>) => {
     const step = get().step;
-    const stepInitialState = get().stepInitialState;
 
-    if (!step || !stepInitialState) return;
+    if (!step) return {};
 
-    const newStep = {
-      ...step,
-      infographics: step.infographics.map((infographic) => (infographic.id === infographicId ? { ...infographic, ...data } : infographic)),
-    };
+    const infographic = get().step?.infographics.find((infograhic) => infograhic.id === infographicId);
 
-    const savingStatus = isEqual(newStep, stepInitialState) ? AutoSaveStatus.IDLE : AutoSaveStatus.UNSAVED;
+    if (!infographic) return {};
 
-    set({ step: newStep, savingStatus });
-  },
-  saveInfographics: async (data: BulkUpdateInfographicBody) => {
     try {
-      const currentStep = get().step;
-      if (!currentStep) return;
-
-      set({ savingStatus: AutoSaveStatus.SAVING });
-
-      const stepId = currentStep.id;
-
-      await InfographicsService.updateBulk(data);
-      await get().fetchData(stepId);
-
-      toast({ title: 'Saved', description: 'Infographics updated successfully' });
+      const { data: updatedInfographic } = await InfographicsService.update(infographicId, { ...infographic, ...data });
+      const updatedStep = {
+        ...step,
+        infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
+      };
+      set({ step: updatedStep });
+      return {
+        infographic: updatedInfographic,
+      };
     } catch (error) {
-      const title = 'Failed to edit infographics';
+      const title = 'Failed to edit infographic';
       let description = 'Unknown error';
 
       if (error instanceof AxiosError) {
@@ -113,30 +102,29 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       }
 
       toast({ title, description, variant: 'destructive' });
-    } finally {
-      set({ savingStatus: AutoSaveStatus.SAVED });
 
-      setTimeout(() => {
-        set({ savingStatus: AutoSaveStatus.IDLE });
-      }, 2000);
+      return {
+        error,
+      };
     }
   },
   addInfographic: async (data: CreateInfographicBody) => {
     const currentStep = get().step;
     if (!currentStep) return;
 
-    const newInfographics = [
-      ...currentStep.infographics,
-      {
-        ...data,
-        id: -1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        position: currentStep.infographics.length,
-      },
-    ];
+    try {
+      const { data: newInfographic } = await InfographicsService.create(data);
+      set({ step: { ...currentStep, infographics: [...currentStep.infographics, newInfographic] } });
+    } catch (error) {
+      const title = 'Failed to create Infographic';
+      let description = 'Unknown error';
 
-    set({ step: { ...currentStep, infographics: newInfographics } });
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
+
+      toast({ title, description, variant: 'destructive' });
+    }
   },
   addCard: (data: CreateCardBody) => {
     const currentStep = get().step;
