@@ -4,7 +4,7 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { CompleteRound, Round } from '@/types';
+import { CompleteRound, Round } from '@/types/rounds';
 import { AxiosError } from 'axios';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({

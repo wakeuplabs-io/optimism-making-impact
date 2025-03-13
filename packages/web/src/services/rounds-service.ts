@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { Round } from '@/types';
+import { Round } from '@/types/rounds';
 import { AxiosInstance } from 'axios';
 
 const roundsEndpoint = '/rounds';

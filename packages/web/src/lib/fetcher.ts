@@ -1,4 +1,4 @@
-import { useUserStore } from '@/state';
+import { useUserStore } from '@/state/user-store/user-store';
 import axios from 'axios';
 
 const fetcher = axios.create({

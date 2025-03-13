@@ -6,10 +6,9 @@ import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
-import { Category } from '@/types';
+import { Category } from '@/types/categories';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
-import { Save } from 'lucide-react';
-import { Trash } from 'lucide-react';
+import { Save, Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useToggle } from 'usehooks-ts';
@@ -73,11 +72,11 @@ function FormFields({ defaultValues }: FormFieldsProps) {
 
   return (
     <div className='flex flex-col items-center gap-2'>
-      <div className='flex gap-4 w-full'>
+      <div className='flex w-full gap-4'>
         <div className='flex flex-col gap-1.5'>
           <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
               'text-[#FF0420]': !!selectedIcon,
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
@@ -106,7 +105,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='w-full col-span-2 mt-2 flex flex-col gap-2'>
+          <div className='flex flex-col w-full col-span-2 gap-2 mt-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

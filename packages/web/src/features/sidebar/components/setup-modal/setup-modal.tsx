@@ -1,9 +1,9 @@
+import { AddEditorForm } from './add-editor-form';
+import { EditorList } from './editor-list';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog-full-screen-mobile';
-import { useUserStore } from '@/state';
+import { useUserStore } from '@/state/user-store/user-store';
 import { User, UserCog } from 'lucide-react';
 import { useEffect } from 'react';
-import { EditorList } from './editor-list';
-import { AddEditorForm } from './add-editor-form';
 
 interface SetupModalProps {
   open: boolean;
@@ -21,7 +21,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='md:max-w-xl gap-8 rounded-3xl p-8'>
+      <DialogContent className='gap-8 rounded-3xl p-8 md:max-w-xl'>
         <DialogHeader className='mb-8 md:mb-0'>
           <DialogTitle className='text-2xl font-medium'>Setup</DialogTitle>
         </DialogHeader>

@@ -7,7 +7,7 @@ import { SettingsSection } from '@/features/sidebar/components/settings-section/
 import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { Menu } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -65,7 +65,7 @@ function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   return (
-    <div className='flex flex-col items-start h-full gap-6 pb-16'>
+    <div className='flex h-full flex-col items-start gap-6 pb-16'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
       <div className='flex flex-col justify-start gap-4 md:justify-between'>
         <div className='flex flex-col gap-4'>

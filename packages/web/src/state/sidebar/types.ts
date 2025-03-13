@@ -1,4 +1,4 @@
-import { CompleteRound, Round } from '@/types';
+import { CompleteRound, Round } from '@/types/rounds';
 
 export interface SidebarState {
   error: string | null;

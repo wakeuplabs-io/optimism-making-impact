@@ -1,8 +1,9 @@
 import { AddCategoryModal } from '../add-category-modal';
-import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
-import { useSidebarStore, useUserStore } from '@/state';
-import { Category } from '@/types';
 import { SidebarSectionList } from '../sidebar-section-list';
+import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
+import { Category } from '@/types/categories';
 
 export function CategoryList(props: ContentProps) {
   return (
@@ -53,5 +54,5 @@ function Content({ categories, roundId }: ContentProps) {
 }
 
 function EmptyState() {
-  return <p className='text-center text-sm'>There are no categories yet.</p>;
+  return <p className='text-sm text-center'>There are no categories yet.</p>;
 }

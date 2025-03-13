@@ -2,10 +2,10 @@ import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
 import { cn } from '@/lib/utils';
-import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteStep } from '@/types';
+import { useUserStore } from '@/state/user-store/user-store';
+import { CompleteStep } from '@/types/steps';
 
 interface CardStepProps {
   step: CompleteStep;
@@ -18,8 +18,8 @@ export function CardStep(props: CardStepProps) {
 
   return (
     <div className={cn('flex flex-col gap-4')}>
-      <div className='flex h-full w-full flex-col lg:flex-row lg:gap-8'>
-        <div className='mb-6 flex w-full flex-col-reverse items-center gap-8 lg:mb-0 lg:flex-1 lg:flex-col lg:gap-6'>
+      <div className='flex flex-col w-full h-full lg:flex-row lg:gap-8'>
+        <div className='flex flex-col-reverse items-center w-full gap-8 mb-6 lg:mb-0 lg:flex-1 lg:flex-col lg:gap-6'>
           {adminMode && (
             <AddCardModal
               stepId={props.step.id}

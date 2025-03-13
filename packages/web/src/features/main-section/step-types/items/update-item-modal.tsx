@@ -1,11 +1,11 @@
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { attributesOptionsMapper } from '../utils';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { FormModal } from '@/components/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { SelectInput } from '@/components/inputs/select-input';
 import { TextAreaInput } from '@/components/text-area-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteItem, Item } from '@/types';
+import { CompleteItem, Item } from '@/types/items';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
 import { Pencil, Save, Trash } from 'lucide-react';
 import { useMemo } from 'react';
@@ -57,11 +57,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
         <DeleteConfirmationModal
           isOpen={isDeleteConfirmationModalOpen}
           title='Delete item'
-          description={
-            <span>
-              Are you sure you want to delete this item?
-            </span>
-          }
+          description={<span>Are you sure you want to delete this item?</span>}
           onConfirm={() => props.onDelete(props.item)}
           onOpenChange={toggleDeleteConfirmationModal}
         />

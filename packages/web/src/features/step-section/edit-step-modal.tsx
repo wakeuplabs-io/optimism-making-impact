@@ -3,7 +3,7 @@ import { FormModal } from '@/components/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
-import { Step } from '@/types';
+import { Step } from '@/types/steps';
 import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
 import { Pencil, Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
@@ -56,7 +56,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
 
   return (
     <div className='grid gap-4 py-4'>
-      <div className='col-span-2 flex gap-2'>
+      <div className='flex col-span-2 gap-2'>
         <div className='flex flex-col gap-1'>
           <span className='text-xs font-medium text-gray-500'>Icon</span>
           <div
@@ -67,7 +67,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           </div>
         </div>
 
-        <div className='flex w-full flex-col gap-1'>
+        <div className='flex flex-col w-full gap-1'>
           <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
@@ -87,7 +87,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         </div>
       </div>
       {step.type === 'SMARTLIST' && (
-        <div className='col-span-2 flex flex-col gap-1'>
+        <div className='flex flex-col col-span-2 gap-1'>
           <span className='text-xs font-medium text-gray-500'>Description</span>
           <Controller
             name='description'
