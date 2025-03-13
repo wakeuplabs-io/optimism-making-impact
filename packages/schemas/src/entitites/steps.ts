@@ -1,11 +1,13 @@
+import { categorySchema } from './category';
 import { stepTypeSchema } from './enums';
+import { keywordSchema } from './keywords';
 import { z } from 'zod';
 
 // Basic
 export const baseStepSchema = z.object({
   id: z.number(),
   title: z.string(),
-  description: z.string().nullish(),
+  description: z.string().nullable(),
   icon: z.string(),
   position: z.number(),
   type: stepTypeSchema,
@@ -16,9 +18,8 @@ export const baseStepSchema = z.object({
 export type BaseStep = z.infer<typeof baseStepSchema>;
 
 export const completeBaseStepSchema = baseStepSchema.extend({
-  category: z.any(),
-  items: z.array(z.any()),
-  keywords: z.array(z.any()),
+  category: categorySchema,
+  keywords: z.array(keywordSchema),
   smartListFilterId: z.number().nullable(),
 });
 export type CompleteBaseStep = z.infer<typeof completeBaseStepSchema>;
