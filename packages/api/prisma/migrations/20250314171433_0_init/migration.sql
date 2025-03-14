@@ -100,7 +100,6 @@ CREATE TABLE "Attribute" (
     "value" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "color" "Color" NOT NULL DEFAULT 'LIGHTBLUE',
-    "categoryId" INTEGER NOT NULL,
     "smartListFilterId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -174,9 +173,6 @@ ALTER TABLE "Card" ADD CONSTRAINT "Card_attributeId_fkey" FOREIGN KEY ("attribut
 
 -- AddForeignKey
 ALTER TABLE "Keyword" ADD CONSTRAINT "Keyword_stepId_fkey" FOREIGN KEY ("stepId") REFERENCES "Step"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Attribute" ADD CONSTRAINT "Attribute_smartListFilterId_fkey" FOREIGN KEY ("smartListFilterId") REFERENCES "SmartListFilter"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
