@@ -16,7 +16,7 @@ export function SidebarContent() {
         <div className='flex flex-col gap-4'>
           <RoundList />
           <hr />
-          {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
+          {<CategoryList roundId={selectedRound?.id} categories={selectedRound?.categories ?? []} />}
           <hr />
           <LogosSection />
           <hr />

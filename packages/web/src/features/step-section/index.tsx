@@ -43,7 +43,7 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {!isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
+      {!isLoading && !isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
     </>
   );
 }

@@ -20,7 +20,7 @@ function Container(props: { children: React.ReactNode }) {
 
 interface ContentProps {
   roundId?: number;
-  categories: Category[];
+  categories?: Category[];
 }
 
 function Content({ categories, roundId }: ContentProps) {
