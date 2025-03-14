@@ -19,7 +19,7 @@ export default function LogosSection() {
           src={VoteHere}
           link={selectedRound.link1}
           isAdmin={isAdmin}
-          onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
+          onSubmit={(data) => editRound(selectedRound.id, { link1: data.link })}
           className='w-1/2'
         />
       )}
@@ -28,7 +28,7 @@ export default function LogosSection() {
           src={RetroList}
           link={selectedRound.link2}
           isAdmin={isAdmin}
-          onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
+          onSubmit={(data) => editRound(selectedRound.id, { link2: data.link })}
           className='w-1/2'
         />
       )}

@@ -1,4 +1,5 @@
-import { CompleteRound, Round } from '@/types/rounds';
+import { CompleteRound } from '@/types/rounds';
+import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 
 export interface SidebarState {
   error: string | null;
@@ -14,7 +15,7 @@ export interface SidebarActions {
   setSelectedRound: (roundId: number) => void;
   setSelectedCategoryId: (categoryId: number) => void;
   addRound: () => void;
-  editRound: (roundId: number, data: Partial<Round>) => void;
+  editRound: (roundId: number, data: UpdateRoundBody) => void;
   addCategory: (name: string, icon: string, roundId: number) => void;
   editCategory: (name: string, icon: string) => void;
   deleteCategory: (categoryId: number) => void;

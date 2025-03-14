@@ -33,7 +33,7 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
     <Dialog {...props}>
       <DialogTrigger>{props.trigger}</DialogTrigger>
       <DialogContent className='flex flex-col gap-0 lg:max-w-[550px] rounded-[22px] p-6 sm:p-12' hideCloseButton={true} {...contentProps}>
-        <DialogHeader className='flex flex-row items-center justify-between mb-8'>
+        <DialogHeader className='flex flex-row items-start justify-between mb-8'>
           <div className='flex flex-col items-start justify-between'>
             {props.title && <DialogTitle className='text-xl text-dark-high font-medium'>{props.title}</DialogTitle>}
             {props.subtitle && <DialogDescription className='text-secondary'>{props.subtitle}</DialogDescription>}

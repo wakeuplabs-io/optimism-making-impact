@@ -69,7 +69,7 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
           ref={textAreaRef}
           name='content'
           rows={7}
-          className='w-full border-0 resize-none focus-visible:outline-none active:border-0'
+          className='w-full border-0 resize-none focus-visible:outline-none focus-visible:ring-0 active:border-0'
           value={controlledMarkdownValue}
           {...props}
           onChange={handleTextareaChange}

@@ -1,16 +1,14 @@
-import { ActionButton } from '@/components/action-button';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
-import { Modal } from '@/components/modal';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { DialogClose } from '@radix-ui/react-dialog';
-import { Label } from '@radix-ui/react-label';
+import { UpdateRoundLinkBody, updateRoundLinkBodySchema } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { FormModal } from './form/form-modal';
+import { Controller, useFormContext } from 'react-hook-form';
+import { FormTextInput } from './form/form-text-input';
 
 interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   link: string;
-  onClick: (url: string) => void;
+  onSubmit: (data: UpdateRoundLinkBody) => void;
   isAdmin?: boolean;
   className?: string;
 }
@@ -26,7 +24,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
         props.className,
       )}
     >
-      {props.isAdmin && <EditLink onClick={props.onClick} link={props.link} />}
+      {props.isAdmin && <EditLink onSubmit={props.onSubmit} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
         <ImageButton className='h-fit' src={props.src} />
       </a>
@@ -35,53 +33,38 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
 }
 
 interface EditLinkProps {
-  onClick?: (link: string) => void;
+  onSubmit: (data: UpdateRoundLinkBody) => void;
   link: string;
 }
 
 function EditLink(props: EditLinkProps) {
-  const [newLink, setNewLink] = useState(props.link);
-
-  useEffect(() => setNewLink(props.link), [props.link]);
-
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setNewLink(event.target.value);
-  }
-
   return (
-    <Modal
+    <FormModal
       title='Edit link'
-      subtitle='Click save when you are done.'
       trigger={
         <button className='absolute mb-4 flex h-6 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
           edit
         </button>
       }
+      onSubmit={props.onSubmit}
+      defaultValues={{ link: props.link }}
+      schema={updateRoundLinkBodySchema}
+      submitButtonIcon={<Save />}
+      submitButtonText='Save'
     >
-      <div className='grid gap-4 py-4'>
-        <div>
-          <Label htmlFor='name' className='sr-only'>
-            Title
-          </Label>
-          <Input
-            id='name'
-            name='name'
-            value={newLink}
-            onChange={handleChange}
-            className='py-5 shadow-none placeholder:text-white-low focus-visible:ring-dark-low'
-            placeholder='Name'
-          />
-        </div>
-      </div>
+      <EditLinkForm />
+    </FormModal>
+  );
+}
 
-      <div className='flex gap-4'>
-        <DialogClose asChild>
-          <ActionButton label='Cancel' variant='secondary' />
-        </DialogClose>
-        <DialogClose asChild>
-          <ActionButton icon={<Save />} label='Save' variant='primary' onClick={() => props.onClick?.(newLink)} />
-        </DialogClose>
-      </div>
-    </Modal>
+function EditLinkForm() {
+  const { control } = useFormContext<UpdateRoundLinkBody>();
+
+  return (
+    <Controller
+      name='link'
+      control={control}
+      render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Write here...' />}
+    />
   );
 }

@@ -2,6 +2,7 @@ import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
+import { Save } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -35,30 +36,27 @@ export function EditInfographicImageModal(props: EditInfographicImageModalProps)
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={updateInfographicImageSchema}
+      submitButtonText='Save'
+      submitButtonIcon={<Save />}
       onOpenChange={(open) => {
         if (!open) {
           props.onClose();
         }
       }}
     >
-      <FormFields defaultValues={defaultValues} />
+      <FormFields />
     </FormModal>
   );
 }
 
-interface FormFieldsProps {
-  defaultValues: UpdateInfographicImageBody;
-}
-
-function FormFields({ defaultValues }: FormFieldsProps) {
+function FormFields() {
   const { control } = useFormContext<UpdateInfographicImageBody>();
 
   return (
-    <div className='grid gap-4 py-4'>
+    <div className='flex flex-col gap-4'>
       <Controller
         name='image'
         control={control}
-        defaultValue={defaultValues.image}
         render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Image' />}
       />
     </div>
