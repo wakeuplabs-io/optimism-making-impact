@@ -123,7 +123,7 @@ function CardFooter(props: CardFooterProps) {
           <Badge
             key={`${keyword.id}-${i}`}
             style={{ backgroundColor: getRandomBadgeColor(keyword.value).background }}
-            className='inline-block w-full h-fit rounded-full px-6 py-1 text-center text-xs font-normal'
+            className='h-fit w-auto min-w-[112px] flex-shrink-0 rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}
           </Badge>
