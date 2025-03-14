@@ -58,10 +58,9 @@ model Category {
   name String
   icon String
 
-  roundId    Int
-  round      Round       @relation(fields: [roundId], references: [id])
-  attributes Attribute[]
-  steps      Step[]
+  roundId Int
+  round   Round  @relation(fields: [roundId], references: [id])
+  steps   Step[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -158,10 +157,8 @@ model Attribute {
   description String
   color       Color  @default(LIGHTBLUE)
 
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  items      Item[]
-  cards      Card[]
+  items Item[]
+  cards Card[]
 
   smartListFilter   SmartListFilter @relation(fields: [smartListFilterId], references: [id])
   smartListFilterId Int

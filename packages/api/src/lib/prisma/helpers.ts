@@ -14,7 +14,6 @@ export function getCompleteRound(roundId: number): Promise<CompleteRound | null>
       categories: {
         orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         include: {
-          attributes: { orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] },
           steps: {
             orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
             include: {
