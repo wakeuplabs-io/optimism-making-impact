@@ -12,7 +12,7 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   error: null,
   rounds: [],
   selectedRound: null,
-  selectedCategoryId: -1,
+  selectedCategoryId: 0,
   categoriesInProgress: [],
   init: async () => {
     const response = await RoundsService.getRounds();

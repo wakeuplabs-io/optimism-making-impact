@@ -11,6 +11,7 @@ interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   onSubmit: (data: UpdateRoundLinkBody) => void;
   isAdmin?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 export function SidebarLinkButton(props: SidebarLinkButtonProps) {
@@ -24,9 +25,9 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
         props.className,
       )}
     >
-      {props.isAdmin && <EditLink onSubmit={props.onSubmit} link={props.link} />}
+      {props.isAdmin && !props.disabled && <EditLink onSubmit={props.onSubmit} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
-        <ImageButton className='h-fit' src={props.src} />
+        <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
       </a>
     </div>
   );

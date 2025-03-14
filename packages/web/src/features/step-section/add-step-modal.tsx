@@ -1,6 +1,6 @@
 import { IconPicker } from '../sidebar/components/icon-picker';
-import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
@@ -57,6 +57,8 @@ export function AddStepModal(props: AddStepModalProps) {
     });
   }
 
+  if (props.categoryId === 0) return null;
+
   return (
     <FormModal
       title='New tab'
@@ -96,7 +98,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.type}
         render={({ field, formState }) => (
-          <div className='w-full mb-6'>
+          <div className='mb-6 w-full'>
             <SelectInput
               name='Type'
               items={options}
@@ -113,7 +115,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           name='smartListFilterId'
           control={control}
           render={({ field }) => (
-            <div className='w-full mb-8'>
+            <div className='mb-8 w-full'>
               <SelectInput
                 name='Smart List Filter'
                 items={smartListOptions}
@@ -139,11 +141,11 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         />
       )}
 
-      <div className='w-full flex gap-4'>
+      <div className='flex w-full gap-4'>
         <div className='flex flex-col gap-1.5'>
           <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
               'text-[#FF0420]': !!selectedIcon,
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
@@ -152,7 +154,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           </div>
         </div>
 
-        <div className='flex flex-col w-full gap-1'>
+        <div className='flex w-full flex-col gap-1'>
           <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'

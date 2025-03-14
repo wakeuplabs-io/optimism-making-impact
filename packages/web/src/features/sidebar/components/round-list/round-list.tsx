@@ -1,7 +1,8 @@
-import { useSidebarStore, useUserStore } from '@/state';
-import { RoundListButton } from './round-list-button';
 import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
+import { RoundListButton } from './round-list-button';
+import { useSidebarStore, useUserStore } from '@/state';
+import { useState } from 'react';
 
 export function RoundList() {
   const rounds = useSidebarStore((state) => state.rounds);
@@ -9,14 +10,17 @@ export function RoundList() {
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
   const addRound = useSidebarStore((state) => state.addRound);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-
-  if (rounds.length === 0) return <EmptyState />;
+  const [isLoading, setIsLoading] = useState(true);
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
 
   return (
     <SidebarSectionList
       id='rounds'
       isAdmin={isAdmin}
       title='Rounds'
+      isLoading={isLoading}
       items={rounds.map((round) => {
         const isSelected = selectedRound?.id === round.id;
         return {
@@ -28,8 +32,4 @@ export function RoundList() {
       maxItems={5}
     />
   );
-}
-
-function EmptyState() {
-  return <p className='text-center text-sm'>There are no rounds yet.</p>;
 }

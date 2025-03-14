@@ -4,6 +4,7 @@ import { StepButton } from '@/features/step-section/step-button/step-button';
 import { useIsDesktopXL } from '@/hooks/use-tresholds';
 import { Step } from '@/types';
 import { UpdateStepBody } from '@optimism-making-impact/schemas';
+import { LoaderCircle } from 'lucide-react';
 import { Fragment, useMemo } from 'react';
 
 export type StepListStep = Step & { position: number };
@@ -15,6 +16,8 @@ interface StepsListProps {
   onDeleteStep: (stepId: number) => void;
   onSelectStep: (stepId: number) => void;
   isAdmin?: boolean;
+  isLoading?: boolean;
+  selectedCategoryId: number;
 }
 
 export function StepsList(props: StepsListProps) {
@@ -24,10 +27,25 @@ export function StepsList(props: StepsListProps) {
     [props.steps, props.selectedStep],
   );
 
-  if (props.steps.length === 0) {
+  if (props.isLoading) {
     return (
-      <div className='flex justify-center flex-1 max-w-full overflow-hidden'>
-        <span>There are no steps for this round.</span>
+      <div className='flex justify-center'>
+        <LoaderCircle className='h-[78px] w-[78px] animate-spin text-gray-500 lg:h-16 lg:w-16' />
+      </div>
+    );
+  }
+  if (!props.isLoading && props.steps.length === 0 && props.selectedCategoryId) {
+    return (
+      <div className='flex max-w-full flex-1 justify-center overflow-hidden'>
+        <span>There are no steps for this category.</span>
+      </div>
+    );
+  }
+
+  if (!props.isLoading && !props.selectedCategoryId) {
+    return (
+      <div className='h-[78px]'>
+        <p>Select a category to see the steps</p>
       </div>
     );
   }

@@ -48,7 +48,7 @@ function SidebarContainer(props: SidebarContainerProps) {
           trigger={<Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />}
           description='Sidebar'
           side='left'
-          className='w-[320px] overflow-y-auto'
+          className='w-[308px] overflow-y-auto'
           triggerAsChild
         >
           {props.children}
@@ -58,20 +58,20 @@ function SidebarContainer(props: SidebarContainerProps) {
     );
   }
 
-  return <nav className='h-full w-[320px] overflow-y-auto overflow-x-hidden bg-white-high px-8 pt-10 lg:static'>{props.children}</nav>;
+  return <nav className='h-full w-[308px] overflow-y-auto overflow-x-hidden bg-white-high px-8 pt-10 lg:static'>{props.children}</nav>;
 }
 
 function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
 
   return (
-    <div className='flex flex-col items-start h-full gap-6 pb-16'>
+    <div className='flex h-full flex-col items-start gap-6 pb-16'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
-      <div className='flex flex-col justify-start gap-4 md:justify-between'>
+      <div className='flex w-full flex-col justify-start gap-4 md:justify-between'>
         <div className='flex flex-col gap-4'>
           <RoundList />
           <hr />
-          {selectedRound && <CategoryList roundId={selectedRound.id} categories={selectedRound.categories} />}
+          {<CategoryList roundId={selectedRound?.id} categories={selectedRound?.categories ?? []} />}
           <hr />
           <LogosSection />
           <hr />
