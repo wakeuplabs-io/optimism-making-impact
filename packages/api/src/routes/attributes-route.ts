@@ -1,4 +1,4 @@
-import { attributesController } from '@/controllers/attributes/controller.js';
+import { attributesController } from '@/controllers/attributes-controller.js';
 import { Router } from 'express';
 
 export const attributesRouter = Router();

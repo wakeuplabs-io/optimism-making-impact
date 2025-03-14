@@ -1,4 +1,4 @@
-import { roundsController } from '@/controllers/rounds.js';
+import { roundsController } from '@/controllers/rounds-controller.js';
 import { Router } from 'express';
 
 export const roundsRouter = Router();
