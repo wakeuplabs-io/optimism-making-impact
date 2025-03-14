@@ -1,4 +1,5 @@
 import { attributesOptionsMapper } from '../utils';
+import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormModal } from '@/components/form/form-modal';
 import { SelectInput } from '@/components/inputs/select-input';
