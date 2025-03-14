@@ -1,7 +1,7 @@
 import { IconPicker } from './icon-picker';
 import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
-import { FormModal } from '@/components/form/form-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
+import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
@@ -10,14 +10,18 @@ import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddCategoryModalProps {
-  roundId: number;
+  roundId?: number;
   onSave?: (name: string, icon: string, roundId: number) => void;
 }
 
 export function AddCategoryModal(props: AddCategoryModalProps) {
+  if (!props.roundId) return;
+
   const defaultValues: CreateCategoryBody = { name: '', icon: 'blocks', roundId: props.roundId };
 
   function handleSubmit(data: CreateCategoryBody) {
+    if (!props.roundId) return;
+
     props.onSave?.(data.name, data.icon, props.roundId);
   }
 
@@ -46,11 +50,11 @@ function FormFields(props: FormFieldsProps) {
 
   return (
     <div className='flex flex-col items-center gap-2'>
-      <div className='flex gap-4 w-full'>
+      <div className='flex w-full gap-4'>
         <div className='flex flex-col gap-1.5'>
           <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
               'text-[#FF0420]': !!selectedIcon,
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
@@ -74,7 +78,7 @@ function FormFields(props: FormFieldsProps) {
         control={control}
         defaultValue={props.defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='w-full col-span-2 mt-2 flex flex-col gap-2'>
+          <div className='col-span-2 mt-2 flex w-full flex-col gap-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

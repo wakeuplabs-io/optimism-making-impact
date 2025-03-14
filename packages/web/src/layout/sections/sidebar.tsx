@@ -31,7 +31,7 @@ export function SidebarSection() {
           trigger={<Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />}
           description='Sidebar'
           side='left'
-          className='w-[320px] overflow-y-auto'
+          className='w-[308px] overflow-y-auto'
           triggerAsChild
         >
           <SidebarContent />
@@ -42,7 +42,7 @@ export function SidebarSection() {
   }
 
   return (
-    <nav className='h-full w-[320px] overflow-y-auto overflow-x-hidden bg-white-high px-8 pt-10 lg:static'>
+    <nav className='h-full w-[308px] overflow-y-auto overflow-x-hidden bg-white-high px-8 pt-10 lg:static'>
       <SidebarContent />
     </nav>
   );

@@ -4,7 +4,7 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { useUserStore } from '@/state/user-store/user-store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
@@ -12,15 +12,18 @@ export function StepsSectionContent() {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const isMobile = useIsMobile();
 
+  // This loading actually depends on category fetch loading
+  // If there's not a selected category then there are no steps to show
+  const [isLoading, setIsLoading] = useState(true);
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
+
   useEffect(() => {
     if (selectedCategoryId) {
       stepsState.fetchByCategoryId(selectedCategoryId);
     }
   }, [selectedCategoryId]);
-
-  if (!selectedCategoryId) {
-    return <p>Select a category to see the steps</p>;
-  }
 
   if (stepsState.error) {
     return <p>{stepsState.error}</p>;
@@ -31,6 +34,8 @@ export function StepsSectionContent() {
   return (
     <>
       <StepsList
+        selectedCategoryId={selectedCategoryId}
+        isLoading={isLoading}
         steps={formattedSteps}
         selectedStep={formattedSteps.find((step) => step.id === stepsState.selectedStep?.id) ?? null}
         onSelectStep={stepsState.setSelectedStep}
@@ -38,7 +43,7 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {!isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
+      {!isLoading && !isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
     </>
   );
 }

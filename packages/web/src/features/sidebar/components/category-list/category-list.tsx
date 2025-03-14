@@ -4,6 +4,7 @@ import { CategoryListButton } from '@/features/sidebar/components/category-list/
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { Category } from '@/types/categories';
+import { useState } from 'react';
 
 export function CategoryList(props: ContentProps) {
   return (
@@ -18,8 +19,8 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 interface ContentProps {
-  roundId: number;
-  categories: Category[];
+  roundId?: number;
+  categories?: Category[];
 }
 
 function Content({ categories, roundId }: ContentProps) {
@@ -27,32 +28,38 @@ function Content({ categories, roundId }: ContentProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addCategory = useSidebarStore((state) => state.addCategory);
 
-  if (categories.length === 0) return <EmptyState />;
+  // This loading actually depends on round fetching
+  // If there's no selected round then there are no categories to show
+  const [isLoading, setIsLoading] = useState(true);
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
+
+  if (!isLoading && !roundId) return <p className='text-center text-sm'>Select a round to view it's categories.</p>;
 
   return (
     <SidebarSectionList
       id='categories'
       isAdmin={isAdmin}
       title='Categories'
-      items={categories.map((category) => ({
-        id: category.id,
-        item: (
-          <CategoryListButton
-            category={category}
-            isSelected={sidebarState.selectedCategoryId === category.id}
-            onClick={() => sidebarState.setSelectedCategoryId(category.id)}
-            isAdmin={isAdmin}
-            onDelete={sidebarState.deleteCategory}
-            onEdit={sidebarState.editCategory}
-          />
-        ),
-      }))}
+      isLoading={isLoading}
+      items={
+        categories?.map((category) => ({
+          id: category.id,
+          item: (
+            <CategoryListButton
+              category={category}
+              isSelected={sidebarState.selectedCategoryId === category.id}
+              onClick={() => sidebarState.setSelectedCategoryId(category.id)}
+              isAdmin={isAdmin}
+              onDelete={sidebarState.deleteCategory}
+              onEdit={sidebarState.editCategory}
+            />
+          ),
+        })) ?? []
+      }
       addItem={<AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />}
       maxItems={5}
     />
   );
-}
-
-function EmptyState() {
-  return <p className='text-sm text-center'>There are no categories yet.</p>;
 }

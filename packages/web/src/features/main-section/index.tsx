@@ -3,10 +3,12 @@ import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { CompleteStep } from '@/types/steps';
+import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 export function MainSectionContent() {
   const selectedStep = useStepsStore((state) => state.selectedStep);
+  const stepsState = useStepsStore((state) => state);
   const mainSectionState = useMainSectionStore((state) => state);
 
   useEffect(() => {
@@ -16,11 +18,19 @@ export function MainSectionContent() {
   }, [selectedStep?.id]);
 
   if (mainSectionState.loading) {
-    return <span className='my-auto'>Loading...</span>;
+    return (
+      <div className='flex flex-grow items-center justify-center'>
+        <LoaderCircle className='h-[78px] w-[78px] animate-spin text-gray-500 lg:h-16 lg:w-16' />
+      </div>
+    );
   }
 
-  if (!mainSectionState.step) {
-    return <span className='my-auto'>Select a step to see its content</span>;
+  if (!mainSectionState.step || stepsState.steps.length === 0) {
+    return (
+      <div className='flex flex-grow items-center justify-center'>
+        <span className='my-auto'>Select a step to see its content</span>
+      </div>
+    );
   }
 
   return <StepContent step={mainSectionState.step} />;
