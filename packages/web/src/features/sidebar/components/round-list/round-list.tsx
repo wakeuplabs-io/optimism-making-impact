@@ -1,11 +1,14 @@
 import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { RoundListButton } from './round-list-button';
+import { queryClient } from '@/main';
+import { router } from '@/router';
 import { RoundsService } from '@/services/rounds-service';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useUserStore } from '@/state/user-store/user-store';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { CompleteRound } from '@/types/rounds';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useSearch } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 
 export function RoundList() {
   const { data: rounds = [], isLoading: roundsLoading } = useQuery({
@@ -14,19 +17,34 @@ export function RoundList() {
     staleTime: 1000 * 60 * 60 * 24,
   });
 
-  if (rounds.length === 0) {
-    return null;
-  }
+  const search = useSearch({ from: '/' });
 
-  //const rounds = useSidebarStore((state) => state.rounds);
-  const selectedRound = rounds[0];
-  const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
-  const addRound = useSidebarStore((state) => state.addRound);
+  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>();
+
+  const setRoundIdQueryParam = (roundId: number) => {
+    router.navigate({ search: { ...search, roundId }, reloadDocument: false, to: '/' });
+  };
+  const addRound = useMutation({
+    mutationFn: () => RoundsService.createRound(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['rounds'] });
+    },
+  });
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 
   useEffect(() => {
-    console.log('render');
-  }, []);
+    if (rounds.length === 0) {
+      return;
+    }
+    const defaultRound = rounds[0];
+    setSelectedRound(defaultRound);
+  }, [rounds]);
+
+  useEffect(() => {
+    if (selectedRound) {
+      setRoundIdQueryParam(selectedRound.id);
+    }
+  }, [selectedRound]);
 
   return (
     <SidebarSectionList
@@ -38,10 +56,10 @@ export function RoundList() {
         const isSelected = selectedRound?.id === round.id;
         return {
           id: round.id,
-          item: <RoundListButton round={round} isSelected={isSelected} onSelect={(round) => setSelectedRound(round.id)} />,
+          item: <RoundListButton round={round} isSelected={isSelected} onSelect={(round) => setSelectedRound(round)} />,
         };
       })}
-      addItem={<CreateRoundModal onSave={addRound} />}
+      addItem={<CreateRoundModal onSave={addRound.mutate} />}
       maxItems={5}
     />
   );
