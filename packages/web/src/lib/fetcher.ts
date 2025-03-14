@@ -2,7 +2,7 @@ import { AUTH_TOKEN_KEY } from '@/config';
 import { LocalStorageService } from '@/services/local-storage';
 import axios from 'axios';
 
-const fetcher = axios.create({
+export const fetcher = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -30,5 +30,3 @@ fetcher.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-export { fetcher };
