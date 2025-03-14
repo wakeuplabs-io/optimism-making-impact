@@ -1,7 +1,9 @@
 import { apiResponse } from '@/lib/api-response/index.js';
+import { ApiError } from '@/lib/errors/api-error.js';
 import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
 import { getLastCompleteRound } from '@/lib/prisma/helpers.js';
 import { prisma } from '@/lib/prisma/instance.js';
+import { idParamsSchema, updateRoundBodySchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -44,14 +46,16 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
 
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params;
-    const { ...data } = req.body; // TODO: validate input
+    const parsedParams = idParamsSchema.safeParse(req.params);
+    const parsedBody = updateRoundBodySchema.safeParse(req.body);
+
+    if (!parsedParams.success || !parsedBody.success) throw ApiError.badRequest();
 
     const edited = await prisma.round.update({
       where: {
-        id: Number(id),
+        id: Number(parsedParams.data.id),
       },
-      data,
+      data: parsedBody.data,
     });
 
     apiResponse.success(res, { message: 'Round edited successfully', data: edited }, StatusCodes.CREATED);
@@ -62,11 +66,13 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
-    const { id } = req.params; // TODO: validate input
+    const parsedParams = idParamsSchema.safeParse(req.params);
+
+    if (!parsedParams.success) throw ApiError.badRequest();
 
     const deleted = await prisma.round.delete({
       where: {
-        id: Number(id),
+        id: Number(parsedParams.data.id),
       },
     });
 
