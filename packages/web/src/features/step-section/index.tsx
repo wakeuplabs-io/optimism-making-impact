@@ -32,7 +32,7 @@ export function StepsSectionContent() {
   const formattedSteps = stepsState.steps.map((step, position) => ({ ...step, position }));
 
   return (
-    <div className='flex max-w-full flex-1 items-center justify-center gap-4 overflow-hidden px-8 pb-4 pt-4 lg:h-[145px] lg:items-start lg:px-0 lg:pb-10 lg:pt-16'>
+    <>
       <StepsList
         selectedCategoryId={selectedCategoryId}
         isLoading={isLoading}
@@ -43,7 +43,7 @@ export function StepsSectionContent() {
         onEditStep={stepsState.editStep}
         isAdmin={isAdmin}
       />
-      {!isLoading && !isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
-    </div>
+      {!isMobile && isAdmin && <AddStepModal categoryId={selectedCategoryId} onSave={stepsState.addStep} />}
+    </>
   );
 }
