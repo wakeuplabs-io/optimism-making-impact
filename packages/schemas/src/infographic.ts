@@ -1,18 +1,6 @@
 import { idValidator } from './common';
 import { z } from 'zod';
 
-export const infographicSchema = z.object({
-  id: z.number(),
-  markdown: z.string(),
-  image: z.string(),
-  stepId: z.number(),
-  position: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
-
-export type Infographic = z.infer<typeof infographicSchema>;
-
 export const createInfographicBodySchema = z.object({
   markdown: z.string().min(1, { message: 'Markdown is required' }),
   image: z.string().min(1, { message: 'Image is required' }),

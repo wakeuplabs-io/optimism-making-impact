@@ -1,12 +1,9 @@
+import { stepTypeSchema } from './entitites/enums';
 import { z } from 'zod';
 
 export const getAllStepsQueryParams = z.object({
   categoryId: z.string().transform(Number).optional(),
 });
-
-export const stepTypes = ['INFOGRAPHIC', 'SMARTLIST', 'CARDGRID'] as const;
-export const stepTypeSchema = z.enum(stepTypes);
-export type StepType = z.infer<typeof stepTypeSchema>;
 
 export const createStepBodySchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -21,6 +18,9 @@ export const createStepBodySchema = z.object({
   smartListFilterId: z.number().optional(),
 });
 
+/**
+ * Schema for creating a step, with validation that smartListFilterId is required only for CARDGRID type.
+ */
 export const createStepBodySchemaWithValidation = createStepBodySchema.refine(
   (data) => !(data.type !== 'CARDGRID' && data.smartListFilterId),
   {
