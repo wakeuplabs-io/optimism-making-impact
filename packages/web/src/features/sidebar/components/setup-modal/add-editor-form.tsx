@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import { userSchema } from '@optimism-making-impact/schemas';
-import { useUserStore } from '@/state';
-import { Input } from '@/components/ui/input';
 import { FormErrorMessage } from '@/components/form/form-error-message';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { useUserStore } from '@/state/user-store/user-store';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { userSchema } from '@optimism-making-impact/schemas';
+import { Controller, useForm } from 'react-hook-form';
 
 export function AddEditorForm() {
   const { handleSubmit, control, formState, reset } = useForm({ resolver: zodResolver(userSchema) });
@@ -23,11 +23,11 @@ export function AddEditorForm() {
       id={'add-editor-form'}
       onSubmit={handleSubmit((data) => onSubmit(data.email))}
       onError={(errors) => console.log(errors)}
-      className='min-w-[300px] flex flex-col'
+      className='flex min-w-[300px] flex-col'
     >
       <p className='mb-4 text-xl text-[#bebebe]'>New Editor</p>
       <div
-        className={cn('flex gap-2 border border-[#d9d9d9] p-1 rounded-xl mb-2', {
+        className={cn('mb-2 flex gap-2 rounded-xl border border-[#d9d9d9] p-1', {
           'border-red-600': !!emailError,
         })}
       >

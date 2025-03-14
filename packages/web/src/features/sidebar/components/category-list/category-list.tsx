@@ -1,8 +1,9 @@
 import { AddCategoryModal } from '../add-category-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
-import { useSidebarStore, useUserStore } from '@/state';
-import { Category } from '@/types';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
+import { Category } from '@/types/categories';
 import { useState } from 'react';
 
 export function CategoryList(props: ContentProps) {

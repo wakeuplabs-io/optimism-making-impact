@@ -1,12 +1,12 @@
 import { attributesOptionsMapper } from '../utils';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
+import { FormSelect } from '@/components/form/form-select';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteItem, Item } from '@/types';
+import { CompleteItem, Item } from '@/types/items';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { EditEntityModal } from '@/components/form/edit-entity-modal';
-import { FormTextArea } from '@/components/form/form-text-area';
-import { FormSelect } from '@/components/form/form-select';
 
 interface UpdateItemModalProps {
   item: CompleteItem;

@@ -7,7 +7,7 @@ import { SettingsSection } from '@/features/sidebar/components/settings-section/
 import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { Menu } from 'lucide-react';
 import { useMemo } from 'react';
 

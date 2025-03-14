@@ -4,7 +4,7 @@ import { StepsService } from '@/services/steps-service';
 import { StepsStore } from '@/state/steps/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { stepArraySchema } from '@/types';
+import { stepArraySchema } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
 

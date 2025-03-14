@@ -1,4 +1,4 @@
-import { CompleteRound } from '@/types';
+import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 
 export interface SidebarState {

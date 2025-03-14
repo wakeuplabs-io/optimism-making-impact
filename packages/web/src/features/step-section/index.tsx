@@ -1,8 +1,9 @@
 import { AddStepModal } from '@/features/step-section/add-step-modal';
 import { StepsList } from '@/features/step-section/step-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useStepsStore } from '@/state/steps/steps-store';
+import { useUserStore } from '@/state/user-store/user-store';
 import { useEffect, useState } from 'react';
 
 export function StepsSectionContent() {

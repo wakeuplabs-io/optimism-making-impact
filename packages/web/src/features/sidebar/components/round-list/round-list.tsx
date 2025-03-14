@@ -1,7 +1,8 @@
 import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { RoundListButton } from './round-list-button';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
 import { useState } from 'react';
 
 export function RoundList() {

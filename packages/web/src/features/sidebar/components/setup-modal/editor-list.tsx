@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/state';
+import { useUserStore } from '@/state/user-store/user-store';
 
 export function EditorList() {
   const adminUsers = useUserStore((state) => state.adminUsers);

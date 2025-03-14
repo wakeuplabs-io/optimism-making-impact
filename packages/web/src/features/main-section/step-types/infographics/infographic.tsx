@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
-import { InfographicList } from './infographic-list';
-import { useUserStore } from '@/state';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { cn } from '@/lib/utils';
 import { AddInfographicModal } from './add-infographic-modal';
+import { InfographicList } from './infographic-list';
+import { cn } from '@/lib/utils';
+import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useUserStore } from '@/state/user-store/user-store';
+import { ReactNode } from 'react';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
   return (

@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { ChevronDown } from 'lucide-react';
 
 /**
@@ -24,7 +24,7 @@ export function RoundsSelect() {
           {roundsState.rounds.map((round) => (
             <SelectItem
               key={round.id}
-              className='text-sm cursor-pointer h-14 text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base'
+              className='h-14 cursor-pointer text-sm text-dark-low focus:bg-background-brighter focus:text-dark-medium 2xl:text-base'
               value={round.id.toString()}
             >
               {getRoundName(round.id)}

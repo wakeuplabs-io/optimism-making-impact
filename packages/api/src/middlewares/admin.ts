@@ -1,6 +1,7 @@
 import { apiResponse } from '@/lib/api-response/index.js';
-import { authManager, AuthManagerException } from '@/lib/auth/index.js';
-import { Request, Response, NextFunction } from 'express';
+import { AuthManagerException } from '@/lib/auth/auth-manager.js';
+import { authManager } from '@/lib/auth/index.js';
+import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 const adminRequiredMethods = ['POST', 'PUT', 'DELETE'];

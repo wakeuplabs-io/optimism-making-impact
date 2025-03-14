@@ -2,7 +2,7 @@ import { StepSeparator } from './step-separator';
 import { getButtonState } from '@/features/step-section/step-button/helpers';
 import { StepButton } from '@/features/step-section/step-button/step-button';
 import { useIsDesktopXL } from '@/hooks/use-tresholds';
-import { Step } from '@/types';
+import { Step } from '@/types/steps';
 import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { LoaderCircle } from 'lucide-react';
 import { Fragment, useMemo } from 'react';
