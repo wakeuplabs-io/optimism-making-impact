@@ -1,7 +1,7 @@
+import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { ApiError } from '@/lib/errors/api-error.js';
 import { prisma } from '@/lib/prisma/instance.js';
-import { idParamsSchema } from '@/lib/schemas/common.js';
+import { idParamsSchema } from '@/lib/schemas.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

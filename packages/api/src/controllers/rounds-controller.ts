@@ -1,5 +1,5 @@
+import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { ApiError } from '@/lib/errors/api-error.js';
 import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
 import { getLastCompleteRound } from '@/lib/prisma/helpers.js';
 import { prisma } from '@/lib/prisma/instance.js';
