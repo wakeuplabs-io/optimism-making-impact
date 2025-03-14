@@ -1,5 +1,6 @@
 import { useRouterObserver } from '@/hooks/use-router-observer';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
 import { ComponentType, FC, useEffect } from 'react';
 
 /**

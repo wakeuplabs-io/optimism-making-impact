@@ -4,7 +4,7 @@ import LogosSection from '@/features/sidebar/components/logos-section';
 import { RoundList } from '@/features/sidebar/components/round-list/round-list';
 import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
 import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 
 export function SidebarContent() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
