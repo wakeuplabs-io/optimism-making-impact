@@ -1,12 +1,11 @@
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form/form-modal';
-import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { TextAreaInput } from '@/components/text-area-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { FormTextArea } from '@/components/form/form-text-area';
 
 interface AddInfographicModalProps {
   stepId: number;
@@ -51,15 +50,13 @@ function FormFields({ defaultValues }: FormFieldsProps) {
   const { control } = useFormContext<CreateInfographicBody>();
 
   return (
-    <div className='grid gap-4 py-4'>
+    <div className='flex flex-col gap-4'>
       <Controller
         name='markdown'
         control={control}
         defaultValue={defaultValues.markdown}
         render={({ field, fieldState }) => (
-          <FormInputWrapper error={fieldState.error?.message}>
-            <TextAreaInput {...field} rows={7} placeholder='Content' />
-          </FormInputWrapper>
+          <FormTextArea label='Content' error={fieldState.error?.message} {...field} rows={7} placeholder='Content' />
         )}
       />
       <Controller
