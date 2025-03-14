@@ -7,6 +7,7 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
+import { deprecate } from 'util';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
@@ -14,15 +15,17 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
   selectedRound: null,
   selectedCategoryId: 0,
   categoriesInProgress: [],
+  //@deprecate
   init: async () => {
     const response = await RoundsService.getRounds();
-    const rounds: CompleteRound[] = response.data.rounds;
+    const rounds: CompleteRound[] = response;
 
     set(() => ({ rounds }));
   },
   fetchData: async () => {
     const response = await RoundsService.getRounds();
-    const rounds: CompleteRound[] = response.data.rounds;
+    console.log('response', response);
+    const rounds: CompleteRound[] = response;
 
     const updatedSelectedRound = rounds.find((round) => round.id === get().selectedRound?.id);
 
