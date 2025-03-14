@@ -1,13 +1,12 @@
 import { FormModal } from '@/components/form/form-modal';
-import { SelectInput } from '@/components/inputs/select-input';
 import { Attribute, CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
 import { IconButton } from '@/components/icon-button';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
-import { FormInputWrapper } from '@/components/form/form-input';
-import { TextAreaInput } from '@/components/text-area-input';
+import { FormTextArea } from '@/components/form/form-text-area';
+import { FormSelect } from '@/components/form/form-select';
 
 interface AddItemModalProps {
   attributes: Attribute[];
@@ -55,15 +54,13 @@ function FormFields({ attributeOptions, defaultValues }: FormFieldsProps) {
   const { control } = useFormContext<CreateItemBody>();
 
   return (
-    <div className='grid gap-4 py-4'>
+    <div className='grid gap-4'>
       <Controller
         name='markdown'
         control={control}
         defaultValue={defaultValues.markdown}
         render={({ field, fieldState }) => (
-          <FormInputWrapper error={fieldState.error?.message}>
-            <TextAreaInput {...field} rows={5} placeholder='Content' />
-          </FormInputWrapper>
+          <FormTextArea label='Content' error={fieldState.error?.message} {...field} rows={5} placeholder='Content' />
         )}
       />
       {attributeOptions.length > 0 && (
@@ -72,14 +69,14 @@ function FormFields({ attributeOptions, defaultValues }: FormFieldsProps) {
           control={control}
           defaultValue={defaultValues.attributeId}
           render={({ field, fieldState }) => (
-            <FormInputWrapper error={fieldState.error?.message}>
-              <SelectInput
-                name='attributeId'
-                items={attributeOptions}
-                onValueChange={(value) => field.onChange(+value)}
-                placeholder='Select an attribute'
-              />
-            </FormInputWrapper>
+            <FormSelect
+              error={fieldState.error?.message}
+              name='attributeId'
+              label='Attribute'
+              items={attributeOptions}
+              onValueChange={(value) => field.onChange(+value)}
+              placeholder='Select an attribute'
+            />
           )}
         />
       )}

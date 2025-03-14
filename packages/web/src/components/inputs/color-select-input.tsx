@@ -2,7 +2,7 @@ import { cn, getColor } from '@/lib/utils';
 import { Color, colorList } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
 
-interface ColorSelectInputProps {
+export interface ColorSelectInputProps {
   onChange?: (color: Color) => void;
   selected?: Color;
   disabled?: boolean;
@@ -18,14 +18,7 @@ export function ColorSelectInput(props: ColorSelectInputProps) {
   };
 
   return (
-    <div
-      className={cn(
-        'border-1 grid min-h-8 w-fit gap-3 rounded-md border border-input px-2 py-1',
-        'grid-cols-5',
-        'md:grid-cols-10',
-        props.containerClassName,
-      )}
-    >
+    <div className={cn('border-1 flex justify-between min-h-8 w-fit gap-3 rounded-xl border border-input p-3', props.containerClassName)}>
       {colorList.map((color) => (
         <ColorOption key={color} color={color} onClick={handleColorChange} disabled={props.disabled} isSelected={selectedColor === color} />
       ))}
@@ -43,7 +36,7 @@ interface ColorOptionProps {
 function ColorOption(props: ColorOptionProps) {
   return (
     <button
-      className={cn('flex h-[23px] w-[23px] items-center justify-center rounded-full', props.disabled && 'opacity-50')}
+      className={cn('flex h-[21px] w-[21px] items-center justify-center rounded-full', props.disabled && 'opacity-50')}
       style={{ backgroundColor: getColor(props.color) }}
       onClick={(e) => {
         e.preventDefault();
