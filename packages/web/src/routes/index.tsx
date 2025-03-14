@@ -13,8 +13,7 @@ export type IndexRouteSearchParams = z.infer<typeof indexRouteSearchParamsSchema
 
 export const Route = createFileRoute('/')({
   component: withAppInitialization(AppLayout),
-  validateSearch: (search): IndexRouteSearchParams => {
-    const parsed = indexRouteSearchParamsSchema.safeParse(search);
-    return { roundId: parsed.data?.roundId, categoryId: parsed.data?.categoryId, stepId: parsed.data?.stepId };
-  },
+  loader: async ({ location: { search } }: { location: { search: IndexRouteSearchParams } }): Promise<IndexRouteSearchParams> =>
+    indexRouteSearchParamsSchema.parse(search),
+  validateSearch: (search): IndexRouteSearchParams => indexRouteSearchParamsSchema.parse(search),
 });
