@@ -1,4 +1,5 @@
-import { useUserStore } from '@/state/user-store/user-store';
+import { AUTH_TOKEN_KEY } from '@/config';
+import { LocalStorageService } from '@/services/local-storage';
 import axios from 'axios';
 
 const fetcher = axios.create({
@@ -9,7 +10,7 @@ const fetcher = axios.create({
 });
 
 fetcher.interceptors.request.use((config) => {
-  const authToken = useUserStore.getState().user?.authToken;
+  const authToken = LocalStorageService.getItem<string>(AUTH_TOKEN_KEY);
 
   if (authToken) {
     config.headers.Authorization = authToken;
@@ -23,12 +24,7 @@ fetcher.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       setTimeout(() => {
-        useUserStore
-          .getState()
-          .signOut()
-          .then(() => {
-            useUserStore.getState().clearState();
-          });
+        LocalStorageService.removeItem(AUTH_TOKEN_KEY);
       }, 1000);
     }
     return Promise.reject(error);
