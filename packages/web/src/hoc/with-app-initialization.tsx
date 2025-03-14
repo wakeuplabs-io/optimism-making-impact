@@ -20,7 +20,7 @@ export function withAppInitialization<P extends JSX.IntrinsicAttributes>(Wrapped
         await useUserStore.getState().fetchAuth();
         initializeObserver();
       })();
-    }, [initializeObserver]);
+    }, []);
 
     return <WrappedComponent {...props} />;
   };
