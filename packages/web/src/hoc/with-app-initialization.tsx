@@ -1,0 +1,28 @@
+import { useRouterObserver } from '@/hooks/use-router-observer';
+import { useSidebarStore, useUserStore } from '@/state';
+import { ComponentType, FC, useEffect } from 'react';
+
+/**
+ * HOC that wraps a component with app initialization logic.
+ *
+ * This ensures that the app is properly initialized before the component is rendered.
+ * @param WrappedComponent The component to wrap.
+ * @returns The wrapped component.
+ */
+export function withAppInitialization<P extends JSX.IntrinsicAttributes>(WrappedComponent: ComponentType<P>): FC<P> {
+  const AppInitializationWrapper: FC<P> = (props: P) => {
+    const { initializeObserver } = useRouterObserver();
+
+    useEffect(() => {
+      (async () => {
+        await useSidebarStore.getState().init();
+        await useUserStore.getState().fetchAuth();
+        initializeObserver();
+      })();
+    }, [initializeObserver]);
+
+    return <WrappedComponent {...props} />;
+  };
+
+  return AppInitializationWrapper;
+}

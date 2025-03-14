@@ -1,3 +1,4 @@
+import { withAppInitialization } from '@/hoc/with-app-initialization';
 import { AppLayout } from '@/layout/app-layout';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
@@ -11,7 +12,7 @@ const indexRouteSearchParamsSchema = z.object({
 export type IndexRouteSearchParams = z.infer<typeof indexRouteSearchParamsSchema>;
 
 export const Route = createFileRoute('/')({
-  component: AppLayout,
+  component: withAppInitialization(AppLayout),
   validateSearch: (search): IndexRouteSearchParams => {
     const parsed = indexRouteSearchParamsSchema.safeParse(search);
     return { roundId: parsed.data?.roundId, categoryId: parsed.data?.categoryId, stepId: parsed.data?.stepId };
