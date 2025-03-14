@@ -97,9 +97,12 @@ export function MultiSelectInput<T extends Tag>({
   const showOptions = open && filteredOptions.length > 0;
 
   return (
-    <div className={cn('relative', className)}>
+    <div className='relative'>
       <div
-        className='flex max-h-[90px] min-h-[40px] w-full flex-wrap gap-2 overflow-y-auto rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring'
+        className={cn(
+          'flex max-h-[90px] min-h-[40px] w-full flex-wrap gap-2 overflow-y-auto rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-1 focus-within:ring-ring',
+          className,
+        )}
         onClick={() => inputRef.current?.focus()}
         onFocus={() => scrollInputIntoView()}
       >
@@ -141,7 +144,7 @@ export function MultiSelectInput<T extends Tag>({
             setTimeout(() => setOpen(false), 200);
           }}
           placeholder={placeholder}
-          className='h-7 w-auto flex-[1_0_auto] border-none bg-transparent p-0 shadow-none outline-none focus-visible:ring-0'
+          className='h-7 text-sm w-auto flex-[1_0_auto] border-none bg-transparent p-0 shadow-none outline-none focus-visible:ring-0'
         />
       </div>
       {showOptions ? (
