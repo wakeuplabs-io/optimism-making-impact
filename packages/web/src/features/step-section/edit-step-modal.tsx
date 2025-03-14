@@ -1,21 +1,21 @@
 import { IconPicker } from '../sidebar/components/icon-picker';
-import { FormModal } from '@/components/form-modal';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
+import { cn } from '@/lib/utils';
 import { Step } from '@/types/steps';
 import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
-import { Pencil, Trash } from 'lucide-react';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-interface EditIconProps {
+interface EditStepModalProps {
   step: Step;
   onSave?: (stepId: number, data: UpdateStepBody) => void;
-  onDelete?: () => void;
+  onDelete: () => void;
 }
 
-export function EditStepModal(props: EditIconProps) {
+export function EditStepModal(props: EditStepModalProps) {
   const defaultValues: UpdateStepBody = {
     title: props.step.title,
     icon: props.step.icon,
@@ -27,19 +27,20 @@ export function EditStepModal(props: EditIconProps) {
   }
 
   return (
-    <FormModal
-      title='Edit tab'
-      trigger={<Pencil size={14} className='stroke-[#4E4E4E] hover:stroke-black' />}
+    <EditEntityModal
+      entity='tab'
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={updateStepBodySchema}
-      onSecondaryClick={props.onDelete}
-      submitButtonText='Save'
-      secondaryButtonText='Delete'
-      secondaryButtonIcon={<Trash />}
+      deleteDescription={
+        <span>
+          Are you sure you want to delete <b>{props.step.title}</b> step?
+        </span>
+      }
+      onDelete={props.onDelete}
     >
       <FormFields defaultValues={defaultValues} step={props.step} />
-    </FormModal>
+    </EditEntityModal>
   );
 }
 
@@ -55,12 +56,14 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
   const selectedIcon = watch('icon');
 
   return (
-    <div className='grid gap-4 py-4'>
-      <div className='flex col-span-2 gap-2'>
-        <div className='flex flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Icon</span>
+    <div className='flex flex-col w-full'>
+      <div className='flex gap-4'>
+        <div className='flex flex-col gap-1.5'>
+          <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300'
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
+              'text-[#FF0420]': !!selectedIcon,
+            })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
             {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
@@ -68,27 +71,20 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         </div>
 
         <div className='flex flex-col w-full gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
             control={control}
             defaultValue={defaultValues.title}
             render={({ field, fieldState }) => (
               <div className='w-full'>
-                <FormTextInput
-                  {...field}
-                  className='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
-                  placeholder='Write here...'
-                  error={fieldState.error?.message}
-                />
+                <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />
               </div>
             )}
           />
         </div>
       </div>
       {step.type === 'SMARTLIST' && (
-        <div className='flex flex-col col-span-2 gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Description</span>
+        <div className='flex flex-col gap-1'>
           <Controller
             name='description'
             control={control}
@@ -103,7 +99,7 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='col-span-2 mt-2 flex h-[250px] w-[450px] flex-col gap-2'>
+          <div className='flex flex-col gap-2 mt-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

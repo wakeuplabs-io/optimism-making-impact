@@ -7,13 +7,18 @@ interface SelectInputModalProps extends SelectProps {
 }
 
 export function SelectInput(props: SelectInputModalProps) {
-  const { name } = props;
   return (
     <div className='flex flex-col gap-1.5'>
-      <Label htmlFor={name} className='sr-only'>
-        <span>{name}</span>
-      </Label>
-      <Select {...props} itemClassName={props.itemClassName} />
+      {props.name && (
+        <Label htmlFor={props.name} className='text-xs text-[#BEBEBE] font-normal'>
+          <span className='capitalize'>{props.name}</span>
+        </Label>
+      )}
+      <Select
+        {...props}
+        itemClassName={props.itemClassName}
+        triggerClassName='h-[42px] w-full rounded-md border px-3 text-sm focus:ring-0'
+      />
     </div>
   );
 }

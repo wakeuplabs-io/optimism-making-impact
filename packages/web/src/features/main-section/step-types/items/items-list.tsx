@@ -29,7 +29,7 @@ export function ItemsList({ items, step, editStepDescription, attributes }: Item
 
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
-      <div className='mb-6 flex items-start justify-between border-b border-[#D9D9D9] pb-3'>
+      <div className='mb-6 flex gap-4 items-start justify-between border-b border-[#D9D9D9] pb-3'>
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
       </div>

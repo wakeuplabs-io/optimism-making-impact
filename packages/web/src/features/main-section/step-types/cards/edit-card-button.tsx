@@ -1,7 +1,7 @@
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { SelectInput } from '@/components/inputs/select-input';

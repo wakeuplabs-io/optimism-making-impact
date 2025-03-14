@@ -13,6 +13,7 @@ export function FormTextInput({ error, wrapperClassname, ...field }: FormTextInp
       <TextInput
         {...field}
         className={cn(
+          'h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm',
           {
             'border-red-500 focus-visible:ring-red-500': !!error,
           },

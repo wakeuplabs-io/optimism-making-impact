@@ -1,5 +1,5 @@
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormInputWrapper } from '@/components/form/form-input';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { ColorSelectInput } from '@/components/inputs/color-select-input';
@@ -53,11 +53,7 @@ export function UpdateAttributeModal(props: UpdateAttributeModalProps) {
         <DeleteConfirmationModal
           isOpen={isDeleteConfirmationModalOpen}
           title='Delete filter'
-          description={
-            <span>
-              Are you sure you want to remove this Smart List filter?
-            </span>
-          }
+          description={<span>Are you sure you want to remove this Smart List filter?</span>}
           onConfirm={() => props.onDelete(props.attribute)}
           onOpenChange={toggleDeleteConfirmationModal}
         />

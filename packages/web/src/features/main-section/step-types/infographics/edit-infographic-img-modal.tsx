@@ -1,4 +1,4 @@
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
