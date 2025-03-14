@@ -1,17 +1,14 @@
+import { FormSelect } from '@/components/form/form-select';
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { FormModal } from '@/components/form/form-modal';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
-import { SelectInput } from '@/components/inputs/select-input';
-import { MultiSelectInput } from '@/components/ui/multi-select';
 import { CompleteCard } from '@/types/cards';
 import { Keyword } from '@/types/keywords';
 import { Attribute, UpdateCardBody, updateCardBodySchema } from '@optimism-making-impact/schemas';
-import { Save, Trash } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { useToggle } from 'usehooks-ts';
+import { FormMultiSelect } from '@/components/form/form-multi-select';
 
 interface EditCardModalProps {
   stepId: number;
@@ -23,8 +20,6 @@ interface EditCardModalProps {
 }
 
 export function EditCardModal(props: EditCardModalProps) {
-  const [isConfirmDeleteModalOpen, toggleConfirmDeleteModalOpen] = useToggle();
-
   const defaultValues: UpdateCardBody = {
     title: props.card.title,
     markdown: props.card.markdown,
@@ -57,116 +52,96 @@ export function EditCardModal(props: EditCardModalProps) {
   }
 
   return (
-    <>
-      <FormModal
-        title='Edit card'
-        trigger={<EditIcon variant='lg' />}
-        onSubmit={handleSubmit}
-        submitButtonText='Save'
-        submitButtonIcon={<Save />}
-        secondaryButtonIcon={<Trash />}
-        secondaryButtonText='Delete'
-        onSecondaryClick={toggleConfirmDeleteModalOpen}
-        defaultValues={defaultValues}
-        schema={updateCardBodySchema}
-        contentProps={{
-          onPointerDownOutside: (e) => {
-            if (document.getElementById('multiselect-popover-content')) e.preventDefault();
-          },
-        }}
-      >
-        <FormFields attributeOptions={attributeOptions} keywords={props.keywords} defaultValues={defaultValues} />
-      </FormModal>
-      {isConfirmDeleteModalOpen && (
-        <DeleteConfirmationModal
-          isOpen={isConfirmDeleteModalOpen}
-          title='Delete Card'
-          description={
-            <span>
-              Are you sure you want to delete <b>{props.card.title}</b> card?
-            </span>
-          }
-          onConfirm={() => props.onDelete?.(props.card.id)}
-          onOpenChange={toggleConfirmDeleteModalOpen}
-        />
-      )}
-    </>
+    <EditEntityModal
+      entity='card'
+      trigger={<EditIcon variant='lg' />}
+      onSubmit={handleSubmit}
+      defaultValues={defaultValues}
+      schema={updateCardBodySchema}
+      onDelete={() => props.onDelete?.(props.card.id)}
+      deleteDescription={
+        <span>
+          Are you sure you want to delete <b>{props.card.title}</b> card?
+        </span>
+      }
+      contentProps={{
+        onPointerDownOutside: (e) => {
+          if (document.getElementById('multiselect-popover-content')) e.preventDefault();
+        },
+      }}
+    >
+      <FormFields attributeOptions={attributeOptions} keywords={props.keywords} />
+    </EditEntityModal>
   );
 }
 
 interface FormFieldsProps {
   attributeOptions: AttributeOption[];
   keywords: Keyword[];
-  defaultValues: UpdateCardBody;
 }
 
-function FormFields({ attributeOptions, keywords, defaultValues }: FormFieldsProps) {
+function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
   const { control } = useFormContext<UpdateCardBody>();
 
   return (
-    <div className='flex w-[320px] max-w-full flex-col gap-4 py-4'>
-      <Controller
-        name='title'
-        control={control}
-        defaultValue={defaultValues.title}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
-      />
-      <Controller
-        name='markdown'
-        control={control}
-        defaultValue={defaultValues.markdown}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Markdown' />}
-      />
+    <div className='flex flex-col gap-2'>
       <Controller
         name='strength'
         control={control}
-        defaultValue={defaultValues.strength}
-        render={({ field, formState }) => (
-          <SelectInput
-            name='type'
+        render={({ field, fieldState, formState }) => (
+          <FormSelect
+            error={fieldState.error?.message}
+            name={field.name}
             items={strengthOptions}
+            value={field.value}
             onValueChange={field.onChange}
             defaultValue={formState.defaultValues?.strength}
-            placeholder='Select Strength'
-            triggerClassName='capitalize'
             itemClassName='capitalize'
-            value={field.value}
+            triggerClassName='capitalize'
           />
         )}
       />
       <Controller
         name='attributeId'
         control={control}
-        defaultValue={defaultValues.attributeId}
-        render={({ field, formState }) => (
-          <SelectInput
+        render={({ field, fieldState }) => (
+          <FormSelect
+            error={fieldState.error?.message}
+            name={field.name}
+            label={'Smart List Filter'}
             placeholder='Select Smart List Filter'
-            name='attribute'
             items={attributeOptions}
-            triggerClassName='capitalize'
-            itemClassName='capitalize'
-            defaultValue={formState.defaultValues?.attributeId?.toString()}
+            value={field.value?.toString()}
             onValueChange={(value) => field.onChange(+value)}
             disabled={attributeOptions.length === 0}
-            value={field.value?.toString()}
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
           />
         )}
       />
       <Controller
+        name='title'
+        control={control}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='markdown'
+        control={control}
+        render={({ field, fieldState }) => <FormTextInput label='Text' {...field} error={fieldState.error?.message} placeholder='Text' />}
+      />
+      <Controller
         name='keywords'
         control={control}
-        defaultValue={defaultValues.keywords}
-        render={({ field }) => {
-          return (
-            <MultiSelectInput
-              value={field.value}
-              options={keywords}
-              onChange={(value) => {
-                field.onChange(value);
-              }}
-            />
-          );
-        }}
+        render={({ field }) => (
+          <FormMultiSelect
+            label='Keywords connected'
+            value={field.value}
+            options={keywords}
+            onChange={(value) => {
+              field.onChange(value);
+            }}
+          />
+        )}
       />
     </div>
   );

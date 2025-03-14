@@ -68,17 +68,16 @@ export function AddStepModal(props: AddStepModalProps) {
       schema={createStepBodySchema}
       onOpenChange={onOpenChange}
     >
-      <FormFields defaultValues={defaultValues} smartListOptions={smartListsOptions} />
+      <FormFields smartListOptions={smartListsOptions} />
     </FormModal>
   );
 }
 
 interface FormFieldsProps {
-  defaultValues: CreateStepBody;
   smartListOptions: SmartListOption[];
 }
 
-function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
+function FormFields({ smartListOptions }: FormFieldsProps) {
   const { control, setValue, watch } = useFormContext<CreateStepBody>();
   const type = useWatch({ control, name: 'type' });
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
@@ -96,7 +95,6 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
       <Controller
         name='type'
         control={control}
-        defaultValue={defaultValues.type}
         render={({ field, formState }) => (
           <div className='mb-6 w-full'>
             <SelectInput
@@ -132,7 +130,6 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
         <Controller
           name='description'
           control={control}
-          defaultValue={defaultValues.description}
           render={({ field, fieldState }) => (
             <div className='flex flex-col gap-1'>
               <FormTextInput {...field} error={fieldState.error?.message} placeholder='Write here...' />
@@ -159,12 +156,7 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
           <Controller
             name='title'
             control={control}
-            defaultValue={defaultValues.title}
-            render={({ field, fieldState }) => (
-              <div className='w-full'>
-                <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />
-              </div>
-            )}
+            render={({ field, fieldState }) => <FormTextInput {...field} placeholder='Write here...' error={fieldState.error?.message} />}
           />
         </div>
       </div>
@@ -172,7 +164,6 @@ function FormFields({ defaultValues, smartListOptions }: FormFieldsProps) {
       <Controller
         name='icon'
         control={control}
-        defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
           <div className='col-span-2 mt-2 flex flex-col gap-2'>
             {isIconPickerOpen && (
