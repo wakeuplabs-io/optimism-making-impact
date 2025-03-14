@@ -1,6 +1,6 @@
 import { FiltersStore } from '@/state/main-section-filters/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { StrengthItem, strengthItems } from '@/types';
+import { StrengthItem, strengthItems } from '@/types/common';
 import { Attribute, Keyword } from '@optimism-making-impact/schemas';
 
 const initialSelectedFilters = {

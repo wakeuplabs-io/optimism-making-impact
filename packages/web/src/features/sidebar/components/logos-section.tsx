@@ -1,7 +1,8 @@
 import RetroList from '@/assets/retro-list.svg';
 import VoteHere from '@/assets/vote-here.svg';
 import { SidebarLinkButton } from '@/components/sidebar-link-button';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
 
 export default function LogosSection() {
   const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);

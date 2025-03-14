@@ -3,11 +3,11 @@ import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
-import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteStep } from '@/types';
+import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteItem } from '@/types/items';
+import { CompleteStep } from '@/types/steps';
 import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
 

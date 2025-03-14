@@ -4,7 +4,7 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { CompleteRound } from '@/types';
+import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
 

@@ -1,7 +1,7 @@
-import { useUserStore } from '@/state';
-import { SettingsButton } from './settings-button';
 import { Login } from './login';
 import Logout from './logout';
+import { SettingsButton } from './settings-button';
+import { useUserStore } from '@/state/user-store/user-store';
 
 export function SettingsSection() {
   const user = useUserStore((state) => state.user);

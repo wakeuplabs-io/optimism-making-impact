@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
-import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { CompleteCard } from '@/types';
-import { CardStrength, Keyword, Attribute } from '@optimism-making-impact/schemas';
+import { useUserStore } from '@/state/user-store/user-store';
+import { CompleteCard } from '@/types/cards';
+import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
+import { useState } from 'react';
 import Markdown from 'react-markdown';
 
 interface CardProps {
@@ -25,7 +25,7 @@ export function Card(props: CardProps) {
   return (
     <div
       style={{ borderLeftColor: borderColor }}
-      className='flex h-fit w-full min-h-[320px] flex-col gap-6 rounded-2xl bg-white p-8 md:w-[45%] lg:w-[320px] border-l-[3px]'
+      className='flex h-fit min-h-[320px] w-full flex-col gap-6 rounded-2xl border-l-[3px] bg-white p-8 md:w-[45%] lg:w-[320px]'
       onMouseEnter={() => setIsCardHovered(true)}
       onMouseLeave={() => setIsCardHovered(false)}
     >
@@ -57,7 +57,7 @@ function CardTitle(props: CardTitleProps) {
   const deleteCard = useMainSectionStore((state) => state.deleteCard);
 
   return (
-    <div className='flex items-center max-w-full gap-4'>
+    <div className='flex max-w-full items-center gap-4'>
       <p className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-base font-medium' title={props.card.title}>
         {props.card.title}
       </p>
@@ -98,11 +98,11 @@ interface CardBodyProps {
 
 function CardBody(props: CardBodyProps) {
   return (
-    <div className='prose prose-s flex flex-1 w-full'>
+    <div className='prose-s prose flex w-full flex-1'>
       <Markdown
         className='w-full overflow-auto break-words'
         components={{
-          p: (props) => <p className='text-sm m-0' {...props} />,
+          p: (props) => <p className='m-0 text-sm' {...props} />,
         }}
       >
         {props.markdown}
@@ -117,13 +117,13 @@ interface CardFooterProps {
 
 function CardFooter(props: CardFooterProps) {
   return (
-    <div className='flex justify-between w-full h-[50px] p-1 gap-2 overflow-x-auto scroll-s'>
+    <div className='scroll-s flex h-[50px] w-full justify-between gap-2 overflow-x-auto p-1'>
       {props.keywords.map((keyword, i) => {
         return (
           <Badge
             key={`${keyword.id}-${i}`}
             style={{ backgroundColor: getRandomBadgeColor(keyword.value).background }}
-            className='inline-block w-[48%] h-fit rounded-full px-6 py-1 text-center text-xs font-normal'
+            className='inline-block h-fit w-[48%] rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}
           </Badge>

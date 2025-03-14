@@ -1,6 +1,6 @@
-import { CognitoJwtVerifier } from 'aws-jwt-verify';
-import { AuthManager } from './auth-manager.js';
 import { prisma } from '../prisma/instance.js';
+import { AuthManager } from './auth-manager.js';
+import { CognitoJwtVerifier } from 'aws-jwt-verify';
 
 if (!process.env.COGNITO_USER_POOL_ID || !process.env.COGNITO_USER_POOL_CLIENT) {
   throw new Error('Missing Cognito configs');
@@ -13,5 +13,3 @@ const jwtVerifier = CognitoJwtVerifier.create({
 });
 
 export const authManager = new AuthManager(jwtVerifier, prisma);
-export { AuthManagerException } from './auth-manager.js';
-export * from './types.js';

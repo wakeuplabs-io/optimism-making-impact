@@ -68,3 +68,5 @@ export const CARD_STRENGTH_COLOR_MAP: Record<CardStrength, CardStrengthColor> = 
     },
   },
 };
+
+export const AUTH_TOKEN_KEY = 'authToken';

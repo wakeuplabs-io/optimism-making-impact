@@ -1,5 +1,5 @@
 import { AutoSaveStatus } from '@/components/autosave-indicator/types';
-import { CompleteStep } from '@/types';
+import { CompleteStep } from '@/types/steps';
 import {
   CreateAttributeBody,
   CreateCardBody,

@@ -1,4 +1,4 @@
-import { useUserStore } from '@/state';
+import { useUserStore } from '@/state/user-store/user-store';
 
 export function IsAdminIndicator() {
   const { isAdminModeEnabled, toggleAdminMode } = useUserStore((state) => state);
