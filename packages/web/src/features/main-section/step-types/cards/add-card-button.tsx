@@ -1,13 +1,13 @@
+import { FormSelect } from '@/components/form/form-select';
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { SelectInput } from '@/components/inputs/select-input';
-import { MultiSelectInput } from '@/components/ui/multi-select';
 import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { FormMultiSelect } from '@/components/form/form-multi-select';
 
 interface AddCardModalProps {
   stepId: number;
@@ -50,13 +50,12 @@ export function AddCardModal(props: AddCardModalProps) {
       defaultValues={defaultValues}
       schema={createCardBodySchema}
     >
-      <FormFields defaultValues={defaultValues} keywords={props.keywords} attributeOptions={attributeOptions} />
+      <FormFields keywords={props.keywords} attributeOptions={attributeOptions} />
     </FormModal>
   );
 }
 
 interface FormFieldsProps {
-  defaultValues: CreateCardBody;
   keywords: Keyword[];
   attributeOptions: AttributeOption[];
 }
@@ -65,57 +64,55 @@ function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<CreateCardBody>();
 
   return (
-    <div className='flex w-[320px] max-w-full flex-col gap-4 py-4'>
-      <Controller
-        name='title'
-        control={control}
-        defaultValue={props.defaultValues.title}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
-      />
-      <Controller
-        name='markdown'
-        control={control}
-        defaultValue={props.defaultValues.markdown}
-        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Markdown' />}
-      />
+    <div className='flex flex-col gap-2'>
       <Controller
         name='strength'
         control={control}
-        defaultValue={props.defaultValues.strength}
-        render={({ field, formState }) => (
-          <SelectInput
-            name='type'
+        render={({ field, fieldState, formState }) => (
+          <FormSelect
+            error={fieldState.error?.message}
+            name={field.name}
             items={strengthOptions}
             onValueChange={field.onChange}
             defaultValue={formState.defaultValues?.strength}
-            placeholder='Select Strength'
-            triggerClassName='capitalize'
             itemClassName='capitalize'
+            triggerClassName='capitalize'
           />
         )}
       />
       <Controller
         name='attributeId'
         control={control}
-        defaultValue={props.defaultValues.attributeId}
-        render={({ field }) => (
-          <SelectInput
+        render={({ field, fieldState }) => (
+          <FormSelect
+            error={fieldState.error?.message}
+            name={field.name}
+            label={'Smart List Filter'}
             placeholder='Select Smart List Filter'
-            name='attribute'
             items={props.attributeOptions}
-            triggerClassName='capitalize'
-            itemClassName='capitalize'
             onValueChange={(value) => field.onChange(+value)}
             disabled={props.attributeOptions.length === 0}
+            triggerClassName='capitalize'
+            itemClassName='capitalize'
           />
         )}
       />
       <Controller
+        name='title'
+        control={control}
+        render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Title' />}
+      />
+      <Controller
+        name='markdown'
+        control={control}
+        render={({ field, fieldState }) => <FormTextInput label='Text' {...field} error={fieldState.error?.message} placeholder='Text' />}
+      />
+      <Controller
         name='keywords'
         control={control}
-        defaultValue={props.defaultValues.keywords}
         render={({ field }) => (
-          <MultiSelectInput
+          <FormMultiSelect
+            label='Keywords connected'
             value={field.value}
             options={props.keywords}
             onChange={(value) => {
