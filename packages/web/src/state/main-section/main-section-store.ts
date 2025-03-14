@@ -8,7 +8,7 @@ import { StepsService } from '@/services/steps-service';
 import { MainSectionStore } from '@/state/main-section/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { CompleteStep, Step } from '@/types';
+import { CompleteStep, Step } from '@/types/steps';
 import {
   CreateAttributeBody,
   CreateCardBody,
@@ -87,7 +87,7 @@ export const useMainSectionStore = createWithMiddlewares<MainSectionStore>((set,
       const { data: updatedInfographic } = await InfographicsService.update(infographicId, { ...infographic, ...data });
       const updatedStep = {
         ...step,
-        infographies: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
+        infographics: step.infographics.map((infographic) => (infographic.id === infographicId ? updatedInfographic : infographic)),
       };
       set({ step: updatedStep });
       return {

@@ -5,9 +5,9 @@ import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useUserStore } from '@/state';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
@@ -39,7 +39,7 @@ function Container(props: { children: React.ReactNode }) {
 
   if (isMobile) {
     return (
-      <div className='flex items-center justify-between w-full gap-4 px-4 h-14 lg:static'>
+      <div className='flex h-14 w-full items-center justify-between gap-4 px-4 lg:static'>
         <span>{menuText}</span>
         <SideMenu trigger={<FiltersIcon size={24} />} description='Filters' side='right' className='w-[300px]'>
           {props.children}
@@ -65,14 +65,14 @@ function Content(props: ContentProps) {
 
   if (!props.smartListFilter) {
     return (
-      <div className='flex justify-center w-full'>
+      <div className='flex w-full justify-center'>
         <span>There is no Smart List Filter for this step</span>
       </div>
     );
   }
 
   return (
-    <div className='flex flex-col w-full'>
+    <div className='flex w-full flex-col'>
       <div className='flex items-center justify-between'>
         <span className='text-base font-semibold'>Filters</span>
         {isAdmin && <AddAttributeModal smartListFilterId={props.smartListFilter.id} onClick={addAttributeToSmartList} />}

@@ -1,7 +1,8 @@
 import RetroList from '@/assets/retro-list.svg';
 import VoteHere from '@/assets/vote-here.svg';
 import { SidebarLinkButton } from '@/components/sidebar-link-button';
-import { useSidebarStore, useUserStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useUserStore } from '@/state/user-store/user-store';
 
 export default function LogosSection() {
   const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
@@ -18,7 +19,7 @@ export default function LogosSection() {
           src={VoteHere}
           link={selectedRound.link1}
           isAdmin={isAdmin}
-          onClick={(url: string) => editRound(selectedRound.id, { link1: url })}
+          onSubmit={(data) => editRound(selectedRound.id, { link1: data.link })}
           className='w-1/2'
         />
       )}
@@ -27,7 +28,7 @@ export default function LogosSection() {
           src={RetroList}
           link={selectedRound.link2}
           isAdmin={isAdmin}
-          onClick={(url: string) => editRound(selectedRound.id, { link2: url })}
+          onSubmit={(data) => editRound(selectedRound.id, { link2: data.link })}
           className='w-1/2'
         />
       )}

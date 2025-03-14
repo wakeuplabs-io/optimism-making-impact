@@ -1,5 +1,6 @@
 import { BADGE_COLORS, BadgeColorType, COLOR_MAP, ExtendedColor } from '@/config';
-import { CompleteCard, Keyword } from '@/types';
+import { CompleteCard } from '@/types/cards';
+import { Keyword } from '@/types/keywords';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';

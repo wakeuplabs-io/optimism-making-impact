@@ -1,13 +1,13 @@
 import { IconPicker } from './icon-picker';
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
-import { Category } from '@/types';
+import { Category } from '@/types/categories';
 import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { EditEntityModal } from '@/components/form/edit-entity-modal';
 
 interface EditCategoryButtonProps {
   onSave: (name: string, icon: string) => void;
@@ -52,11 +52,11 @@ function FormFields({ defaultValues }: FormFieldsProps) {
 
   return (
     <div className='flex flex-col items-center gap-2'>
-      <div className='flex gap-4 w-full'>
+      <div className='flex w-full gap-4'>
         <div className='flex flex-col gap-1.5'>
           <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
           <div
-            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300 ', {
+            className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
               'text-[#FF0420]': !!selectedIcon,
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
@@ -80,7 +80,7 @@ function FormFields({ defaultValues }: FormFieldsProps) {
         control={control}
         defaultValue={defaultValues.icon}
         render={({ field, fieldState }) => (
-          <div className='w-full col-span-2 mt-2 flex flex-col gap-2'>
+          <div className='flex flex-col w-full col-span-2 gap-2 mt-2'>
             {isIconPickerOpen && (
               <>
                 <IconPicker

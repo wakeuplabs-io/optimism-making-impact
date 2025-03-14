@@ -1,4 +1,5 @@
-import { CompleteCard, Keyword } from '@/types';
+import { CompleteCard } from '@/types/cards';
+import { Keyword } from '@/types/keywords';
 import { CardStrength } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
 

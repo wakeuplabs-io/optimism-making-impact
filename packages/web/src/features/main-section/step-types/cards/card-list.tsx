@@ -1,7 +1,7 @@
 import { Card } from '@/features/main-section/step-types/cards/card';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { CompleteCard } from '@/types';
+import { CompleteCard } from '@/types/cards';
 
 interface CardListProps {
   cards: CompleteCard[];
@@ -20,7 +20,7 @@ export function CardList(props: CardListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex h-full w-full items-center justify-center'>
+    <div className='flex items-center justify-center w-full h-full'>
       <p>No card matches applied filters</p>
     </div>
   );
@@ -34,7 +34,7 @@ interface ListProps {
 function List(props: ListProps) {
   return (
     <div className='w-full pt-0'>
-      <div className='flex w-full flex-1 flex-col flex-wrap items-center gap-6 md:gap-8 md:flex-row md:justify-between lg:justify-start lg:items-start'>
+      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-6 md:flex-row md:justify-between md:gap-8 lg:items-start lg:justify-start'>
         {props.cards.map((card, i) => {
           return <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />;
         })}

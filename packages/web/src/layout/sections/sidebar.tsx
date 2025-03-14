@@ -2,7 +2,7 @@ import { SideMenu } from '@/components/side-menu';
 import { SidebarContent } from '@/features/sidebar';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { Menu } from 'lucide-react';
 import { useMemo } from 'react';
 

@@ -4,7 +4,8 @@ import { RoundsService } from '@/services/rounds-service';
 import { SidebarStore } from '@/state/sidebar/types';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
-import { CompleteRound, Round } from '@/types';
+import { CompleteRound } from '@/types/rounds';
+import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
@@ -99,12 +100,12 @@ export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) =>
       },
     });
   },
-  editRound: async (categoryId: number, data: Partial<Round>) => {
+  editRound: async (roundId: number, data: UpdateRoundBody) => {
     await optimisticUpdate({
       getStateSlice: () => get().rounds,
-      updateFn: (rounds) => rounds.map((round) => (round.id === data.id ? { ...round, ...data } : round)),
+      updateFn: (rounds) => rounds.map((round) => (round.id === roundId ? { ...round, ...data } : round)),
       setStateSlice: (rounds) => set({ rounds }),
-      apiCall: () => RoundsService.editOne(categoryId, data),
+      apiCall: () => RoundsService.editOne(roundId, data),
       onError: (error, rollbackState) => {
         const title = 'Failed to update round';
         let description = 'Unknown error';

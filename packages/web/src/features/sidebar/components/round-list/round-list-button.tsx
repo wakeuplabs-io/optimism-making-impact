@@ -1,7 +1,7 @@
-import { getRoundName } from '@/lib/utils';
-import { CompleteRound } from '@/types';
-import { Circle } from 'lucide-react';
 import { SidebarListButton } from '../sidebar-list-button';
+import { getRoundName } from '@/lib/utils';
+import { CompleteRound } from '@/types/rounds';
+import { Circle } from 'lucide-react';
 
 interface RoundListButtonProps {
   round: CompleteRound;
@@ -13,10 +13,10 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
   return (
     <SidebarListButton isSelected={isSelected} onClick={() => onSelect(round)}>
       <>
-        <div className='h-[20px] w-[20px] flex items-center justify-center'>
+        <div className='flex h-[20px] w-[20px] items-center justify-center'>
           <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
         </div>
-        <span className='truncate text-sm'>{getRoundName(round.id)}</span>
+        <span className='text-sm truncate'>{getRoundName(round.id)}</span>
       </>
     </SidebarListButton>
   );

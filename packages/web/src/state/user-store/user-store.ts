@@ -7,12 +7,13 @@ import {
   AUTHENTICATION_SUCCESS_TITLE,
 } from './texts';
 import { UserState, UserStore } from './types';
-import { IS_DEVELOPMENT } from '@/config';
+import { AUTH_TOKEN_KEY, IS_DEVELOPMENT } from '@/config';
 import { toast } from '@/hooks/use-toast';
 import { AuthService } from '@/services/auth/service';
+import { LocalStorageService } from '@/services/local-storage';
 import { Role, UsersService } from '@/services/users-service';
 import { createWithMiddlewares } from '@/state/utils/create-with-middlewares';
-import { fetchAuthSession, signOut } from 'aws-amplify/auth';
+import { signOut as amplifySignOut, fetchAuthSession } from 'aws-amplify/auth';
 import { AxiosError } from 'axios';
 
 const persistConfig = { name: 'user' };
@@ -46,6 +47,7 @@ export const useUserStore = createWithMiddlewares<UserStore>(
 
       if (!authSession?.tokens?.idToken) {
         set(() => ({ isLoading: false, user: null }));
+        LocalStorageService.removeItem(AUTH_TOKEN_KEY);
         return;
       }
 
@@ -53,7 +55,6 @@ export const useUserStore = createWithMiddlewares<UserStore>(
 
       const { status, user } = await AuthService.validate({ token: idToken.toString() });
 
-      // if the authentication fails or user is not an admin, sign out the user
       if (status === 'error' || !user.isAdmin) {
         toast({
           title: AUTHENTICATION_ERROR_TITLE,
@@ -63,11 +64,14 @@ export const useUserStore = createWithMiddlewares<UserStore>(
         setTimeout(() => {
           set(() => ({ isLoading: false, user: null, isAdminModeEnabled: false }));
           get().signOut();
+          LocalStorageService.removeItem(AUTH_TOKEN_KEY);
         }, 1000);
         return;
       }
 
       set(() => ({ isLoading: false, user }));
+
+      LocalStorageService.setItem(AUTH_TOKEN_KEY, user.authToken);
 
       if (!userWasLoggedIn) {
         toast({
@@ -79,7 +83,8 @@ export const useUserStore = createWithMiddlewares<UserStore>(
       }
     },
     signOut: async () => {
-      return signOut();
+      await amplifySignOut();
+      LocalStorageService.removeItem(AUTH_TOKEN_KEY);
     },
     clearState: () => {
       set(() => initialState);

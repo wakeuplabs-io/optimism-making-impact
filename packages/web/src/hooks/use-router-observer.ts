@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
 import { IndexRouteSearchParams, Route } from '@/routes';
-import { useSidebarStore } from '@/state';
+import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { useRouter } from '@tanstack/react-router';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useRouterObserver = (): { initializeObserver: () => void } => {
   const search = Route.useSearch();

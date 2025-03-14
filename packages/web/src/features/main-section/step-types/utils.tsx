@@ -1,5 +1,5 @@
 import { ColorDot } from '@/components/color-dot';
-import { strengthItems } from '@/types';
+import { strengthItems } from '@/types/common';
 import { Attribute } from '@optimism-making-impact/schemas';
 
 export const strengthOptions = strengthItems.map(({ value }) => ({ label: value.toLowerCase(), value }));

@@ -1,5 +1,5 @@
 import { SidebarListButton } from '../sidebar-list-button';
-import { useUserStore } from '@/state';
+import { useUserStore } from '@/state/user-store/user-store';
 import { LogOut } from 'lucide-react';
 
 export const Logout = () => {

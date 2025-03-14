@@ -2,7 +2,7 @@ import { StepTypeSelector } from '@/features/main-section/step-type-selector';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
-import { CompleteStep } from '@/types';
+import { CompleteStep } from '@/types/steps';
 import { useEffect } from 'react';
 
 export function MainSectionContent() {

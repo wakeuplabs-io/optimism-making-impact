@@ -1,10 +1,10 @@
-import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { EditStepModal } from '@/features/step-section/edit-step-modal';
 import { StepButtonState } from '@/features/step-section/step-button/helpers';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
-import { Step } from '@/types';
+import { Step } from '@/types/steps';
+import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { cva } from 'class-variance-authority';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -36,7 +36,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
       className={cn(
         props.className,
         buttonVariants({ state: props.state }),
-        'w-[70px] h-[70px] p-2 rounded-full gap-3 lg:h-[45px] lg:rounded-3xl  lg:py-[12px] 2xl:px-[27px] ',
+        'h-[70px] w-[70px] gap-3 rounded-full p-2 lg:h-[45px] lg:rounded-3xl lg:py-[12px] 2xl:px-[27px]',
         {
           'lg:w-[45px] lg:px-[10px] lg:py-0': !showActionIcons || isMobile,
           'lg:w-[80px] lg:px-[12px]': showActionIcons,
@@ -48,7 +48,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           <IconWithDefault src={props.step.icon} size='lg' />
         </div>
       ) : (
-        <div className='w-full h-full flex justify-between items-center gap-2'>
+        <div className='flex items-center justify-between w-full h-full gap-2'>
           <div
             className={cn('flex items-center justify-center gap-3', {
               'w-[85%]': showActionIcons,
@@ -58,7 +58,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             <div className='lg:min-w[22px]'>
               <IconWithDefault src={props.step.icon} />
             </div>
-            {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
+            {!isMobile && <div className='hidden text-left truncate text-4 2xl:inline-block'>{props.step.title}</div>}
           </div>
           {showActionIcons && (
             <div className={cn('h-full')} onClick={(e) => e.stopPropagation()}>
