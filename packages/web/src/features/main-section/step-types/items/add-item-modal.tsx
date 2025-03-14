@@ -1,4 +1,4 @@
-import { FormModal } from '@/components/form-modal';
+import { FormModal } from '@/components/form/form-modal';
 import { SelectInput } from '@/components/inputs/select-input';
 import { Attribute, CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';

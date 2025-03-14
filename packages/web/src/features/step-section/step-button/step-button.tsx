@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { EditStepModal } from '@/features/step-section/edit-step-modal';
@@ -7,7 +6,6 @@ import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { Step } from '@/types';
 import { cva } from 'class-variance-authority';
-import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
 
 interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   state: StepButtonState;
@@ -31,7 +29,6 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
   const isMobile = useIsMobile();
   const isActive = props.state === 'active';
   const showActionIcons = isActive && isAdmin && !isMobile;
-  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
 
   return (
     <button
@@ -51,10 +48,10 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           <IconWithDefault src={props.step.icon} size='lg' />
         </div>
       ) : (
-        <div className='w-full h-full flex justify-between items-center'>
+        <div className='w-full h-full flex justify-between items-center gap-2'>
           <div
             className={cn('flex items-center justify-center gap-3', {
-              'w-[90%]': showActionIcons,
+              'w-[85%]': showActionIcons,
               'w-full': !showActionIcons,
             })}
           >
@@ -64,18 +61,9 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             {!isMobile && <div className='text-left truncate text-4 hidden 2xl:inline-block'>{props.step.title}</div>}
           </div>
           {showActionIcons && (
-            <div className={cn('ml-1')} onClick={(e) => e.stopPropagation()}>
-              <EditStepModal step={props.step} onSave={onEdit} onDelete={() => setIsConfirmDeleteModalOpen(true)} />
+            <div className={cn('h-full')} onClick={(e) => e.stopPropagation()}>
+              <EditStepModal step={props.step} onSave={onEdit} onDelete={() => onDelete?.(props.step.id)} />
             </div>
-          )}
-          {isConfirmDeleteModalOpen && (
-            <DeleteConfirmationModal
-              isOpen={isConfirmDeleteModalOpen}
-              title='Delete step'
-              description={`Are you sure you want to delete ${props.step.title} step?`}
-              onOpenChange={(open) => setIsConfirmDeleteModalOpen(open)}
-              onConfirm={() => onDelete?.(props.step.id)}
-            />
           )}
         </div>
       )}
