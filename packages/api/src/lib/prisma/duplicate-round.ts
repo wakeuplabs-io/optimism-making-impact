@@ -71,7 +71,7 @@ async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category):
   let newAttributes: Attribute[] = [];
 
   if (step.smartListFilter != null) {
-    const { newSmartList, newAttributes: attrs } = await duplicateSmartListFilter(tx, step.smartListFilter, newCategory.id);
+    const { newSmartList, newAttributes: attrs } = await duplicateSmartListFilter(tx, step.smartListFilter);
     newAttributes = attrs;
     await tx.step.update({
       where: { id: newStep.id },
@@ -98,7 +98,6 @@ async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category):
 async function duplicateSmartListFilter(
   tx: Tx,
   smartListFilter: NonNullable<CompleteStep['smartListFilter']>,
-  newCategoryId: number,
 ): Promise<{ newSmartList: SmartListFilter; newAttributes: Attribute[] }> {
   const newSmartList = await tx.smartListFilter.create({
     data: { title: smartListFilter.title },
@@ -110,7 +109,6 @@ async function duplicateSmartListFilter(
         value: attr.value,
         description: attr.description,
         color: attr.color,
-        categoryId: newCategoryId,
         smartListFilterId: newSmartList.id,
       },
     });

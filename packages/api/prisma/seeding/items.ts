@@ -46,7 +46,6 @@ export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
         description: attr.description,
         color: shuffledColors[index % shuffledColors.length],
         smartListFilterId: smartListFilter.id,
-        categoryId: 1, // HARDCODED:
       })),
     });
 

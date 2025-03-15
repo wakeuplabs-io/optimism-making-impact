@@ -15,7 +15,6 @@ async function create(req: Request, res: Response, next: NextFunction) {
     const attribute = await prisma.attribute.create({
       data: {
         ...parsed.data,
-        categoryId: 1, // HARDCODED:
       },
     });
 
