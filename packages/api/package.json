@@ -4,7 +4,6 @@
   "type": "module",
   "main": "dist/app.js",
   "scripts": {
-    "postinstall": "prisma generate",
     "build": "npx rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
     "dev": "tsx watch src/app.ts",
