@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@optimism-making-impact/prisma';
 
 const roundsData = [
   { link1: 'https://www.google.com', link2: 'https://www.wakeuplabs.io/' },

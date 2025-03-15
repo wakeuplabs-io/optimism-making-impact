@@ -1,4 +1,4 @@
-import { Category, Prisma, PrismaClient, StepType } from '@prisma/client';
+import { Category, Prisma, PrismaClient, StepType } from '@optimism-making-impact/prisma';
 
 const groups = [
   [

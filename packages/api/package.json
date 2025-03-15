@@ -7,7 +7,7 @@
     "postinstall": "prisma generate",
     "build": "npx rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
-    "dev": "pnpm prisma:migrate:deploy && pnpm prisma:generate && tsx watch src/app.ts",
+    "dev": "tsx watch src/app.ts",
     "pretest": "dotenv -e .env.test -- pnpm prisma migrate reset --force",
     "test": "dotenv -e .env.test -- vitest",
     "prisma:generate": "prisma generate",
@@ -30,6 +30,7 @@
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.6.0",
+    "@optimism-making-impact/prisma": "workspace:*",
     "@optimism-making-impact/schemas": "workspace:*",
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/cors": "2.8.17",

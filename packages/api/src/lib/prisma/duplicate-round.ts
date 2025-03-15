@@ -1,5 +1,16 @@
 import { prisma } from '@/lib/prisma/instance.js';
-import { Attribute, Card, Category, Infographic, Item, Keyword, PrismaClient, Round, SmartListFilter, Step } from '@prisma/client';
+import {
+  Attribute,
+  Card,
+  Category,
+  Infographic,
+  Item,
+  Keyword,
+  PrismaClient,
+  Round,
+  SmartListFilter,
+  Step,
+} from '@optimism-making-impact/prisma';
 
 type Tx = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
 

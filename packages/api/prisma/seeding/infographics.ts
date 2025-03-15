@@ -1,4 +1,4 @@
-import { Infographic, PrismaClient, Step, StepType } from '@prisma/client';
+import { Infographic, PrismaClient, Step, StepType } from '@optimism-making-impact/prisma';
 
 const infographicsData = [
   {

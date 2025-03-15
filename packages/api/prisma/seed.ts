@@ -4,8 +4,8 @@ import { seedInfographics } from './seeding/infographics';
 import { seedItems } from './seeding/items';
 import { seedRounds } from './seeding/rounds';
 import { seedSteps } from './seeding/steps';
-import { PrismaClient } from '@prisma/client';
 import { seedUserWhitelist } from './seeding/user-whitelist';
+import { PrismaClient } from '@optimism-making-impact/prisma';
 
 const prisma = new PrismaClient();
 

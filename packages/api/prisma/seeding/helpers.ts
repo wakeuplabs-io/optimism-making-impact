@@ -1,4 +1,4 @@
-import { Color } from '@prisma/client';
+import { Color } from '@optimism-making-impact/prisma';
 
 export const COLORS_OPTIONS = Object.values(Color);
 

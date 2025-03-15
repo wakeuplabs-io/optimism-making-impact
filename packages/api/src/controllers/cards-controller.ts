@@ -2,8 +2,8 @@ import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma/instance.js';
 import { idParamsSchema } from '@/lib/schemas.js';
+import { Keyword } from '@optimism-making-impact/prisma';
 import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
-import { Keyword } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

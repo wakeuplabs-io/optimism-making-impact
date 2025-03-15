@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@optimism-making-impact/prisma';
 
 const userWhiteListData = [
   { email: 'chris@wakeuplabs.io' },
