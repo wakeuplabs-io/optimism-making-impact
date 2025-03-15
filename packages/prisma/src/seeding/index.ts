@@ -1,11 +1,11 @@
-import { seedCards } from './seeding/cards';
-import { seedCategories } from './seeding/categories';
-import { seedInfographics } from './seeding/infographics';
-import { seedItems } from './seeding/items';
-import { seedRounds } from './seeding/rounds';
-import { seedSteps } from './seeding/steps';
-import { seedUserWhitelist } from './seeding/user-whitelist';
-import { PrismaClient } from '@optimism-making-impact/prisma';
+import { seedCards } from './cards';
+import { seedCategories } from './categories';
+import { seedInfographics } from './infographics';
+import { seedItems } from './items';
+import { seedRounds } from './rounds';
+import { seedSteps } from './steps';
+import { seedUserWhitelist } from './user-whitelist';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 

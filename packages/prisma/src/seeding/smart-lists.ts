@@ -1,4 +1,4 @@
-import { PrismaClient } from '@optimism-making-impact/prisma';
+import { PrismaClient } from '@prisma/client';
 
 const smartListFilters = [
   { title: 'Tech Innovations' },

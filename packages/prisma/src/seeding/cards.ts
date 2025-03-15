@@ -1,5 +1,5 @@
 import { selectTwoItems } from './helpers';
-import { Card, CardStrength, PrismaClient, Step, StepType } from '@optimism-making-impact/prisma';
+import { Card, CardStrength, PrismaClient, Step, StepType } from '@prisma/client';
 
 const cardsData = [
   {

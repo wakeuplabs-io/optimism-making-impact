@@ -1,4 +1,4 @@
-import { PrismaClient, Round } from '@optimism-making-impact/prisma';
+import { PrismaClient, Round } from '@prisma/client';
 
 const categoriesData = [
   { name: 'Technology', icon: 'blocks' },

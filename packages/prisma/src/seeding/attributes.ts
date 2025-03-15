@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { Attribute, PrismaClient, SmartListFilter } from '@optimism-making-impact/prisma';
+import { Attribute, PrismaClient, SmartListFilter } from '@prisma/client';
 
 const attributeValues = [
   { value: 'Cryptocurrency', description: 'Digital or virtual currency secured by cryptography.' },

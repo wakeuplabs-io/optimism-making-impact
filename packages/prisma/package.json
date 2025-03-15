@@ -23,6 +23,9 @@
     "prisma:db:seed:staging": "dotenv -e .env.staging -- prisma db seed",
     "studio": "prisma studio"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

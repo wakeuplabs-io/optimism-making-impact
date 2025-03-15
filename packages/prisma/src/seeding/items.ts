@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { PrismaClient, Step, StepType } from '@optimism-making-impact/prisma';
+import { PrismaClient, Step, StepType } from '@prisma/client';
 
 const itemsData = [
   { markdown: 'The first and most well-known cryptocurrency.' },
