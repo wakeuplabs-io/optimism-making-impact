@@ -9,6 +9,7 @@
     "types": "./src/index.ts"
   },
   "scripts": {
+    "build": "pnpm prisma:generate",
     "dev": "pnpm prisma:migrate:deploy && pnpm prisma:generate --watch",
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write .",

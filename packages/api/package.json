@@ -4,7 +4,7 @@
   "type": "module",
   "main": "dist/app.js",
   "scripts": {
-    "build": "npx rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
+    "build": "pnpm dlx rimraf dist && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "test": "dotenv -e .env.test -- vitest",
