@@ -6,8 +6,7 @@
   "scripts": {
     "build": "npx rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
-    "dev": "tsx watch src/app.ts",
-    "pretest": "dotenv -e .env.test -- pnpm prisma migrate reset --force",
+    "dev": "tsx watch --clear-screen=false src/app.ts",
     "test": "dotenv -e .env.test -- vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
