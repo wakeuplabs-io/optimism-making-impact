@@ -21,6 +21,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
 
   const defaultValues = {
     markdown: props.item.markdown,
+    ...(props.item.attribute ? { attributeId: props.item.attribute.id } : {}),
   };
 
   function handleSubmit(data: UpdateItemBody) {
