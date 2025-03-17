@@ -1,7 +1,7 @@
 import { CompleteItem } from '@/types/items';
 import { CompleteStep } from '@/types/steps';
 import { Attribute } from '@optimism-making-impact/schemas';
-import { createContext, useContext, ReactNode, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, ReactNode, useState, useCallback, useMemo, useEffect } from 'react';
 
 function toggleFilter(currentFilters: Attribute[], filter: Attribute): Attribute[] {
   const isSelected = currentFilters.some((current) => current.id === filter.id);
@@ -44,6 +44,17 @@ export function ItemsProvider({ step, children }: ItemsProviderProps) {
     },
     [setSelectedAttributes],
   );
+
+  useEffect(() => {
+    if (selectedAttributes.length === 1 && !step.smartListFilter?.attributes?.find(({ id }) => id === selectedAttributes[0].id)) {
+      //Reset filters if there is a selected attribute that was removed
+      setSelectedAttributes([]);
+    }
+
+    if (!step.smartListFilter?.attributes?.length) {
+      setSelectedAttributes([]);
+    }
+  }, [step.smartListFilter?.attributes, selectedAttributes]);
 
   const items = useMemo(() => step.items.filter((item) => filterItem(item, selectedAttributes)), [step.items, selectedAttributes]);
 
