@@ -5,7 +5,7 @@ import { Item } from '@/features/main-section/step-types/items/item';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { CompleteItem } from '@/types/items';
 import { CompleteStep } from '@/types/steps';
 import { Attribute } from '@optimism-making-impact/schemas';
@@ -20,7 +20,7 @@ interface ItemsListProps {
 
 export function ItemsList({ items, step, editStepDescription, attributes }: ItemsListProps) {
   const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const addItem = useMainSectionStore((state) => state.addItem);
 
   const filteredItems = useFilteredData({ data: items, selectedStrengths, selectedKeywords, selectedAttributes });
@@ -43,7 +43,7 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const updateItem = useMainSectionStore((state) => state.updateItem);
   const deleteItem = useMainSectionStore((state) => state.deleteItem);
 

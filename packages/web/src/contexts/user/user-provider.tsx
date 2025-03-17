@@ -10,7 +10,7 @@ import {
   AUTHENTICATION_NOT_ADMIN_ERROR_DESCRIPTION,
   AUTHENTICATION_SUCCESS_DESCRIPTION,
   AUTHENTICATION_SUCCESS_TITLE,
-} from '@/state/user-store/texts';
+} from '@/contexts/user/texts';
 import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { signOut as amplifySignOut, fetchAuthSession } from 'aws-amplify/auth';
 import { AxiosError } from 'axios';

@@ -2,7 +2,7 @@ import { AddCategoryModal } from '../add-category-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { Category } from '@/types/categories';
 import { useState } from 'react';
 
@@ -25,7 +25,7 @@ interface ContentProps {
 
 function Content({ categories, roundId }: ContentProps) {
   const sidebarState = useSidebarStore((state) => state);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const addCategory = useSidebarStore((state) => state.addCategory);
 
   // This loading actually depends on round fetching

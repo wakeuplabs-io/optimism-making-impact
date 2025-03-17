@@ -2,7 +2,7 @@ import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { RoundListButton } from './round-list-button';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { useState } from 'react';
 
 export function RoundList() {
@@ -10,7 +10,7 @@ export function RoundList() {
   const selectedRound = useSidebarStore((state) => state.selectedRound);
   const setSelectedRound = useSidebarStore((state) => state.setSelectedRound);
   const addRound = useSidebarStore((state) => state.addRound);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   setTimeout(() => {
     setIsLoading(false);

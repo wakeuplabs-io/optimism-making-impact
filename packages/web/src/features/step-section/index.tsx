@@ -3,13 +3,13 @@ import { StepsList } from '@/features/step-section/step-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { useStepsStore } from '@/state/steps/steps-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { useEffect, useState } from 'react';
 
 export function StepsSectionContent() {
   const stepsState = useStepsStore((state) => state);
   const selectedCategoryId = useSidebarStore((state) => state.selectedCategoryId);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const isMobile = useIsMobile();
 
   // This loading actually depends on category fetch loading

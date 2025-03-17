@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
+import { Editors } from '@/services/users-service';
+import { LoaderCircle } from 'lucide-react';
 
-export function EditorList() {
-  const adminUsers = useUserStore((state) => state.adminUsers);
-  const revokeAdmin = useUserStore((state) => state.revokeAdmin);
+export function EditorList( props: {adminUsers: Editors[], isAdminUsersLoading: boolean}) {
+  const { revokeAdmin } = useUser();
 
-  if (!adminUsers) {
+  if (!props.adminUsers) {
     return null;
   }
 
@@ -13,7 +14,8 @@ export function EditorList() {
     <div>
       <p className='mb-4 text-xl text-[#bebebe]'>Manage Editors</p>
       <div className='space-y-4 rounded-xl border border-[#d9d9d9] bg-white p-4'>
-        {adminUsers.map((user) => (
+        {props.isAdminUsersLoading && <LoaderCircle className='!h-[20px] !w-[20px]' />}
+        {props.adminUsers.map((user) => (
           <div key={user.email} className='flex items-center justify-between'>
             <span className='text-[#4e4e4e]'>{user.email}</span>
             <Button variant='ghost' className='text-[#bebebe] hover:text-[#4e4e4e]' onClick={() => revokeAdmin(user.email)}>

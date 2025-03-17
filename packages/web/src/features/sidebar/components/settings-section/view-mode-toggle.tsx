@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { View } from 'lucide-react';
 import { forwardRef } from 'react';
 
 export const ViewModeToggle = forwardRef<HTMLButtonElement>((props, ref) => {
-  const { isAdminModeEnabled, toggleAdminMode } = useUserStore((state) => state);
+  const { isAdminModeEnabled, toggleAdminMode } = useUser();
 
   return (
     <Button className='w-full justify-center rounded-xl' variant='slate' size='xl' onClick={toggleAdminMode} ref={ref} {...props}>

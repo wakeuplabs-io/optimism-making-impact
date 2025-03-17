@@ -1,6 +1,5 @@
 import { useRouterObserver } from '@/hooks/use-router-observer';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useUserStore } from '@/state/user-store/user-store';
 import { ComponentType, FC, useEffect } from 'react';
 
 /**
@@ -17,7 +16,6 @@ export function withAppInitialization<P extends JSX.IntrinsicAttributes>(Wrapped
     useEffect(() => {
       (async () => {
         await useSidebarStore.getState().init();
-        await useUserStore.getState().fetchAuth();
         initializeObserver();
       })();
     }, []);

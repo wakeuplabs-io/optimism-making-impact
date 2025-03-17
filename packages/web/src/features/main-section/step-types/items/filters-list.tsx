@@ -7,7 +7,7 @@ import { UpdateAttributeModal } from '@/features/main-section/step-types/items/u
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { Attribute } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
@@ -57,7 +57,7 @@ interface ContentProps {
 }
 
 function Content(props: ContentProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
