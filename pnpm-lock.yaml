@@ -66,9 +66,9 @@ importers:
 
   packages/api:
     dependencies:
-      '@prisma/client':
-        specifier: 6.1.0
-        version: 6.1.0(prisma@6.1.0)
+      '@optimism-making-impact/prisma':
+        specifier: workspace:*
+        version: link:../prisma
       aws-jwt-verify:
         specifier: ^5.0.0
         version: 5.0.0
@@ -94,9 +94,6 @@ importers:
       '@eslint/js':
         specifier: ^9.6.0
         version: 9.18.0
-      '@optimism-making-impact/prisma':
-        specifier: workspace:*
-        version: link:../prisma
       '@optimism-making-impact/schemas':
         specifier: workspace:*
         version: link:../schemas
