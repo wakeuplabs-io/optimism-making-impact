@@ -1,8 +1,6 @@
 import { StepTypeSelector } from '@/features/main-section/step-type-selector';
-import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
-import { CompleteStep } from '@/types/steps';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -33,20 +31,5 @@ export function MainSectionContent() {
     );
   }
 
-  return <StepContent step={mainSectionState.step} />;
-}
-
-function StepContent(props: { step: CompleteStep }) {
-  const { setKeywords, clearSelectedFilters, setAttributes } = useFiltersStore((state) => state);
-
-  useEffect(() => {
-    return () => clearSelectedFilters();
-  }, []);
-
-  useEffect(() => {
-    setKeywords(props.step.keywords);
-    setAttributes(props.step.smartListFilter?.attributes || []);
-  }, [props.step.keywords, props.step.smartListFilter]);
-
-  return <StepTypeSelector {...props} />;
+  return <StepTypeSelector step={mainSectionState.step} />;
 }

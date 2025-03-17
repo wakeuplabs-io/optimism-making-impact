@@ -3,7 +3,7 @@ import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
-import { useFiltersStore } from '@/state/main-section-filters/store';
+import { useFilters } from '@/features/smart-list-filters/use-smart-list-filters';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteItem } from '@/types/items';
@@ -19,7 +19,9 @@ interface ItemsListProps {
 }
 
 export function ItemsList({ items, step, editStepDescription, attributes }: ItemsListProps) {
-  const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
+  const {
+    state: { selectedStrengths, selectedKeywords, selectedAttributes },
+  } = useFilters();
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
@@ -29,7 +31,7 @@ export function ItemsList({ items, step, editStepDescription, attributes }: Item
 
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
-      <div className='mb-6 flex gap-4 items-start justify-between border-b border-[#D9D9D9] pb-3'>
+      <div className='mb-6 flex items-start justify-between gap-4 border-b border-[#D9D9D9] pb-3'>
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
       </div>

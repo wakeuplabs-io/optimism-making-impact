@@ -39,7 +39,6 @@ function filtersReducer(state: FiltersState, action: Action): FiltersState {
       return {
         ...state,
         keywords: action.payload,
-        // Remove selected keywords that are no longer in the provided list.
         selectedKeywords: state.selectedKeywords.filter((selectedKeyword) =>
           action.payload.some((keyword) => selectedKeyword.id === keyword.id),
         ),
@@ -93,7 +92,6 @@ export const useFilters = () => {
   return context;
 };
 
-/* Optional: create a hook that wraps dispatch with action creators */
 export const useFiltersActions = () => {
   const { dispatch } = useFilters();
 

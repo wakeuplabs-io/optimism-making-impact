@@ -1,12 +1,30 @@
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
+import { useFiltersActions } from '@/features/smart-list-filters/use-smart-list-filters';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
+import { CompleteStep } from '@/types/steps';
+import { useEffect } from 'react';
 
-export function ItemsStep() {
+interface ItemsStepProps {
+  step: CompleteStep;
+}
+
+export function ItemsStep(props: ItemsStepProps) {
   const step = useMainSectionStore((state) => state.step);
   const updateStep = useMainSectionStore((state) => state.updateStep);
   const editStepDescription = useStepsStore((state) => state.editStepDescription);
+
+  const { setKeywords, clearSelectedFilters, setAttributes } = useFiltersActions();
+
+  useEffect(() => {
+    return () => clearSelectedFilters();
+  }, []);
+
+  useEffect(() => {
+    setKeywords(props.step.keywords);
+    setAttributes(props.step.smartListFilter?.attributes || []);
+  }, [props.step.keywords, props.step.smartListFilter]);
 
   if (!step) {
     return null;

@@ -4,8 +4,8 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
+import { useFilters, useFiltersActions } from '@/features/smart-list-filters/use-smart-list-filters';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
@@ -27,7 +27,9 @@ export function ItemFilters(props: ItemsFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths, selectedAttributes } = useFiltersStore((state) => state);
+  const {
+    state: { selectedKeywords, selectedStrengths, selectedAttributes },
+  } = useFilters();
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -35,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
     if (numberOfFilters === 0) return 'All';
     if (numberOfFilters === 1) return `${numberOfFilters} Filter`;
     return `${numberOfFilters} Filters`;
-  }, [selectedKeywords, selectedStrengths, isMobile]);
+  }, [selectedKeywords, selectedStrengths, selectedAttributes, isMobile]);
 
   if (isMobile) {
     return (
@@ -61,7 +63,11 @@ function Content(props: ContentProps) {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
-  const { selectedAttributes, setSelectedAttributes } = useFiltersStore((state) => state);
+
+  const {
+    state: { selectedAttributes },
+  } = useFilters();
+  const { setSelectedAttributes } = useFiltersActions();
 
   if (!props.smartListFilter) {
     return (

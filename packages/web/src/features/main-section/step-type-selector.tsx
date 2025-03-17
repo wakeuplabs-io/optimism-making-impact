@@ -1,6 +1,7 @@
 import { CardStep } from '@/features/main-section/step-types/cards';
 import { InfographicStep } from '@/features/main-section/step-types/infographics/infographic';
 import { ItemsStep } from '@/features/main-section/step-types/items/index';
+import { FiltersProvider } from '@/features/smart-list-filters/use-smart-list-filters';
 import { CompleteStep } from '@/types/steps';
 
 interface StepTypeSelectorProps {
@@ -12,9 +13,17 @@ export function StepTypeSelector(props: StepTypeSelectorProps) {
     case 'INFOGRAPHIC':
       return <InfographicStep />;
     case 'SMARTLIST':
-      return <ItemsStep />;
+      return (
+        <FiltersProvider>
+          <ItemsStep {...props} />
+        </FiltersProvider>
+      );
     case 'CARDGRID':
-      return <CardStep {...props} />;
+      return (
+        <FiltersProvider>
+          <CardStep {...props} />
+        </FiltersProvider>
+      );
 
     default:
       return null;
