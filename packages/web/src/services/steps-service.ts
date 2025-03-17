@@ -1,4 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
+import { Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
@@ -23,8 +24,8 @@ export class StepsServiceClass {
     return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data);
   }
 
-  async getByCategoryId(categoryId: number) {
-    return this.fetcher.get(stepsEndpoint + `?categoryId=${categoryId}`).then((res) => res.data);
+  async getByCategoryId(categoryId: number): Promise<Step[]> {
+    return this.fetcher.get(stepsEndpoint + `?categoryId=${categoryId}`).then((res) => res.data.data.steps);
   }
 
   async create(data: CreateStepBody) {
