@@ -72,6 +72,8 @@ export function StepsList({
         return (
           <Fragment key={`${step.id}-${step.title}`}>
             <StepButton
+              // The step button width is dynamic based on the number of steps and the screen size for larger screens.
+              // To calculate it we divide the screen width by the number of steps and subtract the gap between the separators and the width of a single separator dot.
               style={stepWidth}
               className='shrink-0 2xl:max-w-[220px]'
               state={buttonState}
