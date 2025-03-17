@@ -1,4 +1,4 @@
-import { prisma } from '../prisma/instance.js';
+import { prisma } from '../prisma-instance.js';
 import { AuthManager } from './auth-manager.js';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 

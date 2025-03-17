@@ -1,8 +1,7 @@
 import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
-import { getLastCompleteRound } from '@/lib/prisma/helpers.js';
-import { prisma } from '@/lib/prisma/instance.js';
+import { prisma } from '@/lib/prisma-instance.js';
+import { duplicateRound, getLastCompleteRound } from '@/services/rounds.js';
 import { idParamsSchema, updateRoundBodySchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';

@@ -152,7 +152,6 @@ function FormFields({ smartListOptions }: FormFieldsProps) {
         </div>
 
         <div className='flex w-full flex-col gap-1'>
-          <span className='text-xs font-medium text-gray-500'>Title</span>
           <Controller
             name='title'
             control={control}
