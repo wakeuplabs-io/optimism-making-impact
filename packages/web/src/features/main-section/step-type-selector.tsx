@@ -1,4 +1,4 @@
-import { FiltersProvider } from '@/features/filters/use-filters';
+import { FiltersProvider } from '@/features/filters/filters-provider';
 import { CardStep } from '@/features/main-section/step-types/cards';
 import { InfographicStep } from '@/features/main-section/step-types/infographics/infographic';
 import { ItemsStep } from '@/features/main-section/step-types/items/index';
