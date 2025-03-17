@@ -1,6 +1,6 @@
 import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { prisma } from '@/lib/prisma/instance.js';
+import { prisma } from '@/lib/prisma-instance.js';
 import { idParamsSchema } from '@/lib/schemas.js';
 import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { Keyword } from '@prisma/client';
