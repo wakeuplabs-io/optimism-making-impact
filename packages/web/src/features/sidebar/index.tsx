@@ -5,28 +5,7 @@ import { RoundList } from '@/features/sidebar/components/round-list/round-list';
 import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
 import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 
-/* import { RoundsService } from '@/services/rounds-service';
-import { CompleteRound } from '@/types/rounds';
-import { useQuery } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
-import { useEffect, useState } from 'react'; */
-
 export function SidebarContent() {
-  /*   const { roundId } = useSearch({ from: '/' });
-  const { data: rounds = [] } = useQuery({
-    queryKey: ['rounds'],
-    queryFn: () => RoundsService.getRounds(),
-    staleTime: 1000 * 60 * 60 * 24,
-  });
-  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>(null);
-  useEffect(() => {
-    if (rounds.length === 0) {
-      return;
-    }
-    const foundRound = rounds.find((round) => round.id === roundId) || null;
-    setSelectedRound(foundRound);
-  }, [rounds, roundId]); */
-
   return (
     <div className='flex h-full flex-col items-start gap-6 pb-16'>
       <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
