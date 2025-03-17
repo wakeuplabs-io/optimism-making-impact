@@ -8,14 +8,26 @@ import { useUserStore } from '@/state/user-store/user-store';
 export function StepsSectionContent() {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const isMobile = useIsMobile();
-
-  const { isLoading, handleStepAdd } = useStepsList();
+  const { steps, selectedStep, isLoading, error, handleStepSelect, handleStepDelete, handleStepEdit, handleStepAdd } = useStepsList();
   const { selectedCategory } = useCategoryList();
+
+  const showAddStepButton = !isLoading && !isMobile && isAdmin && selectedCategory;
 
   return (
     <>
-      <StepsList isAdmin={isAdmin} />
-      {!isLoading && !isMobile && isAdmin && selectedCategory && <AddStepModal categoryId={selectedCategory?.id} onSave={handleStepAdd} />}
+      <StepsList
+        steps={steps}
+        selectedStep={selectedStep}
+        selectedCategoryId={selectedCategory?.id}
+        isLoading={isLoading}
+        isAdmin={isAdmin}
+        error={error}
+        onStepSelect={handleStepSelect}
+        onStepDelete={handleStepDelete}
+        onStepEdit={handleStepEdit}
+      />
+
+      {showAddStepButton && <AddStepModal categoryId={selectedCategory.id} onSave={handleStepAdd} />}
     </>
   );
 }

@@ -5,86 +5,83 @@ import { Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function useStepsList() {
+  // Get category ID from URL search params
   const search = useSearch({ from: '/' });
   const { categoryId } = search;
+
+  // State for steps and selected step
+  const [steps, setSteps] = useState<(Step & { position: number })[]>([]);
+  const [selectedStep, setSelectedStep] = useState<(Step & { position: number }) | null>(null);
+
+  // Invalidate steps query when category changes
   useEffect(() => {
     if (categoryId) {
       queryClient.invalidateQueries({ queryKey: ['steps'] });
     }
   }, [categoryId]);
 
-  const [steps, setSteps] = useState<(Step & { position: number })[]>([]);
-  const [selectedStep, setSelectedStep] = useState<(Step & { position: number }) | null>(null);
-
+  // Fetch steps data
   const { data, isLoading, error } = useQuery({
     queryKey: ['steps'],
-    queryFn: () => StepsService.getByCategoryId(Number(categoryId)),
+    queryFn: () => (categoryId ? StepsService.getByCategoryId(Number(categoryId)) : Promise.resolve([])),
+    enabled: !!categoryId,
   });
 
-  const setStepIdQueryParam = (stepId: number) => {
-    router.navigate({
-      search: { ...search, stepId },
-      reloadDocument: false,
-      to: '/',
-    });
-  };
-
+  // Update URL when selected step changes
   useEffect(() => {
     if (selectedStep) {
-      setStepIdQueryParam(selectedStep.id);
+      router.navigate({
+        search: { ...search, stepId: selectedStep.id },
+        reloadDocument: false,
+        to: '/',
+      });
     }
-  }, [selectedStep]);
+  }, [selectedStep, search]);
 
+  // Process steps data when it changes
   useEffect(() => {
     if (data) {
-      setSteps(data.map((step, index) => ({ ...step, position: index })));
-      // set selected step to the first step if there are steps
-      if (data.length > 0) {
+      const stepsWithPosition = data.map((step, index) => ({ ...step, position: index }));
+      setSteps(stepsWithPosition);
+
+      // Select first step if there are steps
+      if (data.length > 0 && !selectedStep) {
         setSelectedStep({ ...data[0], position: 0 });
       }
     }
   }, [data]);
 
+  // Step selection handler
   const handleStepSelect = (step: Step) => {
     const stepWithPosition = steps.find((s) => s.id === step.id);
     setSelectedStep(stepWithPosition || null);
   };
 
+  // API mutations with success handlers
   const deleteStep = useMutation({
     mutationFn: (stepId: number) => StepsService.deleteOne(stepId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['steps'] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['steps'] }),
   });
 
   const editStep = useMutation({
     mutationFn: ({ stepId, data }: { stepId: number; data: UpdateStepBody }) => StepsService.update(stepId, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['steps'] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['steps'] }),
   });
 
   const addStep = useMutation({
     mutationFn: (data: CreateStepBody) => StepsService.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['steps'] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['steps'] }),
   });
 
-  const handleStepDelete = (stepId: number) => {
-    deleteStep.mutate(stepId);
-  };
+  // Handler functions
+  const handleStepDelete = (stepId: number) => deleteStep.mutate(stepId);
 
-  const handleStepEdit = (stepId: number, data: UpdateStepBody) => {
-    editStep.mutate({ stepId, data });
-  };
+  const handleStepEdit = (stepId: number, data: UpdateStepBody) => editStep.mutate({ stepId, data });
 
-  const handleStepAdd = (categoryId: number, data: CreateStepBody) => {
-    addStep.mutate({ ...data, categoryId });
-  };
+  const handleStepAdd = (categoryId: number, data: CreateStepBody) => addStep.mutate({ ...data, categoryId });
 
   return {
     steps,
