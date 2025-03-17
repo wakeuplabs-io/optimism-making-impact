@@ -1,4 +1,3 @@
-import { FiltersProvider } from '@/features/filters/filters-provider';
 import { CardStep } from '@/features/main-section/step-types/cards';
 import { InfographicStep } from '@/features/main-section/step-types/infographics/infographic';
 import { ItemsStep } from '@/features/main-section/step-types/items/index';
@@ -13,17 +12,9 @@ export function StepTypeSelector(props: StepTypeSelectorProps) {
     case 'INFOGRAPHIC':
       return <InfographicStep />;
     case 'SMARTLIST':
-      return (
-        <FiltersProvider>
-          <ItemsStep {...props} />
-        </FiltersProvider>
-      );
+      return <ItemsStep {...props} />;
     case 'CARDGRID':
-      return (
-        <FiltersProvider>
-          <CardStep {...props} />
-        </FiltersProvider>
-      );
+      return <CardStep {...props} />;
 
     default:
       return null;

@@ -1,4 +1,5 @@
-import { useFilters, useFiltersActions } from '@/features/filters/use-filters';
+import { useFilters } from '@/features/filters/use-filters';
+import { withFiltersInitialization } from '@/features/filters/with-filters-context';
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
@@ -6,28 +7,17 @@ import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteStep } from '@/types/steps';
-import { useEffect } from 'react';
 
 interface CardStepProps {
   step: CompleteStep;
 }
 
-export function CardStep(props: CardStepProps) {
+export function CardStepComponent(props: CardStepProps) {
   const { addCard } = useMainSectionStore((state) => state);
   const adminMode = useUserStore((state) => state.isAdminModeEnabled);
   const {
     state: { keywords },
   } = useFilters();
-  const { setKeywords, clearSelectedFilters, setAttributes } = useFiltersActions();
-
-  useEffect(() => {
-    return () => clearSelectedFilters();
-  }, []);
-
-  useEffect(() => {
-    setKeywords(props.step.keywords);
-    setAttributes(props.step.smartListFilter?.attributes || []);
-  }, [props.step.keywords, props.step.smartListFilter]);
 
   return (
     <div className={cn('flex flex-col gap-4')}>
@@ -48,3 +38,5 @@ export function CardStep(props: CardStepProps) {
     </div>
   );
 }
+
+export const CardStep = withFiltersInitialization(CardStepComponent);
