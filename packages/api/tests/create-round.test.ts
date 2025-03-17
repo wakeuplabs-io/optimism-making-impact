@@ -1,5 +1,4 @@
-import { duplicateRound } from '@/lib/prisma/duplicate-round.js';
-import { getCompleteRound, getLastCompleteRound } from '@/lib/prisma/helpers.js';
+import { duplicateRound, getCompleteRound, getLastCompleteRound } from '@/services/rounds.js';
 import { describe, expect, test } from 'vitest';
 
 describe('Duplicate round', async () => {

@@ -1,6 +1,6 @@
 import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { prisma } from '@/lib/prisma/instance.js';
+import { prisma } from '@/lib/prisma-instance.js';
 import { createCategoryBodySchema, editCategoryBodySchema, getAllCategoriesSchema, idParamsSchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
