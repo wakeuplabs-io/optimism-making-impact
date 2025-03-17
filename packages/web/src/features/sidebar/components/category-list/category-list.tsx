@@ -1,65 +1,51 @@
 import { AddCategoryModal } from '../add-category-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
-import { CategoryListButton } from '@/features/sidebar/components/category-list/category-list-button';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useUser } from '@/hooks/use-user';
-import { Category } from '@/types/categories';
-import { useState } from 'react';
+import { CategoryListButton } from './category-list-button';
+import { useCategoryList } from '@/hooks/use-category-list';
 
-export function CategoryList(props: ContentProps) {
-  return (
-    <Container>
-      <Content {...props} />
-    </Container>
-  );
-}
+export function CategoryList() {
+  const {
+    categories,
+    selectedCategory,
+    isAdmin,
+    roundsLoading,
+    roundId,
+    handleCategorySelect,
+    handleCategoryDelete,
+    handleCategoryEdit,
+    handleCategoryAdd,
+  } = useCategoryList();
 
-function Container(props: { children: React.ReactNode }) {
-  return <div className='flex flex-col gap-2'>{props.children} </div>;
-}
+  if (!roundsLoading && !roundId) {
+    return <p className='text-center text-sm'>Select a round to view its categories.</p>;
+  }
 
-interface ContentProps {
-  roundId?: number;
-  categories?: Category[];
-}
-
-function Content({ categories, roundId }: ContentProps) {
-  const sidebarState = useSidebarStore((state) => state);
-  const { isAdminModeEnabled: isAdmin } = useUser();
-  const addCategory = useSidebarStore((state) => state.addCategory);
-
-  // This loading actually depends on round fetching
-  // If there's no selected round then there are no categories to show
-  const [isLoading, setIsLoading] = useState(true);
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 2000);
-
-  if (!isLoading && !roundId) return <p className='text-center text-sm'>Select a round to view it's categories.</p>;
+  const items =
+    categories?.map((category) => ({
+      id: category.id,
+      item: (
+        <CategoryListButton
+          category={category}
+          isSelected={selectedCategory?.id === category.id}
+          onClick={() => handleCategorySelect(category)}
+          isAdmin={isAdmin}
+          onDelete={handleCategoryDelete}
+          onEdit={handleCategoryEdit}
+        />
+      ),
+    })) ?? [];
 
   return (
-    <SidebarSectionList
-      id='categories'
-      isAdmin={isAdmin}
-      title='Categories'
-      isLoading={isLoading}
-      items={
-        categories?.map((category) => ({
-          id: category.id,
-          item: (
-            <CategoryListButton
-              category={category}
-              isSelected={sidebarState.selectedCategoryId === category.id}
-              onClick={() => sidebarState.setSelectedCategoryId(category.id)}
-              isAdmin={isAdmin}
-              onDelete={sidebarState.deleteCategory}
-              onEdit={sidebarState.editCategory}
-            />
-          ),
-        })) ?? []
-      }
-      addItem={<AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />}
-      maxItems={5}
-    />
+    <div className='flex flex-col gap-2'>
+      <SidebarSectionList
+        id='categories'
+        isAdmin={isAdmin}
+        title='Categories'
+        isLoading={roundsLoading}
+        items={items}
+        addItem={<AddCategoryModal roundId={roundId} onSave={handleCategoryAdd} />}
+        maxItems={5}
+      />
+    </div>
   );
 }
