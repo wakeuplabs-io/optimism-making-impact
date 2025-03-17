@@ -1,5 +1,5 @@
 import { InfographicCard } from './infographic-card';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { Infographic } from '@optimism-making-impact/schemas';
 
 interface InfographicListProps {
@@ -7,7 +7,7 @@ interface InfographicListProps {
 }
 
 export function InfographicList(props: InfographicListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
 
   if (props.infographics.length < 1) {
     return (

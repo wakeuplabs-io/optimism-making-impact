@@ -1,10 +1,10 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
+import { useUser } from '@/hooks/use-user';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteCard } from '@/types/cards';
 import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ interface CardProps {
 export function Card(props: CardProps) {
   const { keywords, attributes } = useFiltersStore((state) => state);
   const [isCardHovered, setIsCardHovered] = useState(false);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
 
   const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
 

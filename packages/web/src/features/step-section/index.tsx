@@ -3,10 +3,10 @@ import { StepsList } from '@/features/step-section/step-list';
 import { useCategoryList } from '@/hooks/use-category-list';
 import { useStepsList } from '@/hooks/use-steps-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { useUserStore } from '@/state/user-store/user-store';
-
+import { useUser } from '@/hooks/use-user';
 export function StepsSectionContent() {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
+
   const isMobile = useIsMobile();
   const { steps, selectedStep, isLoading, error, handleStepSelect, handleStepDelete, handleStepEdit, handleStepAdd } = useStepsList();
   const { selectedCategory } = useCategoryList();

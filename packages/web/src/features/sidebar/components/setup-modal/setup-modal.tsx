@@ -1,9 +1,10 @@
 import { AddEditorForm } from './add-editor-form';
 import { EditorList } from './editor-list';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog-full-screen-mobile';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
+import { UsersService } from '@/services/users-service';
+import { useQuery } from '@tanstack/react-query';
 import { User, UserCog } from 'lucide-react';
-import { useEffect } from 'react';
 
 interface SetupModalProps {
   open: boolean;
@@ -11,13 +12,14 @@ interface SetupModalProps {
 }
 
 export function SetupModal({ open, onOpenChange }: SetupModalProps) {
-  const isAdminModeEnabled = useUserStore((state) => state.isAdminModeEnabled);
-  const getAdminUsers = useUserStore((state) => state.getAdminUsers);
-  const toggleAdminMode = useUserStore((state) => state.toggleAdminMode);
+  const { isAdminModeEnabled, toggleAdminMode } = useUser();
 
-  useEffect(() => {
-    getAdminUsers();
-  }, []);
+  const { data: adminUsers = [], isLoading: isAdminUsersLoading } = useQuery({
+    queryKey: ['editors'],
+    queryFn: () => UsersService.getEditors(),
+    staleTime: 1000 * 60 * 60 * 24,
+    enabled: open,
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -49,7 +51,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
               </button>
             </div>
           </div>
-          <EditorList />
+          <EditorList adminUsers={adminUsers} isAdminUsersLoading={isAdminUsersLoading} />
           <AddEditorForm />
         </div>
       </DialogContent>

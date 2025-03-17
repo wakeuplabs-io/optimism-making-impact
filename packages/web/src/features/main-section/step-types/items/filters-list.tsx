@@ -1,3 +1,4 @@
+import { useItemsContext } from './items-context';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
@@ -5,10 +6,9 @@ import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
+import { useUser } from '@/hooks/use-user';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
 import { Attribute } from '@optimism-making-impact/schemas';
-import { useItemsContext } from './items-context';
 
 export function ItemFilters() {
   return (
@@ -35,7 +35,7 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 function Content() {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);

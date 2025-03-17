@@ -4,33 +4,33 @@ import { RoundListButton } from './round-list-button';
 import { queryClient } from '@/main';
 import { router } from '@/router';
 import { RoundsService } from '@/services/rounds-service';
-import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteRound } from '@/types/rounds';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useUser } from '@/hooks/use-user';
 
 export function RoundList() {
+  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>();
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const search = useSearch({ from: '/' });
+
   const { data: rounds = [], isLoading: roundsLoading } = useQuery({
     queryKey: ['rounds'],
     queryFn: () => RoundsService.getRounds(),
     staleTime: 1000 * 60 * 60 * 24,
   });
-
-  const search = useSearch({ from: '/' });
-
-  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>();
-
-  const setRoundIdQueryParam = (roundId: number) => {
-    router.navigate({ search: { ...search, roundId }, reloadDocument: false, to: '/' });
-  };
+  
   const addRound = useMutation({
     mutationFn: () => RoundsService.createRound(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
   });
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+
+  const setRoundIdQueryParam = useCallback((roundId: number) => {
+    router.navigate({ search: { ...search, roundId }, reloadDocument: false, to: '/' });
+  },[search]);
 
   useEffect(() => {
     if (rounds.length === 0) {
@@ -44,7 +44,7 @@ export function RoundList() {
     if (selectedRound) {
       setRoundIdQueryParam(selectedRound.id);
     }
-  }, [selectedRound]);
+  }, [selectedRound, setRoundIdQueryParam]);
 
   return (
     <SidebarSectionList

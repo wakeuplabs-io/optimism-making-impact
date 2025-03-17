@@ -2,14 +2,14 @@ import { queryClient } from '@/main';
 import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { useUserStore } from '@/state/user-store/user-store';
 import { Category } from '@/types/categories';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
+import { useUser } from './use-user';
 
 export function useCategoryList() {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
   const search = useSearch({ from: '/' });
   const { roundId } = search;
 
