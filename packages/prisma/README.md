@@ -17,4 +17,3 @@ Prisma Client relies on specific environment variables for configuring the datab
 
 - **`DB_URL`**: Defines the connection string for your database.
 - **`DB_URL_NON_POOLING`**: Defines the connection string for your database that is not used for connection pooling.
-- **`POSTGRES_PASSWORD`**
