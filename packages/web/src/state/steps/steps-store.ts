@@ -29,9 +29,9 @@ export const useStepsStore = createWithMiddlewares<StepsStore>((set, get) => ({
         return;
       }
 
-      const { data } = await StepsService.getByCategoryId(categoryId);
+      const steps = await StepsService.getByCategoryId(categoryId);
 
-      const parsedSteps = stepArraySchema.parse(data.steps);
+      const parsedSteps = stepArraySchema.parse(steps);
 
       let selectedStep = parsedSteps.find((step) => step.id === get().searchSelectedStepId);
 

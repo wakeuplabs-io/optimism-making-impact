@@ -21,8 +21,9 @@ export function CategoryList() {
   }
 
   const items =
-    categories?.map((category) => ({
+    categories?.map((category, index) => ({
       id: category.id,
+      position: index + 1,
       item: (
         <CategoryListButton
           category={category}
