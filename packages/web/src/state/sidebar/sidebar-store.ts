@@ -7,7 +7,6 @@ import { optimisticUpdate } from '@/state/utils/optimistic-update';
 import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosError } from 'axios';
-import { deprecate } from 'util';
 
 export const useSidebarStore = createWithMiddlewares<SidebarStore>((set, get) => ({
   error: null,
