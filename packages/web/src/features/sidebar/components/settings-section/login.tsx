@@ -2,12 +2,12 @@ import { SidebarListButton } from '../sidebar-list-button';
 import googleLogo from '@/assets/google_logo.svg';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { signInWithRedirect } from 'aws-amplify/auth';
 import { LoaderCircle, LogIn } from 'lucide-react';
 
 export const Login = () => {
-  const isLoading = useUserStore((state) => state.isLoading);
+  const {isLoading } = useUser();
   return (
     <Dialog>
       <DialogTrigger asChild>

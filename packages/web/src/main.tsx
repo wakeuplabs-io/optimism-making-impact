@@ -1,3 +1,4 @@
+import { UserProvider } from './contexts/user/user-provider';
 import './index.css';
 import { router } from '@/router';
 import { RouterProvider } from '@tanstack/react-router';
@@ -25,6 +26,8 @@ Amplify.configure({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </StrictMode>,
 );
