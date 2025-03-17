@@ -140,7 +140,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'border-1 flex w-fit max-w-full items-center justify-start gap-2 rounded-full border border-transparent py-0.5',
+        'border-1 flex w-full items-center justify-start gap-2 rounded-full border border-transparent py-0.5',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -150,11 +150,11 @@ function FilterButton<T extends FilterData>({
     >
       {FilterIcon && (
         // All icons have the same size, so we can use a fixed size for the container.
-        <div className='flex items-center justify-center w-4 h-4'>
+        <div className='flex items-center justify-start w-4 h-full shrink-0'>
           <FilterIcon selected={selected} />
         </div>
       )}
-      <span className='overflow-hidden text-sm font-normal text-left capitalize w-fit max-w-44 text-ellipsis text-nowrap hover:underline'>
+      <span className='w-full overflow-hidden text-sm font-normal text-left capitalize text-ellipsis text-nowrap hover:underline'>
         {label}
       </span>
       {tooltipText && <InfoIcon tooltipText={tooltipText} />}
