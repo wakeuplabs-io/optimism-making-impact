@@ -1,6 +1,6 @@
+import { useFiltersActions } from '@/features/filters/use-filters';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
-import { useFiltersActions } from '@/features/smart-list-filters/use-smart-list-filters';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
 import { CompleteStep } from '@/types/steps';

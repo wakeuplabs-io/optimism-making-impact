@@ -1,7 +1,7 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
+import { useFilters } from '@/features/filters/use-filters';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
-import { useFilters } from '@/features/smart-list-filters/use-smart-list-filters';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';

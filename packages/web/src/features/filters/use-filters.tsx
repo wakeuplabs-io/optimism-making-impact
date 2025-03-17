@@ -11,13 +11,20 @@ interface FiltersState {
   selectedAttributes: Attribute[];
 }
 
+const SET_KEYWORDS = 'SET_KEYWORDS';
+const SET_ATTRIBUTES = 'SET_ATTRIBUTES';
+const SET_SELECTED_STRENGTHS = 'SET_SELECTED_STRENGTHS';
+const SET_SELECTED_KEYWORDS = 'SET_SELECTED_KEYWORDS';
+const SET_SELECTED_ATTRIBUTES = 'SET_SELECTED_ATTRIBUTES';
+const CLEAR_SELECTED_FILTERS = 'CLEAR_SELECTED_FILTERS';
+
 type Action =
-  | { type: 'SET_KEYWORDS'; payload: Keyword[] }
-  | { type: 'SET_ATTRIBUTES'; payload: Attribute[] }
-  | { type: 'SET_SELECTED_STRENGTHS'; payload: StrengthItem }
-  | { type: 'SET_SELECTED_KEYWORDS'; payload: Keyword }
-  | { type: 'SET_SELECTED_ATTRIBUTES'; payload: Attribute }
-  | { type: 'CLEAR_SELECTED_FILTERS' };
+  | { type: typeof SET_KEYWORDS; payload: Keyword[] }
+  | { type: typeof SET_ATTRIBUTES; payload: Attribute[] }
+  | { type: typeof SET_SELECTED_STRENGTHS; payload: StrengthItem }
+  | { type: typeof SET_SELECTED_KEYWORDS; payload: Keyword }
+  | { type: typeof SET_SELECTED_ATTRIBUTES; payload: Attribute }
+  | { type: typeof CLEAR_SELECTED_FILTERS };
 
 const initialState: FiltersState = {
   keywords: [],
@@ -35,7 +42,7 @@ function toggleFilter<T extends { id: number }>(currentFilters: T[], filter: T):
 
 function filtersReducer(state: FiltersState, action: Action): FiltersState {
   switch (action.type) {
-    case 'SET_KEYWORDS':
+    case SET_KEYWORDS:
       return {
         ...state,
         keywords: action.payload,
@@ -43,24 +50,24 @@ function filtersReducer(state: FiltersState, action: Action): FiltersState {
           action.payload.some((keyword) => selectedKeyword.id === keyword.id),
         ),
       };
-    case 'SET_ATTRIBUTES':
+    case SET_ATTRIBUTES:
       return { ...state, attributes: action.payload };
-    case 'SET_SELECTED_STRENGTHS':
+    case SET_SELECTED_STRENGTHS:
       return {
         ...state,
         selectedStrengths: toggleFilter(state.selectedStrengths, action.payload),
       };
-    case 'SET_SELECTED_KEYWORDS':
+    case SET_SELECTED_KEYWORDS:
       return {
         ...state,
         selectedKeywords: toggleFilter(state.selectedKeywords, action.payload),
       };
-    case 'SET_SELECTED_ATTRIBUTES':
+    case SET_SELECTED_ATTRIBUTES:
       return {
         ...state,
         selectedAttributes: toggleFilter(state.selectedAttributes, action.payload),
       };
-    case 'CLEAR_SELECTED_FILTERS':
+    case CLEAR_SELECTED_FILTERS:
       return {
         ...state,
         selectedStrengths: [],
@@ -96,11 +103,11 @@ export const useFiltersActions = () => {
   const { dispatch } = useFilters();
 
   return {
-    setKeywords: (keywords: Keyword[]) => dispatch({ type: 'SET_KEYWORDS', payload: keywords }),
-    setAttributes: (attributes: Attribute[]) => dispatch({ type: 'SET_ATTRIBUTES', payload: attributes }),
-    setSelectedStrengths: (strength: StrengthItem) => dispatch({ type: 'SET_SELECTED_STRENGTHS', payload: strength }),
-    setSelectedKeywords: (keyword: Keyword) => dispatch({ type: 'SET_SELECTED_KEYWORDS', payload: keyword }),
-    setSelectedAttributes: (attribute: Attribute) => dispatch({ type: 'SET_SELECTED_ATTRIBUTES', payload: attribute }),
-    clearSelectedFilters: () => dispatch({ type: 'CLEAR_SELECTED_FILTERS' }),
+    setKeywords: (keywords: Keyword[]) => dispatch({ type: SET_KEYWORDS, payload: keywords }),
+    setAttributes: (attributes: Attribute[]) => dispatch({ type: SET_ATTRIBUTES, payload: attributes }),
+    setSelectedStrengths: (strength: StrengthItem) => dispatch({ type: SET_SELECTED_STRENGTHS, payload: strength }),
+    setSelectedKeywords: (keyword: Keyword) => dispatch({ type: SET_SELECTED_KEYWORDS, payload: keyword }),
+    setSelectedAttributes: (attribute: Attribute) => dispatch({ type: SET_SELECTED_ATTRIBUTES, payload: attribute }),
+    clearSelectedFilters: () => dispatch({ type: CLEAR_SELECTED_FILTERS }),
   };
 };

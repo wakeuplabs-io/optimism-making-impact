@@ -3,7 +3,7 @@ import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { useFilters, useFiltersActions } from '@/features/smart-list-filters/use-smart-list-filters';
+import { useFilters, useFiltersActions } from '@/features/filters/use-filters';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';

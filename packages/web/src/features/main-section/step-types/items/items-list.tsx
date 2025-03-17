@@ -1,9 +1,9 @@
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
+import { useFilters } from '@/features/filters/use-filters';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
-import { useFilters } from '@/features/smart-list-filters/use-smart-list-filters';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteItem } from '@/types/items';
