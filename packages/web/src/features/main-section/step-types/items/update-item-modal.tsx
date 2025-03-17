@@ -1,4 +1,4 @@
-import { attributesOptionsMapper } from '../utils';
+import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';
@@ -19,9 +19,8 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
 
   const attributeOptions = useMemo(() => (attributes ? attributesOptionsMapper(attributes) : []), [attributes]);
 
-  const defaultValues: UpdateItemBody = {
+  const defaultValues = {
     markdown: props.item.markdown,
-    attributeId: props.item.attributeId,
   };
 
   function handleSubmit(data: UpdateItemBody) {
@@ -43,7 +42,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
 }
 
 interface FormFieldsProps {
-  attributeOptions: { value: string; label: React.ReactNode }[];
+  attributeOptions: AttributeOption[];
 }
 
 function FormFields({ attributeOptions }: FormFieldsProps) {
@@ -69,7 +68,7 @@ function FormFields({ attributeOptions }: FormFieldsProps) {
               name='attributeId'
               items={attributeOptions}
               onValueChange={(value) => field.onChange(+value)}
-              value={field.value.toString()}
+              value={field.value?.toString()}
               placeholder='Select an attribute'
             />
           )}

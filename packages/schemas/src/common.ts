@@ -6,16 +6,6 @@ export const idParamsSchema = z.object({
 
 export function idValidator(fieldName: string) {
   return function (value: number, ctx: RefinementCtx) {
-    if (!value) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `${fieldName} is required`,
-        fatal: true,
-      });
-
-      return z.NEVER;
-    }
-
     if (value <= 0) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

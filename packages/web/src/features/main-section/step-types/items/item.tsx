@@ -14,7 +14,7 @@ interface ItemProps {
 export function Item(props: ItemProps) {
   return (
     <div className='flex items-start gap-3'>
-      <ColorDot color={props.item.attribute.color} className='mt-2' />
+      <ColorDot color={props.item.attribute?.color ?? 'GRAY'} className='mt-2' />
       <Markdown className='w-full overflow-auto break-words'>{props.item.markdown}</Markdown>
       {props.isAdmin && (
         <div className='flex items-center gap-2 self-center'>
