@@ -1,4 +1,3 @@
-// useCategoryList.ts
 import { queryClient } from '@/main';
 import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';

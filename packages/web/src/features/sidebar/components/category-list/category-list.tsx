@@ -20,6 +20,21 @@ export function CategoryList() {
     return <p className='text-center text-sm'>Select a round to view its categories.</p>;
   }
 
+  const items =
+    categories?.map((category) => ({
+      id: category.id,
+      item: (
+        <CategoryListButton
+          category={category}
+          isSelected={selectedCategory?.id === category.id}
+          onClick={() => handleCategorySelect(category)}
+          isAdmin={isAdmin}
+          onDelete={handleCategoryDelete}
+          onEdit={handleCategoryEdit}
+        />
+      ),
+    })) ?? [];
+
   return (
     <div className='flex flex-col gap-2'>
       <SidebarSectionList
@@ -27,21 +42,7 @@ export function CategoryList() {
         isAdmin={isAdmin}
         title='Categories'
         isLoading={roundsLoading}
-        items={
-          categories?.map((category) => ({
-            id: category.id,
-            item: (
-              <CategoryListButton
-                category={category}
-                isSelected={selectedCategory?.id === category.id}
-                onClick={() => handleCategorySelect(category)}
-                isAdmin={isAdmin}
-                onDelete={handleCategoryDelete}
-                onEdit={handleCategoryEdit}
-              />
-            ),
-          })) ?? []
-        }
+        items={items}
         addItem={<AddCategoryModal roundId={roundId} onSave={handleCategoryAdd} />}
         maxItems={5}
       />
