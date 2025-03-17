@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "pnpm prisma:generate",
-    "dev": "pnpm prisma:migrate:deploy && pnpm prisma:generate --watch",
+    "dev": "pnpm prisma:generate --watch",
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write .",
     "postinstall": "prisma generate",
