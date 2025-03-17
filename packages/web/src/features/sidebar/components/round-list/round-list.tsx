@@ -1,50 +1,11 @@
+// round-list.tsx
 import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { RoundListButton } from './round-list-button';
-import { queryClient } from '@/main';
-import { router } from '@/router';
-import { RoundsService } from '@/services/rounds-service';
-import { CompleteRound } from '@/types/rounds';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
-import { useCallback, useEffect, useState } from 'react';
-import { useUser } from '@/hooks/use-user';
+import { useRoundList } from '@/hooks/use-round-list';
 
 export function RoundList() {
-  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>();
-  const { isAdminModeEnabled: isAdmin } = useUser();
-  const search = useSearch({ from: '/' });
-
-  const { data: rounds = [], isLoading: roundsLoading } = useQuery({
-    queryKey: ['rounds'],
-    queryFn: () => RoundsService.getRounds(),
-    staleTime: 1000 * 60 * 60 * 24,
-  });
-  
-  const addRound = useMutation({
-    mutationFn: () => RoundsService.createRound(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['rounds'] });
-    },
-  });
-
-  const setRoundIdQueryParam = useCallback((roundId: number) => {
-    router.navigate({ search: { ...search, roundId }, reloadDocument: false, to: '/' });
-  },[search]);
-
-  useEffect(() => {
-    if (rounds.length === 0) {
-      return;
-    }
-    const defaultRound = rounds[0];
-    setSelectedRound(defaultRound);
-  }, [rounds]);
-
-  useEffect(() => {
-    if (selectedRound) {
-      setRoundIdQueryParam(selectedRound.id);
-    }
-  }, [selectedRound, setRoundIdQueryParam]);
+  const { rounds, selectedRound, isAdmin, roundsLoading, handleRoundSelect, handleRoundAdd } = useRoundList();
 
   return (
     <SidebarSectionList
@@ -56,10 +17,10 @@ export function RoundList() {
         const isSelected = selectedRound?.id === round.id;
         return {
           id: round.id,
-          item: <RoundListButton round={round} isSelected={isSelected} onSelect={(round) => setSelectedRound(round)} />,
+          item: <RoundListButton round={round} isSelected={isSelected} onSelect={handleRoundSelect} />,
         };
       })}
-      addItem={<CreateRoundModal onSave={addRound.mutate} />}
+      addItem={<CreateRoundModal onSave={handleRoundAdd} />}
       maxItems={5}
     />
   );
