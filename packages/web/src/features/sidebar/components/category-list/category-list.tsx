@@ -59,7 +59,7 @@ function Content({ categories, roundId }: ContentProps) {
         })) ?? []
       }
       addItem={<AddCategoryModal roundId={roundId} onSave={(name, icon, roundId) => addCategory(name, icon, roundId)} />}
-      maxItems={5}
+      maxItems={4}
     />
   );
 }

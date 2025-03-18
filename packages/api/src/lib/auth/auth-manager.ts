@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { AuthenticatedUser, CognitoJwtVerifier } from './types.js';
+import { PrismaClient } from '@optimism-making-impact/prisma';
 
 export class AuthManagerException extends Error {
   constructor(message: string) {

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@optimism-making-impact/prisma';
 
 export type CompleteStep = Prisma.StepGetPayload<{
   include: {

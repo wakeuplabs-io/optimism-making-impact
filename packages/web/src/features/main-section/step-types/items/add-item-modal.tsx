@@ -1,5 +1,5 @@
 import { FormModal } from '@/components/form/form-modal';
-import { Attribute, CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
+import { CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
@@ -7,20 +7,20 @@ import { IconButton } from '@/components/icon-button';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { FormTextArea } from '@/components/form/form-text-area';
 import { FormSelect } from '@/components/form/form-select';
+import { useItemsContext } from './items-context';
 
 interface AddItemModalProps {
-  attributes: Attribute[];
-  stepId: number;
   onClick: (data: CreateItemBody) => void;
 }
 
 export function AddItemModal(props: AddItemModalProps) {
-  const attributeOptions = useMemo(() => attributesOptionsMapper(props.attributes), [props.attributes]);
+  const { step, attributes } = useItemsContext();
+  const attributeOptions = useMemo(() => attributesOptionsMapper(attributes), [attributes]);
 
   const defaultValues: CreateItemBody = {
     markdown: '',
     attributeId: 0,
-    stepId: props.stepId,
+    stepId: step.id,
   };
 
   function handleSubmit(data: CreateItemBody) {
@@ -28,7 +28,7 @@ export function AddItemModal(props: AddItemModalProps) {
     props.onClick({
       markdown: data.markdown,
       attributeId: +data.attributeId,
-      stepId: props.stepId,
+      stepId: data.stepId,
     });
   }
 
