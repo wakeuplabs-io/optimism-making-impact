@@ -3,7 +3,9 @@ import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { useFilters, useFiltersActions } from '@/features/filters/use-filters';
+import { useAttributesFilter } from '@/features/filters/attributes/use-attributes-filter';
+import { useKeywordsFilter } from '@/features/filters/keywords/use-keywords-filter';
+import { useStrengthsFilter } from '@/features/filters/strengths/use-strengths-filter';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
@@ -25,9 +27,8 @@ export function CardFilters(props: CardFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const {
-    state: { selectedKeywords, selectedStrengths },
-  } = useFilters();
+  const { selectedKeywords } = useKeywordsFilter();
+  const { selectedStrengths } = useStrengthsFilter();
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -57,10 +58,9 @@ interface ContentProps {
 }
 
 function Content(props: ContentProps) {
-  const {
-    state: { strengths, selectedStrengths, keywords, selectedKeywords, selectedAttributes },
-  } = useFilters();
-  const { setSelectedStrengths, setSelectedKeywords, setSelectedAttributes } = useFiltersActions();
+  const { selectedKeywords, keywords, setSelectedKeywords } = useKeywordsFilter();
+  const { selectedStrengths, strengths, setSelectedStrengths } = useStrengthsFilter();
+  const { selectedAttributes, setSelectedAttributes } = useAttributesFilter();
 
   return (
     <div className='flex w-full flex-col'>
