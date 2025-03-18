@@ -1,21 +1,21 @@
 import { StepTypeSelector } from '@/features/main-section/step-type-selector';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useStepsStore } from '@/state/steps/steps-store';
+//import { useStepsStore } from '@/state/steps/steps-store';
 import { CompleteStep } from '@/types/steps';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 export function MainSectionContent() {
-  const selectedStep = useStepsStore((state) => state.selectedStep);
-  const stepsState = useStepsStore((state) => state);
+  //const selectedStep = useStepsStore((state) => state.selectedStep);
+  //const stepsState = useStepsStore((state) => state);
   const mainSectionState = useMainSectionStore((state) => state);
 
   useEffect(() => {
-    if (selectedStep) {
-      mainSectionState.init(selectedStep.id);
-    }
-  }, [selectedStep?.id]);
+    // if (selectedStep) {
+    //   mainSectionState.init(selectedStep.id);
+    // }
+  }, []);
 
   if (mainSectionState.loading) {
     return (
@@ -25,7 +25,8 @@ export function MainSectionContent() {
     );
   }
 
-  if (!mainSectionState.step || stepsState.steps.length === 0) {
+  if (!mainSectionState.step) {
+    // || mainSectionState.steps.length === 0) {
     return (
       <div className='flex flex-grow items-center justify-center'>
         <span className='my-auto'>Select a step to see its content</span>
