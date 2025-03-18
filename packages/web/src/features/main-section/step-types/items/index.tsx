@@ -15,7 +15,7 @@ export function ItemsStep({ step }: ItemStepProps) {
 
   const handleStepDescriptionChange = async (description: string) => {
     try {
-      await editStepDescription(props.step.id, description);
+      await editStepDescription(step.id, description);
       updateStep({ description });
     } catch (error) {
       console.error('Failed to update description', error);
