@@ -1,23 +1,22 @@
-import { useUser } from '@/hooks/use-user';
+import { RoundsContext } from './rounds-context';
 import { queryClient } from '@/main';
 import { router } from '@/router';
 import { RoundsService } from '@/services/rounds-service';
 import { CompleteRound } from '@/types/rounds';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
-import { useState, useEffect, useCallback } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 
-export function useRoundList() {
-  const [selectedRound, setSelectedRound] = useState<CompleteRound | null>(null);
-  const { isAdminModeEnabled: isAdmin } = useUser();
-  const search = useSearch({ from: '/' });
+export const RoundsProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedRound, setSelectedRound] = useState<CompleteRound>();
 
-  // Fetch rounds data
   const { data: rounds = [], isLoading: roundsLoading } = useQuery({
     queryKey: ['rounds'],
     queryFn: () => RoundsService.getRounds(),
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
+
+  const search = useSearch({ from: '/' });
 
   // Add round mutation
   const addRound = useMutation({
@@ -26,6 +25,10 @@ export function useRoundList() {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
   });
+
+  const handleRoundAdd = () => {
+    addRound.mutate();
+  };
 
   // Set round ID in URL query params
   const setRoundIdQueryParam = useCallback(
@@ -39,15 +42,6 @@ export function useRoundList() {
     [search],
   );
 
-  // Set default round when rounds load
-  useEffect(() => {
-    if (rounds.length === 0) {
-      return;
-    }
-    const newRound = rounds.find(r => r.id === search.roundId)
-    setSelectedRound(newRound ?? rounds[0]);
-  }, [rounds]);
-
   // Update URL when selected round changes
   useEffect(() => {
     if (selectedRound) {
@@ -55,21 +49,20 @@ export function useRoundList() {
     }
   }, [selectedRound, setRoundIdQueryParam]);
 
-  // Handler functions
-  const handleRoundSelect = (round: CompleteRound) => {
-    setSelectedRound(round);
-  };
+  // Set default round when rounds load
+  useEffect(() => {
+    if (rounds.length === 0) {
+      return;
+    }
+    const newRound = rounds.find((r) => r.id === search.roundId);
+    setSelectedRound(newRound ?? rounds[0]);
+  }, [rounds]);
 
-  const handleRoundAdd = () => {
-    addRound.mutate();
-  };
-
-  return {
-    rounds,
-    selectedRound,
-    isAdmin,
-    roundsLoading,
-    handleRoundSelect,
-    handleRoundAdd,
-  };
-}
+  return (
+    <RoundsContext.Provider
+      value={{ rounds, roundsLoading, selectedRound, setRoundIdQueryParam, handleRoundAdd, handleRoundSelect: setSelectedRound }}
+    >
+      {children}
+    </RoundsContext.Provider>
+  );
+};

@@ -13,7 +13,7 @@ export function SidebarContent() {
         <div className='flex flex-col gap-4'>
           <RoundList />
           <hr />
-          {<CategoryList />}
+          <CategoryList />
           <hr />
           <LogosSection />
           <hr />

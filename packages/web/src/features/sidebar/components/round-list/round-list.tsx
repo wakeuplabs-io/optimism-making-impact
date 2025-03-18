@@ -1,11 +1,13 @@
 // round-list.tsx
+import { useRounds } from '@/hooks/use-rounds';
 import { CreateRoundModal } from '../create-round-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { RoundListButton } from './round-list-button';
-import { useRoundList } from '@/hooks/use-round-list';
+import { useUser } from '@/hooks/use-user';
 
 export function RoundList() {
-  const { rounds, selectedRound, isAdmin, roundsLoading, handleRoundSelect, handleRoundAdd } = useRoundList();
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { rounds, selectedRound, roundsLoading, handleRoundSelect, handleRoundAdd } = useRounds();
 
   return (
     <SidebarSectionList
