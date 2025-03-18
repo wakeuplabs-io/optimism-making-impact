@@ -2,9 +2,14 @@ import { ItemFilters } from '@/features/main-section/step-types/items/filters-li
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
+import { CompleteStep } from '@/types/steps';
+import { ItemsProvider } from './items-context';
 
-export function ItemsStep() {
-  const step = useMainSectionStore((state) => state.step);
+interface ItemStepProps {
+  step: CompleteStep;
+}
+
+export function ItemsStep({ step }: ItemStepProps) {
   const updateStep = useMainSectionStore((state) => state.updateStep);
   const editStepDescription = useStepsStore((state) => state.editStepDescription);
 
@@ -22,18 +27,15 @@ export function ItemsStep() {
   };
 
   return (
-    <div className={'flex flex-col gap-4'}>
-      <div className='flex h-full flex-col gap-6 lg:flex-row'>
-        <ItemFilters smartListFilter={step.smartListFilter} stepId={step.id} />
-        <div className='w-full pb-8'>
-          <ItemsList
-            items={step.items}
-            step={step}
-            attributes={step.smartListFilter?.attributes}
-            editStepDescription={handleStepDescriptionChange}
-          />
+    <ItemsProvider step={step}>
+      <div className={'flex flex-col gap-4'}>
+        <div className='flex h-full flex-col gap-6 lg:flex-row'>
+          <ItemFilters />
+          <div className='w-full pb-8'>
+            <ItemsList editStepDescription={handleStepDescriptionChange} />
+          </div>
         </div>
       </div>
-    </div>
+    </ItemsProvider>
   );
 }

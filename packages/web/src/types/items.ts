@@ -5,7 +5,7 @@ export const itemSchema = z.object({
   id: z.number(),
   markdown: z.string(),
   stepId: z.number(),
-  attributeId: z.number(),
+  attributeId: z.number().nullish(),
   createdAt: z.string().nullish(),
   updatedAt: z.string().nullish(),
 });
