@@ -44,9 +44,8 @@ export function useRoundList() {
     if (rounds.length === 0) {
       return;
     }
-
-    const defaultRound = rounds[0];
-    setSelectedRound(defaultRound);
+    const newRound = rounds.find(r => r.id === search.roundId)
+    setSelectedRound(newRound ?? rounds[0]);
   }, [rounds]);
 
   // Update URL when selected round changes

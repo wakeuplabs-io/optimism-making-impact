@@ -11,7 +11,7 @@ import { useUser } from './use-user';
 export function useCategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
   const search = useSearch({ from: '/' });
-  const { roundId } = search;
+  const { roundId, categoryId } = search;
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -61,7 +61,8 @@ export function useCategoryList() {
   useEffect(() => {
     if (categories.length === 0) return;
 
-    setSelectedCategory(categories[0]);
+    const newCategory = categories.find(c => c.id === categoryId)
+    setSelectedCategory(newCategory ?? categories[0]);
   }, [categories]);
 
   // Update URL when category changes

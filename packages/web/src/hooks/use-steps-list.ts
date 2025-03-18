@@ -12,25 +12,27 @@ import { toast } from './use-toast';
 export function useStepsList() {
   // Get category ID from URL search params
   const search = useSearch({ from: '/' });
-  const { categoryId } = search;
+  const { categoryId, stepId } = search;
 
-  // State for steps and selected step
-  const [steps, setSteps] = useState<(Step & { position: number })[]>([]);
   const [selectedStep, setSelectedStep] = useState<(Step & { position: number }) | null>(null);
 
   // Fetch steps data
-  const { data, isLoading, error } = useQuery({
+  const { data: steps = [], isLoading, error } = useQuery({
     queryKey: [`steps-by-category`, categoryId],
     queryFn: () => (categoryId ? StepsService.getByCategoryId(Number(categoryId)) : Promise.resolve([])),
     enabled: !!categoryId,
-    staleTime: 1000 * 60 * 60 * 24
+    staleTime: 1000 * 60 * 60 * 24,
+    select: (data) => {
+      return data.map((step, index) => ({ ...step, position: index }));
+    },
   });
 
 
   // Step selection handler
-  const handleStepSelect = (stepId: number) => {
-    const stepWithPosition = steps.find((s) => s.id === stepId);
-    setSelectedStep(stepWithPosition || null);
+  const handleStepSelect = (stepId?: number) => {
+    const stepWithPosition = stepId ? steps.find((s) => s.id === stepId) ?? steps[0] : steps[0];
+    setSelectedStep(stepWithPosition);
+
     if (stepWithPosition) {
       router.navigate({
         search: { ...search, stepId: stepWithPosition.id },
@@ -42,16 +44,9 @@ export function useStepsList() {
 
   // Process steps data when it changes
   useEffect(() => {
-    if (data) {
-      const stepsWithPosition = data.map((step, index) => ({ ...step, position: index }));
-      setSteps(stepsWithPosition);
-
-      // Select first step if there are steps
-      if (data.length > 0) {
-        handleStepSelect(data[0].id);
-      }
-    }
-  }, [data]);
+    if (steps.length > 0 && !isLoading )
+      handleStepSelect(stepId)
+  }, [steps, isLoading]);
 
   // API mutations with success handlers
   const deleteStep = useMutation({
@@ -60,17 +55,17 @@ export function useStepsList() {
     onMutate: async (stepId: number) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
 
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-category-${categoryId}`]) ?? [];
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]) ?? [];
 
       const updatedSteps = previousSteps.filter(step => step.id !== stepId);
 
-      queryClient.setQueryData<Step[]>([`steps-category-${categoryId}`], updatedSteps);
+      queryClient.setQueryData<Step[]>([`steps-by-category`, categoryId], updatedSteps);
 
       return { previousSteps };
     },
     onError: (err, stepId, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-category-${categoryId}`], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
       }
       let description = `Failed to delete step id ${stepId}`;
       if (err instanceof AxiosError) {
@@ -87,22 +82,25 @@ export function useStepsList() {
     onMutate: async (props: { stepId: number, data: UpdateStepBody }) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
 
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-category-${categoryId}`]) ?? [];
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]);
+
+      if (!previousSteps) throw new Error("edit step - step not found")
+
       const oldStep = previousSteps.find(step => step.id === props.stepId);
 
       if (!oldStep) throw new Error("step to update doens't exist!")
 
-      const newStep: Step = { ...oldStep, ...props.data, id: props.stepId };
+      const newStep: Step = { ...oldStep, ...props.data };
 
       const updatedSteps = previousSteps.map(step => step.id === props.stepId ? newStep : step);
 
-      queryClient.setQueryData<Step[]>([`steps-category-${categoryId}`], updatedSteps);
+      queryClient.setQueryData<Step[]>([`steps-by-category`, categoryId], updatedSteps);
 
       return { previousSteps };
     },
     onError: (err, props, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-category-${categoryId}`], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
       }
       let description = `Failed to edit step ${props.data.title}`;
       if (err instanceof AxiosError) {
@@ -119,15 +117,17 @@ export function useStepsList() {
     onMutate: async (data: CreateStepBody) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
 
-      const previousSteps = queryClient.getQueryData([`steps-category-${categoryId}`]);
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]) ?? [];
 
-      queryClient.setQueryData([`steps-category-${categoryId}`], (steps: Step[]) => [...steps, { ...data }]);
+      if (!previousSteps) throw new Error("add step - step not found")
+
+      queryClient.setQueryData([`steps-by-category`, categoryId], () => [...previousSteps, { ...data }]);
 
       return { previousSteps };
     },
     onError: (err, data, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-category-${categoryId}`], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
       }
       let description = `Failed to create step ${data.title}`;
       if (err instanceof AxiosError) {

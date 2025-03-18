@@ -33,7 +33,7 @@ export function useStep() {
 
       const previousStep = queryClient.getQueryData<CompleteStep>(["step", stepId]);
 
-      if (!previousStep) throw new Error("delete card - step not found")
+      if (!previousStep) throw new Error("add card - step not found")
 
       queryClient.setQueryData(["step", stepId], () => ({ ...previousStep, ...data }));
 
