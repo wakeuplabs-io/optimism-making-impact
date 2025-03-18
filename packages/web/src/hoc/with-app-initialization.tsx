@@ -1,4 +1,3 @@
-import { useRouterObserver } from '@/hooks/use-router-observer';
 import { ComponentType, FC, useEffect } from 'react';
 
 /**
@@ -10,11 +9,11 @@ import { ComponentType, FC, useEffect } from 'react';
  */
 export function withAppInitialization<P extends JSX.IntrinsicAttributes>(WrappedComponent: ComponentType<P>): FC<P> {
   const AppInitializationWrapper: FC<P> = (props: P) => {
-    const { initializeObserver } = useRouterObserver();
-
     useEffect(() => {
       (async () => {
-        initializeObserver();
+        // TODO: Implement app initialization logic, maybe ?
+        // 1. Check if the user is authenticated ?
+        // 2. Pre-Fetch the user's rounds ?
       })();
     }, []);
 
