@@ -30,7 +30,7 @@ export function RoundList() {
         };
       })}
       addItem={<CreateRoundModal onSave={addRound} />}
-      maxItems={5}
+      maxItems={3}
     />
   );
 }
