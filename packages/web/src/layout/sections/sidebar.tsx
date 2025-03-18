@@ -1,28 +1,30 @@
 import { SideMenu } from '@/components/side-menu';
 import { SidebarContent } from '@/features/sidebar';
+import { useCategoryList } from '@/hooks/use-category-list';
+import { useRoundList } from '@/hooks/use-round-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
 import { Menu } from 'lucide-react';
 import { useMemo } from 'react';
 
 export function SidebarSection() {
   const isMobile = useIsMobile();
-  const { selectedRound, selectedCategoryId } = useSidebarStore((state) => state);
+  const { selectedRound } = useRoundList();
+  const { selectedCategory } = useCategoryList();
 
   const title = useMemo(() => {
     if (!selectedRound) {
       return 'Round';
     }
 
-    const category = selectedRound.categories.find((category) => category.id === selectedCategoryId);
+    const category = selectedRound.categories.find((category) => category.id === selectedCategory?.id);
 
     if (!category) {
       return getRoundName(selectedRound.id);
     }
 
     return category.name;
-  }, [selectedRound, selectedCategoryId]);
+  }, [selectedRound, selectedCategory]);
 
   if (isMobile) {
     return (

@@ -1,14 +1,11 @@
 import { StepTypeSelector } from '@/features/main-section/step-type-selector';
 import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
-//import { useStepsStore } from '@/state/steps/steps-store';
 import { CompleteStep } from '@/types/steps';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 export function MainSectionContent() {
-  //const selectedStep = useStepsStore((state) => state.selectedStep);
-  //const stepsState = useStepsStore((state) => state);
   const mainSectionState = useMainSectionStore((state) => state);
 
   useEffect(() => {

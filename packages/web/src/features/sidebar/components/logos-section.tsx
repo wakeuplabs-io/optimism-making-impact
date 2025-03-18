@@ -1,11 +1,12 @@
 import RetroList from '@/assets/retro-list.svg';
 import VoteHere from '@/assets/vote-here.svg';
 import { SidebarLinkButton } from '@/components/sidebar-link-button';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useRoundList } from '@/hooks/use-round-list';
 import { useUser } from '@/hooks/use-user';
 
 export default function LogosSection() {
-  const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
+  //const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
+  const { selectedRound, editRound } = useRoundList();
   const { isAdminModeEnabled: isAdmin } = useUser();
 
   return (

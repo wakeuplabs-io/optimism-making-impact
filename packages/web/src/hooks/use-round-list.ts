@@ -27,6 +27,19 @@ export function useRoundList() {
     },
   });
 
+  const updateRound = useMutation({
+    mutationFn: (data: Partial<CompleteRound>) => {
+      const { id, link1, link2 } = data;
+      return RoundsService.editOne(id as number, {
+        link1: link1 ?? undefined,
+        link2: link2 ?? undefined,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['rounds'] });
+    },
+  });
+
   // Set round ID in URL query params
   const setRoundIdQueryParam = useCallback(
     (roundId: number) => {
@@ -65,6 +78,10 @@ export function useRoundList() {
     addRound.mutate();
   };
 
+  const editRound = (roundId: number, data: Partial<CompleteRound>) => {
+    updateRound.mutate({ id: roundId, ...data });
+  };
+
   return {
     rounds,
     selectedRound,
@@ -72,5 +89,6 @@ export function useRoundList() {
     roundsLoading,
     handleRoundSelect,
     handleRoundAdd,
+    editRound,
   };
 }
