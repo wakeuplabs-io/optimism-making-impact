@@ -47,10 +47,9 @@ export function SidebarSectionList({
       sectionItems = [...sectionItems.splice(selectedItemIdx, 1), ...sectionItems];
     }
 
-    const viewAllItems = sectionItems.slice(maxItems);
     const itemsToShow = sectionItems.slice(0, maxItems);
 
-    return [itemsToShow, viewAllItems];
+    return [itemsToShow, items];
   }, [items, maxItems]);
 
   return (

@@ -21,7 +21,7 @@ export function RoundList() {
         };
       })}
       addItem={<CreateRoundModal onSave={handleRoundAdd} />}
-      maxItems={5}
+      maxItems={3}
     />
   );
 }
