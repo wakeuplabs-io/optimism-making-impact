@@ -2,28 +2,21 @@ import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
-import { useFilteredData } from '@/features/main-section/use-filtered-data';
-import { useFiltersStore } from '@/state/main-section-filters/store';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteItem } from '@/types/items';
-import { CompleteStep } from '@/types/steps';
-import { Attribute } from '@optimism-making-impact/schemas';
 import React from 'react';
+import { useItemsContext } from './items-context';
 
 interface ItemsListProps {
-  items: CompleteItem[];
-  step: CompleteStep;
   editStepDescription: (description: string) => void;
-  attributes?: Attribute[];
 }
 
-export function ItemsList({ items, step, editStepDescription, attributes }: ItemsListProps) {
-  const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
+export function ItemsList({ editStepDescription }: ItemsListProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const filteredItems = useFilteredData({ data: items, selectedStrengths, selectedKeywords, selectedAttributes });
+  const { step, items, attributes } = useItemsContext();
 
   const hasAttributes = !!attributes && attributes.length > 0;
 
@@ -31,9 +24,9 @@ export function ItemsList({ items, step, editStepDescription, attributes }: Item
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
       <div className='mb-6 flex gap-4 items-start justify-between border-b border-[#D9D9D9] pb-3'>
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
-        {isAdmin && hasAttributes && <AddItemModal stepId={step.id} onClick={addItem} attributes={attributes} />}
+        {isAdmin && hasAttributes && <AddItemModal onClick={addItem} />}
       </div>
-      {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
+      {hasAttributes ? <List items={items} /> : <NoAttributesEmptyState />}
     </div>
   );
 }

@@ -4,7 +4,11 @@ import { z } from 'zod';
 export const createInfographicBodySchema = z.object({
   markdown: z.string().min(1, { message: 'Markdown is required' }),
   image: z.string().min(1, { message: 'Image is required' }),
-  stepId: z.number().superRefine(idValidator('Step')),
+  stepId: z
+    .number({
+      required_error: 'Step is required',
+    })
+    .superRefine(idValidator('Step')),
 });
 
 export type CreateInfographicBody = z.infer<typeof createInfographicBodySchema>;
