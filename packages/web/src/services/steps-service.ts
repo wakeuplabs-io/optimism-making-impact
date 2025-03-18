@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
-import { Step } from '@/types/steps';
+import { CompleteStep, Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
@@ -20,8 +20,8 @@ export class StepsServiceClass {
     return StepsServiceClass.instance;
   }
 
-  async getOne(stepId: number) {
-    return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data);
+  async getOne(stepId: number): Promise<CompleteStep> {
+    return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
   }
 
   async getByCategoryId(categoryId: number): Promise<Step[]> {

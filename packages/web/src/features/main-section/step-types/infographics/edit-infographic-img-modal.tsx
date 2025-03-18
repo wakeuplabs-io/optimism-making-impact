@@ -1,6 +1,6 @@
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useStep } from '@/hooks/use-step';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -19,14 +19,14 @@ interface EditInfographicImageModalProps {
 }
 
 export function EditInfographicImageModal(props: EditInfographicImageModalProps) {
-  const editInfographic = useMainSectionStore((state) => state.editInfographic);
+  const { editInfographic } = useStep();
 
   const defaultValues: UpdateInfographicImageBody = {
     image: props.infographic.image,
   };
 
   function handleSubmit(data: UpdateInfographicImageBody) {
-    editInfographic(props.infographic.id, { image: data.image });
+    editInfographic({ infographicId: props.infographic.id, data: { markdown: props.infographic.markdown, image: data.image } });
   }
 
   return (

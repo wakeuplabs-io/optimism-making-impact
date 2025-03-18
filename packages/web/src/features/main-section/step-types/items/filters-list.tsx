@@ -5,9 +5,9 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
+import { useStep } from '@/hooks/use-step';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Attribute } from '@optimism-making-impact/schemas';
 
 export function ItemFilters() {
@@ -36,9 +36,7 @@ function Container(props: { children: React.ReactNode }) {
 
 function Content() {
   const { isAdminModeEnabled: isAdmin } = useUser();
-  const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
-  const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
-  const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
+  const { addAttributeToSmartList, updateAttribute, deleteAttribute } = useStep();
 
   const { step, attributes, setSelectedAttribute, selectedAttributes } = useItemsContext();
 

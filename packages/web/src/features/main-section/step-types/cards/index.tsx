@@ -1,10 +1,10 @@
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
+import { useStep } from '@/hooks/use-step';
 import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteStep } from '@/types/steps';
 
 interface CardStepProps {
@@ -13,7 +13,7 @@ interface CardStepProps {
 
 export function CardStep(props: CardStepProps) {
   const { keywords } = useFiltersStore((state) => state);
-  const { addCard } = useMainSectionStore((state) => state);
+  const { addCard } = useStep();
   const { isAdminModeEnabled: adminMode } = useUser();
 
   return (

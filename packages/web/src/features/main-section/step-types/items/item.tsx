@@ -7,7 +7,7 @@ import Markdown from 'react-markdown';
 interface ItemProps {
   item: CompleteItem;
   isAdmin?: boolean;
-  onEdit: (itemId: number, data: UpdateItemBody) => void;
+  onEdit: (props: { itemId: number; data: UpdateItemBody }) => void;
   onDelete: (itemId: number) => void;
 }
 

@@ -1,6 +1,6 @@
 import { IndexRouteSearchParams, Route } from '@/routes';
 import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useStepsStore } from '@/state/steps/steps-store';
+// import { useStepsStore } from '@/state/steps/steps-store';
 import { useRouter } from '@tanstack/react-router';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -21,15 +21,15 @@ export const useRouterObserver = (): { initializeObserver: () => void } => {
       }
     });
 
-    const unsubscribeStepper = useStepsStore.subscribe((state, prevState) => {
-      if (state.selectedStep !== prevState.selectedStep) {
-        setSearchParams((prev) => ({ ...prev, stepId: state.selectedStep?.id }));
-      }
-    });
+    // const unsubscribeStepper = useStepsStore.subscribe((state, prevState) => {
+    //   if (state.selectedStep !== prevState.selectedStep) {
+    //     setSearchParams((prev) => ({ ...prev, stepId: state.selectedStep?.id }));
+    //   }
+    // });
 
     return () => {
       unsubscribeSideBar();
-      unsubscribeStepper();
+      // unsubscribeStepper();
     };
   }, []);
 
@@ -38,7 +38,7 @@ export const useRouterObserver = (): { initializeObserver: () => void } => {
   }, [searchParams, router]);
 
   const initializeObserver = useCallback(() => {
-    const { roundId, categoryId, stepId } = search;
+    const { roundId, categoryId } = search;
     const rounds = useSidebarStore.getState().rounds;
 
     const searchRound = rounds.find((round) => round.id === roundId);
@@ -57,8 +57,8 @@ export const useRouterObserver = (): { initializeObserver: () => void } => {
       return;
     }
 
-    //set the selected step id
-    if (stepId) useStepsStore.setState(() => ({ searchSelectedStepId: stepId }));
+    // //set the selected step id
+    // if (stepId) useStepsStore.setState(() => ({ searchSelectedStepId: stepId }));
 
     //finally if both searchRound and searchCategory exists, set the state
     useSidebarStore.setState(() => ({ selectedRound: searchRound, selectedCategoryId: categoryId }));

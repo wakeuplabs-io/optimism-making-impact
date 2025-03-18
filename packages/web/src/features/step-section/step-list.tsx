@@ -3,6 +3,7 @@ import { getButtonState } from '@/features/step-section/step-button/helpers';
 import { StepButton } from '@/features/step-section/step-button/step-button';
 import { useIsDesktopXL } from '@/hooks/use-tresholds';
 import { Step } from '@/types/steps';
+import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { LoaderCircle } from 'lucide-react';
 import { Fragment, useMemo } from 'react';
 
@@ -15,9 +16,9 @@ interface StepsListProps {
   isLoading: boolean;
   isAdmin?: boolean;
   error: unknown;
-  onStepSelect: (step: Step) => void;
+  onStepSelect: (stepId: number) => void;
   onStepDelete: (stepId: number) => void;
-  onStepEdit: (id: number, data: any) => void;
+  onStepEdit: (id: number, data: UpdateStepBody) => void;
 }
 
 export function StepsList({
@@ -77,7 +78,7 @@ export function StepsList({
               style={stepWidth}
               className='shrink-0 2xl:max-w-[220px]'
               state={buttonState}
-              onClick={() => onStepSelect(step)}
+              onClick={() => onStepSelect(step.id)}
               step={step}
               isAdmin={isAdmin}
               onDelete={() => onStepDelete(step.id)}

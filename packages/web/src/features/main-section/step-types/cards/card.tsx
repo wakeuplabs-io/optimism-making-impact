@@ -1,10 +1,10 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
+import { useStep } from '@/hooks/use-step';
 import { useUser } from '@/hooks/use-user';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useFiltersStore } from '@/state/main-section-filters/store';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteCard } from '@/types/cards';
 import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
@@ -53,8 +53,7 @@ interface CardTitleProps {
 }
 
 function CardTitle(props: CardTitleProps) {
-  const editCard = useMainSectionStore((state) => state.editCard);
-  const deleteCard = useMainSectionStore((state) => state.deleteCard);
+  const { editCard, deleteCard } = useStep();
 
   return (
     <div className='flex max-w-full items-center gap-4'>

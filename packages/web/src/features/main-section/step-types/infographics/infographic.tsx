@@ -1,9 +1,9 @@
 import { AddInfographicModal } from './add-infographic-modal';
 import { InfographicList } from './infographic-list';
 import { cn } from '@/lib/utils';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUser } from '@/hooks/use-user';
 import { ReactNode } from 'react';
+import { useStep } from '@/hooks/use-step';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +14,7 @@ function InfographicStepWrapper({ children }: { children: ReactNode }) {
 }
 
 export function InfographicStep() {
-  const { step } = useMainSectionStore((state) => state);
+  const { step } = useStep();
   const { isAdminModeEnabled: isAdmin } = useUser();
 
   if (!step) {

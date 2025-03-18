@@ -3,8 +3,8 @@ import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { useItemsContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
+import { useStep } from '@/hooks/use-step';
 import { useUser } from '@/hooks/use-user';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { CompleteItem } from '@/types/items';
 import React from 'react';
 
@@ -14,7 +14,7 @@ interface ItemsListProps {
 
 export function ItemsList({ editStepDescription }: ItemsListProps) {
   const { isAdminModeEnabled: isAdmin } = useUser();
-  const addItem = useMainSectionStore((state) => state.addItem);
+  const { addItem } = useStep();
 
   const { step, items, attributes } = useItemsContext();
 
@@ -37,8 +37,7 @@ interface ListProps {
 
 function List(props: ListProps) {
   const { isAdminModeEnabled: isAdmin } = useUser();
-  const updateItem = useMainSectionStore((state) => state.updateItem);
-  const deleteItem = useMainSectionStore((state) => state.deleteItem);
+  const { updateItem, deleteItem } = useStep();
 
   return (
     <div className='flex w-full flex-col gap-6'>
