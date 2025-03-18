@@ -1,9 +1,7 @@
 import { AttributesFilterProvider } from '@/features/filters/attributes/attributes-filter-provider';
-import { useAttributesFilter } from '@/features/filters/attributes/use-attributes-filter';
 import { KeywordsFiltersProvider } from '@/features/filters/keywords/keywords-filter-provider';
-import { useKeywordsFilter } from '@/features/filters/keywords/use-keywords-filter';
 import { StrengthsFilterProvider } from '@/features/filters/strengths/strengths-filter-provider';
-import { useStrengthsFilter } from '@/features/filters/strengths/use-strengths-filter';
+import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 
@@ -30,9 +28,7 @@ export function withCardsFilters<P extends JSX.IntrinsicAttributes & { step: Com
   };
 
   const InnerFiltersInitializer: FC<P> = (props: P) => {
-    const { setKeywords, clearSelectedKeywords } = useKeywordsFilter();
-    const { setAttributes, clearSelectedAttributes } = useAttributesFilter();
-    const { clearSelectedStrenghts } = useStrengthsFilter();
+    const { setKeywords, clearSelectedKeywords, setAttributes, clearSelectedAttributes, clearSelectedStrenghts } = useCardsFilters();
 
     useEffect(() => {
       return () => {

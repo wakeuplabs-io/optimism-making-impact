@@ -1,8 +1,7 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Badge } from '@/components/ui/badge';
-import { useAttributesFilter } from '@/features/filters/attributes/use-attributes-filter';
-import { useKeywordsFilter } from '@/features/filters/keywords/use-keywords-filter';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
+import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
@@ -17,8 +16,7 @@ interface CardProps {
 }
 
 export function Card(props: CardProps) {
-  const { keywords } = useKeywordsFilter();
-  const { attributes } = useAttributesFilter();
+  const { keywords, attributes } = useCardsFilters();
   const [isCardHovered, setIsCardHovered] = useState(false);
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
 

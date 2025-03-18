@@ -1,8 +1,8 @@
-import { useKeywordsFilter } from '@/features/filters/keywords/use-keywords-filter';
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
-import { withCardsFilters } from '@/features/main-section/step-types/cards/with-cards-filters';
+import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { withCardsFilters } from '@/features/main-section/step-types/cards/filters/with-cards-filters';
 import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
@@ -15,7 +15,7 @@ interface CardStepProps {
 function CardStepComponent(props: CardStepProps) {
   const { addCard } = useMainSectionStore((state) => state);
   const adminMode = useUserStore((state) => state.isAdminModeEnabled);
-  const { keywords } = useKeywordsFilter();
+  const { keywords } = useCardsFilters();
 
   return (
     <div className={cn('flex flex-col gap-4')}>
