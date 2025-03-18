@@ -3,6 +3,7 @@ import { queryClient } from '@/main';
 import { router } from '@/router';
 import { RoundsService } from '@/services/rounds-service';
 import { CompleteRound } from '@/types/rounds';
+import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -21,6 +22,12 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
   // Add round mutation
   const addRound = useMutation({
     mutationFn: () => RoundsService.createRound(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['rounds'] });
+    },
+  });
+  const { mutate: editRound } = useMutation({
+    mutationFn: (props: { roundId: number; data: UpdateRoundBody }) => RoundsService.editOne(props.roundId, props.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
@@ -60,7 +67,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <RoundsContext.Provider
-      value={{ rounds, roundsLoading, selectedRound, setRoundIdQueryParam, handleRoundAdd, handleRoundSelect: setSelectedRound }}
+      value={{ rounds, roundsLoading, selectedRound, setRoundIdQueryParam, handleRoundAdd, handleRoundSelect: setSelectedRound, editRound }}
     >
       {children}
     </RoundsContext.Provider>

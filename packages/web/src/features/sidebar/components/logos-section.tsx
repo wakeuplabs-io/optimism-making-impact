@@ -1,11 +1,11 @@
 import RetroList from '@/assets/retro-list.svg';
 import VoteHere from '@/assets/vote-here.svg';
 import { SidebarLinkButton } from '@/components/sidebar-link-button';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
+import { useRounds } from '@/hooks/use-rounds';
 import { useUser } from '@/hooks/use-user';
 
 export default function LogosSection() {
-  const { selectedRound: selectedRound, editRound } = useSidebarStore((state) => state);
+  const { selectedRound, editRound } = useRounds();
   const { isAdminModeEnabled: isAdmin } = useUser();
 
   return (
@@ -15,7 +15,7 @@ export default function LogosSection() {
         disabled={!selectedRound}
         link={selectedRound?.link1 ?? ''}
         isAdmin={isAdmin}
-        onSubmit={(data) => selectedRound && editRound(selectedRound.id, { link1: data.link })}
+        onSubmit={(data) => selectedRound && editRound({ roundId: selectedRound.id, data: { link1: data.link } })}
         className='w-1/2'
       />
       <SidebarLinkButton
@@ -23,7 +23,7 @@ export default function LogosSection() {
         disabled={!selectedRound}
         link={selectedRound?.link2 ?? ''}
         isAdmin={isAdmin}
-        onSubmit={(data) => selectedRound && editRound(selectedRound.id, { link2: data.link })}
+        onSubmit={(data) => selectedRound && editRound({ roundId: selectedRound.id, data: { link2: data.link } })}
         className='w-1/2'
       />
     </div>
