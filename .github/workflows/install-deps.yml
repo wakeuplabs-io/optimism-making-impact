@@ -39,6 +39,7 @@ jobs:
             packages/web/node_modules
             packages/schemas/node_modules
             packages/api/node_modules
+            packages/prisma/node_modules
           key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
     outputs:

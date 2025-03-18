@@ -4,11 +4,9 @@
   "type": "module",
   "main": "dist/app.js",
   "scripts": {
-    "postinstall": "prisma generate",
-    "build": "npx rimraf dist && pnpm prisma:generate && tspc --project tsconfig.build.json",
+    "build": "pnpm dlx rimraf dist && tspc --project tsconfig.build.json",
     "start": "node dist/app.js",
-    "dev": "pnpm prisma:migrate:deploy && pnpm prisma:generate && tsx watch src/app.ts",
-    "pretest": "dotenv -e .env.test -- pnpm prisma migrate reset --force",
+    "dev": "tsx watch --clear-screen=false src/app.ts",
     "test": "dotenv -e .env.test -- vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
@@ -47,7 +45,7 @@
     "typescript-transform-paths": "3.4.7"
   },
   "dependencies": {
-    "@prisma/client": "6.1.0",
+    "@optimism-making-impact/prisma": "workspace:*",
     "aws-jwt-verify": "^5.0.0",
     "cors": "2.8.5",
     "express": "4.19.2",

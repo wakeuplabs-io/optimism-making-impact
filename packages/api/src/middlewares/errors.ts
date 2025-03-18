@@ -1,6 +1,6 @@
 import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@optimism-making-impact/prisma';
 import { NextFunction, Request, Response } from 'express';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 

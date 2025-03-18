@@ -1,5 +1,16 @@
 import { prisma } from '@/lib/prisma-instance.js';
-import { Attribute, Card, Category, Infographic, Item, Keyword, PrismaClient, Round, SmartListFilter, Step } from '@prisma/client';
+import {
+  Attribute,
+  Card,
+  Category,
+  Infographic,
+  Item,
+  Keyword,
+  PrismaClient,
+  Round,
+  SmartListFilter,
+  Step,
+} from '@optimism-making-impact/prisma';
 
 /**
  * Fetches a complete round from the database, including all associated categories, steps, smart lists, infographics, items, cards, attributes, and keywords, if exists.

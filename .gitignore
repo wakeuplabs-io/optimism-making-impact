@@ -33,7 +33,7 @@ packages/web/cache
 packages/web/src/routeTree.gen.ts
 
 #prisma
-packages/api/prisma/dbml
+packages/prisma/prisma/dbml
 
 # TypeChain files
 /typechain
