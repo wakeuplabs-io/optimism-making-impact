@@ -134,6 +134,7 @@ function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
         control={control}
         render={({ field }) => (
           <FormMultiSelect
+            name={field.name}
             label='Keywords connected'
             value={field.value}
             options={keywords}
