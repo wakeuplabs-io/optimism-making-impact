@@ -13,6 +13,7 @@ interface Tag {
 }
 
 interface MultiSelectInputProps<T extends Tag> {
+  name: string;
   value: T[];
   onChange: (value: T[]) => void;
   options?: T[];
@@ -21,6 +22,7 @@ interface MultiSelectInputProps<T extends Tag> {
 }
 
 export function MultiSelectInput<T extends Tag>({
+  name,
   value,
   onChange,
   options = [],
@@ -145,6 +147,7 @@ export function MultiSelectInput<T extends Tag>({
           }}
           placeholder={placeholder}
           className='h-7 text-sm w-auto flex-[1_0_auto] border-none bg-transparent p-0 shadow-none outline-none focus-visible:ring-0'
+          id={name}
         />
       </div>
       {showOptions ? (

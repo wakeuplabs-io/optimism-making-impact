@@ -9,12 +9,13 @@ interface FormMultiSelectProps extends React.ComponentProps<typeof MultiSelectIn
 }
 
 export function FormMultiSelect({ label, error, className, ...props }: FormMultiSelectProps) {
+  const multiSelectLabel = label ?? props.name;
   return (
     <FormInputWrapper error={error}>
       <div className='flex flex-col gap-1.5'>
-        {label && (
-          <Label htmlFor={label} className='text-xs text-[#BEBEBE] font-normal'>
-            <span className='capitalize'>{label}</span>
+        {multiSelectLabel && (
+          <Label htmlFor={props.name} className='text-xs text-[#BEBEBE] font-normal'>
+            <span className='capitalize'>{multiSelectLabel}</span>
           </Label>
         )}
         <MultiSelectInput
