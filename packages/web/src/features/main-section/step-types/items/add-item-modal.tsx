@@ -1,5 +1,5 @@
+import { useStepContext } from '../../step-context';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
-import { useStepContext } from './items-context';
 import { FormModal } from '@/components/form/form-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';

@@ -1,4 +1,4 @@
-import { useStepContext } from './items-context';
+import { useStepContext } from '../../step-context';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';

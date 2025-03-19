@@ -1,4 +1,4 @@
-import { StepProvider } from './items-context';
+import { StepProvider } from '../../step-context';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { withItemsFilters } from '@/features/main-section/step-types/items/filters/with-items-filters';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';

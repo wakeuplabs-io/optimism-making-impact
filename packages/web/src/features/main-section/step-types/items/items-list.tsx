@@ -1,6 +1,6 @@
+import { useStepContext } from '../../step-context';
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
-import { useStepContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { Item } from '@/features/main-section/step-types/items/item';
