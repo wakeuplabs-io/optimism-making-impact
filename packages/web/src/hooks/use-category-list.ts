@@ -3,7 +3,7 @@ import { queryClient } from '@/main';
 import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { Category } from '@/types/categories';
+import { Category } from '@optimism-making-impact/schemas';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
@@ -27,7 +27,8 @@ export function useCategoryList() {
   const addCategory = useMutation({
     mutationFn: ({ name, icon, roundId }: { name: string; icon: string; roundId: number }) =>
       CategoriesService.createOne({ name, icon, roundId }),
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
+      setCategoryIdQueryParam(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
   });
