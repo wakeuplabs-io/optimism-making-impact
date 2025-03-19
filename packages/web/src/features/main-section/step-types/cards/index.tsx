@@ -2,7 +2,7 @@ import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
 import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
-import { withCardsFilters } from '@/features/main-section/step-types/cards/filters/with-cards-filters';
+import { withCardsStepContext } from '@/features/main-section/step-types/cards/filters/with-cards-filters';
 import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
@@ -37,4 +37,4 @@ function CardStepComponent(props: CardStepProps) {
   );
 }
 
-export const CardStep = withCardsFilters(CardStepComponent);
+export const CardStep = withCardsStepContext(CardStepComponent);

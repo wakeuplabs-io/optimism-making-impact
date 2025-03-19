@@ -1,33 +1,38 @@
 import { AttributesFilterProvider } from '@/features/filters/attributes/attributes-filter-provider';
 import { KeywordsFiltersProvider } from '@/features/filters/keywords/keywords-filter-provider';
 import { StrengthsFilterProvider } from '@/features/filters/strengths/strengths-filter-provider';
+import { StepProvider } from '@/features/main-section/step-context';
 import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 
 /**
- * HOC that wraps a component with the Filters context provider and
- * adds initialization logic. On mount, it sets strengths and keywords and attributes based on the provided step prop,
+ * HOC that wraps a component with the step and filters context providers and
+ * adds initialization logic. On mount, it sets attributes based on the provided step prop,
  * and on unmount it clears the selected filters.
  *
  * @param WrappedComponent The component to wrap. It must receive a `step` prop of type CompleteStep.
  *
  * @returns The wrapped component with filters initialization.
  */
-export function withCardsFilters<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(WrappedComponent: ComponentType<P>): FC<P> {
-  const FiltersInitializationWrapper: FC<P> = (props: P) => {
+export function withCardsStepContext<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(
+  WrappedComponent: ComponentType<P>,
+): FC<P> {
+  const CardsStepInitializationWrapper: FC<P> = (props: P) => {
     return (
       <KeywordsFiltersProvider>
         <AttributesFilterProvider>
           <StrengthsFilterProvider>
-            <InnerFiltersInitializer {...props} />
+            <StepProvider step={props.step}>
+              <InnerInitializer {...props} />
+            </StepProvider>
           </StrengthsFilterProvider>
         </AttributesFilterProvider>
       </KeywordsFiltersProvider>
     );
   };
 
-  const InnerFiltersInitializer: FC<P> = (props: P) => {
+  const InnerInitializer: FC<P> = (props: P) => {
     const { setKeywords, clearSelectedKeywords, setAttributes, clearSelectedAttributes, clearSelectedStrenghts } = useCardsFilters();
 
     useEffect(() => {
@@ -46,5 +51,5 @@ export function withCardsFilters<P extends JSX.IntrinsicAttributes & { step: Com
     return <WrappedComponent {...props} />;
   };
 
-  return FiltersInitializationWrapper;
+  return CardsStepInitializationWrapper;
 }
