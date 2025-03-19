@@ -7,7 +7,13 @@ import { Item } from '@/features/main-section/step-types/items/item';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteItem } from '@/types/items';
-import React from 'react';
+import { Attribute } from '@optimism-making-impact/schemas';
+import React, { useMemo } from 'react';
+
+// TODO: for now, should extract logic
+function filterItem(data: CompleteItem, selectedAttributes: Attribute[]): boolean {
+  return !selectedAttributes.length || selectedAttributes.some(({ id }) => data.attribute?.id === id);
+}
 
 interface ItemsListProps {
   editStepDescription: (description: string) => void;
@@ -17,8 +23,11 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const { step, filteredItems } = useItemsStepContext();
-  const { attributes } = useItemsFilters();
+  const { step } = useItemsStepContext();
+  const { attributes, selectedAttributes } = useItemsFilters();
+
+  // TODO: for now, should extract logic
+  const filteredItems = useMemo(() => step.items.filter((item) => filterItem(item, selectedAttributes)), [step.items, selectedAttributes]);
 
   const hasAttributes = !!attributes && attributes.length > 0;
 
