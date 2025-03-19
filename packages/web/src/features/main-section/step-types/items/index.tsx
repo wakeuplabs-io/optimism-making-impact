@@ -1,5 +1,5 @@
+import { withItemsStepContext } from '@/features/main-section/step-types/items/context/with-items-step-context';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
-import { withItemsStepContext } from '@/features/main-section/step-types/items/filters/with-items-filters';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';

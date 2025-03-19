@@ -2,7 +2,7 @@ import { useStepContext } from '../../step-context';
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
-import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
@@ -24,7 +24,7 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
   const addItem = useMainSectionStore((state) => state.addItem);
 
   const { step } = useStepContext();
-  const { attributes, selectedAttributes } = useItemsFilters();
+  const { attributes, selectedAttributes } = useItemsStepContext();
 
   // TODO: for now, should extract logic
   const filteredItems = useMemo(() => step.items.filter((item) => filterItem(item, selectedAttributes)), [step.items, selectedAttributes]);

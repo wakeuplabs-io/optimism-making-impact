@@ -4,7 +4,7 @@ import { FormModal } from '@/components/form/form-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';
 import { IconButton } from '@/components/icon-button';
-import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { useMemo } from 'react';
@@ -16,7 +16,7 @@ interface AddItemModalProps {
 
 export function AddItemModal(props: AddItemModalProps) {
   const { step } = useStepContext();
-  const { attributes } = useItemsFilters();
+  const { attributes } = useItemsStepContext();
 
   const attributeOptions = useMemo(() => attributesOptionsMapper(attributes), [attributes]);
 

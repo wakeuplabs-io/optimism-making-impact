@@ -1,6 +1,6 @@
 import { AttributesFilterProvider } from '@/features/filters/attributes/attributes-filter-provider';
 import { StepProvider } from '@/features/main-section/step-context';
-import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 
@@ -28,7 +28,7 @@ export function withItemsStepContext<P extends JSX.IntrinsicAttributes & { step:
 
   const InnerInitializer: FC<P> = (props: P) => {
     // Add common logic to all whole item step here
-    const { setAttributes, clearSelectedAttributes } = useItemsFilters();
+    const { setAttributes, clearSelectedAttributes } = useItemsStepContext();
 
     useEffect(() => {
       return () => clearSelectedAttributes();

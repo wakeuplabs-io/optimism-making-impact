@@ -4,9 +4,7 @@ import { useStrengthsFilter } from '@/features/filters/strengths/use-strengths-f
 import { useStepContext } from '@/features/main-section/step-context';
 
 /**
- * Custom hook that provides the current step context along with filter states and actions
- * for keywords, strengths, and attributes. It combines the contexts from keywords, strengths,
- * and attributes filters and includes the current step information.
+ * Custom hook that provides the current step context along with filter states and actions for keywords, strengths, and attributes. It combines the contexts from keywords, strengths, and attributes filters and includes the current step information.
  */
 export function useCardsStepContext() {
   const keywordsFilter = useKeywordsFilter();

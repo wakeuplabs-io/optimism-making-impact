@@ -2,7 +2,7 @@ import { AttributesFilterProvider } from '@/features/filters/attributes/attribut
 import { KeywordsFiltersProvider } from '@/features/filters/keywords/keywords-filter-provider';
 import { StrengthsFilterProvider } from '@/features/filters/strengths/strengths-filter-provider';
 import { StepProvider } from '@/features/main-section/step-context';
-import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 

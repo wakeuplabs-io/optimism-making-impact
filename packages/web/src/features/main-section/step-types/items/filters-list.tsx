@@ -4,7 +4,7 @@ import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
-import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -41,7 +41,7 @@ function Content() {
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
   const { step } = useStepContext();
-  const { attributes, setSelectedAttributes, selectedAttributes } = useItemsFilters();
+  const { attributes, setSelectedAttributes, selectedAttributes } = useItemsStepContext();
 
   if (!step.smartListFilter) {
     return (

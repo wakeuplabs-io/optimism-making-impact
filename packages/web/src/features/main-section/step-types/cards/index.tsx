@@ -1,8 +1,8 @@
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
+import { withCardsStepContext } from '@/features/main-section/step-types/cards/context/with-cards-step-context';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
-import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
-import { withCardsStepContext } from '@/features/main-section/step-types/cards/filters/with-cards-filters';
 import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
