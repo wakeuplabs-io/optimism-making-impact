@@ -1,29 +1,29 @@
 import { CompleteStep } from '@/types/steps';
 import { createContext, ReactNode, useContext } from 'react';
 
-interface ItemsContextType {
+interface StepContextType {
   step: CompleteStep;
 }
 
-const ItemsContext = createContext<ItemsContextType | undefined>(undefined);
+const StepContext = createContext<StepContextType | undefined>(undefined);
 
-export function useItemsStepContext() {
-  const context = useContext(ItemsContext);
+export function useStepContext() {
+  const context = useContext(StepContext);
   if (!context) {
-    throw new Error('useItems must be used within an ItemsProvider');
+    throw new Error('useStepContext must be used within an StepProvider');
   }
   return context;
 }
 
-interface ItemsStepProviderProps {
+interface StepProviderProps {
   step: CompleteStep;
   children: ReactNode;
 }
 
-export function ItemsStepProvider({ step, children }: ItemsStepProviderProps) {
+export function StepProvider({ step, children }: StepProviderProps) {
   const value = {
     step,
   };
 
-  return <ItemsContext.Provider value={value}>{children}</ItemsContext.Provider>;
+  return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
 }

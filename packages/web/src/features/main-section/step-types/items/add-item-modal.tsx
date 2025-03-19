@@ -1,5 +1,5 @@
 import { AttributeOption, attributesOptionsMapper } from '../utils';
-import { useItemsStepContext } from './items-context';
+import { useStepContext } from './items-context';
 import { FormModal } from '@/components/form/form-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';
@@ -15,7 +15,7 @@ interface AddItemModalProps {
 }
 
 export function AddItemModal(props: AddItemModalProps) {
-  const { step } = useItemsStepContext();
+  const { step } = useStepContext();
   const { attributes } = useItemsFilters();
 
   const attributeOptions = useMemo(() => attributesOptionsMapper(attributes), [attributes]);

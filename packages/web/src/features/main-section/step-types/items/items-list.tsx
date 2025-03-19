@@ -1,6 +1,6 @@
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
-import { useItemsStepContext } from './items-context';
+import { useStepContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { Item } from '@/features/main-section/step-types/items/item';
@@ -23,7 +23,7 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const { step } = useItemsStepContext();
+  const { step } = useStepContext();
   const { attributes, selectedAttributes } = useItemsFilters();
 
   // TODO: for now, should extract logic

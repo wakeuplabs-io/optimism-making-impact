@@ -1,4 +1,4 @@
-import { useItemsStepContext } from './items-context';
+import { useStepContext } from './items-context';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
@@ -40,7 +40,7 @@ function Content() {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
-  const { step } = useItemsStepContext();
+  const { step } = useStepContext();
   const { attributes, setSelectedAttributes, selectedAttributes } = useItemsFilters();
 
   if (!step.smartListFilter) {
