@@ -45,7 +45,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
     >
       {isMobile ? (
         <div className='flex items-center justify-center w-full h-full'>
-          <IconWithDefault src={props.step.icon} size='lg' />
+          <IconWithDefault src={props.step.icon} size='xl' />
         </div>
       ) : (
         <div className='flex items-center justify-between w-full h-full gap-2'>
