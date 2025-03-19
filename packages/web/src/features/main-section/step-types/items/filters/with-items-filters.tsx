@@ -13,8 +13,10 @@ import { ComponentType, FC, useEffect } from 'react';
  *
  * @returns The wrapped component with filters initialization.
  */
-export function withItemsContext<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(WrappedComponent: ComponentType<P>): FC<P> {
-  const FiltersInitializationWrapper: FC<P> = (props: P) => {
+export function withItemsStepContext<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(
+  WrappedComponent: ComponentType<P>,
+): FC<P> {
+  const ItemStepInitializationWrapper: FC<P> = (props: P) => {
     return (
       <AttributesFilterProvider>
         <StepProvider step={props.step}>
@@ -25,6 +27,7 @@ export function withItemsContext<P extends JSX.IntrinsicAttributes & { step: Com
   };
 
   const InnerInitializer: FC<P> = (props: P) => {
+    // Add common logic to all whole item step here
     const { setAttributes, clearSelectedAttributes } = useItemsFilters();
 
     useEffect(() => {
@@ -38,5 +41,5 @@ export function withItemsContext<P extends JSX.IntrinsicAttributes & { step: Com
     return <WrappedComponent {...props} />;
   };
 
-  return FiltersInitializationWrapper;
+  return ItemStepInitializationWrapper;
 }
