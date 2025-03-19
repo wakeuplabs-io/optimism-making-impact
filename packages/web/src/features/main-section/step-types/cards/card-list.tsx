@@ -1,5 +1,5 @@
 import { Card } from '@/features/main-section/step-types/cards/card';
-import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
 import { CompleteCard } from '@/types/cards';
 
@@ -9,7 +9,7 @@ interface CardListProps {
 }
 
 export function CardList(props: CardListProps) {
-  const { selectedKeywords, selectedStrengths, selectedAttributes } = useCardsFilters();
+  const { selectedKeywords, selectedStrengths, selectedAttributes } = useCardsStepContext();
 
   const filteredCards = useFilteredData({
     data: props.cards,

@@ -2,7 +2,7 @@ import { AttributesFilterProvider } from '@/features/filters/attributes/attribut
 import { KeywordsFiltersProvider } from '@/features/filters/keywords/keywords-filter-provider';
 import { StrengthsFilterProvider } from '@/features/filters/strengths/strengths-filter-provider';
 import { StepProvider } from '@/features/main-section/step-context';
-import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 
@@ -33,7 +33,7 @@ export function withCardsStepContext<P extends JSX.IntrinsicAttributes & { step:
   };
 
   const InnerInitializer: FC<P> = (props: P) => {
-    const { setKeywords, clearSelectedKeywords, setAttributes, clearSelectedAttributes, clearSelectedStrenghts } = useCardsFilters();
+    const { setKeywords, clearSelectedKeywords, setAttributes, clearSelectedAttributes, clearSelectedStrenghts } = useCardsStepContext();
 
     useEffect(() => {
       return () => {

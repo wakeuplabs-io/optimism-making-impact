@@ -1,7 +1,7 @@
 import { AddCardModal } from '@/features/main-section/step-types/cards/add-card-button';
 import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
-import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { withCardsStepContext } from '@/features/main-section/step-types/cards/filters/with-cards-filters';
 import { cn } from '@/lib/utils';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -15,7 +15,7 @@ interface CardStepProps {
 function CardStepComponent(props: CardStepProps) {
   const { addCard } = useMainSectionStore((state) => state);
   const adminMode = useUserStore((state) => state.isAdminModeEnabled);
-  const { keywords } = useCardsFilters();
+  const { keywords } = useCardsStepContext();
 
   return (
     <div className={cn('flex flex-col gap-4')}>

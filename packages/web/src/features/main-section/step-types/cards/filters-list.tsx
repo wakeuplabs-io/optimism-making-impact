@@ -3,7 +3,7 @@ import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
-import { useCardsFilters } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/filters/use-cards-filters';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRandomBadgeColor } from '@/lib/utils';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
@@ -25,7 +25,7 @@ export function CardFilters(props: CardFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths } = useCardsFilters();
+  const { selectedKeywords, selectedStrengths } = useCardsStepContext();
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -64,7 +64,7 @@ function Content(props: ContentProps) {
     setSelectedStrengths,
     selectedAttributes,
     setSelectedAttributes,
-  } = useCardsFilters();
+  } = useCardsStepContext();
 
   return (
     <div className='flex w-full flex-col'>
