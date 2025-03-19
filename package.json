@@ -1,0 +1,44 @@
+{
+  "name": "optimism-making-impact",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "pnpm -r --aggregate-output run lint",
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "pretest": "pnpm -r --stream run pretest",
+    "test": "pnpm -r --stream --aggregate-output run test",
+    "posttest": "pnpm -r --stream run posttest",
+    "format": "pnpm -r --parallel run format",
+    "studio": "pnpm -r --parallel run studio",
+    "ui:add": "pnpm --filter web ui:add",
+    "ui:build": "pnpm --filter schemas build && pnpm --filter web build",
+    "deploy:app:staging": "sst install && sst deploy --stage=staging --print-logs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.4",
+    "@typescript-eslint/eslint-plugin": "8.18.0",
+    "@typescript-eslint/parser": "8.18.0",
+    "dotenv-cli": "^7.4.4",
+    "eslint": "9.16.0",
+    "eslint-plugin-react": "7.37.2",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "eslint-plugin-react-refresh": "0.4.16",
+    "prettier": "^3.4.2",
+    "serverless": "4.4.16",
+    "serverless-plugin-common-excludes": "4.0.0",
+    "serverless-plugin-include-dependencies": "6.1.1",
+    "serverless-s3-sync": "3.4.0",
+    "sst": "3.9.10",
+    "tsx": "4.11.0",
+    "vite-tsconfig-paths": "4.3.2",
+    "vitest": "^3.0.4"
+  },
+  "dependencies": {
+    "dotenv": "16.4.7",
+    "zod": "3.24.1"
+  }
+}
