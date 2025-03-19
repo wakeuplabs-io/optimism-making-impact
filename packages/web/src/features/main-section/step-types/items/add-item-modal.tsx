@@ -1,4 +1,3 @@
-import { useStepContext } from '../../step-context';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { FormModal } from '@/components/form/form-modal';
 import { FormSelect } from '@/components/form/form-select';
@@ -15,8 +14,7 @@ interface AddItemModalProps {
 }
 
 export function AddItemModal(props: AddItemModalProps) {
-  const { step } = useStepContext();
-  const { attributes } = useItemsStepContext();
+  const { attributes, step } = useItemsStepContext();
 
   const attributeOptions = useMemo(() => attributesOptionsMapper(attributes), [attributes]);
 
