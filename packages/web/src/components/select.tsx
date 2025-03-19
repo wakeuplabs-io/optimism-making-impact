@@ -20,7 +20,7 @@ export interface SelectProps extends React.ComponentProps<typeof SelectComponent
 export function Select(props: SelectProps) {
   return (
     <SelectComponent {...props} onValueChange={props.onValueChange} defaultValue={props.defaultValue} value={props.value}>
-      <SelectTrigger className={cn(props.triggerClassName)}>
+      <SelectTrigger className={cn(props.triggerClassName)} id={props.name}>
         <SelectValue placeholder={props.placeholder} />
         <ChevronDown size={18} className='text-input' />
       </SelectTrigger>
