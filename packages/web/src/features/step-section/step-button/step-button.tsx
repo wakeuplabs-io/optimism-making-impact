@@ -18,9 +18,9 @@ interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const buttonVariants = cva('flex overflow-hidden whitespace-nowrap rounded-3xl border transition-all ease-in-out duration-500', {
   variants: {
     state: {
-      past: 'border-white-low text-white-low bg-[#F1F4F9] hover:bg-primary hover:text-white',
-      active: 'border-primary bg-white',
-      coming: 'border-secondary hover:bg-primary hover:text-white',
+      past: 'border-mi-gray-200 text-gray-700 bg-[#F1F4F9] hover:bg-primary hover:text-white',
+      active: 'border-primary bg-white [&_svg]:text-primary',
+      coming: 'border-mi-gray-600 hover:bg-primary hover:text-white',
     },
   },
 });
@@ -58,7 +58,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             <div className='lg:min-w[22px]'>
               <IconWithDefault src={props.step.icon} />
             </div>
-            {!isMobile && <div className='hidden text-left truncate text-4 2xl:inline-block'>{props.step.title}</div>}
+            {!isMobile && <div className='hidden text-left truncate text-base 2xl:inline-block'>{props.step.title}</div>}
           </div>
           {showActionIcons && (
             <div className={cn('h-full')} onClick={(e) => e.stopPropagation()}>
