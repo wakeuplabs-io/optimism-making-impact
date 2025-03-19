@@ -10,8 +10,8 @@ CREATE TYPE "Color" AS ENUM ('RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE',
 -- CreateTable
 CREATE TABLE "Round" (
     "id" SERIAL NOT NULL,
-    "link1" TEXT,
-    "link2" TEXT,
+    "link1" TEXT NOT NULL,
+    "link2" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
