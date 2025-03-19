@@ -21,9 +21,5 @@ interface StepProviderProps {
 }
 
 export function StepProvider({ step, children }: StepProviderProps) {
-  const value = {
-    step,
-  };
-
-  return <StepContext.Provider value={value}>{children}</StepContext.Provider>;
+  return <StepContext.Provider value={{ step }}> {children} </StepContext.Provider>;
 }

@@ -1,10 +1,11 @@
 import { AttributesFilterProvider } from '@/features/filters/attributes/attributes-filter-provider';
+import { StepProvider } from '@/features/main-section/step-context';
 import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC, useEffect } from 'react';
 
 /**
- * HOC that wraps a component with the Filters context provider and
+ * HOC that wraps a component with the step and filters context providers and
  * adds initialization logic. On mount, it sets attributes based on the provided step prop,
  * and on unmount it clears the selected filters.
  *
@@ -12,22 +13,22 @@ import { ComponentType, FC, useEffect } from 'react';
  *
  * @returns The wrapped component with filters initialization.
  */
-export function withItemsFilters<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(WrappedComponent: ComponentType<P>): FC<P> {
+export function withItemsContext<P extends JSX.IntrinsicAttributes & { step: CompleteStep }>(WrappedComponent: ComponentType<P>): FC<P> {
   const FiltersInitializationWrapper: FC<P> = (props: P) => {
     return (
       <AttributesFilterProvider>
-        <InnerFiltersInitializer {...props} />
+        <StepProvider step={props.step}>
+          <InnerInitializer {...props} />
+        </StepProvider>
       </AttributesFilterProvider>
     );
   };
 
-  const InnerFiltersInitializer: FC<P> = (props: P) => {
+  const InnerInitializer: FC<P> = (props: P) => {
     const { setAttributes, clearSelectedAttributes } = useItemsFilters();
 
     useEffect(() => {
-      return () => {
-        clearSelectedAttributes();
-      };
+      return () => clearSelectedAttributes();
     }, []);
 
     useEffect(() => {

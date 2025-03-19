@@ -1,6 +1,5 @@
-import { StepProvider } from '../../step-context';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
-import { withItemsFilters } from '@/features/main-section/step-types/items/filters/with-items-filters';
+import { withItemsContext } from '@/features/main-section/step-types/items/filters/with-items-filters';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useStepsStore } from '@/state/steps/steps-store';
@@ -24,17 +23,15 @@ function ItemsStepComponent({ step }: ItemStepProps) {
   };
 
   return (
-    <StepProvider step={step}>
-      <div className={'flex flex-col gap-4'}>
-        <div className='flex h-full flex-col gap-6 lg:flex-row'>
-          <ItemFilters />
-          <div className='w-full pb-8'>
-            <ItemsList editStepDescription={handleStepDescriptionChange} />
-          </div>
+    <div className={'flex flex-col gap-4'}>
+      <div className='flex h-full flex-col gap-6 lg:flex-row'>
+        <ItemFilters />
+        <div className='w-full pb-8'>
+          <ItemsList editStepDescription={handleStepDescriptionChange} />
         </div>
       </div>
-    </StepProvider>
+    </div>
   );
 }
 
-export const ItemsStep = withItemsFilters(ItemsStepComponent);
+export const ItemsStep = withItemsContext(ItemsStepComponent);
