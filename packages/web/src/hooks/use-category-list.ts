@@ -1,3 +1,4 @@
+import { useUser } from './use-user';
 import { queryClient } from '@/main';
 import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
@@ -6,7 +7,6 @@ import { Category } from '@/types/categories';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
-import { useUser } from './use-user';
 
 export function useCategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
@@ -61,7 +61,7 @@ export function useCategoryList() {
   useEffect(() => {
     if (categories.length === 0) return;
 
-    const newCategory = categories.find(c => c.id === categoryId)
+    const newCategory = categories.find((c) => c.id === categoryId);
     setSelectedCategory(newCategory ?? categories[0]);
   }, [categories]);
 
@@ -75,7 +75,7 @@ export function useCategoryList() {
   // Helper functions
   const setCategoryIdQueryParam = (categoryId: number) => {
     router.navigate({
-      search: { ...search, categoryId },
+      search: (prev) => ({ ...prev, categoryId }),
       reloadDocument: false,
       to: '/',
     });
