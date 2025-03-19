@@ -1,7 +1,8 @@
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
-import { useItemsContext } from './items-context';
+import { useItemsStepContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
+import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { useUserStore } from '@/state/user-store/user-store';
@@ -16,7 +17,8 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
   const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
   const addItem = useMainSectionStore((state) => state.addItem);
 
-  const { step, items, attributes } = useItemsContext();
+  const { step, filteredItems } = useItemsStepContext();
+  const { attributes } = useItemsFilters();
 
   const hasAttributes = !!attributes && attributes.length > 0;
 
@@ -26,7 +28,7 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal onClick={addItem} />}
       </div>
-      {hasAttributes ? <List items={items} /> : <NoAttributesEmptyState />}
+      {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
     </div>
   );
 }

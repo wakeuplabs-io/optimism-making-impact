@@ -1,20 +1,23 @@
+import { AttributeOption, attributesOptionsMapper } from '../utils';
+import { useItemsStepContext } from './items-context';
 import { FormModal } from '@/components/form/form-modal';
+import { FormSelect } from '@/components/form/form-select';
+import { FormTextArea } from '@/components/form/form-text-area';
+import { IconButton } from '@/components/icon-button';
+import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { CreateItemBody, createItemSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
-import { IconButton } from '@/components/icon-button';
-import { AttributeOption, attributesOptionsMapper } from '../utils';
-import { FormTextArea } from '@/components/form/form-text-area';
-import { FormSelect } from '@/components/form/form-select';
-import { useItemsContext } from './items-context';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddItemModalProps {
   onClick: (data: CreateItemBody) => void;
 }
 
 export function AddItemModal(props: AddItemModalProps) {
-  const { step, attributes } = useItemsContext();
+  const { step } = useItemsStepContext();
+  const { attributes } = useItemsFilters();
+
   const attributeOptions = useMemo(() => attributesOptionsMapper(attributes), [attributes]);
 
   const defaultValues: CreateItemBody = {

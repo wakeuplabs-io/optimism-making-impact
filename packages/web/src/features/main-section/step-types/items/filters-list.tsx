@@ -1,9 +1,10 @@
-import { useItemsContext } from './items-context';
+import { useItemsStepContext } from './items-context';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
+import { useItemsFilters } from '@/features/main-section/step-types/items/filters/use-items-filters';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useMainSectionStore } from '@/state/main-section/main-section-store';
@@ -39,8 +40,8 @@ function Content() {
   const addAttributeToSmartList = useMainSectionStore((state) => state.addAttributeToSmartList);
   const updateAttribute = useMainSectionStore((state) => state.updateAttribute);
   const deleteAttribute = useMainSectionStore((state) => state.deleteAttribute);
-
-  const { step, attributes, setSelectedAttribute, selectedAttributes } = useItemsContext();
+  const { step } = useItemsStepContext();
+  const { attributes, setSelectedAttributes, selectedAttributes } = useItemsFilters();
 
   if (!step.smartListFilter) {
     return (
@@ -58,7 +59,6 @@ function Content() {
       </div>
       <hr className='my-6 border-[#D9D9D9]' />
       <FilterGroup<Attribute>
-        // title={props.smartList.title} TODO: add title
         filters={attributes.map((attr) => ({
           label: attr.value.toLowerCase(),
           data: attr,
@@ -69,7 +69,7 @@ function Content() {
           ),
           tooltipText: attr.description,
         }))}
-        onSelected={setSelectedAttribute}
+        onSelected={setSelectedAttributes}
         selected={selectedAttributes}
         isAdmin={isAdmin}
         spacing='xl'
