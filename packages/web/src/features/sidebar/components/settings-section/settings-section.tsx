@@ -1,10 +1,10 @@
 import { Login } from './login';
 import Logout from './logout';
 import { SettingsButton } from './settings-button';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 
 export function SettingsSection() {
-  const user = useUserStore((state) => state.user);
+  const { user } = useUser();
 
   return (
     <ul className='flex flex-col gap-2'>

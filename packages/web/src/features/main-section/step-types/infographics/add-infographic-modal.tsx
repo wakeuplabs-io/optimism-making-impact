@@ -1,11 +1,11 @@
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form/form-modal';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useStep } from '@/hooks/use-step';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormTextArea } from '@/components/form/form-text-area';
 
 interface AddInfographicModalProps {
   stepId: number;
@@ -13,7 +13,7 @@ interface AddInfographicModalProps {
 }
 
 export function AddInfographicModal(props: AddInfographicModalProps) {
-  const addInfographic = useMainSectionStore((state) => state.addInfographic);
+  const { addInfographic } = useStep();
 
   const defaultValues: CreateInfographicBody = {
     image: '',
@@ -29,7 +29,7 @@ export function AddInfographicModal(props: AddInfographicModalProps) {
     <FormModal
       title='Add Infographic'
       trigger={
-        <div className='w-full max-w-[320px] lg:w-[250px] absolute top-0 left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:-translate-x-0'>
+        <div className='absolute left-1/2 top-0 w-full max-w-[320px] -translate-x-1/2 lg:relative lg:left-0 lg:w-[250px] lg:-translate-x-0'>
           <ActionButton label='Create New' variant='secondary' icon={<Plus strokeWidth={3} />} className='w-full' />
         </div>
       }

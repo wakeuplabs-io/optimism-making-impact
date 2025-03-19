@@ -1,7 +1,4 @@
-import { useRouterObserver } from '@/hooks/use-router-observer';
-import { useSidebarStore } from '@/state/sidebar/sidebar-store';
-import { useUserStore } from '@/state/user-store/user-store';
-import { ComponentType, FC, useEffect } from 'react';
+import { ComponentType, FC,  } from 'react';
 
 /**
  * HOC that wraps a component with app initialization logic.
@@ -12,15 +9,6 @@ import { ComponentType, FC, useEffect } from 'react';
  */
 export function withAppInitialization<P extends JSX.IntrinsicAttributes>(WrappedComponent: ComponentType<P>): FC<P> {
   const AppInitializationWrapper: FC<P> = (props: P) => {
-    const { initializeObserver } = useRouterObserver();
-
-    useEffect(() => {
-      (async () => {
-        await useSidebarStore.getState().init();
-        await useUserStore.getState().fetchAuth();
-        initializeObserver();
-      })();
-    }, []);
 
     return <WrappedComponent {...props} />;
   };

@@ -2,7 +2,7 @@ import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
+import { useStep } from '@/hooks/use-step';
 import { CompleteItem, Item } from '@/types/items';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
@@ -10,14 +10,17 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 interface UpdateItemModalProps {
   item: CompleteItem;
-  onSave: (itemId: number, data: UpdateItemBody) => void;
+  onSave: (props: { itemId: number; data: UpdateItemBody }) => void;
   onDelete: (item: Item) => void;
 }
 
 export function UpdateItemModal(props: UpdateItemModalProps) {
-  const attributes = useMainSectionStore((state) => state.step?.smartListFilter?.attributes);
+  const { step } = useStep();
 
-  const attributeOptions = useMemo(() => (attributes ? attributesOptionsMapper(attributes) : []), [attributes]);
+  const attributeOptions = useMemo(
+    () => (step?.smartListFilter?.attributes ? attributesOptionsMapper(step?.smartListFilter?.attributes) : []),
+    [step?.smartListFilter?.attributes],
+  );
 
   const defaultValues = {
     markdown: props.item.markdown,
@@ -25,7 +28,7 @@ export function UpdateItemModal(props: UpdateItemModalProps) {
   };
 
   function handleSubmit(data: UpdateItemBody) {
-    props.onSave(props.item.id, data);
+    props.onSave({ itemId: props.item.id, data });
   }
 
   return (

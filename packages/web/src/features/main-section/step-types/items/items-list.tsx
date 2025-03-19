@@ -1,20 +1,20 @@
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
+import { useItemsContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { Item } from '@/features/main-section/step-types/items/item';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useStep } from '@/hooks/use-step';
+import { useUser } from '@/hooks/use-user';
 import { CompleteItem } from '@/types/items';
 import React from 'react';
-import { useItemsContext } from './items-context';
 
 interface ItemsListProps {
   editStepDescription: (description: string) => void;
 }
 
 export function ItemsList({ editStepDescription }: ItemsListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const addItem = useMainSectionStore((state) => state.addItem);
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { addItem } = useStep();
 
   const { step, items, attributes } = useItemsContext();
 
@@ -22,7 +22,7 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
 
   return (
     <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
-      <div className='mb-6 flex gap-4 items-start justify-between border-b border-[#D9D9D9] pb-3'>
+      <div className='mb-6 flex items-start justify-between gap-4 border-b border-[#D9D9D9] pb-3'>
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal onClick={addItem} />}
       </div>
@@ -36,9 +36,8 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const updateItem = useMainSectionStore((state) => state.updateItem);
-  const deleteItem = useMainSectionStore((state) => state.deleteItem);
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { updateItem, deleteItem } = useStep();
 
   return (
     <div className='flex w-full flex-col gap-6'>

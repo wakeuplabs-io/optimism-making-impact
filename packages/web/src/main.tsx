@@ -1,5 +1,7 @@
+import { UserProvider } from './contexts/user/user-provider';
 import './index.css';
 import { router } from '@/router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from '@tanstack/react-router';
 import { Amplify } from 'aws-amplify';
 import { StrictMode } from 'react';
@@ -23,8 +25,14 @@ Amplify.configure({
   },
 });
 
+export const queryClient = new QueryClient();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </QueryClientProvider>
   </StrictMode>,
 );

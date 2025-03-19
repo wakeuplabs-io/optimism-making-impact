@@ -1,7 +1,7 @@
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 
 export function IsAdminIndicator() {
-  const { isAdminModeEnabled, toggleAdminMode } = useUserStore((state) => state);
+  const { isAdminModeEnabled, toggleAdminMode } = useUser();
 
   return (
     <button className='absolute bottom-20 right-4 rounded-xl bg-primary p-4 text-white lg:bottom-4' onClick={toggleAdminMode}>

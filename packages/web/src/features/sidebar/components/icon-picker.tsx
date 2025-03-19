@@ -25,7 +25,7 @@ export function IconPicker({ selectedIcon, modalIcons, onSelect }: IconPickerPro
         />
         <div className='mt-2 grid max-h-[200px] grid-cols-5 gap-2 overflow-y-auto'>
           {filteredIcons.length > 0 ? (
-            filteredIcons.slice(0, 30).map((iconName) => {
+            filteredIcons.slice(0, 1000).map((iconName) => {
               const IconComponent = modalIcons[iconName];
 
               return (

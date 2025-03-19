@@ -3,7 +3,7 @@ name: pipeline CD/CI staging
 on:
   push:
     branches:
-      - main
+      - feat/OMI-113/remove-global-state/steps-store
 
 jobs:
   # Install dependencies
