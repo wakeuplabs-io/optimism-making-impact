@@ -1,9 +1,9 @@
 import { SidebarListButton } from '../sidebar-list-button';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useUser } from '@/hooks/use-user';
 import { LogOut } from 'lucide-react';
 
 export const Logout = () => {
-  const signOut = useUserStore((state) => state.signOut);
+  const { signOut } = useUser();
 
   const handleLogout = async () => {
     try {

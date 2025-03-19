@@ -1,8 +1,7 @@
 import { withItemsStepContext } from '@/features/main-section/step-types/items/context/with-items-step-context';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useStepsStore } from '@/state/steps/steps-store';
+import { useStepsList } from '@/hooks/use-steps-list';
 import { CompleteStep } from '@/types/steps';
 
 interface ItemStepProps {
@@ -10,13 +9,11 @@ interface ItemStepProps {
 }
 
 function ItemsStepComponent({ step }: ItemStepProps) {
-  const updateStep = useMainSectionStore((state) => state.updateStep);
-  const editStepDescription = useStepsStore((state) => state.editStepDescription);
+  const { handleStepEdit } = useStepsList();
 
   const handleStepDescriptionChange = async (description: string) => {
     try {
-      await editStepDescription(step.id, description);
-      updateStep({ description });
+      handleStepEdit(step.id, { ...step, description });
     } catch (error) {
       console.error('Failed to update description', error);
     }

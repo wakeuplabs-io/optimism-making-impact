@@ -2,8 +2,8 @@ import { EditInfographicActionBar } from './edit-infographic-action-bar';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
+import { useStep } from '@/hooks/use-step';
 import { cn } from '@/lib/utils';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
@@ -18,7 +18,7 @@ type EditInfographicMarkdownProps = Omit<React.HtmlHTMLAttributes<HTMLTextAreaEl
 };
 
 export function EditInfographicMarkdown({ infographic, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
-  const editInfographic = useMainSectionStore((state) => state.editInfographic);
+  const { editInfographic } = useStep();
   const [editMode, toggleEditMode] = useToggle(false);
   const [controlledMarkdownValue, setControlledMarkdownValue] = useState(infographic.markdown);
   const [validationError, setValidationError] = useState<string>('');
@@ -53,23 +53,27 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
       return;
     }
 
-    const { error } = await editInfographic(infographic.id, { markdown: controlledMarkdownValue });
+    editInfographic({
+      infographicId: infographic.id,
+      data: { image: infographic.image, markdown: controlledMarkdownValue },
+    });
 
-    if (error) {
-      resetMarkdown();
-    }
+    //We have no error no more, check how to reset markdown
+    // if (error) {
+    //   resetMarkdown();
+    // }
 
     toggleEditMode();
   };
 
   if (editMode && isAdmin) {
     return (
-      <div className='flex flex-col justify-center w-full h-full gap-4 p-6 border rounded-xl border-mi-gray-100'>
+      <div className='flex h-full w-full flex-col justify-center gap-4 rounded-xl border border-mi-gray-100 p-6'>
         <TextAreaInput
           ref={textAreaRef}
           name='content'
           rows={7}
-          className='w-full border-0 resize-none focus-visible:outline-none focus-visible:ring-0 active:border-0'
+          className='w-full resize-none border-0 focus-visible:outline-none focus-visible:ring-0 active:border-0'
           value={controlledMarkdownValue}
           {...props}
           onChange={handleTextareaChange}
@@ -119,7 +123,7 @@ function InfographicMarkdown({ markdown, isAdmin, toggleEditMode, className }: I
       onMouseEnter={() => toggleIsHovered()}
       onMouseLeave={toggleIsHovered}
     >
-      <div className='w-full max-w-full prose xl:prose-xl'>
+      <div className='prose w-full max-w-full xl:prose-xl'>
         <Markdown className={cn('overflow-auto break-words', className)}>{markdown}</Markdown>
       </div>
       {isAdmin && (

@@ -10,11 +10,11 @@ export function TextInput(props: TextInputProps) {
   return (
     <div className='flex flex-col gap-1.5'>
       {label && (
-        <Label htmlFor={label} className='text-xs text-[#BEBEBE] font-normal'>
+        <Label htmlFor={props.name} className='text-xs text-[#BEBEBE] font-normal'>
           <span className='capitalize'>{label}</span>
         </Label>
       )}
-      <Input {...props} />
+      <Input {...props} id={props.name} />
     </div>
   );
 }

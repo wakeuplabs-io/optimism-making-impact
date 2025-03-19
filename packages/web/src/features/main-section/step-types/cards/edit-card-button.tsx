@@ -1,18 +1,18 @@
-import { FormSelect } from '@/components/form/form-select';
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
+import { FormMultiSelect } from '@/components/form/form-multi-select';
+import { FormSelect } from '@/components/form/form-select';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { CompleteCard } from '@/types/cards';
 import { Keyword } from '@/types/keywords';
 import { Attribute, UpdateCardBody, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormMultiSelect } from '@/components/form/form-multi-select';
 
 interface EditCardModalProps {
   stepId: number;
-  onSave?: (cardId: number, data: UpdateCardBody) => void;
+  onSave?: (props: { cardId: number; data: UpdateCardBody }) => void;
   onDelete?: (cardId: number) => void;
   keywords: Keyword[];
   attributes?: Attribute[];
@@ -41,13 +41,16 @@ export function EditCardModal(props: EditCardModalProps) {
 
     const numericAttributeId = attributeId ? +attributeId : 0;
 
-    props.onSave?.(props.card.id, {
-      title,
-      markdown,
-      stepId,
-      strength,
-      keywords: selectedKeywordsValueAndId,
-      attributeId: numericAttributeId === nonAssignedOption.value ? undefined : attributeId,
+    props.onSave?.({
+      cardId: props.card.id,
+      data: {
+        title,
+        markdown,
+        stepId,
+        strength,
+        keywords: selectedKeywordsValueAndId,
+        attributeId: numericAttributeId === nonAssignedOption.value ? undefined : attributeId,
+      },
     });
   }
 
@@ -134,6 +137,7 @@ function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
         control={control}
         render={({ field }) => (
           <FormMultiSelect
+            name={field.name}
             label='Keywords connected'
             value={field.value}
             options={keywords}

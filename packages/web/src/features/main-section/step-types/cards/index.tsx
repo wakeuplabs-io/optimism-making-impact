@@ -3,9 +3,9 @@ import { CardList } from '@/features/main-section/step-types/cards/card-list';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { withCardsStepContext } from '@/features/main-section/step-types/cards/context/with-cards-step-context';
 import { CardFilters } from '@/features/main-section/step-types/cards/filters-list';
+import { useStep } from '@/hooks/use-step';
+import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteStep } from '@/types/steps';
 
 interface CardStepProps {
@@ -13,9 +13,9 @@ interface CardStepProps {
 }
 
 function CardStepComponent(props: CardStepProps) {
-  const { addCard } = useMainSectionStore((state) => state);
-  const adminMode = useUserStore((state) => state.isAdminModeEnabled);
   const { keywords } = useCardsStepContext();
+  const { addCard } = useStep();
+  const { isAdminModeEnabled: adminMode } = useUser();
 
   return (
     <div className={cn('flex flex-col gap-4')}>

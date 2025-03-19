@@ -1,4 +1,5 @@
 import { fetcher } from '@/lib/fetcher';
+import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { AxiosInstance } from 'axios';
 
@@ -19,8 +20,8 @@ export class RoundsServiceClass {
     return RoundsServiceClass.instance;
   }
 
-  async getRounds() {
-    return this.fetcher.get(roundsEndpoint).then((res) => res.data);
+  async getRounds(): Promise<CompleteRound[]> {
+    return this.fetcher.get(roundsEndpoint).then((res) => res.data.data.rounds);
   }
 
   async createRound() {

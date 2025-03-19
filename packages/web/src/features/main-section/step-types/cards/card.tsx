@@ -2,9 +2,9 @@ import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/compone
 import { Badge } from '@/components/ui/badge';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
+import { useStep } from '@/hooks/use-step';
+import { useUser } from '@/hooks/use-user';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
 import { CompleteCard } from '@/types/cards';
 import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ interface CardProps {
 export function Card(props: CardProps) {
   const { keywords, attributes } = useCardsStepContext();
   const [isCardHovered, setIsCardHovered] = useState(false);
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
+  const { isAdminModeEnabled: isAdmin } = useUser();
 
   const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
 
@@ -53,8 +53,7 @@ interface CardTitleProps {
 }
 
 function CardTitle(props: CardTitleProps) {
-  const editCard = useMainSectionStore((state) => state.editCard);
-  const deleteCard = useMainSectionStore((state) => state.deleteCard);
+  const { editCard, deleteCard } = useStep();
 
   return (
     <div className='flex max-w-full items-center gap-4'>

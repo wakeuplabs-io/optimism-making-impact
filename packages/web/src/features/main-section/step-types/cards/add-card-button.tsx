@@ -118,6 +118,7 @@ function FormFields(props: FormFieldsProps) {
             onChange={(value) => {
               field.onChange(value);
             }}
+            name={field.name}
           />
         )}
       />

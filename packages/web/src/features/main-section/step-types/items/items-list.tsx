@@ -3,8 +3,8 @@ import { EmptyState, NoAttributesEmptyState } from './empty-state';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
 import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { Item } from '@/features/main-section/step-types/items/item';
-import { useMainSectionStore } from '@/state/main-section/main-section-store';
-import { useUserStore } from '@/state/user-store/user-store';
+import { useStep } from '@/hooks/use-step';
+import { useUser } from '@/hooks/use-user';
 import { CompleteItem } from '@/types/items';
 import { Attribute } from '@optimism-making-impact/schemas';
 import React, { useMemo } from 'react';
@@ -19,8 +19,8 @@ interface ItemsListProps {
 }
 
 export function ItemsList({ editStepDescription }: ItemsListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const addItem = useMainSectionStore((state) => state.addItem);
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { addItem } = useStep();
 
   const { attributes, selectedAttributes, step } = useItemsStepContext();
 
@@ -45,9 +45,8 @@ interface ListProps {
 }
 
 function List(props: ListProps) {
-  const isAdmin = useUserStore((state) => state.isAdminModeEnabled);
-  const updateItem = useMainSectionStore((state) => state.updateItem);
-  const deleteItem = useMainSectionStore((state) => state.deleteItem);
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { updateItem, deleteItem } = useStep();
 
   return (
     <div className='flex w-full flex-col gap-6'>
