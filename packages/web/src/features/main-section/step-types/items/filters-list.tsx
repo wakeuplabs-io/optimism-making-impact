@@ -1,9 +1,9 @@
-import { useItemsContext } from './items-context';
 import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
 import { useStep } from '@/hooks/use-step';
 import { useIsMobile } from '@/hooks/use-tresholds';
@@ -35,10 +35,9 @@ function Container(props: { children: React.ReactNode }) {
 }
 
 function Content() {
+  const { attributes, setSelectedAttributes, selectedAttributes, step } = useItemsStepContext();
   const { isAdminModeEnabled: isAdmin } = useUser();
   const { addAttributeToSmartList, updateAttribute, deleteAttribute } = useStep();
-
-  const { step, attributes, setSelectedAttribute, selectedAttributes } = useItemsContext();
 
   if (!step.smartListFilter) {
     return (
@@ -56,7 +55,6 @@ function Content() {
       </div>
       <hr className='my-6 border-[#D9D9D9]' />
       <FilterGroup<Attribute>
-        // title={props.smartList.title} TODO: add title
         filters={attributes.map((attr) => ({
           label: attr.value.toLowerCase(),
           data: attr,
@@ -67,7 +65,7 @@ function Content() {
           ),
           tooltipText: attr.description,
         }))}
-        onSelected={setSelectedAttribute}
+        onSelected={setSelectedAttributes}
         selected={selectedAttributes}
         isAdmin={isAdmin}
         spacing='xl'

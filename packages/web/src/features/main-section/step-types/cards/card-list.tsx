@@ -1,6 +1,6 @@
 import { Card } from '@/features/main-section/step-types/cards/card';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { useFilteredData } from '@/features/main-section/use-filtered-data';
-import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteCard } from '@/types/cards';
 
 interface CardListProps {
@@ -9,9 +9,14 @@ interface CardListProps {
 }
 
 export function CardList(props: CardListProps) {
-  const { selectedStrengths, selectedKeywords, selectedAttributes } = useFiltersStore((state) => state);
+  const { selectedKeywords, selectedStrengths, selectedAttributes } = useCardsStepContext();
 
-  const filteredCards = useFilteredData({ data: props.cards, selectedStrengths, selectedKeywords, selectedAttributes });
+  const filteredCards = useFilteredData({
+    data: props.cards,
+    selectedStrengths,
+    selectedKeywords,
+    selectedAttributes,
+  });
 
   if (!filteredCards.length) return <EmptyState />;
 
@@ -20,7 +25,7 @@ export function CardList(props: CardListProps) {
 
 function EmptyState() {
   return (
-    <div className='flex items-center justify-center w-full h-full'>
+    <div className='flex h-full w-full items-center justify-center'>
       <p>No card matches applied filters</p>
     </div>
   );
@@ -34,10 +39,10 @@ interface ListProps {
 function List(props: ListProps) {
   return (
     <div className='w-full pt-0'>
-      <div className='flex flex-col flex-wrap items-center flex-1 w-full gap-6 md:flex-row md:justify-between md:gap-8 lg:items-start lg:justify-start'>
-        {props.cards.map((card, i) => {
-          return <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />;
-        })}
+      <div className='flex w-full flex-1 flex-col flex-wrap items-center gap-6 md:flex-row md:justify-between md:gap-8 lg:items-start lg:justify-start'>
+        {props.cards.map((card, i) => (
+          <Card card={card} key={`${card.id}-${i}`} stepId={props.stepId} />
+        ))}
       </div>
     </div>
   );

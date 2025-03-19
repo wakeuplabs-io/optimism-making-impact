@@ -3,9 +3,9 @@ import { FilterGroup } from '@/components/filter-group/filter-group';
 import { FilterGroupColorDot, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
 import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRandomBadgeColor } from '@/lib/utils';
-import { useFiltersStore } from '@/state/main-section-filters/store';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { Hash } from 'lucide-react';
 import { useMemo } from 'react';
@@ -25,7 +25,7 @@ export function CardFilters(props: CardFiltersProps) {
 
 function Container(props: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
-  const { selectedKeywords, selectedStrengths } = useFiltersStore((state) => state);
+  const { selectedKeywords, selectedStrengths } = useCardsStepContext();
 
   const menuText = useMemo(() => {
     if (!isMobile) return;
@@ -56,15 +56,16 @@ interface ContentProps {
 
 function Content(props: ContentProps) {
   const {
-    strengths,
-    selectedStrengths,
-    setSelectedStrengths,
-    keywords,
     selectedKeywords,
+    keywords,
     setSelectedKeywords,
+    selectedStrengths,
+    strengths,
+    setSelectedStrengths,
     selectedAttributes,
     setSelectedAttributes,
-  } = useFiltersStore((state) => state);
+  } = useCardsStepContext();
+
   return (
     <div className='flex w-full flex-col'>
       <h2 className='text-base font-semibold'>Filters</h2>

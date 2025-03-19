@@ -1,4 +1,4 @@
-import { ItemsProvider } from './items-context';
+import { withItemsStepContext } from '@/features/main-section/step-types/items/context/with-items-step-context';
 import { ItemFilters } from '@/features/main-section/step-types/items/filters-list';
 import { ItemsList } from '@/features/main-section/step-types/items/items-list';
 import { useStepsList } from '@/hooks/use-steps-list';
@@ -8,12 +8,8 @@ interface ItemStepProps {
   step: CompleteStep;
 }
 
-export function ItemsStep({ step }: ItemStepProps) {
+function ItemsStepComponent({ step }: ItemStepProps) {
   const { handleStepEdit } = useStepsList();
-
-  if (!step) {
-    return null;
-  }
 
   const handleStepDescriptionChange = async (description: string) => {
     try {
@@ -24,15 +20,15 @@ export function ItemsStep({ step }: ItemStepProps) {
   };
 
   return (
-    <ItemsProvider step={step}>
-      <div className={'flex flex-col gap-4'}>
-        <div className='flex h-full flex-col gap-6 lg:flex-row'>
-          <ItemFilters />
-          <div className='w-full pb-8'>
-            <ItemsList editStepDescription={handleStepDescriptionChange} />
-          </div>
+    <div className={'flex flex-col gap-4'}>
+      <div className='flex h-full flex-col gap-6 lg:flex-row'>
+        <ItemFilters />
+        <div className='w-full pb-8'>
+          <ItemsList editStepDescription={handleStepDescriptionChange} />
         </div>
       </div>
-    </ItemsProvider>
+    </div>
   );
 }
+
+export const ItemsStep = withItemsStepContext(ItemsStepComponent);

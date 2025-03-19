@@ -2,7 +2,7 @@ import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormSelect } from '@/components/form/form-select';
 import { FormTextArea } from '@/components/form/form-text-area';
-import { useStep } from '@/hooks/use-step';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { CompleteItem, Item } from '@/types/items';
 import { UpdateItemBody, updateItemSchema } from '@optimism-making-impact/schemas';
 import { useMemo } from 'react';
@@ -15,11 +15,11 @@ interface UpdateItemModalProps {
 }
 
 export function UpdateItemModal(props: UpdateItemModalProps) {
-  const { step } = useStep();
+  const { step } = useItemsStepContext();
 
   const attributeOptions = useMemo(
-    () => (step?.smartListFilter?.attributes ? attributesOptionsMapper(step?.smartListFilter?.attributes) : []),
-    [step?.smartListFilter?.attributes],
+    () => (step.smartListFilter?.attributes ? attributesOptionsMapper(step.smartListFilter?.attributes) : []),
+    [step.smartListFilter?.attributes],
   );
 
   const defaultValues = {

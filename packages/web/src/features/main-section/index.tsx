@@ -1,10 +1,7 @@
 import { StepTypeSelector } from '@/features/main-section/step-type-selector';
 import { useStep } from '@/hooks/use-step';
 import { useStepsList } from '@/hooks/use-steps-list';
-import { useFiltersStore } from '@/state/main-section-filters/store';
-import { CompleteStep } from '@/types/steps';
 import { LoaderCircle } from 'lucide-react';
-import { useEffect } from 'react';
 
 export function MainSectionContent() {
   const { steps } = useStepsList();
@@ -26,20 +23,5 @@ export function MainSectionContent() {
     );
   }
 
-  return <StepContent step={step} />;
-}
-
-function StepContent(props: { step: CompleteStep }) {
-  const { setKeywords, clearSelectedFilters, setAttributes } = useFiltersStore((state) => state);
-
-  useEffect(() => {
-    return () => clearSelectedFilters();
-  }, []);
-
-  useEffect(() => {
-    setKeywords(props.step.keywords);
-    setAttributes(props.step.smartListFilter?.attributes || []);
-  }, [props.step.keywords, props.step.smartListFilter]);
-
-  return <StepTypeSelector {...props} />;
+  return <StepTypeSelector step={step} />;
 }

@@ -1,12 +1,18 @@
 import { DescriptionInlineText } from './description-inline-text';
 import { EmptyState, NoAttributesEmptyState } from './empty-state';
-import { useItemsContext } from './items-context';
 import { AddItemModal } from '@/features/main-section/step-types/items/add-item-modal';
+import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { Item } from '@/features/main-section/step-types/items/item';
 import { useStep } from '@/hooks/use-step';
 import { useUser } from '@/hooks/use-user';
 import { CompleteItem } from '@/types/items';
-import React from 'react';
+import { Attribute } from '@optimism-making-impact/schemas';
+import React, { useMemo } from 'react';
+
+// TODO: for now, should extract logic
+function filterItem(data: CompleteItem, selectedAttributes: Attribute[]): boolean {
+  return !selectedAttributes.length || selectedAttributes.some(({ id }) => data.attribute?.id === id);
+}
 
 interface ItemsListProps {
   editStepDescription: (description: string) => void;
@@ -16,7 +22,10 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
   const { isAdminModeEnabled: isAdmin } = useUser();
   const { addItem } = useStep();
 
-  const { step, items, attributes } = useItemsContext();
+  const { attributes, selectedAttributes, step } = useItemsStepContext();
+
+  // TODO: for now, should extract logic
+  const filteredItems = useMemo(() => step.items.filter((item) => filterItem(item, selectedAttributes)), [step.items, selectedAttributes]);
 
   const hasAttributes = !!attributes && attributes.length > 0;
 
@@ -26,7 +35,7 @@ export function ItemsList({ editStepDescription }: ItemsListProps) {
         <DescriptionInlineText description={step.description || ''} onChange={editStepDescription} isAdmin={isAdmin} />
         {isAdmin && hasAttributes && <AddItemModal onClick={addItem} />}
       </div>
-      {hasAttributes ? <List items={items} /> : <NoAttributesEmptyState />}
+      {hasAttributes ? <List items={filteredItems} /> : <NoAttributesEmptyState />}
     </div>
   );
 }
