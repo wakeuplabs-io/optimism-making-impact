@@ -38,7 +38,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
     if (stepWithPosition) {
       router.navigate({
-        search: { ...search, stepId: stepWithPosition.id },
+        search: (prev) => ({ ...prev, stepId: stepWithPosition.id }),
         reloadDocument: false,
         to: '/',
       });
