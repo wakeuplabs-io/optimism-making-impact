@@ -53,7 +53,7 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
     const steps = await prisma.step.findMany({
       where: { categoryId: parsed.data.categoryId },
-      orderBy: { id: 'asc' },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
     });
 
     apiResponse.success(res, { steps });
