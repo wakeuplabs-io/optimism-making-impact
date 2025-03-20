@@ -4,15 +4,6 @@ import { useInfographicsStepContext } from '@/features/main-section/step-types/i
 import { withInfographicsStepContext } from '@/features/main-section/step-types/infographics/context/with-infographics-step-context';
 import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
-
-function InfographicStepWrapper({ children }: { children: ReactNode }) {
-  return (
-    <div className='flex w-full flex-col items-center bg-white px-8 py-12 lg:gap-8 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>
-      {children}
-    </div>
-  );
-}
 
 function InfographicStepComponent() {
   const { step } = useInfographicsStepContext();
@@ -24,10 +15,10 @@ function InfographicStepComponent() {
         'pt-20': isAdmin,
       })}
     >
-      <InfographicStepWrapper>
+      <div className='flex w-full flex-col items-center bg-white px-8 py-12 lg:gap-8 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>
         {isAdmin && <AddInfographicModal stepId={step.id} />}
         <InfographicList infographics={step.infographics} />
-      </InfographicStepWrapper>
+      </div>
     </div>
   );
 }
