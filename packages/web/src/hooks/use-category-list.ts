@@ -3,12 +3,13 @@ import { queryClient } from '@/main';
 import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
-import { Category } from '@optimism-making-impact/schemas';
+import { Category, CreateCategoryBody } from '@optimism-making-impact/schemas';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { AxiosError } from 'axios';
 import { useState, useEffect } from 'react';
 import { toast } from './use-toast';
+import { CompleteRound } from '@/types/rounds';
 
 export function useCategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
@@ -27,13 +28,36 @@ export function useCategoryList() {
 
   // Mutations
   const addCategory = useMutation({
-    mutationFn: ({ name, icon, roundId }: { name: string; icon: string; roundId: number }) =>
-      CategoriesService.createOne({ name, icon, roundId }),
+    mutationFn: ({ name, icon, roundId }: CreateCategoryBody) => CategoriesService.createOne({ name, icon, roundId }),
     onSuccess: ({ data }) => {
       setCategoryIdQueryParam(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
-    onError: (err) => {
+    onMutate: async ({ name, icon, roundId }: CreateCategoryBody) => {
+      await queryClient.cancelQueries({ queryKey: ['rounds'] });
+      const previousRounds = queryClient.getQueryData<CompleteRound[]>(['rounds']);
+
+      if (!previousRounds) throw new Error('add category -No rounds found');
+
+      const updatedRounds = previousRounds.map((round) => {
+        if (round.id === roundId) {
+          return {
+            ...round,
+            categories: [{ id: -1, name, icon }, ...round.categories],
+          };
+        }
+        return round;
+      });
+
+      queryClient.setQueryData(['rounds'], updatedRounds);
+
+      return { previousRounds };
+    },
+    onError: (err, _, context) => {
+      if (context?.previousRounds) {
+        queryClient.setQueryData(['rounds'], context.previousRounds);
+      }
+
       let description = `Failed to create category`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
@@ -103,7 +127,10 @@ export function useCategoryList() {
   // Helper functions
   const setCategoryIdQueryParam = (categoryId: number | undefined) => {
     router.navigate({
-      search: (prev) => ({ ...prev, categoryId }),
+      search: (prev) => {
+        console.log(prev);
+        return { ...prev, categoryId };
+      },
       reloadDocument: false,
       to: '/',
     });
