@@ -3,7 +3,7 @@ import { CompleteStep } from '@/types/steps';
 import { ComponentType, FC } from 'react';
 
 /**
- * HOC that wraps a component with the step context.
+ * HOC that wraps INFOGRAPHIC step top level component with step context so every child can access it directly.
  *
  * @param WrappedComponent The component to wrap. It must receive a `step` prop of type CompleteStep.
  *
