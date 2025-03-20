@@ -1,3 +1,4 @@
+import { toast } from '@/hooks/use-toast';
 import { RoundsContext } from './rounds-context';
 import { queryClient } from '@/main';
 import { router } from '@/router';
@@ -6,6 +7,7 @@ import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
+import { AxiosError } from 'axios';
 import { ReactNode, useEffect, useState } from 'react';
 
 export const RoundsProvider = ({ children }: { children: ReactNode }) => {
@@ -26,7 +28,39 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
       setRoundIdQueryParam(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['rounds'] });
+
+      const previousRounds = queryClient.getQueryData<CompleteRound[]>(['rounds']);
+
+      if (!previousRounds) throw new Error('add round - round not found');
+
+      const lastRound = previousRounds[0];
+      const newRound: CompleteRound = {
+        id: lastRound.id + 1,
+        link1: '',
+        link2: '',
+        status: 'PENDING',
+        categories: [],
+      };
+
+      queryClient.setQueryData(['rounds'], [newRound, ...previousRounds]);
+      return { previousRounds };
+    },
+    onError: (error, _, context) => {
+      if (context?.previousRounds) {
+        queryClient.setQueryData(['rounds'], context?.previousRounds);
+      }
+
+      let description = 'Failed to create Round';
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
+
+      toast({ title: 'Failed to create Round', description, variant: 'destructive' });
+    },
   });
+
   const { mutate: editRound } = useMutation({
     mutationFn: (props: { roundId: number; data: UpdateRoundBody }) => RoundsService.editOne(props.roundId, props.data),
     onSuccess: () => {
@@ -59,6 +93,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     if (rounds.length === 0) {
       return;
     }
+
     const newRound = rounds.find((r) => r.id === search.roundId);
     setSelectedRound(newRound ?? rounds[0]);
   }, [rounds]);
