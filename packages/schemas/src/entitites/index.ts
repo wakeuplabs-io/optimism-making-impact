@@ -6,3 +6,4 @@ export * from './items';
 export * from './rounds';
 export * from './steps';
 export * from './users';
+export * from './category';

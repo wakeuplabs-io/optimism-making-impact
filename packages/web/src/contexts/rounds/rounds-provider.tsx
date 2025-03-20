@@ -22,7 +22,8 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
   // Add round mutation
   const addRound = useMutation({
     mutationFn: () => RoundsService.createRound(),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setRoundIdQueryParam(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
   });
