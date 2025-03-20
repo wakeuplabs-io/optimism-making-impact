@@ -1,9 +1,10 @@
-import { LucideProps } from 'lucide-react';
-import { ComponentType, useMemo, useState, useRef, useEffect } from 'react';
+import { cn } from '@/lib/utils';
+import { LucideIcon, LucideProps } from 'lucide-react';
+import React, { ComponentType, useMemo, useState, useRef, useEffect } from 'react';
 
 interface IconPickerContentProps {
   selectedIcon: string;
-  modalIcons: Record<string, React.ComponentType>;
+  modalIcons: { [k: string]: LucideIcon };
   onSelect(iconName: string): void;
   onClose(e: React.MouseEvent): void;
 }
@@ -28,7 +29,7 @@ function IconPickerContent({ selectedIcon, modalIcons, onSelect, onClose }: Icon
     return Object.keys(modalIcons).filter((iconName) => new RegExp(search, 'i').test(iconName));
   }, [search, modalIcons]);
 
-  console.log('Math.floor(window.innerWidth / 64): ', Math.floor(window.innerWidth / 64));
+  const columns = Math.min(8, Math.floor((window.innerWidth * 0.8) / 64));
 
   return (
     <div ref={wrapperRef} style={{ position: 'absolute' }} className='z-50 w-[90vw] rounded bg-white p-4 shadow-lg sm:w-[456px]'>
@@ -41,7 +42,10 @@ function IconPickerContent({ selectedIcon, modalIcons, onSelect, onClose }: Icon
             value={search}
             onChange={(e) => setSearch(e.target.value.toLowerCase())}
           />
-          <div className={`mt-2 grid max-h-[200px] grid-cols-${Math.floor(window.innerWidth / 64)} gap-2 overflow-y-auto sm:grid-cols-8`}>
+          <div
+            className={cn('mt-2 grid max-h-[200px] gap-2 overflow-y-auto')}
+            style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+          >
             {filteredIcons.length > 0 ? (
               filteredIcons.slice(0, 1000).map((iconName) => {
                 const IconComponent = modalIcons[iconName] as ComponentType<LucideProps>;
@@ -71,21 +75,23 @@ function IconPickerContent({ selectedIcon, modalIcons, onSelect, onClose }: Icon
 }
 
 interface IconPickerProps {
-  modalIcons: Record<string, React.ComponentType>;
+  modalIcons: { [k: string]: LucideIcon };
   onSelect(iconName: string): void;
   selectedIcon: string;
   isVisible: boolean;
   onClose(e: React.MouseEvent): void;
 }
 
-export function IconPicker({ modalIcons, onSelect, isVisible, selectedIcon, onClose }: IconPickerProps) {
-  const handleSelect = (iconName: string) => {
-    onSelect(iconName);
-  };
-
+export const IconPicker = React.memo(function IconPickerWrapper({
+  onSelect,
+  isVisible,
+  selectedIcon,
+  onClose,
+  modalIcons,
+}: IconPickerProps) {
   return (
     <div className='relative'>
-      {isVisible && <IconPickerContent selectedIcon={selectedIcon} modalIcons={modalIcons} onSelect={handleSelect} onClose={onClose} />}
+      {isVisible && <IconPickerContent selectedIcon={selectedIcon} modalIcons={modalIcons} onSelect={onSelect} onClose={onClose} />}
     </div>
   );
-}
+});
