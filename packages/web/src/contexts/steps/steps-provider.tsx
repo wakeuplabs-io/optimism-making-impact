@@ -8,18 +8,18 @@ import { UpdateStepBody, CreateStepBody } from '@optimism-making-impact/schemas'
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
 import { AxiosError } from 'axios';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
-  // Get category ID from URL search params
   const search = useSearch({ from: '/' });
   const { categoryId, stepId } = search;
 
   const [selectedStep, setSelectedStep] = useState<StepWithPosition | null>(null);
-  // Fetch steps data
+
   const {
     data: steps = [],
     isLoading,
+    isFetching,
     error,
   } = useQuery({
     queryKey: [`steps-by-category`, categoryId],
@@ -31,29 +31,43 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
-  // Step selection handler
-  const handleStepSelect = (stepId?: number) => {
-    const stepWithPosition = stepId ? (steps.find((s) => s.id === stepId) ?? steps[0]) : steps[0];
-    setSelectedStep(stepWithPosition);
-
-    if (stepWithPosition) {
-      router.navigate({
-        search: (prev) => ({ ...prev, stepId: stepWithPosition.id }),
-        reloadDocument: false,
-        to: '/',
-      });
-    }
+  const setStepIdQueryParam = (stepId: number | undefined) => {
+    router.navigate({
+      search: (prev) => ({ ...prev, stepId }),
+      reloadDocument: false,
+      to: '/',
+    });
   };
 
-  // Process steps data when it changes
+  const handleStepSelect = useCallback(
+    (selectedStepId?: number) => {
+      const stepWithPosition = selectedStepId ? (steps.find((s) => s.id === selectedStepId) ?? steps[0]) : steps[0];
+      setSelectedStep(stepWithPosition);
+
+      if (stepWithPosition) {
+        setStepIdQueryParam(stepWithPosition.id);
+      }
+    },
+    [steps],
+  );
+
+  const restoreSelectedStep = useCallback(() => {
+    if (steps.length === 0) return;
+
+    handleStepSelect(stepId);
+  }, [steps, stepId, handleStepSelect]);
+
   useEffect(() => {
-    if (steps.length > 0 && !isLoading) handleStepSelect(stepId);
-  }, [steps, isLoading]);
+    if (!isLoading && !isFetching) restoreSelectedStep();
+  }, [isLoading, isFetching]);
 
   // API mutations with success handlers
   const deleteStep = useMutation({
     mutationFn: (stepId: number) => StepsService.deleteOne(stepId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] }),
+    onSuccess: () => {
+      setStepIdQueryParam(undefined);
+      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] });
+    },
     onMutate: async (stepId: number) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
 
@@ -115,7 +129,10 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
   const addStep = useMutation({
     mutationFn: (data: CreateStepBody) => StepsService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] }),
+    onSuccess: ({ data }) => {
+      setStepIdQueryParam(data.id);
+      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] });
+    },
     onMutate: async (data: CreateStepBody) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
 
@@ -146,6 +163,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const handleStepEdit = (stepId: number, data: UpdateStepBody) => editStep.mutate({ stepId, data });
 
   const handleStepAdd = (categoryId: number, data: CreateStepBody) => addStep.mutate({ ...data, categoryId });
+
   return (
     <StepsContext.Provider
       value={{
