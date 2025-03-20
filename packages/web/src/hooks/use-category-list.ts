@@ -6,7 +6,9 @@ import { RoundsService } from '@/services/rounds-service';
 import { Category } from '@optimism-making-impact/schemas';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
+import { AxiosError } from 'axios';
 import { useState, useEffect } from 'react';
+import { toast } from './use-toast';
 
 export function useCategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
@@ -31,12 +33,29 @@ export function useCategoryList() {
       setCategoryIdQueryParam(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
+    onError: (err) => {
+      let description = `Failed to create category`;
+      if (err instanceof AxiosError) {
+        description = err.response?.data.error.message;
+      }
+
+      toast({ title: 'Failed to create category', description, variant: 'destructive' });
+    },
   });
 
   const deleteCategory = useMutation({
     mutationFn: (categoryId: number) => CategoriesService.deleteOne(categoryId),
     onSuccess: () => {
+      resetCategoryIdQueryParam();
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
+    },
+    onError: (err, categoryId) => {
+      let description = `Failed to delete category id ${categoryId}`;
+      if (err instanceof AxiosError) {
+        description = err.response?.data.error.message;
+      }
+
+      toast({ title: 'Failed to delete category', description, variant: 'destructive' });
     },
   });
 
@@ -47,6 +66,14 @@ export function useCategoryList() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
+    },
+    onError: (err) => {
+      let description = `Failed to edit category id ${selectedCategory?.id}`;
+      if (err instanceof AxiosError) {
+        description = err.response?.data.error.message;
+      }
+
+      toast({ title: 'Failed to edit category', description, variant: 'destructive' });
     },
   });
 
@@ -74,12 +101,16 @@ export function useCategoryList() {
   }, [selectedCategory]);
 
   // Helper functions
-  const setCategoryIdQueryParam = (categoryId: number) => {
+  const setCategoryIdQueryParam = (categoryId: number | undefined) => {
     router.navigate({
       search: (prev) => ({ ...prev, categoryId }),
       reloadDocument: false,
       to: '/',
     });
+  };
+
+  const resetCategoryIdQueryParam = () => {
+    setCategoryIdQueryParam(undefined);
   };
 
   const handleCategorySelect = (category: Category) => {
