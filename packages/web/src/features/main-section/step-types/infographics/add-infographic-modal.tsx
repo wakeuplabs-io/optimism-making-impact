@@ -2,7 +2,7 @@ import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { CreateInfographicBody, createInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -13,7 +13,7 @@ interface AddInfographicModalProps {
 }
 
 export function AddInfographicModal(props: AddInfographicModalProps) {
-  const { addInfographic } = useStep();
+  const { addInfographic } = useStepQueries();
 
   const defaultValues: CreateInfographicBody = {
     image: '',

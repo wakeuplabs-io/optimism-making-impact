@@ -1,6 +1,6 @@
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -19,7 +19,7 @@ interface EditInfographicImageModalProps {
 }
 
 export function EditInfographicImageModal(props: EditInfographicImageModalProps) {
-  const { editInfographic } = useStep();
+  const { editInfographic } = useStepQueries();
 
   const defaultValues: UpdateInfographicImageBody = {
     image: props.infographic.image,

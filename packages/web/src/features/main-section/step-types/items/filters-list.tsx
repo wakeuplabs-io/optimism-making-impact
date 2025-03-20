@@ -5,7 +5,7 @@ import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
 import { Attribute } from '@optimism-making-impact/schemas';
@@ -37,7 +37,7 @@ function Container(props: { children: React.ReactNode }) {
 function Content() {
   const { attributes, setSelectedAttributes, selectedAttributes, step } = useItemsStepContext();
   const { isAdminModeEnabled: isAdmin } = useUser();
-  const { addAttributeToSmartList, updateAttribute, deleteAttribute } = useStep();
+  const { addAttributeToSmartList, updateAttribute, deleteAttribute } = useStepQueries();
 
   if (!step.smartListFilter) {
     return (

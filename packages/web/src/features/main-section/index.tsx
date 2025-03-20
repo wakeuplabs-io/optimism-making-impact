@@ -1,11 +1,11 @@
 import { StepTypeSelector } from '@/features/main-section/step-type-selector';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { useStepsList } from '@/hooks/use-steps-list';
 import { LoaderCircle } from 'lucide-react';
 
 export function MainSectionContent() {
   const { steps } = useStepsList();
-  const { step, isLoading: stepIsLoading } = useStep();
+  const { step, isLoading: stepIsLoading } = useStepQueries();
 
   if (stepIsLoading) {
     return (

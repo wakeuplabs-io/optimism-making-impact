@@ -1,5 +1,5 @@
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { Infographic } from '@optimism-making-impact/schemas';
 import { Trash } from 'lucide-react';
 
@@ -8,7 +8,7 @@ interface DeleteInfographicModalProps {
 }
 
 export function DeleteInfographicModal(props: DeleteInfographicModalProps) {
-  const { deleteInfographic } = useStep();
+  const { deleteInfographic } = useStepQueries();
 
   return (
     <DeleteConfirmationModal

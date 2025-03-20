@@ -2,7 +2,7 @@ import { EditInfographicActionBar } from './edit-infographic-action-bar';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
-import { useStep } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step';
 import { cn } from '@/lib/utils';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { useRef, useState } from 'react';
@@ -18,7 +18,7 @@ type EditInfographicMarkdownProps = Omit<React.HtmlHTMLAttributes<HTMLTextAreaEl
 };
 
 export function EditInfographicMarkdown({ infographic, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
-  const { editInfographic } = useStep();
+  const { editInfographic } = useStepQueries();
   const [editMode, toggleEditMode] = useToggle(false);
   const [controlledMarkdownValue, setControlledMarkdownValue] = useState(infographic.markdown);
   const [validationError, setValidationError] = useState<string>('');
