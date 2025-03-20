@@ -18,9 +18,9 @@ interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const buttonVariants = cva('flex overflow-hidden whitespace-nowrap rounded-3xl border transition-all ease-in-out duration-500', {
   variants: {
     state: {
-      past: 'border-white-low text-white-low bg-[#F1F4F9] hover:bg-primary hover:text-white',
-      active: 'border-primary bg-white',
-      coming: 'border-secondary hover:bg-primary hover:text-white',
+      past: 'border-mi-gray-200 text-gray-700 bg-[#F1F4F9] hover:bg-primary hover:text-white',
+      active: 'border-primary bg-white [&_svg]:text-primary',
+      coming: 'border-mi-gray-600 hover:bg-primary hover:text-white',
     },
   },
 });
@@ -36,7 +36,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
       className={cn(
         props.className,
         buttonVariants({ state: props.state }),
-        'h-[70px] w-[70px] gap-3 rounded-full p-2 lg:h-[45px] lg:rounded-3xl lg:py-[12px] 2xl:px-[27px]',
+        'h-[70px] w-[70px] gap-3 rounded-full p-2 lg:h-[45px] lg:rounded-3xl lg:py-[12px] 2xl:px-6',
         {
           'lg:w-[45px] lg:px-[10px] lg:py-0': !showActionIcons || isMobile,
           'lg:w-[80px] lg:px-[12px]': showActionIcons,
@@ -45,12 +45,12 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
     >
       {isMobile ? (
         <div className='flex items-center justify-center w-full h-full'>
-          <IconWithDefault src={props.step.icon} size='lg' />
+          <IconWithDefault src={props.step.icon} size='xl' />
         </div>
       ) : (
         <div className='flex items-center justify-between w-full h-full gap-2'>
           <div
-            className={cn('flex items-center justify-center gap-3', {
+            className={cn('flex items-center justify-start gap-3', {
               'w-[85%]': showActionIcons,
               'w-full': !showActionIcons,
             })}
@@ -58,7 +58,7 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
             <div className='lg:min-w[22px]'>
               <IconWithDefault src={props.step.icon} />
             </div>
-            {!isMobile && <div className='hidden text-left truncate text-4 2xl:inline-block'>{props.step.title}</div>}
+            {!isMobile && <div className='hidden text-left truncate text-base 2xl:inline-block'>{props.step.title}</div>}
           </div>
           {showActionIcons && (
             <div className={cn('h-full')} onClick={(e) => e.stopPropagation()}>
