@@ -1,15 +1,15 @@
+import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
 import { useIcons } from '@/hooks/use-icons';
-import { capitalizeFirst, cn } from '@/lib/utils';
+import { capitalizeFirst } from '@/lib/utils';
 import { SmartListFiltersService } from '@/services/smart-list-filters-service';
 import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
-import { createElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { IconPicker } from '../sidebar/components/icon-picker';
 
 type SmartListOption = { label: string; value: string };
 
@@ -77,11 +77,9 @@ interface FormFieldsProps {
 }
 
 function FormFields({ smartListOptions }: FormFieldsProps) {
-  const { control, setValue, watch } = useFormContext<CreateStepBody>();
+  const { control, setValue } = useFormContext<CreateStepBody>();
   const type = useWatch({ control, name: 'type' });
-  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
   const modalIcons = useIcons();
-  const selectedIcon = watch('icon');
 
   useEffect(() => {
     if (type !== 'CARDGRID') {
@@ -144,35 +142,21 @@ function FormFields({ smartListOptions }: FormFieldsProps) {
             name='icon'
             control={control}
             render={({ field }) => (
-              <div className='flex flex-col'>
-                <div className='flex flex-col gap-1.5'>
-                  <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
-                  <div
-                    className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
-                      'text-[#FF0420]': !!selectedIcon,
-                    })}
-                    onClick={() => setIsIconPickerOpen((prev) => !prev)}
-                  >
-                    {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
-                  </div>
-                </div>
-                <IconPicker
-                  isVisible={isIconPickerOpen}
-                  selectedIcon={field.value}
-                  modalIcons={modalIcons}
-                  onSelect={(icon: string) => {
-                    setValue('icon', icon);
-                    setIsIconPickerOpen(false);
-                  }}
-                  onClose={() => setIsIconPickerOpen(false)}
-                />
-              </div>
+              <FormIconPicker
+              selectedIcon={field.value}
+              modalIcons={modalIcons}
+              onSelect={(icon: string) => {
+                setValue('icon', icon);
+              }}
+              />
             )}
           />
           <Controller
             name='title'
             control={control}
-            render={({ field, fieldState }) => <FormTextInput {...field} wrapperClassname='flex-grow w-full' placeholder='Write here...' error={fieldState.error?.message} />}
+            render={({ field, fieldState }) => (
+              <FormTextInput {...field} wrapperClassname='flex-grow w-full' placeholder='Write here...' error={fieldState.error?.message} />
+            )}
           />
         </div>
       </div>

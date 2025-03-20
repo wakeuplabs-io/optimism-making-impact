@@ -1,11 +1,9 @@
-import { IconPicker } from './icon-picker';
+import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
-import { cn } from '@/lib/utils';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
-import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface AddCategoryModalProps {
@@ -43,10 +41,8 @@ interface FormFieldsProps {
 
 function FormFields(props: FormFieldsProps) {
   const { control, setValue, watch } = useFormContext<CreateCategoryBody>();
-  const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
-  const selectedIcon = watch('icon');
   const modalIcons = useIcons();
-
+  const selectedIcon = watch('icon');
   return (
     <div className='flex flex-col items-center gap-2'>
       <div className='flex w-full gap-4'>
@@ -54,30 +50,14 @@ function FormFields(props: FormFieldsProps) {
           <Controller
             name='icon'
             control={control}
-            render={({ field }) => (
-              <div className='flex flex-col'>
-                <div className='flex flex-col gap-1.5'>
-                  <label className='text-xs font-normal text-[#BEBEBE]'>Icon</label>
-                  <div
-                    className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
-                      'text-[#FF0420]': !!selectedIcon,
-                    })}
-                    onClick={() => setIsIconPickerOpen((prev) => !prev)}
-                  >
-                    {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
-                  </div>
-                </div>
-                <IconPicker
-                  isVisible={isIconPickerOpen}
-                  selectedIcon={field.value}
-                  modalIcons={modalIcons}
-                  onSelect={(icon: string) => {
-                    setValue('icon', icon);
-                    setIsIconPickerOpen(false);
-                  }}
-                  onClose={() => setIsIconPickerOpen(false)}
-                />
-              </div>
+            render={() => (
+              <FormIconPicker
+              selectedIcon={selectedIcon}
+              modalIcons={modalIcons}
+              onSelect={(icon: string) => {
+                setValue('icon', icon);
+              }}
+              />
             )}
           />
           <Controller
