@@ -43,8 +43,8 @@ enum Color {
 model Round {
   id Int @id @default(autoincrement())
 
-  link1 String?
-  link2 String?
+  link1 String
+  link2 String
 
   categories Category[]
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const updateRoundLinkBodySchema = z.object({
-  link: z.string().optional(),
+  link: z.string(),
 });
 
 export type UpdateRoundLinkBody = z.infer<typeof updateRoundLinkBodySchema>;
