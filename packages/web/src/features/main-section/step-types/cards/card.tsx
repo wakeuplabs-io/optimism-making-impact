@@ -2,7 +2,7 @@ import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/compone
 import { Badge } from '@/components/ui/badge';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
-import { useStepQueries } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step-queries';
 import { useUser } from '@/hooks/use-user';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { CompleteCard } from '@/types/cards';

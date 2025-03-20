@@ -2,7 +2,7 @@ import { EditInfographicActionBar } from './edit-infographic-action-bar';
 import { FormErrorMessage } from '@/components/form/form-error-message';
 import { EditIcon } from '@/components/icons/edit-icon';
 import { TextAreaInput } from '@/components/text-area-input';
-import { useStepQueries } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step-queries';
 import { cn } from '@/lib/utils';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { useRef, useState } from 'react';

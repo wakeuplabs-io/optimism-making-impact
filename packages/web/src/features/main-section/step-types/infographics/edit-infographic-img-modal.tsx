@@ -1,6 +1,6 @@
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useStepQueries } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step-queries';
 import { Infographic, updateInfographicBodySchema } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';

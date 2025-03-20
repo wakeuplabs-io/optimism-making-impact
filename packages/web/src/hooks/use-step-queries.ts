@@ -21,17 +21,15 @@ import { useSearch } from '@tanstack/react-router';
 import { AxiosError } from 'axios';
 
 export function useStepQueries() {
-  // Get category ID from URL search params
-  const search = useSearch({ from: '/' });
-  const { stepId } = search;
+  const { stepId } = useSearch({ from: '/' });
+  const queryKeyArr = ['step', stepId];
 
-  // Fetch steps data
   const {
     data: step,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['step', stepId],
+    queryKey: queryKeyArr,
     queryFn: () => StepsService.getOne(stepId!),
     enabled: !!stepId,
     staleTime: 1000 * 60 * 60 * 24,
@@ -39,21 +37,21 @@ export function useStepQueries() {
 
   const { mutate: addCard } = useMutation({
     mutationFn: (data: CreateCardBody) => CardsService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (data: CreateCardBody) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('add card - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, ...data }));
 
       return { previousStep };
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to add card ${data.title}`;
       if (err instanceof AxiosError) {
@@ -66,21 +64,21 @@ export function useStepQueries() {
 
   const { mutate: editCard } = useMutation({
     mutationFn: (props: { cardId: number; data: UpdateCardBody }) => CardsService.update(props.cardId, props.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (props: { cardId: number; data: UpdateCardBody }) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete card - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...props.data }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, ...props.data }));
 
       return { previousStep };
     },
     onError: (err, props, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to add card ${props.data.title}`;
       if (err instanceof AxiosError) {
@@ -93,11 +91,11 @@ export function useStepQueries() {
 
   const { mutate: deleteCard } = useMutation({
     mutationFn: (cardId: number) => CardsService.deleteOne(cardId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (cardId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete card - step not found');
 
@@ -105,13 +103,13 @@ export function useStepQueries() {
 
       const updatedStep = { ...previousStep, cards: newCards };
 
-      queryClient.setQueryData<CompleteStep>(['step', stepId], updatedStep);
+      queryClient.setQueryData<CompleteStep>(queryKeyArr, updatedStep);
 
       return { previousStep };
     },
     onError: (err, cardId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete card ${cardId}`;
       if (err instanceof AxiosError) {
@@ -124,21 +122,21 @@ export function useStepQueries() {
 
   const { mutate: addAttributeToSmartList } = useMutation({
     mutationFn: (data: CreateAttributeBody) => AttributesService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (data: CreateAttributeBody) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('add attribute to smart list - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, ...data }));
 
       return { previousStep };
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to add attribute to smart list ${data.description}`;
       if (err instanceof AxiosError) {
@@ -150,21 +148,21 @@ export function useStepQueries() {
   });
   const { mutate: updateAttribute } = useMutation({
     mutationFn: (data: UpdateAttributeBody) => AttributesService.update(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (data: UpdateAttributeBody) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('edit attribute - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, ...data }));
 
       return { previousStep };
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to edit attribute ${data.description}`;
       if (err instanceof AxiosError) {
@@ -177,11 +175,11 @@ export function useStepQueries() {
 
   const { mutate: deleteAttribute } = useMutation({
     mutationFn: (attributeId: number) => AttributesService.deleteOne(attributeId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (attributeId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep || !previousStep.smartListFilter) throw new Error('delete attribute - step not found');
 
@@ -189,13 +187,13 @@ export function useStepQueries() {
 
       const updatedStep = { ...previousStep, smartListFilter: { ...previousStep.smartListFilter, attributes: newAttributes } };
 
-      queryClient.setQueryData<CompleteStep>(['step', stepId], updatedStep);
+      queryClient.setQueryData<CompleteStep>(queryKeyArr, updatedStep);
 
       return { previousStep };
     },
     onError: (err, attributeId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete attribute ${attributeId}`;
       if (err instanceof AxiosError) {
@@ -208,21 +206,21 @@ export function useStepQueries() {
 
   const { mutate: addItem } = useMutation({
     mutationFn: (data: CreateItemBody) => ItemsService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (data: CreateItemBody) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete card - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, ...data }));
 
       return { previousStep };
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to add item on step ${data.stepId}`;
       if (err instanceof AxiosError) {
@@ -235,11 +233,11 @@ export function useStepQueries() {
 
   const { mutate: updateItem } = useMutation({
     mutationFn: (props: { itemId: number; data: UpdateItemBody }) => ItemsService.update(props.itemId, props.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (props: { itemId: number; data: UpdateItemBody }) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete item - step not found');
 
@@ -247,13 +245,13 @@ export function useStepQueries() {
       const newItem = { ...oldItem, ...props.data };
       const newItems = [...previousStep.items.filter((x) => x.id !== props.itemId), newItem];
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: newItems }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, items: newItems }));
 
       return { previousStep };
     },
     onError: (err, itemId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete  item ${itemId}`;
       if (err instanceof AxiosError) {
@@ -266,23 +264,23 @@ export function useStepQueries() {
 
   const { mutate: deleteItem } = useMutation({
     mutationFn: (itemId: number) => ItemsService.deleteOne(itemId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (itemId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete item - step not found');
 
       const newItems = previousStep.items.filter((x) => x.id !== itemId);
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: newItems }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, items: newItems }));
 
       return { previousStep };
     },
     onError: (err, itemId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete  item ${itemId}`;
       if (err instanceof AxiosError) {
@@ -295,21 +293,21 @@ export function useStepQueries() {
 
   const { mutate: addInfographic } = useMutation({
     mutationFn: (data: CreateInfographicBody) => InfographicsService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (data: CreateInfographicBody) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('add infographic - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, infographics: [...previousStep.infographics, data] }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, infographics: [...previousStep.infographics, data] }));
 
       return { previousStep };
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to add infographic on step ${data.stepId}`;
       if (err instanceof AxiosError) {
@@ -323,11 +321,11 @@ export function useStepQueries() {
   const { mutate: editInfographic } = useMutation({
     mutationFn: (props: { infographicId: number; data: UpdateInfographicBody }) =>
       InfographicsService.update(props.infographicId, props.data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (props: { infographicId: number; data: UpdateInfographicBody }) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete item - step not found');
 
@@ -335,13 +333,13 @@ export function useStepQueries() {
       const newInfographic = { ...oldInfographic, ...props.data };
       const newInfographics = [...previousStep.infographics.filter((x) => x.id !== props.infographicId), newInfographic];
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: newInfographics }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, items: newInfographics }));
 
       return { previousStep };
     },
     onError: (err, itemId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete  item ${itemId}`;
       if (err instanceof AxiosError) {
@@ -354,23 +352,23 @@ export function useStepQueries() {
 
   const { mutate: deleteInfographic } = useMutation({
     mutationFn: (infographicId: number) => InfographicsService.deleteOne(infographicId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeyArr }),
     onMutate: async (infographicId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['step', stepId] });
+      await queryClient.cancelQueries({ queryKey: queryKeyArr });
 
-      const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
+      const previousStep = queryClient.getQueryData<CompleteStep>(queryKeyArr);
 
       if (!previousStep) throw new Error('delete infographic - step not found');
 
       const newItems = previousStep.infographics.filter((x) => x.id !== infographicId);
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: newItems }));
+      queryClient.setQueryData(queryKeyArr, () => ({ ...previousStep, items: newItems }));
 
       return { previousStep };
     },
     onError: (err, infographicId, context) => {
       if (context?.previousStep) {
-        queryClient.setQueryData(['step', stepId], context.previousStep);
+        queryClient.setQueryData(queryKeyArr, context.previousStep);
       }
       let description = `Failed to delete infographic ${infographicId}`;
       if (err instanceof AxiosError) {

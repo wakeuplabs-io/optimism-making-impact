@@ -1,5 +1,5 @@
 import { DeleteConfirmationModal } from '@/components/delete-confirmation-modal';
-import { useStepQueries } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step-queries';
 import { Infographic } from '@optimism-making-impact/schemas';
 import { Trash } from 'lucide-react';
 

@@ -5,7 +5,7 @@ import { SideMenu } from '@/components/side-menu';
 import { AddAttributeModal } from '@/features/main-section/step-types/items/add-attribute-modal';
 import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { UpdateAttributeModal } from '@/features/main-section/step-types/items/update-attribute-modal';
-import { useStepQueries } from '@/hooks/use-step';
+import { useStepQueries } from '@/hooks/use-step-queries';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
 import { Attribute } from '@optimism-making-impact/schemas';
