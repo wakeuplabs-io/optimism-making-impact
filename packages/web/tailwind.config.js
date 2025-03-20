@@ -42,6 +42,8 @@ export default {
         },
         ['mi-gray']: {
           100: 'var(--mi-gray-100)',
+          200: 'var(--mi-gray-200)',
+          600: 'var(--mi-gray-600)',
         },
         // End of new custom colors
 
