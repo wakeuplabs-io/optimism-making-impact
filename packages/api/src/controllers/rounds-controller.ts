@@ -25,19 +25,16 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
 async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    await prisma.$transaction(async (prisma) => {
-      const lastRound = await getLastCompleteRound();
+    const lastRound = await getLastCompleteRound();
 
+    if (!lastRound) {
       // First round creation
-      if (!lastRound) {
-        const createdRound = await prisma.round.create({ data: {} });
-        return apiResponse.success(res, { message: 'Round created successfully', round: createdRound }, StatusCodes.CREATED);
-      }
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Can't duplicate round if there's no previous round.");
+    }
 
-      await duplicateRound(lastRound);
+    await duplicateRound(lastRound);
 
-      apiResponse.success(res, { message: 'Round created successfully' }, StatusCodes.CREATED);
-    });
+    apiResponse.success(res, { message: 'Round created successfully' }, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

@@ -16,17 +16,21 @@ interface InfographicCardProps {
 export function InfographicCard(props: InfographicCardProps) {
   const [editImgModalOpen, setEditImgModalOpen] = useState(false);
 
+  const shouldReverse = props.order % 2 === 0;
+
   return (
     <div
-      className={cn('relative flex w-full flex-col items-center justify-center gap-6 rounded-[10px] xl:flex-row xl:gap-12', {
-        'xl:flex-row-reverse': props.order % 2 === 0,
+      className={cn('flex w-full flex-col items-center justify-center gap-6 rounded-[10px] xl:flex-row xl:gap-12', {
         'border border-[#BEBEBE] p-3 xl:gap-4 xl:p-4': props.isAdmin,
       })}
     >
       <HoverOverlay
         disabled={!props.isAdmin}
         overlayClassName='bg-black bg-opacity-50 rounded-xl'
-        className='flex aspect-square h-[274px] w-full items-center justify-center xl:h-[320px] xl:w-1/2'
+        className={cn('flex aspect-square h-[274px] w-full items-center justify-center xl:h-[320px] xl:w-1/2', {
+          'xl:order-2': shouldReverse,
+          'xl:order-1': !shouldReverse,
+        })}
         overlayContent={
           <div className='flex h-full w-full cursor-pointer items-center justify-center' onClick={() => setEditImgModalOpen(true)}>
             <EditIcon className='text-white hover:text-gray-400' />
@@ -35,10 +39,19 @@ export function InfographicCard(props: InfographicCardProps) {
       >
         <img className='h-full rounded-xl object-fill object-center' src={props.infographic.image} />
       </HoverOverlay>
-      <div className='flex h-full w-full items-center xl:w-1/2 xl:px-0'>
+      <div
+        className={cn('flex h-full w-full items-center xl:w-1/2 xl:px-0', {
+          'xl:order-1': shouldReverse,
+          'xl:order-2': !shouldReverse,
+        })}
+      >
         <EditInfographicMarkdown isAdmin={props.isAdmin} infographic={props.infographic} />
       </div>
-      {props.isAdmin && <DeleteInfographicModal infographic={props.infographic} />}
+      {props.isAdmin && (
+        <div className='xl:order-3'>
+          <DeleteInfographicModal infographic={props.infographic} />
+        </div>
+      )}
       {props.isAdmin && editImgModalOpen && (
         <EditInfographicImageModal infographic={props.infographic} open={editImgModalOpen} onClose={() => setEditImgModalOpen(false)} />
       )}
