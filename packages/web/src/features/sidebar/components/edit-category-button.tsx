@@ -4,8 +4,7 @@ import { FormErrorMessage } from '@/components/form/form-error-message';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
-import { Category } from '@/types/categories';
-import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { Category, EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { createElement, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 

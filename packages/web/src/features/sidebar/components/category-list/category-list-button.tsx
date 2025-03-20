@@ -1,7 +1,7 @@
 import { SidebarListButton } from '../sidebar-list-button';
 import { IconWithDefault } from '@/components/icon-with-default';
 import { EditCategoryButton } from '@/features/sidebar/components/edit-category-button';
-import { Category } from '@/types/categories';
+import { Category } from '@optimism-making-impact/schemas';
 
 type CategoryListButtonProps = {
   category: Category;
