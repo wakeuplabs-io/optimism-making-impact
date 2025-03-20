@@ -1,13 +1,15 @@
-import { FormSelect } from '@/components/form/form-select';
 import { AttributeOption, strengthOptions } from '../utils';
 import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { ActionButton } from '@/components/action-button';
 import { FormModal } from '@/components/form/form-modal';
+import { FormMultiSelect } from '@/components/form/form-multi-select';
+import { FormSelect } from '@/components/form/form-select';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { Attribute, CreateCardBody, createCardBodySchema, Keyword } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormMultiSelect } from '@/components/form/form-multi-select';
 
 interface AddCardModalProps {
   stepId: number;
@@ -62,6 +64,9 @@ interface FormFieldsProps {
 
 function FormFields(props: FormFieldsProps) {
   const { control } = useFormContext<CreateCardBody>();
+  const { step } = useCardsStepContext();
+
+  const smartListFilterLabel = step.smartListFilter?.title ?? '';
 
   return (
     <div className='flex flex-col gap-2'>
@@ -80,23 +85,25 @@ function FormFields(props: FormFieldsProps) {
           />
         )}
       />
-      <Controller
-        name='attributeId'
-        control={control}
-        render={({ field, fieldState }) => (
-          <FormSelect
-            error={fieldState.error?.message}
-            name={field.name}
-            label={'Smart List Filter'}
-            placeholder='Select Smart List Filter'
-            items={props.attributeOptions}
-            onValueChange={(value) => field.onChange(+value)}
-            disabled={props.attributeOptions.length === 0}
-            triggerClassName='capitalize'
-            itemClassName='capitalize'
-          />
-        )}
-      />
+      {smartListFilterLabel && (
+        <Controller
+          name='attributeId'
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormSelect
+              error={fieldState.error?.message}
+              name={field.name}
+              label={smartListFilterLabel}
+              placeholder={`Select ${smartListFilterLabel}`}
+              items={props.attributeOptions}
+              onValueChange={(value) => field.onChange(+value)}
+              disabled={props.attributeOptions.length === 0}
+              triggerClassName='capitalize'
+              itemClassName='capitalize'
+            />
+          )}
+        />
+      )}
       <Controller
         name='title'
         control={control}
@@ -105,14 +112,16 @@ function FormFields(props: FormFieldsProps) {
       <Controller
         name='markdown'
         control={control}
-        render={({ field, fieldState }) => <FormTextInput label='Text' {...field} error={fieldState.error?.message} placeholder='Text' />}
+        render={({ field, fieldState }) => (
+          <FormTextArea label='Text' {...field} error={fieldState.error?.message} placeholder='Text' rows={5} />
+        )}
       />
       <Controller
         name='keywords'
         control={control}
         render={({ field }) => (
           <FormMultiSelect
-            label='Keywords connected'
+            label='Keywords'
             value={field.value}
             options={props.keywords}
             onChange={(value) => {
