@@ -1,9 +1,10 @@
 import { AddInfographicModal } from './add-infographic-modal';
 import { InfographicList } from './infographic-list';
-import { cn } from '@/lib/utils';
+import { useInfographicsStepContext } from '@/features/main-section/step-types/infographics/context/use-infographics-step-context';
+import { withInfographicsStepContext } from '@/features/main-section/step-types/infographics/context/with-infographics-step-context';
 import { useUser } from '@/hooks/use-user';
+import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
-import { useStep } from '@/hooks/use-step';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
   return (
@@ -13,17 +14,9 @@ function InfographicStepWrapper({ children }: { children: ReactNode }) {
   );
 }
 
-export function InfographicStep() {
-  const { step } = useStep();
+function InfographicStepComponent() {
+  const { step } = useInfographicsStepContext();
   const { isAdminModeEnabled: isAdmin } = useUser();
-
-  if (!step) {
-    return (
-      <div className='flex h-full w-full items-center justify-center gap-4'>
-        <span>Select a step</span>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -38,3 +31,5 @@ export function InfographicStep() {
     </div>
   );
 }
+
+export const InfographicStep = withInfographicsStepContext(InfographicStepComponent);
