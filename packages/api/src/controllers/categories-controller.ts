@@ -28,11 +28,11 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    await prisma.category.create({
+    const newCategory = await prisma.category.create({
       data: parsed.data,
     });
 
-    apiResponse.success(res, { message: 'Category created successfully.' }, StatusCodes.CREATED);
+    apiResponse.success(res, newCategory, StatusCodes.CREATED);
   } catch (error) {
     next(error);
   }

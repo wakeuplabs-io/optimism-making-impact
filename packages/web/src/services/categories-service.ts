@@ -1,5 +1,6 @@
 import { fetcher } from '@/lib/fetcher';
-import { AxiosInstance } from 'axios';
+import { Category } from '@optimism-making-impact/schemas';
+import { AxiosInstance, AxiosResponse } from 'axios';
 
 const categoriesEndpoint = '/categories';
 
@@ -26,10 +27,12 @@ class CategoriesServiceClass {
     return this.fetcher.get(categoriesEndpoint + `?roundId=${roundId}`).then((res) => res.data);
   }
 
-  async createOne(data: { name: string; icon: string; roundId: number }) {
-    return this.fetcher.post('/categories', {
-      ...data,
-    });
+  async createOne(data: { name: string; icon: string; roundId: number }): Promise<AxiosResponse<Category>> {
+    return this.fetcher
+      .post('/categories', {
+        ...data,
+      })
+      .then((res) => res.data);
   }
 
   async editOne(id: number, name: string, icon: string) {

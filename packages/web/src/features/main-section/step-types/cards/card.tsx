@@ -7,7 +7,6 @@ import { useUser } from '@/hooks/use-user';
 import { getColor, getRandomBadgeColor } from '@/lib/utils';
 import { CompleteCard } from '@/types/cards';
 import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
-import { useState } from 'react';
 import Markdown from 'react-markdown';
 
 interface CardProps {
@@ -17,7 +16,6 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   const { keywords, attributes } = useCardsStepContext();
-  const [isCardHovered, setIsCardHovered] = useState(false);
   const { isAdminModeEnabled: isAdmin } = useUser();
 
   const borderColor = getColor(props.card.attribute?.color ?? 'GRAY');
@@ -25,18 +23,9 @@ export function Card(props: CardProps) {
   return (
     <div
       style={{ borderLeftColor: borderColor }}
-      className='flex h-fit min-h-[320px] w-full flex-col gap-6 rounded-2xl border-l-[3px] bg-white p-8 md:w-[45%] lg:w-[320px]'
-      onMouseEnter={() => setIsCardHovered(true)}
-      onMouseLeave={() => setIsCardHovered(false)}
+      className='group flex h-fit min-h-[320px] w-full flex-col gap-6 rounded-2xl border-l-[3px] bg-white p-8 md:w-[45%] lg:w-[320px]'
     >
-      <CardTitle
-        card={props.card}
-        stepId={props.stepId}
-        isAdmin={isAdmin}
-        keywords={keywords}
-        attributes={attributes}
-        isCardHovered={isCardHovered}
-      />
+      <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} attributes={attributes} />
       <CardBody markdown={props.card.markdown} />
       <CardFooter keywords={props.card.keywords} />
     </div>
@@ -49,27 +38,28 @@ interface CardTitleProps {
   isAdmin: boolean;
   keywords: Keyword[];
   attributes: Attribute[];
-  isCardHovered: boolean;
 }
 
 function CardTitle(props: CardTitleProps) {
   const { editCard, deleteCard } = useStep();
 
   return (
-    <div className='flex max-w-full items-center gap-4'>
-      <p className='flex-1 overflow-hidden truncate text-ellipsis whitespace-nowrap text-base font-medium' title={props.card.title}>
+    <div className='flex items-center max-w-full gap-4'>
+      <p className='flex-1 overflow-hidden text-base font-medium truncate text-ellipsis whitespace-nowrap' title={props.card.title}>
         {props.card.title}
       </p>
       <StrengthIndicator strength={props.card.strength} />
-      {props.isAdmin && props.isCardHovered && (
-        <EditCardModal
-          stepId={props.stepId}
-          keywords={props.keywords}
-          card={props.card}
-          onSave={editCard}
-          onDelete={deleteCard}
-          attributes={props.attributes}
-        />
+      {props.isAdmin && (
+        <div className='hidden group-hover:flex'>
+          <EditCardModal
+            stepId={props.stepId}
+            keywords={props.keywords}
+            card={props.card}
+            onSave={editCard}
+            onDelete={deleteCard}
+            attributes={props.attributes}
+          />
+        </div>
       )}
     </div>
   );
@@ -97,7 +87,7 @@ interface CardBodyProps {
 
 function CardBody(props: CardBodyProps) {
   return (
-    <div className='prose-s prose flex w-full flex-1'>
+    <div className='flex flex-1 w-full prose prose-s'>
       <Markdown
         className='w-full overflow-auto break-words'
         components={{

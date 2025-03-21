@@ -9,8 +9,8 @@ import { useMemo } from 'react';
 
 export function SidebarSection() {
   const isMobile = useIsMobile();
-  const {selectedRound } = useRounds()
-  const {selectedCategory } = useCategoryList()
+  const { selectedRound } = useRounds();
+  const { selectedCategory } = useCategoryList();
 
   const title = useMemo(() => {
     if (!selectedRound) {

@@ -1,5 +1,4 @@
-import { categorySchema } from '@/types/categories';
-import { roundSchema } from '@optimism-making-impact/schemas';
+import { categorySchema, roundSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const completeRoundSchema = roundSchema.extend({

@@ -3,8 +3,10 @@ import { nonAssignedOption, useCardFormData } from './useCardFormData';
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormMultiSelect } from '@/components/form/form-multi-select';
 import { FormSelect } from '@/components/form/form-select';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { EditIcon } from '@/components/icons/edit-icon';
+import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { CompleteCard } from '@/types/cards';
 import { Keyword } from '@/types/keywords';
 import { Attribute, UpdateCardBody, updateCardBodySchema } from '@optimism-making-impact/schemas';
@@ -67,11 +69,6 @@ export function EditCardModal(props: EditCardModalProps) {
           Are you sure you want to delete <b>{props.card.title}</b> card?
         </span>
       }
-      contentProps={{
-        onPointerDownOutside: (e) => {
-          if (document.getElementById('multiselect-popover-content')) e.preventDefault();
-        },
-      }}
     >
       <FormFields attributeOptions={attributeOptions} keywords={props.keywords} />
     </EditEntityModal>
@@ -85,6 +82,9 @@ interface FormFieldsProps {
 
 function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
   const { control } = useFormContext<UpdateCardBody>();
+  const { step } = useCardsStepContext();
+
+  const smartListFilterLabel = step.smartListFilter?.title ?? '';
 
   return (
     <div className='flex flex-col gap-2'>
@@ -104,24 +104,26 @@ function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
           />
         )}
       />
-      <Controller
-        name='attributeId'
-        control={control}
-        render={({ field, fieldState }) => (
-          <FormSelect
-            error={fieldState.error?.message}
-            name={field.name}
-            label={'Smart List Filter'}
-            placeholder='Select Smart List Filter'
-            items={attributeOptions}
-            value={field.value?.toString()}
-            onValueChange={(value) => field.onChange(+value)}
-            disabled={attributeOptions.length === 0}
-            triggerClassName='capitalize'
-            itemClassName='capitalize'
-          />
-        )}
-      />
+      {smartListFilterLabel && (
+        <Controller
+          name='attributeId'
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormSelect
+              error={fieldState.error?.message}
+              name={field.name}
+              label={smartListFilterLabel}
+              placeholder='Select Smart List Filter'
+              items={attributeOptions}
+              value={field.value?.toString()}
+              onValueChange={(value) => field.onChange(+value)}
+              disabled={attributeOptions.length === 0}
+              triggerClassName='capitalize'
+              itemClassName='capitalize'
+            />
+          )}
+        />
+      )}
       <Controller
         name='title'
         control={control}
@@ -130,7 +132,9 @@ function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
       <Controller
         name='markdown'
         control={control}
-        render={({ field, fieldState }) => <FormTextInput label='Text' {...field} error={fieldState.error?.message} placeholder='Text' />}
+        render={({ field, fieldState }) => (
+          <FormTextArea label='Text' {...field} error={fieldState.error?.message} placeholder='Text' rows={5} />
+        )}
       />
       <Controller
         name='keywords'
@@ -138,7 +142,7 @@ function FormFields({ attributeOptions, keywords }: FormFieldsProps) {
         render={({ field }) => (
           <FormMultiSelect
             name={field.name}
-            label='Keywords connected'
+            label='Keywords'
             value={field.value}
             options={keywords}
             onChange={(value) => {

@@ -2,8 +2,7 @@ import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
-import { Category } from '@/types/categories';
-import { EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
+import { Category, EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface EditCategoryButtonProps {
