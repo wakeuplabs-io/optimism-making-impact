@@ -69,11 +69,6 @@ export function EditCardModal(props: EditCardModalProps) {
           Are you sure you want to delete <b>{props.card.title}</b> card?
         </span>
       }
-      contentProps={{
-        onPointerDownOutside: (e) => {
-          if (document.getElementById('multiselect-popover-content')) e.preventDefault();
-        },
-      }}
     >
       <FormFields attributeOptions={attributeOptions} keywords={props.keywords} />
     </EditEntityModal>
