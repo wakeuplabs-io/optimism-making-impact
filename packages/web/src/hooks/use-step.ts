@@ -19,6 +19,7 @@ import {
 import { AttributesService } from '@/services/attributes-service';
 import { ItemsService } from '@/services/items-service';
 import { InfographicsService } from '@/services/infographics-service';
+import { CompleteCard } from '@/types/cards';
 
 export function useStep() {
   // Get category ID from URL search params
@@ -47,7 +48,14 @@ export function useStep() {
 
       if (!previousStep) throw new Error('add card - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      const newCard: CompleteCard = {
+        ...data,
+        id: 0,
+        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x })),
+        attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId),
+      };
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, cards: [...previousStep.cards, newCard] }));
 
       return { previousStep };
     },
@@ -74,7 +82,15 @@ export function useStep() {
 
       if (!previousStep) throw new Error('delete card - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...props.data }));
+      const updatedCard = {
+        ...props.data,
+        id: props.cardId,
+        attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === props.data.attributeId),
+      };
+
+      const updatedCards = previousStep.cards.map((x) => (x.id === props.cardId ? updatedCard : x));
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, cards: updatedCards }));
 
       return { previousStep };
     },
@@ -82,12 +98,12 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', stepId], context.previousStep);
       }
-      let description = `Failed to add card ${props.data.title}`;
+      let description = `Failed to edit card ${props.data.title}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to add card', description, variant: 'destructive' });
+      toast({ title: 'Failed to edit card', description, variant: 'destructive' });
     },
   });
 
