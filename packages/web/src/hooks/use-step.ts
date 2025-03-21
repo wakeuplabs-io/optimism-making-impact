@@ -132,7 +132,12 @@ export function useStep() {
 
       if (!previousStep) throw new Error('add attribute to smart list - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      const updatedSmartListFilter = {
+        ...previousStep.smartListFilter,
+        attributes: [...(previousStep.smartListFilter?.attributes ?? []), { id: 0, categoryId: previousStep?.categoryId, ...data }],
+      };
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, smartListFilter: updatedSmartListFilter }));
 
       return { previousStep };
     },
@@ -158,7 +163,11 @@ export function useStep() {
 
       if (!previousStep) throw new Error('edit attribute - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      const updatedSmartListFilter = {
+        attributes: previousStep.smartListFilter?.attributes.map((x) => (x.id === data.id ? { ...x, ...data } : x)),
+      };
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, smartListFilter: updatedSmartListFilter }));
 
       return { previousStep };
     },
