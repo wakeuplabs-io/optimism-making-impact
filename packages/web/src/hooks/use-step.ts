@@ -214,9 +214,13 @@ export function useStep() {
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
 
-      if (!previousStep) throw new Error('delete card - step not found');
+      if (!previousStep) throw new Error('add item - step not found');
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, ...data }));
+      const newItemAttribute = previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId);
+
+      const newItem = { ...data, attribute: newItemAttribute };
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: [...previousStep.items, newItem] }));
 
       return { previousStep };
     },
@@ -236,18 +240,25 @@ export function useStep() {
   const { mutate: updateItem } = useMutation({
     mutationFn: (props: { itemId: number; data: UpdateItemBody }) => ItemsService.update(props.itemId, props.data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', stepId] }),
-    onMutate: async (props: { itemId: number; data: UpdateItemBody }) => {
+    onMutate: async ({ itemId, data }: { itemId: number; data: UpdateItemBody }) => {
       await queryClient.cancelQueries({ queryKey: ['step', stepId] });
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
 
-      if (!previousStep) throw new Error('delete item - step not found');
+      if (!previousStep) throw new Error('update item - step not found');
 
-      const oldItem = previousStep.items.find((x) => x.id === props.itemId);
-      const newItem = { ...oldItem, ...props.data };
-      const newItems = [...previousStep.items.filter((x) => x.id !== props.itemId), newItem];
+      const oldItem = previousStep.items.find((x) => x.id === itemId);
 
-      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: newItems }));
+      const updatedItemAttribute =
+        data.attributeId !== oldItem?.attributeId
+          ? previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId)
+          : oldItem?.attribute;
+
+      const updatedItem = { ...oldItem, ...data, attribute: updatedItemAttribute };
+
+      const updatedItems = previousStep.items.map((x) => (x.id === itemId ? updatedItem : x));
+
+      queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, items: updatedItems }));
 
       return { previousStep };
     },
@@ -255,12 +266,12 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', stepId], context.previousStep);
       }
-      let description = `Failed to delete  item ${itemId}`;
+      let description = `Failed to update item ${itemId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to delete item', description, variant: 'destructive' });
+      toast({ title: 'Failed to update item', description, variant: 'destructive' });
     },
   });
 
@@ -284,7 +295,7 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', stepId], context.previousStep);
       }
-      let description = `Failed to delete  item ${itemId}`;
+      let description = `Failed to delete item ${itemId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
@@ -329,11 +340,11 @@ export function useStep() {
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', stepId]);
 
-      if (!previousStep) throw new Error('delete item - step not found');
+      if (!previousStep) throw new Error('edit infographic - step not found');
 
       const oldInfographic = previousStep.infographics.find((x) => x.id === props.infographicId);
       const newInfographic = { ...oldInfographic, ...props.data };
-      const newInfographics = [...previousStep.infographics.map((x) => (x.id === props.infographicId ? newInfographic : x))];
+      const newInfographics = previousStep.infographics.map((x) => (x.id === props.infographicId ? newInfographic : x));
 
       queryClient.setQueryData(['step', stepId], () => ({ ...previousStep, infographics: newInfographics }));
 
