@@ -1,7 +1,9 @@
-import { StepTypeSelector } from '@/features/main-section/step-type-selector';
 import { useStep } from '@/hooks/use-step';
 import { useStepsList } from '@/hooks/use-steps-list';
 import { LoaderCircle } from 'lucide-react';
+import { InfographicStep } from './step-types/infographics/infographic';
+import { ItemsStep } from './step-types/items';
+import { CardStep } from './step-types/cards';
 
 export function MainSectionContent() {
   const { steps } = useStepsList();
@@ -23,5 +25,12 @@ export function MainSectionContent() {
     );
   }
 
-  return <StepTypeSelector step={step} />;
+  return (
+    <>
+      {step?.type === 'INFOGRAPHIC' && <InfographicStep />}
+      {step?.type === 'SMARTLIST' && <ItemsStep step={step} />}
+      {step?.type === 'CARDGRID' && <CardStep step={step} />}
+    </>
+  )
+
 }

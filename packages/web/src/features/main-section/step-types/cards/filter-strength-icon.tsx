@@ -11,14 +11,19 @@ interface FilterStrengthIconProps extends BaseFilterGroupIconProps {
 export function FilterStrengthIcon({ selected, strength }: FilterStrengthIconProps) {
   const { color } = CARD_STRENGTH_COLOR_MAP[strength];
 
+  let icon = ArrowDownRight
+
   switch (strength) {
     case 'LOW':
-      return <FilterGroupIcon selected={selected} color={color} icon={ArrowDownRight} />;
+      icon = ArrowDownRight
+      break;
     case 'MEDIUM':
-      return <FilterGroupIcon selected={selected} color={color} icon={ArrowRight} />;
+      icon = ArrowRight
+      break;
     case 'HIGH':
-      return <FilterGroupIcon selected={selected} color={color} icon={ArrowUpRight} />;
-    default:
-      return null;
+      icon = ArrowUpRight
+      break;
   }
+
+  return <FilterGroupIcon selected={selected} color={color} icon={icon} />
 }
