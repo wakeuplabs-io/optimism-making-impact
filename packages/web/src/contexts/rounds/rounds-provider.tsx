@@ -66,6 +66,32 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
+    onMutate: async (props) => {
+      await queryClient.cancelQueries({ queryKey: ['rounds'] });
+
+      const previousRounds = queryClient.getQueryData<CompleteRound[]>(['rounds']);
+
+      if (!previousRounds) throw new Error('edit round - rounds not found');
+
+      queryClient.setQueryData(
+        ['rounds'],
+        previousRounds.map((round) => (round.id === props.roundId ? { ...round, ...props.data } : round)),
+      );
+
+      return { previousRounds };
+    },
+    onError: (error, _, context) => {
+      if (context?.previousRounds) {
+        queryClient.setQueryData(['rounds'], context.previousRounds);
+      }
+
+      let description = 'Failed to update Round';
+      if (error instanceof AxiosError) {
+        description = error.response?.data.error.message;
+      }
+
+      toast({ title: 'Failed to update Round', description, variant: 'destructive' });
+    },
   });
 
   const handleRoundAdd = () => {
