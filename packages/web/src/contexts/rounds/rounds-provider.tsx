@@ -1,15 +1,15 @@
 import { RoundsContext } from './rounds-context';
+import { useQueryParams } from '@/hooks/use-query-params';
 import { queryClient } from '@/main';
-import { router } from '@/router';
 import { RoundsService } from '@/services/rounds-service';
 import { CompleteRound } from '@/types/rounds';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
 import { ReactNode, useEffect, useState } from 'react';
 
 export const RoundsProvider = ({ children }: { children: ReactNode }) => {
   const [selectedRound, setSelectedRound] = useState<CompleteRound>();
+  const { setSelectedRoundId, selectedRoundId } = useQueryParams();
 
   const { data: rounds = [], isLoading: roundsLoading } = useQuery({
     queryKey: ['rounds'],
@@ -17,13 +17,11 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 
-  const search = useSearch({ from: '/' });
-
   // Add round mutation
   const addRound = useMutation({
     mutationFn: () => RoundsService.createRound(),
     onSuccess: (data) => {
-      setRoundIdQueryParam(data.id);
+      setSelectedRoundId(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
   });
@@ -38,19 +36,10 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     addRound.mutate();
   };
 
-  // Set round ID in URL query params
-  const setRoundIdQueryParam = (roundId: number) => {
-    router.navigate({
-      search: (prev) => ({ ...prev, roundId }),
-      reloadDocument: false,
-      to: '/',
-    });
-  };
-
   // Update URL when selected round changes
   useEffect(() => {
     if (selectedRound) {
-      setRoundIdQueryParam(selectedRound.id);
+      setSelectedRoundId(selectedRound.id);
     }
   }, [selectedRound]);
 
@@ -59,7 +48,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     if (rounds.length === 0) {
       return;
     }
-    const newRound = rounds.find((r) => r.id === search.roundId);
+    const newRound = rounds.find((r) => r.id === selectedRoundId);
     setSelectedRound(newRound ?? rounds[0]);
   }, [rounds]);
 

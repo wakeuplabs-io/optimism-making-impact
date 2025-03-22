@@ -1,19 +1,17 @@
+import { toast } from './use-toast';
 import { useUser } from './use-user';
+import { useQueryParams } from '@/hooks/use-query-params';
 import { queryClient } from '@/main';
-import { router } from '@/router';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
 import { Category } from '@optimism-making-impact/schemas';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useState, useEffect } from 'react';
-import { toast } from './use-toast';
+import { useEffect, useState } from 'react';
 
 export function useCategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
-  const search = useSearch({ from: '/' });
-  const { roundId, categoryId } = search;
+  const { selectedRoundId, selectedCategoryId, setSelectedCategoryId } = useQueryParams();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -30,7 +28,7 @@ export function useCategoryList() {
     mutationFn: ({ name, icon, roundId }: { name: string; icon: string; roundId: number }) =>
       CategoriesService.createOne({ name, icon, roundId }),
     onSuccess: ({ data }) => {
-      setCategoryIdQueryParam(data.id);
+      setSelectedCategoryId(data.id);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
     onError: (err) => {
@@ -81,36 +79,29 @@ export function useCategoryList() {
   useEffect(() => {
     if (rounds.length === 0) return;
 
-    const foundRound = rounds.find((round) => round.id === roundId) || null;
+    const foundRound = rounds.find((round) => round.id === selectedRoundId) || null;
     setCategories(foundRound?.categories ?? []);
-  }, [rounds, roundId]);
+  }, [rounds, selectedRoundId]);
 
   // Set default category
   useEffect(() => {
     if (categories.length === 0) return;
 
-    const newCategory = categories.find((c) => c.id === categoryId);
+    const newCategory = categories.find((c) => c.id === selectedCategoryId);
     setSelectedCategory(newCategory ?? categories[0]);
   }, [categories]);
 
   // Update URL when category changes
   useEffect(() => {
     if (selectedCategory) {
-      setCategoryIdQueryParam(selectedCategory.id);
+      setSelectedCategoryId(selectedCategory.id);
     }
   }, [selectedCategory]);
 
   // Helper functions
-  const setCategoryIdQueryParam = (categoryId: number | undefined) => {
-    router.navigate({
-      search: (prev) => ({ ...prev, categoryId }),
-      reloadDocument: false,
-      to: '/',
-    });
-  };
 
   const resetCategoryIdQueryParam = () => {
-    setCategoryIdQueryParam(undefined);
+    setSelectedCategoryId(undefined);
   };
 
   const handleCategorySelect = (category: Category) => {
@@ -134,7 +125,7 @@ export function useCategoryList() {
     selectedCategory,
     isAdmin,
     roundsLoading,
-    roundId,
+    roundId: selectedRoundId,
     handleCategorySelect,
     handleCategoryDelete,
     handleCategoryEdit,
