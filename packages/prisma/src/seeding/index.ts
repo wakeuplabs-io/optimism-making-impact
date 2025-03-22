@@ -22,9 +22,3 @@ export async function seedDatabase() {
 
   console.log('Seeding complete!');
 }
-
-seedDatabase()
-  .catch((e) => console.error(e))
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
