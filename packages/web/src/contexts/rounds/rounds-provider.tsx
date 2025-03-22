@@ -36,12 +36,10 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     addRound.mutate();
   };
 
-  // Update URL when selected round changes
-  useEffect(() => {
-    if (selectedRound) {
-      setSelectedRoundId(selectedRound.id);
-    }
-  }, [selectedRound]);
+  function handleRoundSelect(round: CompleteRound) {
+    setSelectedRound(round);
+    setSelectedRoundId(round.id);
+  }
 
   // Set default round when rounds load
   useEffect(() => {
@@ -49,13 +47,11 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     const newRound = rounds.find((r) => r.id === selectedRoundId);
-    setSelectedRound(newRound ?? rounds[0]);
+    handleRoundSelect(newRound ?? rounds[0]);
   }, [rounds]);
 
   return (
-    <RoundsContext.Provider
-      value={{ rounds, roundsLoading, selectedRound, handleRoundAdd, handleRoundSelect: setSelectedRound, editRound }}
-    >
+    <RoundsContext.Provider value={{ rounds, roundsLoading, selectedRound, handleRoundAdd, handleRoundSelect, editRound }}>
       {children}
     </RoundsContext.Provider>
   );
