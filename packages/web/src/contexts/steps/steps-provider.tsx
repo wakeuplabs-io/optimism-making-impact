@@ -28,6 +28,13 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
+  useEffect(() => {
+    if (steps[0]) {
+      setSelectedStep(steps[0]);
+      setSelectedStepId(steps[0].id);
+    }
+  }, [steps]);
+
   const handleStepSelect = useCallback(
     (selectedStepId?: number) => {
       const stepWithPosition = selectedStepId ? (steps.find((s) => s.id === selectedStepId) ?? steps[0]) : steps[0];
