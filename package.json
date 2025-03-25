@@ -6,9 +6,6 @@
     "lint": "pnpm -r --aggregate-output run lint",
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
-    "pretest": "pnpm -r --stream run pretest",
-    "test": "pnpm -r --stream --aggregate-output run test",
-    "posttest": "pnpm -r --stream run posttest",
     "format": "pnpm -r --parallel run format",
     "studio": "pnpm -r --parallel run studio",
     "ui:add": "pnpm --filter web ui:add",
@@ -34,8 +31,7 @@
     "serverless-s3-sync": "3.4.0",
     "sst": "3.9.10",
     "tsx": "4.11.0",
-    "vite-tsconfig-paths": "4.3.2",
-    "vitest": "^3.0.4"
+    "vite-tsconfig-paths": "4.3.2"
   },
   "dependencies": {
     "dotenv": "16.4.7",
