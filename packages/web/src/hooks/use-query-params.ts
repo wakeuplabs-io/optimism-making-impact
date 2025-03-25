@@ -20,16 +20,18 @@ export function useQueryParams(): QueryParams {
     selectedStepId: stepId,
     selectedRoundId: roundId,
     selectedCategoryId: categoryId,
-    setSelectedStepId: setQueryParam.bind(null, 'stepId'),
-    setSelectedRoundId: setQueryParam.bind(null, 'roundId'),
-    setSelectedCategoryId: setQueryParam.bind(null, 'categoryId'),
+    setSelectedStepId: setQueryParam('stepId'),
+    setSelectedRoundId: setQueryParam('roundId'),
+    setSelectedCategoryId: setQueryParam('categoryId'),
   };
 }
 
-function setQueryParam(key: QueryParamKey, id: QueryParamValue) {
-  router.navigate({
-    search: (prev) => ({ ...prev, [key]: id }),
-    reloadDocument: false,
-    to: '/',
-  });
+function setQueryParam(key: QueryParamKey) {
+  return (id: QueryParamValue) => {
+    router.navigate({
+      search: (prev) => ({ ...prev, [key]: id }),
+      reloadDocument: false,
+      to: '/',
+    });
+  };
 }
