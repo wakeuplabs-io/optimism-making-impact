@@ -62,8 +62,10 @@ export function SidebarSectionList({
         {!isLoading && viewAllItems.length > 0 && (
           <li key={`sidebar-section-list-view-more-${id}`}>
             <SidebarListButton onClick={() => setIsOpenViewAll(true)}>
-              <Ellipsis className='h-[20px] w-[20px]' />
-              <span className='truncate text-sm'>View all {title}</span>
+              <div className='flex flex-row gap-2'>
+                <Ellipsis className='h-[20px] w-[20px]' />
+                <span className='truncate text-sm'>View all {title}</span>
+              </div>
             </SidebarListButton>
           </li>
         )}

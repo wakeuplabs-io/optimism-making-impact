@@ -5,6 +5,7 @@ import { FormTextInput } from '@/components/form/form-text-input';
 import { useIcons } from '@/hooks/use-icons';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useToggle } from 'usehooks-ts';
 
 interface AddCategoryModalProps {
   roundId?: number;
@@ -12,6 +13,8 @@ interface AddCategoryModalProps {
 }
 
 export function AddCategoryModal(props: AddCategoryModalProps) {
+  const [isFormOpen, toggleFormOpen] = useToggle(false);
+
   if (!props.roundId) return;
 
   const defaultValues: CreateCategoryBody = { name: '', icon: 'blocks', roundId: props.roundId };
@@ -23,15 +26,19 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
   }
 
   return (
-    <FormModal
-      title='New category'
-      trigger={<SidebarModalAddTrigger label='New Category' />}
-      onSubmit={handleSubmit}
-      defaultValues={defaultValues}
-      schema={createCategoryBodySchema}
-    >
-      <FormFields defaultValues={defaultValues} />
-    </FormModal>
+    <>
+      <SidebarModalAddTrigger label='New Category' onClick={toggleFormOpen} />
+      <FormModal
+        title='New category'
+        controlledOpen={isFormOpen}
+        onOpenChange={toggleFormOpen}
+        onSubmit={handleSubmit}
+        defaultValues={defaultValues}
+        schema={createCategoryBodySchema}
+      >
+        <FormFields defaultValues={defaultValues} />
+      </FormModal>
+    </>
   );
 }
 
@@ -52,11 +59,11 @@ function FormFields(props: FormFieldsProps) {
             control={control}
             render={() => (
               <FormIconPicker
-              selectedIcon={selectedIcon}
-              modalIcons={modalIcons}
-              onSelect={(icon: string) => {
-                setValue('icon', icon);
-              }}
+                selectedIcon={selectedIcon}
+                modalIcons={modalIcons}
+                onSelect={(icon: string) => {
+                  setValue('icon', icon);
+                }}
               />
             )}
           />
