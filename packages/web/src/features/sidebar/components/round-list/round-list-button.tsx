@@ -11,7 +11,7 @@ interface RoundListButtonProps {
 
 export function RoundListButton({ round, isSelected, onSelect }: RoundListButtonProps) {
   return (
-    <SidebarListButton isSelected={isSelected} onClick={() => onSelect(round)}>
+    <SidebarListButton isSelected={isSelected} isDisabled={round.status === 'PENDING'} onClick={() => onSelect(round)}>
       <>
         <div className='flex h-[20px] w-[20px] items-center justify-center'>
           <Circle className='h-[7px] w-[7px]' strokeWidth={6} />

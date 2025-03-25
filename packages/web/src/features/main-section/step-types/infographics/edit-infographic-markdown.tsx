@@ -58,11 +58,6 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
       data: { image: infographic.image, markdown: controlledMarkdownValue },
     });
 
-    //We have no error no more, check how to reset markdown
-    // if (error) {
-    //   resetMarkdown();
-    // }
-
     toggleEditMode();
   };
 
@@ -89,7 +84,7 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
   return (
     <InfographicMarkdown
       isAdmin={isAdmin}
-      markdown={validationError ? infographic.markdown : controlledMarkdownValue}
+      markdown={infographic.markdown}
       toggleEditMode={() => {
         toggleEditMode();
         setTimeout(() => {

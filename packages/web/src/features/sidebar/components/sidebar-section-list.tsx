@@ -90,8 +90,8 @@ interface ViewAllSidebarProps {
 function ViewAllSidebar({ isOpen, title, onOpenChange, children }: ViewAllSidebarProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side='left' className='w-[308px] px-8 py-20' overlayClassName='bg-inherit'>
-        <div className='flex h-full w-full flex-col justify-between'>
+      <SheetContent side='left' className='w-[308px] px-8 py-20 overflow-y-auto' overlayClassName='bg-inherit'>
+        <div className='flex w-full flex-col gap-8 justify-between'>
           <div className='flex h-full w-full flex-col gap-2'>
             <p className='text-xs font-normal text-gray-700'>All {title}</p>
             <SheetClose>{children}</SheetClose>

@@ -6,6 +6,7 @@ import { CardsService } from '@/services/cards-service';
 import { InfographicsService } from '@/services/infographics-service';
 import { ItemsService } from '@/services/items-service';
 import { StepsService } from '@/services/steps-service';
+import { CompleteCard } from '@/types/cards';
 import { CompleteStep } from '@/types/steps';
 import {
   CreateAttributeBody,
@@ -44,7 +45,14 @@ export function useStep() {
 
       if (!previousStep) throw new Error('add card - step not found');
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, ...data }));
+      const newCard: CompleteCard = {
+        ...data,
+        id: 0,
+        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x })),
+        attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId),
+      };
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, cards: [...previousStep.cards, newCard] }));
 
       return { previousStep };
     },
@@ -71,7 +79,15 @@ export function useStep() {
 
       if (!previousStep) throw new Error('delete card - step not found');
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, ...props.data }));
+      const updatedCard = {
+        ...props.data,
+        id: props.cardId,
+        attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === props.data.attributeId),
+      };
+
+      const updatedCards = previousStep.cards.map((x) => (x.id === props.cardId ? updatedCard : x));
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, cards: updatedCards }));
 
       return { previousStep };
     },
@@ -79,12 +95,12 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', selectedStepId], context.previousStep);
       }
-      let description = `Failed to add card ${props.data.title}`;
+      let description = `Failed to edit card ${props.data.title}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to add card', description, variant: 'destructive' });
+      toast({ title: 'Failed to edit card', description, variant: 'destructive' });
     },
   });
 
@@ -129,7 +145,12 @@ export function useStep() {
 
       if (!previousStep) throw new Error('add attribute to smart list - step not found');
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, ...data }));
+      const updatedSmartListFilter = {
+        ...previousStep.smartListFilter,
+        attributes: [...(previousStep.smartListFilter?.attributes ?? []), { id: 0, categoryId: previousStep?.categoryId, ...data }],
+      };
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, smartListFilter: updatedSmartListFilter }));
 
       return { previousStep };
     },
@@ -155,7 +176,11 @@ export function useStep() {
 
       if (!previousStep) throw new Error('edit attribute - step not found');
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, ...data }));
+      const updatedSmartListFilter = {
+        attributes: previousStep.smartListFilter?.attributes.map((x) => (x.id === data.id ? { ...x, ...data } : x)),
+      };
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, smartListFilter: updatedSmartListFilter }));
 
       return { previousStep };
     },
@@ -211,9 +236,13 @@ export function useStep() {
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', selectedStepId]);
 
-      if (!previousStep) throw new Error('delete card - step not found');
+      if (!previousStep) throw new Error('add item - step not found');
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, ...data }));
+      const newItemAttribute = previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId);
+
+      const newItem = { ...data, attribute: newItemAttribute };
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, items: [...previousStep.items, newItem] }));
 
       return { previousStep };
     },
@@ -233,18 +262,25 @@ export function useStep() {
   const { mutate: updateItem } = useMutation({
     mutationFn: (props: { itemId: number; data: UpdateItemBody }) => ItemsService.update(props.itemId, props.data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] }),
-    onMutate: async (props: { itemId: number; data: UpdateItemBody }) => {
+    onMutate: async ({ itemId, data }: { itemId: number; data: UpdateItemBody }) => {
       await queryClient.cancelQueries({ queryKey: ['step', selectedStepId] });
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', selectedStepId]);
 
-      if (!previousStep) throw new Error('delete item - step not found');
+      if (!previousStep) throw new Error('update item - step not found');
 
-      const oldItem = previousStep.items.find((x) => x.id === props.itemId);
-      const newItem = { ...oldItem, ...props.data };
-      const newItems = [...previousStep.items.filter((x) => x.id !== props.itemId), newItem];
+      const oldItem = previousStep.items.find((x) => x.id === itemId);
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, items: newItems }));
+      const updatedItemAttribute =
+        data.attributeId !== oldItem?.attributeId
+          ? previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId)
+          : oldItem?.attribute;
+
+      const updatedItem = { ...oldItem, ...data, attribute: updatedItemAttribute };
+
+      const updatedItems = previousStep.items.map((x) => (x.id === itemId ? updatedItem : x));
+
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, items: updatedItems }));
 
       return { previousStep };
     },
@@ -252,12 +288,12 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', selectedStepId], context.previousStep);
       }
-      let description = `Failed to delete  item ${itemId}`;
+      let description = `Failed to update item ${itemId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to delete item', description, variant: 'destructive' });
+      toast({ title: 'Failed to update item', description, variant: 'destructive' });
     },
   });
 
@@ -281,7 +317,7 @@ export function useStep() {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', selectedStepId], context.previousStep);
       }
-      let description = `Failed to delete  item ${itemId}`;
+      let description = `Failed to delete item ${itemId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
@@ -326,26 +362,26 @@ export function useStep() {
 
       const previousStep = queryClient.getQueryData<CompleteStep>(['step', selectedStepId]);
 
-      if (!previousStep) throw new Error('delete item - step not found');
+      if (!previousStep) throw new Error('edit infographic - step not found');
 
       const oldInfographic = previousStep.infographics.find((x) => x.id === props.infographicId);
       const newInfographic = { ...oldInfographic, ...props.data };
-      const newInfographics = [...previousStep.infographics.filter((x) => x.id !== props.infographicId), newInfographic];
+      const newInfographics = previousStep.infographics.map((x) => (x.id === props.infographicId ? newInfographic : x));
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, items: newInfographics }));
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, infographics: newInfographics }));
 
       return { previousStep };
     },
-    onError: (err, itemId, context) => {
+    onError: (err, { infographicId }, context) => {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', selectedStepId], context.previousStep);
       }
-      let description = `Failed to delete  item ${itemId}`;
+      let description = `Failed to edit infographic ${infographicId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to delete item', description, variant: 'destructive' });
+      toast({ title: 'Failed to edit infographic', description, variant: 'destructive' });
     },
   });
 
@@ -359,9 +395,9 @@ export function useStep() {
 
       if (!previousStep) throw new Error('delete infographic - step not found');
 
-      const newItems = previousStep.infographics.filter((x) => x.id !== infographicId);
+      const newInfographics = previousStep.infographics.filter((x) => x.id !== infographicId);
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, items: newItems }));
+      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, infographics: newInfographics }));
 
       return { previousStep };
     },
