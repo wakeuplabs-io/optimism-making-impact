@@ -28,11 +28,10 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
     const lastRound = await getLastCompleteRound();
 
     if (!lastRound) {
-      // First round creation
-      throw new ApiError(StatusCodes.BAD_REQUEST, "Can't duplicate round if there's no previous round.");
+      await prisma.round.create({ data: { link1: '', link2: '' } });
+    } else {
+      await duplicateRound(lastRound);
     }
-
-    await duplicateRound(lastRound);
 
     apiResponse.success(res, { message: 'Round created successfully' }, StatusCodes.CREATED);
   } catch (error) {
