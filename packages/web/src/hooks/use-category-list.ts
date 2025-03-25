@@ -127,10 +127,7 @@ export function useCategoryList() {
   // Helper functions
   const setCategoryIdQueryParam = (categoryId: number | undefined) => {
     router.navigate({
-      search: (prev) => {
-        console.log(prev);
-        return { ...prev, categoryId };
-      },
+      search: (prev) => ({ ...prev, categoryId }),
       reloadDocument: false,
       to: '/',
     });

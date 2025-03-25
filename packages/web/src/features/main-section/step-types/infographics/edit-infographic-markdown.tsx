@@ -18,7 +18,6 @@ type EditInfographicMarkdownProps = Omit<React.HtmlHTMLAttributes<HTMLTextAreaEl
 };
 
 export function EditInfographicMarkdown({ infographic, isAdmin, className, ...props }: EditInfographicMarkdownProps) {
-  console.log(infographic.markdown);
   const { editInfographic } = useStep();
   const [editMode, toggleEditMode] = useToggle(false);
   const [controlledMarkdownValue, setControlledMarkdownValue] = useState(infographic.markdown);
