@@ -149,7 +149,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to revoke admin', description, variant: 'destructive' });
+      toast({ title: 'Failed to create step', description, variant: 'destructive' });
     },
   });
 

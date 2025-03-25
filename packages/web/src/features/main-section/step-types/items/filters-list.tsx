@@ -31,7 +31,7 @@ function Container(props: { children: React.ReactNode }) {
     );
   }
 
-  return <div className='flex h-fit max-w-[250px] rounded-[22px] bg-white px-8 py-6'>{props.children}</div>;
+  return <div className='flex h-fit min-w-[250px] rounded-[22px] bg-white px-8 py-6'>{props.children}</div>;
 }
 
 function Content() {
@@ -49,7 +49,7 @@ function Content() {
 
   return (
     <div className='flex w-full flex-col'>
-      <div className='flex items-center justify-between'>
+      <div className='flex w-full items-center justify-between gap-2'>
         <span className='text-base font-semibold'>Filters</span>
         {isAdmin && <AddAttributeModal smartListFilterId={step.smartListFilter.id} onClick={addAttributeToSmartList} />}
       </div>
