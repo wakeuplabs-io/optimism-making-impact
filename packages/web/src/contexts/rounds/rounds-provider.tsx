@@ -38,10 +38,12 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
       const lastRound = previousRounds[0];
       const newRound: CompleteRound = {
         id: lastRound.id + 1,
-        link1: '',
-        link2: '',
-        status: 'PENDING',
-        categories: [],
+        link1: lastRound.link1,
+        link2: lastRound.link2,
+        categories: lastRound.categories.map((cat, idx) => ({
+          ...cat,
+          id: idx,
+        })),
       };
 
       queryClient.setQueryData(['rounds'], [newRound, ...previousRounds]);
