@@ -11,13 +11,13 @@ interface RoundListButtonProps {
 
 export function RoundListButton({ round, isSelected, onSelect }: RoundListButtonProps) {
   return (
-    <SidebarListButton isSelected={isSelected} isDisabled={round.status === 'PENDING'} onClick={() => onSelect(round)}>
-      <>
+    <SidebarListButton isSelected={isSelected} isLoading={round.status === 'PENDING'} onClick={() => onSelect(round)}>
+      <div className='flex gap-4'>
         <div className='flex h-[20px] w-[20px] items-center justify-center'>
           <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
         </div>
         <span className='text-sm truncate'>{getRoundName(round.id)}</span>
-      </>
+      </div>
     </SidebarListButton>
   );
 }

@@ -38,6 +38,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
         id: lastRound.id + 1,
         link1: lastRound.link1,
         link2: lastRound.link2,
+        status: 'PENDING',
         categories: lastRound.categories.map((cat, idx) => ({
           ...cat,
           id: idx,
