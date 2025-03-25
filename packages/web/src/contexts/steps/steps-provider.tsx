@@ -1,19 +1,16 @@
 import { StepsContext, StepWithPosition } from './steps-context';
+import { useQueryParams } from '@/hooks/use-query-params';
 import { toast } from '@/hooks/use-toast';
 import { queryClient } from '@/main';
-import { router } from '@/router';
 import { StepsService } from '@/services/steps-service';
 import { Step } from '@/types/steps';
-import { UpdateStepBody, CreateStepBody } from '@optimism-making-impact/schemas';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { useSearch } from '@tanstack/react-router';
+import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
-  const search = useSearch({ from: '/' });
-  const { categoryId, stepId } = search;
-
+  const { selectedCategoryId, selectedStepId, setSelectedStepId } = useQueryParams();
   const [selectedStep, setSelectedStep] = useState<StepWithPosition | null>(null);
 
   const {
@@ -22,22 +19,14 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     isFetching,
     error,
   } = useQuery({
-    queryKey: [`steps-by-category`, categoryId],
-    queryFn: () => (categoryId ? StepsService.getByCategoryId(Number(categoryId)) : Promise.resolve([])),
-    enabled: !!categoryId,
+    queryKey: [`steps-by-category`, selectedCategoryId],
+    queryFn: () => (selectedCategoryId ? StepsService.getByCategoryId(Number(selectedCategoryId)) : Promise.resolve([])),
+    enabled: !!selectedCategoryId,
     staleTime: 1000 * 60 * 60 * 24,
     select: (data) => {
       return data.map((step, index) => ({ ...step, position: index }));
     },
   });
-
-  const setStepIdQueryParam = (stepId: number | undefined) => {
-    router.navigate({
-      search: (prev) => ({ ...prev, stepId }),
-      reloadDocument: false,
-      to: '/',
-    });
-  };
 
   const handleStepSelect = useCallback(
     (selectedStepId?: number) => {
@@ -45,7 +34,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
       setSelectedStep(stepWithPosition);
 
       if (stepWithPosition) {
-        setStepIdQueryParam(stepWithPosition.id);
+        setSelectedStepId(stepWithPosition.id);
       }
     },
     [steps],
@@ -54,34 +43,34 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const restoreSelectedStep = useCallback(() => {
     if (steps.length === 0) return;
 
-    handleStepSelect(stepId);
-  }, [steps, stepId, handleStepSelect]);
+    handleStepSelect(selectedStepId);
+  }, [steps, selectedStepId, handleStepSelect]);
 
   useEffect(() => {
     if (!isLoading && !isFetching) restoreSelectedStep();
-  }, [isLoading, isFetching]);
+  }, [steps, isLoading, isFetching]);
 
   // API mutations with success handlers
   const deleteStep = useMutation({
     mutationFn: (stepId: number) => StepsService.deleteOne(stepId),
     onSuccess: () => {
-      setStepIdQueryParam(undefined);
-      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] });
+      setSelectedStepId(undefined);
+      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
     },
     onMutate: async (stepId: number) => {
-      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
+      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
 
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]) ?? [];
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, selectedCategoryId]) ?? [];
 
       const updatedSteps = previousSteps.filter((step) => step.id !== stepId);
 
-      queryClient.setQueryData<Step[]>([`steps-by-category`, categoryId], updatedSteps);
+      queryClient.setQueryData<Step[]>([`steps-by-category`, selectedCategoryId], updatedSteps);
 
       return { previousSteps };
     },
     onError: (err, stepId, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, selectedCategoryId], context.previousSteps);
       }
       let description = `Failed to delete step id ${stepId}`;
       if (err instanceof AxiosError) {
@@ -94,11 +83,11 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
   const editStep = useMutation({
     mutationFn: ({ stepId, data }: { stepId: number; data: UpdateStepBody }) => StepsService.update(stepId, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] }),
     onMutate: async (props: { stepId: number; data: UpdateStepBody }) => {
-      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
+      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
 
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]);
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, selectedCategoryId]);
 
       if (!previousSteps) throw new Error('edit step - step not found');
 
@@ -110,13 +99,13 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
       const updatedSteps = previousSteps.map((step) => (step.id === props.stepId ? newStep : step));
 
-      queryClient.setQueryData<Step[]>([`steps-by-category`, categoryId], updatedSteps);
+      queryClient.setQueryData<Step[]>([`steps-by-category`, selectedCategoryId], updatedSteps);
 
       return { previousSteps };
     },
     onError: (err, props, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, selectedCategoryId], context.previousSteps);
       }
       let description = `Failed to edit step ${props.data.title}`;
       if (err instanceof AxiosError) {
@@ -130,23 +119,23 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const addStep = useMutation({
     mutationFn: (data: CreateStepBody) => StepsService.create(data),
     onSuccess: ({ data }) => {
-      setStepIdQueryParam(data.id);
-      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, categoryId] });
+      setSelectedStepId(data.id);
+      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
     },
     onMutate: async (data: CreateStepBody) => {
-      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, categoryId] });
+      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
 
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, categoryId]) ?? [];
+      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, selectedCategoryId]) ?? [];
 
       if (!previousSteps) throw new Error('add step - step not found');
 
-      queryClient.setQueryData([`steps-by-category`, categoryId], () => [...previousSteps, { ...data }]);
+      queryClient.setQueryData([`steps-by-category`, selectedCategoryId], () => [...previousSteps, { ...data }]);
 
       return { previousSteps };
     },
     onError: (err, data, context) => {
       if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-by-category`, categoryId], context.previousSteps);
+        queryClient.setQueryData([`steps-by-category`, selectedCategoryId], context.previousSteps);
       }
       let description = `Failed to create step ${data.title}`;
       if (err instanceof AxiosError) {
