@@ -9,8 +9,8 @@
     "types": "./src/index.ts"
   },
   "scripts": {
-    "build": "pnpm prisma:generate",
-    "dev": "pnpm prisma:generate --watch",
+    "build": "npm run prisma:generate",
+    "dev": "npm run prisma:generate --watch",
     "lint": "tsc --noEmit && eslint .",
     "format": "prettier --write \"src/**/*.ts\"",
     "postinstall": "prisma generate",

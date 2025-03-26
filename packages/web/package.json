@@ -8,12 +8,12 @@
     "build": "vite build && tsc -b",
     "lint": "tsc -b && eslint .",
     "preview": "vite preview",
-    "ui:add": "pnpm dlx shadcn@latest add",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\""
+    "ui:add": "npx shadcn@latest add",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
-    "@optimism-making-impact/schemas": "workspace:*",
+    "@optimism-making-impact/schemas": "*",
     "@radix-ui/react-dialog": "^1.1.4",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-popover": "^1.1.5",
