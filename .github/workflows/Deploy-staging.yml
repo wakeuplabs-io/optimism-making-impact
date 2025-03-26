@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      DB_URL: ${{ vars.POSTGRES_PRISMA_URL }}
-      DB_URL_NON_POOLING: ${{ vars.POSTGRES_URL_NON_POOLING }}
+      DB_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+      DB_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
 
     outputs:
       api_url: ${{ steps.save-output.outputs.superchain_api_url }}
