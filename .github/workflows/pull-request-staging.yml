@@ -3,7 +3,8 @@ name: pipeline CD/CI staging
 on:
   pull_request:
     types: [opened, reopened, converted_to_draft, synchronize]
-
+    branches: 
+      - develop
 
 jobs:
   # Install dependencies
@@ -12,5 +13,5 @@ jobs:
 
   # Build
   call-build-workflow:
-    uses: ./.github/workflows/Build.yml
+    uses: ./.github/workflows/build-staging.yml
     needs: call-install-workflow

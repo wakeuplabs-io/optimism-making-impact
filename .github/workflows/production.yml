@@ -3,7 +3,7 @@ name: pipeline CD/CI staging
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   # Install dependencies
@@ -12,7 +12,7 @@ jobs:
 
   # Job to deploy the API
   call-deploy-api-workflow:
-    uses: ./.github/workflows/deploy-staging.yml
+    uses: ./.github/workflows/deploy-production.yml
     needs: call-install-workflow
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
