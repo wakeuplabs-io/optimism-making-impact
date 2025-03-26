@@ -29,8 +29,8 @@ export function ItemsStepSekeleton() {
               <Skeleton height={30} className='mb-5' containerClassName='w-[70%]' />
             </div>
             <div className='flex flex-col gap-5'>
-              {[1, 2, 3, 4, 5, 6, 7].map((x, i) => (
-                <React.Fragment key={i}>
+              {[1, 2, 3, 4, 5, 6, 7].map((x) => (
+                <React.Fragment key={x}>
                   <Skeleton height={24} width={'80%'} />
                   <hr className='border-t border-[#D9D9D9]' />
                 </React.Fragment>
