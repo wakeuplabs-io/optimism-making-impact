@@ -16,14 +16,12 @@ export function ItemsStepSekeleton() {
                 <span className='text-base font-semibold'>Filters</span>
               </div>
               <hr className='my-6 border-[#D9D9D9]' />
-              {/* filters */}
               <Skeleton height={26} count={5} width={186} containerClassName='flex flex-col' />
             </div>
           </div>
         )}
 
         <div className='w-full pb-8'>
-          {/* list */}
           <div className='flex h-fit flex-1 flex-col rounded-[22px] bg-white p-8'>
             <div className='mb-6 flex gap-4 border-b border-[#D9D9D9] pb-3'>
               <Skeleton height={30} className='mb-5' containerClassName='w-[70%]' />
