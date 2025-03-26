@@ -8,4 +8,4 @@ export * from './item';
 export * from './round';
 export * from './step';
 
-export * from './entitites';
+export * from './entities';

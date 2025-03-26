@@ -1,4 +1,4 @@
-import { stepTypeSchema } from './entitites/enums';
+import { stepTypeSchema } from './entities/enums';
 import { z } from 'zod';
 
 export const getAllStepsQueryParams = z.object({

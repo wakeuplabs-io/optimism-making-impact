@@ -1,5 +1,5 @@
 import { idValidator } from './common';
-import { colorSchema } from './entitites';
+import { colorSchema } from './entities';
 import { z } from 'zod';
 
 export const createAttributeSchema = z.object({

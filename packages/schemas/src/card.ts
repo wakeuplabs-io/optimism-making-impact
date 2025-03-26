@@ -1,4 +1,4 @@
-import { cardStrengthList } from './entitites';
+import { cardStrengthList } from './entities';
 import { z } from 'zod';
 
 export const keywordValueSchema = z.object({
