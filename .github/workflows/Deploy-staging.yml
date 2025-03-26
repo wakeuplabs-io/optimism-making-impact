@@ -19,9 +19,6 @@ jobs:
       DB_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
       DB_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
 
-    outputs:
-      api_url: ${{ steps.save-output.outputs.superchain_api_url }}
-
     steps:
       # Configure AWS credentials
       - name: Configure AWS credentials
@@ -68,10 +65,3 @@ jobs:
       # Run the deploy
       - name: Deploy
         run: pnpm deploy:app:staging
-
-      # Output the API URL and store in $GITHUB_OUTPUT
-      - name: Save Output
-        id: save-output
-        run: |
-          API_URL=$(cat .env | sed -n 's/.*ServiceEndpoint = \"\(.*\)\"/\1/p')
-          echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"
