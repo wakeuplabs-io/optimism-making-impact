@@ -34,3 +34,32 @@ Evaluation steps define the structured criteria for assessing a project within a
 2. **Create a Round** – Administrators create a round, which sets the evaluation criteria for a specific time period. If a previous round exists, the application copies its data into the new round.
 3. **Create a Project Category** – Once a round is created, administrators must define a project category.
 4. **Create Evaluation Steps** – Within each category, administrators can add one or more steps, each containing specific evaluation criteria to guide users through the assessment process.
+
+### Process diagram
+
+```mermaid
+sequenceDiagram
+    User->>+Frontend App : login;
+    Frontend App->>+Cognito : authenticate;
+    Cognito-->>-Frontend App : user data;
+    Frontend App->>+Backend Service : check whitelisted admin;
+    alt Is a valid admin user;
+    User->>+Frontend App : create Round;
+    alt A previous Round exists;
+    Frontend App->>+Backend Service : create Round;
+    Backend Service->>+Backend Service : create new Round;
+    Backend Service->>+Backend Service : duplicate Categories from last round;
+    Backend Service->>+Backend Service : duplicate each Category Steps from last round;
+    Backend Service-->>-Frontend App: new Round;
+    else
+    Frontend App->>+Backend Service : Create empty Round;
+    Backend Service-->>-Frontend App: new Round;
+    end
+    User->>+Frontend App : create Category for new Round;
+    Frontend App->>+Backend Service : create Category;
+    Backend Service-->>-Frontend App: new Category;
+    User->>+Frontend App : create Step for new Category;
+    Frontend App->>+Backend Service : create Step;
+    Backend Service-->>-Frontend App: new Step;
+    end
+```
