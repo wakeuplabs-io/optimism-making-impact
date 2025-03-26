@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     env:
-      DB_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
-      DB_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
     steps:
       # Configure AWS credentials
@@ -64,4 +64,10 @@ jobs:
 
       # Run the deploy
       - name: Deploy
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          UI_URL: ${{ vars.UI_URL }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
         run: pnpm deploy:app:staging
