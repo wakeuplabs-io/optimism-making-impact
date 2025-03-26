@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 20
 
-      # Cache npm dependencies
-      - name: Cache npm dependencies
-        uses: actions/cache/save@v4
-        id: npm-cache
+      # Restore cached npm dependencies
+      - name: Restore npm dependencies
+        uses: actions/cache/restore@v4
+        id: npm-cache-restore
         with:
           path: |
             ~/.npm
@@ -36,5 +36,29 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      # Ensure cache directories exist before saving the cache
+      - name: Ensure cache directories exist
+        run: |
+          mkdir -p ~/.npm
+          mkdir -p node_modules
+          mkdir -p packages/web/node_modules
+          mkdir -p packages/schemas/node_modules
+          mkdir -p packages/api/node_modules
+          mkdir -p packages/prisma/node_modules
+
+      # Save npm dependencies to cache
+      - name: Cache npm dependencies
+        uses: actions/cache/save@v4
+        id: npm-cache-save
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+            packages/prisma/node_modules
+          key: npm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
     outputs:
-      cache-hit: ${{ steps.npm-cache.outputs.cache-hit }}
+      cache-hit: ${{ steps.npm-cache-restore.outputs.cache-hit }}
