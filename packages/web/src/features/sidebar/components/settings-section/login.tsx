@@ -7,19 +7,21 @@ import { signInWithRedirect } from 'aws-amplify/auth';
 import { LoaderCircle, LogIn } from 'lucide-react';
 
 export const Login = () => {
-  const {isLoading } = useUser();
+  const { isLoading } = useUser();
   return (
     <Dialog>
       <DialogTrigger asChild>
         <SidebarListButton isDisabled={isLoading}>
-          {isLoading ? (
-            <span className='animate-spin'>
-              <LoaderCircle className='!h-[20px] !w-[20px]' />
-            </span>
-          ) : (
-            <LogIn className='h-[20px] w-[20px]' />
-          )}
-          <span className='text-sm'>Log in</span>
+          <div className='flex flex-row gap-2'>
+            {isLoading ? (
+              <span className='animate-spin'>
+                <LoaderCircle className='!h-[20px] !w-[20px]' />
+              </span>
+            ) : (
+              <LogIn className='h-[20px] w-[20px]' />
+            )}
+            <span className='text-sm'>Log in</span>
+          </div>
         </SidebarListButton>
       </DialogTrigger>
       <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>

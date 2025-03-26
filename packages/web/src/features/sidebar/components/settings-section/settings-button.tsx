@@ -8,10 +8,10 @@ export function SettingsButton() {
   return (
     <>
       <SidebarListButton onClick={() => setOpen(true)}>
-        <>
+        <div className='flex flex-row gap-2'>
           <Settings className='h-[20px] w-[20px]' />
           <span className='text-sm'>Setup</span>
-        </>
+        </div>
       </SidebarListButton>
       <SetupModal open={open} onOpenChange={setOpen} />
     </>

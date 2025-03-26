@@ -15,8 +15,10 @@ export const Logout = () => {
 
   return (
     <SidebarListButton onClick={handleLogout}>
-      <LogOut className='h-[20px] w-[20px]' />
-      <span className='text-sm'>Log out</span>
+      <div className='flex flex-row gap-2'>
+        <LogOut className='h-[20px] w-[20px]' />
+        <span className='text-sm'>Log out</span>
+      </div>
     </SidebarListButton>
   );
 };
