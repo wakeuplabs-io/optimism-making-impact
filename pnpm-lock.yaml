@@ -176,6 +176,9 @@ importers:
 
   packages/schemas:
     dependencies:
+      '@optimism-making-impact/prisma':
+        specifier: workspace:^
+        version: link:../prisma
       zod:
         specifier: 3.24.1
         version: 3.24.1

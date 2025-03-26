@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@optimism-making-impact/prisma": "workspace:^",
     "zod": "3.24.1"
   },
   "devDependencies": {
