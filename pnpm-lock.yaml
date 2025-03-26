@@ -131,8 +131,8 @@ importers:
         specifier: ^7.15.0
         version: 7.18.0(eslint@9.16.0(jiti@1.21.7))(typescript@5.7.3)
       typescript-transform-paths:
-        specifier: 3.4.7
-        version: 3.4.7(typescript@5.7.3)
+        specifier: 3.5.5
+        version: 3.5.5(typescript@5.7.3)
 
   packages/prisma:
     dependencies:
@@ -5353,8 +5353,8 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <5.8.0'
 
-  typescript-transform-paths@3.4.7:
-    resolution: {integrity: sha512-1Us1kdkdfKd2unbkBAOV2HHRmbRBYpSuk9nJ7cLD2hP4QmfToiM/VpxNlhJc1eezVwVqSKSBjNSzZsK/fWR/9A==}
+  typescript-transform-paths@3.5.5:
+    resolution: {integrity: sha512-RMK86wKe/4+ad+3kMT9SKAs3K0tUHLe7hF+MLbD6VpC9VUmFuKorhf3pHz+qO5GdS4mUp2ncNUo14j6ws9UvBQ==}
     peerDependencies:
       typescript: '>=3.6.5'
 
@@ -11601,9 +11601,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  typescript-transform-paths@3.4.7(typescript@5.7.3):
+  typescript-transform-paths@3.5.5(typescript@5.7.3):
     dependencies:
-      minimatch: 3.1.2
+      minimatch: 9.0.5
       typescript: 5.7.3
 
   typescript@5.7.3: {}
