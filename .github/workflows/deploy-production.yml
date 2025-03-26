@@ -1,0 +1,77 @@
+name: Deploy
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+
+jobs:
+  # Job to Deploy the UI
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DB_URL: ${{ vars.POSTGRES_PRISMA_URL }}
+      DB_URL_NON_POOLING: ${{ vars.POSTGRES_URL_NON_POOLING }}
+
+    outputs:
+      api_url: ${{ steps.save-output.outputs.superchain_api_url }}
+
+    steps:
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: 'no'
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Set up pnpm
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      # Restore cached dependencies
+      - name: Restore pnpm dependencies
+        uses: actions/cache/restore@v4
+        id: pnpm-cache
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+            packages/prisma/node_modules
+          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          fail-on-cache-miss: true
+      # Run the build
+      - name: Build
+        run: pnpm run build
+
+      # Run the deploy
+      - name: Deploy
+        run: pnpm deploy:app:staging
+
+      # Output the API URL and store in $GITHUB_OUTPUT
+      - name: Save Output
+        id: save-output
+        run: |
+          API_URL=$(cat .env | sed -n 's/.*ServiceEndpoint = \"\(.*\)\"/\1/p')
+          echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"
