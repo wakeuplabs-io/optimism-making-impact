@@ -1,0 +1,668 @@
+{
+	"info": {
+		"_postman_id": "31238b64-4539-4eb4-87bc-9efbb3e88d9e",
+		"name": "Optimism Making Impact API",
+		"description": "API collection for testing the Optimism Making Impact API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28378599",
+		"_collection_link": "https://gold-comet-1626-1.postman.co/workspace/hackaton~4327513e-3196-4b45-ae29-df021c5b1dd3/collection/28378599-31238b64-4539-4eb4-87bc-9efbb3e88d9e?action=share&source=collection_link&creator=28378599"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Validate Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"{{authToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/validate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rounds",
+			"item": [
+				{
+					"name": "Get All Rounds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('success');",
+									"    pm.expect(responseData).to.have.property('status');",
+									"    pm.expect(responseData).to.have.property('code');",
+									"    pm.expect(responseData).to.have.property('timestamp');",
+									"    pm.expect(responseData).to.have.property('data');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the rounds array and its elements\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.rounds).to.be.an('array');",
+									"    ",
+									"    responseData.data.rounds.forEach(function(round) {",
+									"        pm.expect(round).to.have.property('id').that.is.a('number');",
+									"        pm.expect(round).to.have.property('link1').that.is.a('string');",
+									"        pm.expect(round).to.have.property('link2').that.is.a('string');",
+									"        pm.expect(round).to.have.property('createdAt').that.is.a('string');",
+									"        pm.expect(round).to.have.property('updatedAt').that.is.a('string');",
+									"        ",
+									"        pm.expect(round.categories).to.be.an('array');",
+									"        round.categories.forEach(function(category) {",
+									"            pm.expect(category).to.have.property('id').that.is.a('number');",
+									"            pm.expect(category).to.have.property('name').that.is.a('string');",
+									"            pm.expect(category).to.have.property('icon').that.is.a('string');",
+									"            pm.expect(category).to.have.property('roundId').that.is.a('number');",
+									"            pm.expect(category).to.have.property('createdAt').that.is.a('string');",
+									"            pm.expect(category).to.have.property('updatedAt').that.is.a('string');",
+									"        });",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the categories array and its elements\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.rounds).to.be.an('array').that.is.not.empty;",
+									"    ",
+									"    responseData.data.rounds.forEach(round => {",
+									"        pm.expect(round.categories).to.be.an('array').that.is.not.empty;",
+									"        ",
+									"        round.categories.forEach(category => {",
+									"            pm.expect(category).to.be.an('object');",
+									"            pm.expect(category.id).to.be.a('number');",
+									"            pm.expect(category.name).to.be.a('string');",
+									"            pm.expect(category.icon).to.be.a('string');",
+									"            pm.expect(category.roundId).to.be.a('number');",
+									"            pm.expect(category.createdAt).to.be.a('string');",
+									"            pm.expect(category.updatedAt).to.be.a('string');",
+									"        });",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/rounds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rounds"
+							]
+						},
+						"description": "# Round API\n\nThis API endpoint retrieves a list of rounds.\n\n## Request\n\n### Endpoint\n\n`GET /api/rounds`\n\n### Response\n\n- Status: 200 OK\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n  \"success\": true,\n  \"status\": 0,\n  \"code\": \"\",\n  \"timestamp\": \"\",\n  \"data\": {\n    \"rounds\": [\n      {\n        \"id\": 0,\n        \"link1\": \"\",\n        \"link2\": \"\",\n        \"createdAt\": \"\",\n        \"updatedAt\": \"\",\n        \"categories\": [\n          {\n            \"id\": 0,\n            \"name\": \"\",\n            \"icon\": \"\",\n            \"roundId\": 0,\n            \"createdAt\": \"\",\n            \"updatedAt\": \"\"\n          }\n        ]\n      }\n    ]\n  }\n}\n\n ```\n\n## OpenAPI Specification\n\n``` yaml\npaths:\n  /api/rounds:\n    get:\n      summary: Retrieve a list of rounds\n      responses:\n        '200':\n          description: OK\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  success:\n                    type: boolean\n                  status:\n                    type: integer\n                  code:\n                    type: string\n                  timestamp:\n                    type: string\n                  data:\n                    type: object\n                    properties:\n                      rounds:\n                        type: array\n                        items:\n                          type: object\n                          properties:\n                            id:\n                              type: integer\n                            link1:\n                              type: string\n                            link2:\n                              type: string\n                            createdAt:\n                              type: string\n                            updatedAt:\n                              type: string\n                            categories:\n                              type: array\n                              items:\n                                type: object\n                                properties:\n                                  id:\n                                    type: integer\n                                  name:\n                                    type: string\n                                  icon:\n                                    type: string\n                                  roundId:\n                                    type: integer\n                                  createdAt:\n                                    type: string\n                                  updatedAt:\n                                    type: string\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.success).to.exist;",
+									"  pm.expect(responseData.status).to.exist;",
+									"  pm.expect(responseData.code).to.exist;",
+									"  pm.expect(responseData.timestamp).to.exist;",
+									"  pm.expect(responseData.data).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Timestamp is in a valid date format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.timestamp).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Data message is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/rounds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rounds"
+							]
+						},
+						"description": "The API endpoint allows you to create a new round. Upon successful execution of the request, the server responds with a status code of 201 and a JSON object in the response body.\n\nThe JSON schema for the response is as follows:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"success\": {\n      \"type\": \"boolean\"\n    },\n    \"status\": {\n      \"type\": \"integer\"\n    },\n    \"code\": {\n      \"type\": \"string\"\n    },\n    \"timestamp\": {\n      \"type\": \"string\"\n    },\n    \"data\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"message\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Round",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response schema for the presence of required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.success).to.exist;",
+									"    pm.expect(responseData.status).to.exist;",
+									"    pm.expect(responseData.code).to.exist;",
+									"    pm.expect(responseData.timestamp).to.exist;",
+									"    pm.expect(responseData.data).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.message).to.exist;",
+									"    pm.expect(responseData.data.data).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.data.data.id).to.exist;",
+									"    pm.expect(responseData.data.data.link1).to.exist;",
+									"    pm.expect(responseData.data.data.link2).to.exist;",
+									"    pm.expect(responseData.data.data.createdAt).to.exist;",
+									"    pm.expect(responseData.data.data.updatedAt).to.exist;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"link1\": \"https://example.com/link1\",\n  \"link2\": \"https://example.com/link99\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/rounds/{{roundId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rounds",
+								"{{roundId}}"
+							]
+						},
+						"description": "### Update Round Details\n\nThis endpoint allows the user to update round details by sending an HTTP PUT request to the specified round ID.\n\n#### Request Body\n\n- `link1` (string): The first link to be updated.\n    \n- `link2` (string): The second link to be updated.\n    \n\n#### Response\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"success\": {\n            \"type\": \"boolean\"\n        },\n        \"status\": {\n            \"type\": \"integer\"\n        },\n        \"code\": {\n            \"type\": \"string\"\n        },\n        \"timestamp\": {\n            \"type\": \"string\"\n        },\n        \"data\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"message\": {\n                    \"type\": \"string\"\n                },\n                \"data\": {\n                    \"type\": \"object\",\n                    \"properties\": {\n                        \"id\": {\n                            \"type\": \"integer\"\n                        },\n                        \"link1\": {\n                            \"type\": \"string\"\n                        },\n                        \"link2\": {\n                            \"type\": \"string\"\n                        },\n                        \"createdAt\": {\n                            \"type\": \"string\"\n                        },\n                        \"updatedAt\": {\n                            \"type\": \"string\"\n                        }\n                    }\n                }\n            }\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Round",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/rounds/{{roundId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rounds",
+								"{{roundId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/categories?roundId={{roundId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "roundId",
+									"value": "{{roundId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"New Category\",\n  \"roundId\": {{roundId}}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Category\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/categories/{{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Steps",
+			"item": [
+				{
+					"name": "Get All Steps",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/steps?categoryId={{categoryId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"steps"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "{{categoryId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Step by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/steps/{{stepId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"steps",
+								"{{stepId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Step",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"New Step\",\n  \"description\": \"Step description\",\n  \"categoryId\": {{categoryId}},\n  \"type\": \"BASIC\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/steps",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"steps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Step",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Step\",\n  \"description\": \"Updated description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/steps/{{stepId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"steps",
+								"{{stepId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Step",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/steps/{{stepId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"steps",
+								"{{stepId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cards",
+			"item": [
+				{
+					"name": "Create Card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"New Card\",\n  \"markdown\": \"Card content\",\n  \"strength\": 1,\n  \"stepId\": {{stepId}},\n  \"attributeId\": {{attributeId}},\n  \"keywords\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/cards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Card",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Card\",\n  \"markdown\": \"Updated content\",\n  \"strength\": 2,\n  \"stepId\": {{stepId}},\n  \"attributeId\": {{attributeId}},\n  \"keywords\": []\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/cards/{{cardId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cards",
+								"{{cardId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Card",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/cards/{{cardId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"cards",
+								"{{cardId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
