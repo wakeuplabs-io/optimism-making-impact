@@ -9,7 +9,7 @@
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "test": "NODE_ENV=test dotenv -e .env.test -- vitest",
     "lint": "tsc --noEmit && eslint .",
-    "format": "prettier --write ."
+    "format": "npx prettier --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,6 @@
   "devDependencies": {
     "@eslint/js": "^9.6.0",
     "@optimism-making-impact/schemas": "workspace:*",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
     "@types/jsonwebtoken": "^9.0.9",

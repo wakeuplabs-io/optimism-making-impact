@@ -100,9 +100,6 @@ importers:
       '@optimism-making-impact/schemas':
         specifier: workspace:*
         version: link:../schemas
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.0
-        version: 5.2.1(prettier@3.4.2)
       '@types/cors':
         specifier: 2.8.17
         version: 2.8.17
@@ -298,9 +295,6 @@ importers:
       '@tanstack/router-cli':
         specifier: 1.95.6
         version: 1.95.6(@tanstack/react-router@1.95.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.0
-        version: 5.2.1(prettier@3.4.2)
       '@types/lodash.isequal':
         specifier: ^4.5.8
         version: 4.5.8
@@ -7878,6 +7872,7 @@ snapshots:
       prettier: 3.4.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@tsconfig/node18@18.2.4': {}
 
@@ -9886,7 +9881,8 @@ snapshots:
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
 
-  javascript-natural-sort@0.7.1: {}
+  javascript-natural-sort@0.7.1:
+    optional: true
 
   jiti@1.21.7: {}
 

@@ -12,7 +12,7 @@
     "build": "pnpm prisma:generate",
     "dev": "pnpm prisma:generate --watch",
     "lint": "tsc --noEmit && eslint .",
-    "format": "prettier --write .",
+    "format": "npx prettier --write \"src/**/*.ts\"",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate:deploy": "prisma migrate deploy",
