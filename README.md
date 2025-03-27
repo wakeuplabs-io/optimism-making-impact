@@ -73,6 +73,10 @@ sequenceDiagram
     end
 ```
 
+## Database Diagram
+
+![Database Diagram](./assets/db_diagram.svg)
+
 ## How to Run Locally
 
 ### System Requirements
