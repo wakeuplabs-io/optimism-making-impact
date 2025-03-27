@@ -1,13 +1,15 @@
 import { z } from 'zod';
+import { StepType as PrismaStepType, CardStrength as PrismaCardStrength, Color as PrismaColor } from '@optimism-making-impact/prisma';
 
-export const stepTypes = ['INFOGRAPHIC', 'SMARTLIST', 'CARDGRID'] as const;
-export const stepTypeSchema = z.enum(stepTypes);
+export const stepTypes = Object.values(PrismaStepType);
+export const stepTypeSchema = z.nativeEnum(PrismaStepType);
 export type StepType = z.infer<typeof stepTypeSchema>;
 
-export const cardStrengthList = ['LOW', 'MEDIUM', 'HIGH'] as const;
-export const cardStrengthSchema = z.enum(cardStrengthList);
-export type CardStrength = z.infer<typeof cardStrengthSchema>;
 
-export const colorList = ['RED', 'PINK', 'PURPLE', 'YELLOW', 'TAN', 'ORANGE', 'GREEN', 'LIGHTBLUE', 'BLUE', 'DARKBLUE'] as const;
-export const colorSchema = z.enum(colorList);
+export const cardStrengthSchema = z.nativeEnum(PrismaCardStrength);
+export type CardStrength = z.infer<typeof cardStrengthSchema>;
+export const cardStrengthList = Object.values(PrismaCardStrength);
+
+export const colorSchema = z.nativeEnum(PrismaColor);
 export type Color = z.infer<typeof colorSchema>;
+export const colorList = Object.values(PrismaColor);

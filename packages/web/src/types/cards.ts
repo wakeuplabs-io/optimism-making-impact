@@ -1,11 +1,11 @@
-import { attributeSchema, cardStrengthList, keywordSchema } from '@optimism-making-impact/schemas';
+import { attributeSchema, cardStrengthSchema, keywordSchema } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const cardSchema = z.object({
   id: z.number(),
   title: z.string(),
   markdown: z.string(),
-  strength: z.enum(cardStrengthList),
+  strength: cardStrengthSchema,
   stepId: z.number(),
   attributeId: z.number().nullish(),
 });

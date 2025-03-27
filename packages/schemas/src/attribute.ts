@@ -1,6 +1,6 @@
-import { idValidator } from './common';
-import { colorSchema } from './entities';
+import { idValidator } from './common.js';
 import { z } from 'zod';
+import { colorSchema } from './entities/enums.js';
 
 export const createAttributeSchema = z.object({
   value: z.string().min(1, 'Title is required'),
