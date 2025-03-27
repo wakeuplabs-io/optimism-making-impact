@@ -4,6 +4,12 @@ Welcome to the [WakeUp Labs](https://www.wakeuplabs.io/) Optimism Retro Impact G
 
 For more details about the application's requirements, check out the [Mission Request](https://gov.optimism.io/t/ready-to-vote-making-impact-evaluation-accessible/7489).
 
+## Application Links
+
+Staging: https://retroimpactguidelines.wakeuplabs.link
+
+Production: https://retroimpactguidelines.xyz
+
 ## Introduction
 
 The application streamlines the evaluation of project proposals by presenting evaluation criteria in a clear and intuitive interface. It guides users through the evaluation process, ensuring they understand the criteria for each project category and the key factors to consider during assessment. Additionally, it allows users to review past evaluation criteria.
