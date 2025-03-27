@@ -14,11 +14,14 @@ export type BadgeColorType = {
 };
 
 export const BADGE_COLORS: BadgeColorType[] = [
-  { color: '#6DCBFF', background: '#D6E8F2' },
-  { color: '#91c987', background: '#DDEFDA' },
-  { color: '#C4C4C4', background: '#F1F0EF' },
-  { color: '#E2B2FF', background: '#E8DEEE' },
-  { color: '#FFB781', background: '#FADEC9' },
+  { color: '#D6E8F2', background: '#D6E8F2' },
+  { color: '#E8DEEE', background: '#E8DEEE' },
+  { color: '#F1F0EF', background: '#F1F0EF' },
+  { color: '#FADEC9', background: '#FADEC9' },
+  { color: '#DDEFDA', background: '#DDEFDA' },
+  { color: '#FACEC9', background: '#FACEC9' },
+  { color: '#C9D0FA', background: '#C9D0FA' },
+  { color: '#F2C9FA', background: '#F2C9FA' },
 ];
 
 export type ExtendedColor = Color | 'GRAY';
