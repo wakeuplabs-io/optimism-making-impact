@@ -21,24 +21,22 @@ export function InfographicCard(props: InfographicCardProps) {
   return (
     <div
       className={cn('flex w-full flex-col items-center justify-center gap-6 rounded-[10px] xl:flex-row xl:gap-12', {
-        'border border-[#BEBEBE] p-3 xl:gap-4 xl:p-4': props.isAdmin,
+        'border border-[#BEBEBE] p-3 xl:gap-[58px] xl:p-4': props.isAdmin,
       })}
     >
+      {/* Card image */}
       <HoverOverlay
         disabled={!props.isAdmin}
-        overlayClassName='bg-black bg-opacity-50 rounded-xl'
-        className={cn('flex aspect-square h-[274px] w-full items-center justify-center xl:h-[320px] xl:w-1/2', {
+        className={cn('flex justify-center', {
           'xl:order-2': shouldReverse,
           'xl:order-1': !shouldReverse,
         })}
-        overlayContent={
-          <div className='flex h-full w-full cursor-pointer items-center justify-center' onClick={() => setEditImgModalOpen(true)}>
-            <EditIcon className='text-white hover:text-gray-400' />
-          </div>
-        }
+        overlayContent={<EditIcon className='text-white hover:text-gray-400' onClick={() => setEditImgModalOpen(true)} />}
       >
-        <img className='h-full rounded-xl object-fill object-center' src={props.infographic.image} />
+        <img className='h-[320px] w-[555px] rounded-xl object-cover object-center' src={props.infographic.image} />
       </HoverOverlay>
+
+      {/* Card markdown */}
       <div
         className={cn('flex h-full w-full items-center xl:w-1/2 xl:px-0', {
           'xl:order-1': shouldReverse,

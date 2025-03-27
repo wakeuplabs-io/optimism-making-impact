@@ -13,10 +13,14 @@ export const HoverOverlay: React.FC<HoverOverlayProps> = ({ children, overlayCon
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className={cn('relative', className)} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div
+      className={cn('relative inline-block', className)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {children}
       {isHovered && !disabled && (
-        <div className={cn('absolute left-0 top-0 z-50 h-full w-full bg-black bg-opacity-50', overlayClassName)}>
+        <div className={cn('absolute inset-0 z-50 rounded-xl bg-black bg-opacity-50', overlayClassName)}>
           <div className={cn('flex h-full w-full items-center justify-center')}>{overlayContent}</div>
         </div>
       )}
