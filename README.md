@@ -39,27 +39,37 @@ Evaluation steps define the structured criteria for assessing a project within a
 
 ```mermaid
 sequenceDiagram
-    User->>+Frontend App : login;
-    Frontend App->>+Cognito : authenticate;
-    Cognito-->>-Frontend App : user data;
-    Frontend App->>+Backend Service : check whitelisted admin;
-    alt Is a valid admin user;
-    User->>+Frontend App : create Round;
-    alt A previous Round exists;
-    Frontend App->>+Backend Service : create Round;
-    Backend Service->>+Backend Service : create new Round;
-    Backend Service->>+Backend Service : duplicate Categories from last round;
-    Backend Service->>+Backend Service : duplicate each Category Steps from last round;
-    Backend Service-->>-Frontend App: new Round;
+    User->>+Frontend App : login
+    Frontend App->>+Cognito : authenticate
+    Cognito-->>-Frontend App : user data
+    Frontend App->>+Backend Service : check whitelisted user
+    Backend Service->>+Database : get whitelisted users
+    Database-->>-Backend Service : whitelisted users
+    Backend Service-->>-Frontend App :
+    alt Is a whitelisted admin user
+    User->>+Frontend App : create Round
+    alt A previous Round exists
+    Frontend App->>+Backend Service : create Round
+    Backend Service->>+Database : insert Round
+    Database-->>-Backend Service : new round
+    Backend Service->>+Database : duplicate Categories from last round
+    Backend Service->>+Database : duplicate each Category Steps from last round
+    Backend Service-->>-Frontend App: new Round
     else
-    Frontend App->>+Backend Service : Create empty Round;
-    Backend Service-->>-Frontend App: new Round;
+    Frontend App->>+Backend Service : Create empty Round
+    Backend Service->>+Database : insert Round
+    Database-->>-Backend Service : new round
+    Backend Service-->>-Frontend App: new Round
     end
-    User->>+Frontend App : create Category for new Round;
-    Frontend App->>+Backend Service : create Category;
-    Backend Service-->>-Frontend App: new Category;
-    User->>+Frontend App : create Step for new Category;
-    Frontend App->>+Backend Service : create Step;
-    Backend Service-->>-Frontend App: new Step;
+    User->>+Frontend App : create Category for new Round
+    Frontend App->>+Backend Service : create Category
+    Backend Service->>+Database : insert Category
+    Database-->>-Backend Service : new Category
+    Backend Service-->>-Frontend App: new Category
+    User->>+Frontend App : create Step for new Category
+    Frontend App->>+Backend Service : create Step
+    Backend Service->>+Database : insert Step
+    Database-->>-Backend Service : new Step
+    Backend Service-->>-Frontend App: new Step
     end
 ```
