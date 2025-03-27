@@ -31,7 +31,8 @@ export function InfographicCard(props: InfographicCardProps) {
           'xl:order-2': shouldReverse,
           'xl:order-1': !shouldReverse,
         })}
-        overlayContent={<EditIcon className='text-white hover:text-gray-400' onClick={() => setEditImgModalOpen(true)} />}
+        overlayContent={<EditIcon className='text-white hover:text-gray-400' />}
+        onClick={() => setEditImgModalOpen(true)}
       >
         <img className='h-[320px] w-[555px] rounded-xl object-cover object-center' src={props.infographic.image} />
       </HoverOverlay>
