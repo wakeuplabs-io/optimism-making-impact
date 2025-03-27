@@ -45,7 +45,6 @@ sequenceDiagram
     Frontend App->>+Backend Service : check whitelisted user
     Backend Service->>+Database : get whitelisted users
     Database-->>-Backend Service : whitelisted users
-    Backend Service-->>-Frontend App :
     alt Is a whitelisted admin user
     User->>+Frontend App : create Round
     alt A previous Round exists
