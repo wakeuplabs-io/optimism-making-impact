@@ -13,7 +13,7 @@ interface FormIconPickerProps {
   onSelect(iconName: string): void;
 }
 
-export function FormIconPicker({ error, label = 'icon', selectedIcon, modalIcons, onSelect }: FormIconPickerProps) {
+export function FormIconPicker({ error, label = 'Icon', selectedIcon, modalIcons, onSelect }: FormIconPickerProps) {
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
 
   return (
@@ -22,7 +22,7 @@ export function FormIconPicker({ error, label = 'icon', selectedIcon, modalIcons
         <div className='flex flex-col gap-1.5'>
           {label && (
             <Label htmlFor={'icon'} className='text-xs font-normal text-[#BEBEBE]'>
-              label
+              {label}
             </Label>
           )}
           <button
