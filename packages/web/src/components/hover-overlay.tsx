@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface HoverOverlayProps {
   children: React.ReactNode;
@@ -10,17 +10,11 @@ interface HoverOverlayProps {
 }
 
 export const HoverOverlay: React.FC<HoverOverlayProps> = ({ children, overlayContent, className, overlayClassName, disabled }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <div
-      className={cn('relative inline-block', className)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className={cn('group relative inline-block', className)}>
       {children}
-      {isHovered && !disabled && (
-        <div className={cn('absolute inset-0 z-50 rounded-xl bg-black bg-opacity-50', overlayClassName)}>
+      {!disabled && (
+        <div className={cn('absolute inset-0 z-50 hidden rounded-xl bg-black bg-opacity-50 group-hover:block', overlayClassName)}>
           <div className={cn('flex h-full w-full items-center justify-center')}>{overlayContent}</div>
         </div>
       )}
