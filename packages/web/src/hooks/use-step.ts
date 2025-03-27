@@ -1,4 +1,5 @@
 import { toast } from './use-toast';
+import { BADGE_COLORS } from '@/config';
 import { useQueryParams } from '@/hooks/use-query-params';
 import { queryClient } from '@/main';
 import { AttributesService } from '@/services/attributes-service';
@@ -48,7 +49,7 @@ export function useStep() {
       const newCard: CompleteCard = {
         ...data,
         id: 0,
-        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x, color: '#FFF' })),
+        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x, color: BADGE_COLORS[idx % BADGE_COLORS.length] })),
         attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId),
       };
 
