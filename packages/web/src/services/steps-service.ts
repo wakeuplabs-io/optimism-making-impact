@@ -24,9 +24,8 @@ export class StepsServiceClass {
   async getOne(stepId: number): Promise<CompleteStep> {
     const step = await this.fetcher.get<{ data: CompleteStep }>(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
 
-    const cardColorMap: Record<string, string> = step.keywords.reduce(
-      (acc, keyword, index) => ({ ...acc, [keyword.value]: BADGE_COLORS[index % BADGE_COLORS.length] }),
-      {},
+    const cardColorMap = Object.fromEntries(
+      step.keywords.map((keyword, index) => [keyword.value, BADGE_COLORS[index % BADGE_COLORS.length]]),
     );
 
     const keywordsWithColors = step.keywords.map((x) => ({ ...x, color: cardColorMap[x.value] }));
