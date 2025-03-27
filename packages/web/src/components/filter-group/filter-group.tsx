@@ -26,6 +26,7 @@ interface FilterGroupProps<T extends FilterData> {
   selected?: T[];
   maxFilters?: number;
   onSelected: (data: T) => void;
+  withLabelTooltip?: boolean;
 }
 
 export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
@@ -81,10 +82,11 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
                 editComponent={filter.editComponent}
                 tooltipText={filter.tooltipText}
                 deleteComponent={filter.deleteComponent}
+                withLabelTooltip={props.withLabelTooltip}
               />
             ))}
             {showAllFiltersEnabled && (
-              <button className='pl-6 text-sm text-left underline' onClick={() => toggleShowAllFilters()}>
+              <button className='pl-6 text-left text-sm underline' onClick={() => toggleShowAllFilters()}>
                 {showAllFilters ? 'Collapse' : `View all (${hiddenFilterAmount})`}
               </button>
             )}
@@ -97,7 +99,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
 
 function EmptyState() {
   return (
-    <div className='text-sm text-center'>
+    <div className='text-center text-sm'>
       <span>No filters available</span>
     </div>
   );
@@ -114,6 +116,7 @@ interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'b
   editComponent?: React.ReactNode;
   deleteComponent?: React.ReactNode;
   tooltipText?: string;
+  withLabelTooltip?: boolean;
 }
 
 function FilterButton<T extends FilterData>({
@@ -150,13 +153,11 @@ function FilterButton<T extends FilterData>({
     >
       {FilterIcon && (
         // All icons have the same size, so we can use a fixed size for the container.
-        <div className='flex items-center justify-start w-4 h-full shrink-0'>
+        <div className='flex h-full w-4 shrink-0 items-center justify-start'>
           <FilterIcon selected={selected} />
         </div>
       )}
-      <span className='w-full overflow-hidden text-sm font-normal text-left capitalize text-ellipsis text-nowrap hover:underline'>
-        {label}
-      </span>
+      <Label label={label} enabled={props.withLabelTooltip} />
       {tooltipText && <InfoIcon tooltipText={tooltipText} />}
       {isAdmin && editable && (
         <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
@@ -165,6 +166,36 @@ function FilterButton<T extends FilterData>({
         </div>
       )}
     </button>
+  );
+}
+
+interface LabelProps {
+  label: string;
+  enabled?: boolean;
+}
+
+function Label(props: LabelProps) {
+  if (!props.enabled) {
+    return (
+      <span className='w-full overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
+        {props.label}
+      </span>
+    );
+  }
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className='w-full overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
+            {props.label}
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className='capitalize'>{props.label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 

@@ -69,6 +69,7 @@ function Content() {
         selected={selectedAttributes}
         isAdmin={isAdmin}
         spacing='xl'
+        withLabelTooltip
       />
     </div>
   );
