@@ -3,20 +3,21 @@ import { SidebarModalAddTrigger } from '@/features/sidebar/components/sidebar-mo
 import { useToggle } from 'usehooks-ts';
 
 interface CreateRoundModalProps {
+  isDisabled?: boolean;
   onSave: () => void;
 }
 
-export function CreateRoundModal(props: CreateRoundModalProps) {
+export function CreateRoundModal({ isDisabled, onSave }: CreateRoundModalProps) {
   const [isOpen, toggleOpen] = useToggle(false);
 
   return (
     <>
-      <SidebarModalAddTrigger label='New Round' onClick={toggleOpen} />
+      <SidebarModalAddTrigger label='New Round' onClick={toggleOpen} isDisabled={isDisabled} />
       <Modal
         title='New round'
         open={isOpen}
         onOpenChange={toggleOpen}
-        buttons={[{ label: 'Create', variant: 'primary', onClick: () => props.onSave() }]}
+        buttons={[{ label: 'Create', variant: 'primary', onClick: () => onSave() }]}
       >
         <span>You are about to create a new round. Are you sure?</span>
       </Modal>

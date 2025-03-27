@@ -112,6 +112,7 @@ function Content(props: ContentProps) {
           onSelected={setSelectedKeywords}
           selected={selectedKeywords}
           maxFilters={3}
+          withLabelTooltip
         />
       </div>
     </div>

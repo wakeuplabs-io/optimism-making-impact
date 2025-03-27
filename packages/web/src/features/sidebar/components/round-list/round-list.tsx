@@ -8,6 +8,8 @@ export function RoundList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
   const { rounds, selectedRound, roundsLoading, handleRoundSelect, handleRoundAdd } = useRounds();
 
+  const hasPendingRounds = rounds.some((round) => round.status === 'PENDING');
+
   return (
     <SidebarSectionList
       id='rounds'
@@ -21,7 +23,7 @@ export function RoundList() {
           item: <RoundListButton round={round} isSelected={isSelected} onSelect={handleRoundSelect} />,
         };
       })}
-      addItem={<CreateRoundModal onSave={handleRoundAdd} />}
+      addItem={<CreateRoundModal onSave={handleRoundAdd} isDisabled={hasPendingRounds} />}
       maxItems={3}
     />
   );

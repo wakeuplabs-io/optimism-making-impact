@@ -25,8 +25,8 @@ export default $config({
 
     //cognito pool
     const userPool = new sst.aws.CognitoUserPool('user-pool');
-    const GoogleClientId = new sst.Secret('GOOGLE_CLIENT_ID');
-    const GoogleClientSecret = new sst.Secret('GOOGLE_CLIENT_SECRET');
+    const GoogleClientId = process.env.GOOGLE_CLIENT_ID;
+    const GoogleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
     const provider = userPool.addIdentityProvider('Google', {
       type: 'google',
@@ -51,9 +51,8 @@ export default $config({
       providers: [provider.providerName],
       transform: {
         client: {
-          //TODO: FIX THIS HARDCODED URL
-          callbackUrls: ['http://localhost:5173', 'https://dsj1lvqow44m6.cloudfront.net'],
-          logoutUrls: ['http://localhost:5173', 'https://dsj1lvqow44m6.cloudfront.net'],
+          callbackUrls: $app.stage === 'production' ? [process.env.UI_URL] : ['http://localhost:5173', process.env.UI_URL],
+          logoutUrls: $app.stage === 'production' ? [process.env.UI_URL] : ['http://localhost:5173', process.env.UI_URL],
         },
       },
     });

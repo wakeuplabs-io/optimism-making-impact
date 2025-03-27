@@ -9,18 +9,23 @@ on:
         required: true
       AWS_REGION:
         required: true
+      DB_URL:
+        required: true
+      DB_URL_NON_POOLING:
+        required: true
+      GOOGLE_CLIENT_ID:
+        required: true
+      GOOGLE_CLIENT_SECRET:
+        required: true
 
 jobs:
   # Job to Deploy the UI
   deploy:
     runs-on: ubuntu-latest
-    environment: CI
+    environment: staging
     env:
-      DB_URL: ${{ vars.POSTGRES_PRISMA_URL }}
-      DB_URL_NON_POOLING: ${{ vars.POSTGRES_URL_NON_POOLING }}
-
-    outputs:
-      api_url: ${{ steps.save-output.outputs.superchain_api_url }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
     steps:
       # Configure AWS credentials
@@ -67,11 +72,10 @@ jobs:
 
       # Run the deploy
       - name: Deploy
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          UI_URL: ${{ vars.UI_URL }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
         run: pnpm deploy:app:staging
-
-      # Output the API URL and store in $GITHUB_OUTPUT
-      - name: Save Output
-        id: save-output
-        run: |
-          API_URL=$(cat .env | sed -n 's/.*ServiceEndpoint = \"\(.*\)\"/\1/p')
-          echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"
