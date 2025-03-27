@@ -48,7 +48,7 @@ export function useStep() {
       const newCard: CompleteCard = {
         ...data,
         id: 0,
-        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x })),
+        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x, color: '#FFF' })),
         attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId),
       };
 
