@@ -73,3 +73,45 @@ sequenceDiagram
     Backend Service-->>-Frontend App: new Step
     end
 ```
+
+## How to Run Locally
+
+### System Requirements
+
+- Node.js: v20.18
+- pnpm: v9.9.0
+- PostgreSQL: v17
+
+### Setup Steps
+
+1. **Create a Database** – Set up an empty database in your local PostgreSQL instance.
+2. **Configure Environment Variables**
+   - Add a `.env` file in the `prisma` package with the following variables:
+     ```
+     DB_URL=<local_postgresql_db_url>
+     DB_URL_NON_POOLING=<local_postgresql_db_url_non_polling>
+     ```
+   - Add a `.env` file in the `api` package with the following variables:
+     ```
+     NODE_ENV=development
+     PORT=<api_port>
+     DB_URL=<local_postgresql_db_url>
+     DB_URL_NON_POOLING=<local_postgresql_db_url_non_polling>
+     ```
+   - Add a `.env` file in the `web` package with the following variables:
+     ```
+     VITE_API_URL=http://localhost:<api_port>/api
+     ```
+3. **Install Dependencies** – Run the following command in the root of the project:
+   ```
+   pnpm i
+   ```
+4. **Run Database Migrations** – Apply database migrations using:
+   ```
+   pnpm db:migrate
+   ```
+5. **Start the Application** – Launch the application with:
+   ```
+   pnpm dev
+   ```
+   By default, the application will start on port 5173.
