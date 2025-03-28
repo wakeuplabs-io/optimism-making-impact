@@ -1,16 +1,15 @@
 import { cn } from '@/lib/utils';
-import { LucideIcon, LucideProps } from 'lucide-react';
-import React, { ComponentType, useMemo, useState, useRef, useEffect } from 'react';
+import { icons } from 'lucide-react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 
 interface IconPickerProps {
   selectedIcon: string;
-  modalIcons: { [k: string]: LucideIcon };
   onSelect(iconName: string): void;
   onClose(e: React.MouseEvent): void;
   isVisible: boolean;
 }
 
-export const IconPicker = React.memo(function IconPicker({ selectedIcon, modalIcons, onSelect, onClose, isVisible }: IconPickerProps) {
+export const IconPicker = React.memo(function IconPicker({ selectedIcon, onSelect, onClose, isVisible }: IconPickerProps) {
   const [search, setSearch] = useState('');
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -26,8 +25,8 @@ export const IconPicker = React.memo(function IconPicker({ selectedIcon, modalIc
   }, [onClose]);
 
   const filteredIcons = useMemo(() => {
-    return Object.keys(modalIcons).filter((iconName) => new RegExp(search, 'i').test(iconName));
-  }, [search, modalIcons]);
+    return Object.entries(icons).filter((icon) => new RegExp(search, 'i').test(icon[0]));
+  }, [search]);
 
   const columns = Math.min(8, Math.floor((window.innerWidth * 0.8) / 64));
 
@@ -54,20 +53,19 @@ export const IconPicker = React.memo(function IconPicker({ selectedIcon, modalIc
                 style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
               >
                 {filteredIcons.length > 0 ? (
-                  filteredIcons.slice(0, 1000).map((iconName) => {
-                    const IconComponent = modalIcons[iconName] as ComponentType<LucideProps>;
+                  filteredIcons.slice(0, 1000).map(([name, Icon]) => {
                     return (
                       <button
-                        key={iconName}
+                        key={name}
                         onClick={(e) => {
                           e.preventDefault();
-                          onSelect(iconName);
+                          onSelect(name);
                         }}
                         className={`flex h-9 w-9 items-center justify-center rounded-lg border sm:h-10 sm:w-10 ${
-                          selectedIcon === iconName ? 'border-red-500 bg-red-100' : 'border-gray-300 hover:bg-gray-200'
+                          selectedIcon === name ? 'border-red-500 bg-red-100' : 'border-gray-300 hover:bg-gray-200'
                         }`}
                       >
-                        <IconComponent />
+                        <Icon />
                       </button>
                     );
                   })

@@ -1,7 +1,6 @@
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useIcons } from '@/hooks/use-icons';
 import { Category, EditCategoryBody, editCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -42,7 +41,6 @@ interface FormFieldsProps {
 
 function FormFields({ defaultValues }: FormFieldsProps) {
   const { control, setValue } = useFormContext<EditCategoryBody>();
-  const modalIcons = useIcons();
 
   return (
     <div className='flex flex-col items-center gap-2'>
@@ -54,7 +52,6 @@ function FormFields({ defaultValues }: FormFieldsProps) {
             render={({ field }) => (
               <FormIconPicker
                 selectedIcon={field.value}
-                modalIcons={modalIcons}
                 onSelect={(icon: string) => {
                   setValue('icon', icon);
                 }}
