@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { Attribute, PrismaClient, SmartListFilter } from '@prisma/client';
+import { PrismaClient, SmartListFilter, Prisma } from '@prisma/client';
 
 const attributeValues = [
   { value: 'Cryptocurrency', description: 'Digital or virtual currency secured by cryptography.' },
@@ -17,7 +17,7 @@ const attributeValues = [
 export async function seedAttributes(prisma: PrismaClient, smartListFilters: Array<SmartListFilter>) {
   console.log('Seeding attributes...');
 
-  const attributesData: Array<Omit<Attribute, 'id' | 'createdAt' | 'updatedAt'>> = [];
+  const attributesData: Array<Prisma.AttributeCreateInput> = [];
 
   for (const smartListFilter of smartListFilters) {
     // For each smart list filter, create 5 attributes with category-like values

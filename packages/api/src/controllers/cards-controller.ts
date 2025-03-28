@@ -2,7 +2,7 @@ import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma-instance.js';
 import { idParamsSchema } from '@/lib/schemas.js';
-import { Keyword } from '@optimism-making-impact/prisma';
+import { Prisma } from '@optimism-making-impact/prisma';
 import { createCardBodySchema, updateCardBodySchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -13,7 +13,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success) throw ApiError.badRequest();
 
-    const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
+    const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Prisma.KeywordGetPayload<{}> => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
 
     const created = await prisma.card.create({
@@ -36,7 +36,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getKeywordsToRemoveIds(cardId: number, updatedKeywords?: Keyword[]): Promise<number[]> {
+async function getKeywordsToRemoveIds(cardId: number, updatedKeywords?: Prisma.KeywordGetPayload<{}>[]): Promise<number[]> {
   // Fetch card keywords that were not present in the updated step keywords;
   const card = await prisma.card.findFirst({
     where: { id: cardId },
@@ -62,7 +62,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
     if (!parsed.success || !parsedId.success) throw ApiError.badRequest();
 
-    const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Keyword => keyword.id !== undefined);
+    const keywordsWithId = parsed.data.keywords.filter((keyword): keyword is Prisma.KeywordGetPayload<{}> => keyword.id !== undefined);
     const newKeywords = parsed.data.keywords.filter((keyword) => keyword.id === undefined);
     const keywordsToRemove = await getKeywordsToRemoveIds(parsedId.data.id, keywordsWithId);
 
