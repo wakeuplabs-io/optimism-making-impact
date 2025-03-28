@@ -1,7 +1,6 @@
 import { EditEntityModal } from '@/components/form/edit-entity-modal';
 import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useIcons } from '@/hooks/use-icons';
 import { Step } from '@/types/steps';
 import { UpdateStepBody, updateStepBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -48,7 +47,6 @@ interface FormFieldsProps {
 
 function FormFields({ defaultValues, step }: FormFieldsProps) {
   const { control, setValue } = useFormContext<UpdateStepBody>();
-  const modalIcons = useIcons();
 
   return (
     <div className='flex w-full flex-col'>
@@ -60,7 +58,6 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
             render={({ field }) => (
               <FormIconPicker
                 selectedIcon={field.value}
-                modalIcons={modalIcons}
                 onSelect={(icon: string) => {
                   setValue('icon', icon);
                 }}
