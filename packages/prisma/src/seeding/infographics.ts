@@ -1,4 +1,4 @@
-import { Infographic, PrismaClient, Step, StepType } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const infographicsData = [
   {
@@ -43,13 +43,13 @@ const infographicsData = [
   },
 ];
 
-export async function seedInfographics(prisma: PrismaClient, steps: Step[]) {
+export async function seedInfographics(prisma: PrismaClient, steps: Prisma.StepGetPayload<{}>[]) {
   console.log('Seeding infographics...');
 
-  const infographicsToCreate: Omit<Infographic, 'id' | 'createdAt' | 'updatedAt'>[] = [];
+  const infographicsToCreate: Prisma.InfographicCreateInput[] = [];
 
   for (const step of steps) {
-    if (step.type !== StepType.INFOGRAPHIC) continue;
+    if (step.type !== Prisma.StepType.INFOGRAPHIC) continue;
 
     for (let i = 0; i < 4; i++) {
       const infographicData = infographicsData[i % infographicsData.length];
