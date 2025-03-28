@@ -20,7 +20,7 @@ export async function isServerReady(): Promise<boolean> {
     await axios.get(`${API_URL}/api/test`);
     return true;
   } catch (error) {
-    console.error('API server is not available on localhost:5100. Make sure to start it using "pnpm dev" before running tests.');
+    console.error('API server is not available on localhost:5100. Make sure to start it using "npm run dev" before running tests.');
     return false;
   }
 }
