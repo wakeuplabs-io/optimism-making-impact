@@ -33,18 +33,14 @@ interface FilterGroupProps<T extends FilterData> {
 
 export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   const [showAllFilters, toggleShowAllFilters] = useToggle(false);
-
   const editionIsAllowed = !!props.selected?.length;
   const showAllFiltersEnabled = props.maxFilters && props.maxFilters > 0 && props.maxFilters < props.filters.length;
 
   const selectedFilters = useMemo(() => {
     return props.filters.reduce(
       (acc, filter) => {
-        if (!props.selected || props.selected.length === 0) {
-          acc[filter.data.id] = true;
-        } else {
-          acc[filter.data.id] = props.selected.some((selected) => selected.id === filter.data.id);
-        }
+        acc[filter.data.id] =
+          !props.selected || props.selected.length === 0 ? true : props.selected.some((selected) => selected.id === filter.data.id);
         return acc;
       },
       {} as Record<number, boolean>,
@@ -53,7 +49,6 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
 
   const [filtersToDisplay, hiddenFilterAmount] = useMemo(() => {
     if (showAllFilters || !showAllFiltersEnabled || !props.maxFilters) return [props.filters, 0];
-
     return [props.filters.slice(0, props.maxFilters), props.filters.length - props.maxFilters];
   }, [props.filters, props.maxFilters, showAllFilters, showAllFiltersEnabled]);
 
@@ -68,7 +63,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
         })}
       >
         {props.filters.length === 0 ? (
-          <EmptyState />
+          <div className='text-center text-sm'>No filters available</div>
         ) : (
           <>
             {filtersToDisplay.map((filter, i) => (
@@ -88,21 +83,13 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
               />
             ))}
             {showAllFiltersEnabled && (
-              <button className='pl-6 text-left text-sm underline' onClick={() => toggleShowAllFilters()}>
+              <button className='pl-6 text-sm underline' onClick={() => toggleShowAllFilters()}>
                 {showAllFilters ? 'Collapse' : `View all (${hiddenFilterAmount})`}
               </button>
             )}
           </>
         )}
       </div>
-    </div>
-  );
-}
-
-function EmptyState() {
-  return (
-    <div className='text-center text-sm'>
-      <span>No filters available</span>
     </div>
   );
 }
@@ -121,7 +108,7 @@ interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'b
   withLabelTooltip?: boolean;
 }
 
-function FilterButton<T extends FilterData>({
+export function FilterButton<T extends FilterData>({
   label,
   selected,
   className,
@@ -136,72 +123,84 @@ function FilterButton<T extends FilterData>({
   ...props
 }: FilterButtonProps<T>) {
   function handleClick() {
-    if (onClick) {
-      onClick(data);
-    }
+    if (onClick) onClick(data);
   }
 
   return (
     <button
       {...props}
-      className={cn(
-        'border-1 flex w-full items-center gap-2 rounded-full border border-transparent py-0.5',
-        {
-          'text-[#D9D9D9]': !selected,
-        },
-        className,
-      )}
+      className={cn('flex w-full items-center gap-2 rounded-full py-0.5', !selected && 'text-[#D9D9D9]', className)}
       onClick={handleClick}
     >
-      {/* Colored point (icon) on the far left */}
-      {FilterIcon && (
-        <div className='flex h-full w-4 shrink-0 items-center justify-start'>
-          <FilterIcon selected={selected} />
-        </div>
-      )}
-
-      <Label label={label} enabled={props.withLabelTooltip} />
-
-      <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
-        {tooltipText && <InfoIcon tooltipText={tooltipText} />}
-        {isAdmin && editable && (
-          <>
-            {editComponent}
-            {deleteComponent}
-          </>
-        )}
-      </div>
+      <FilterButtonIcon FilterIcon={FilterIcon} selected={selected} />
+      <FilterButtonLabel label={label} withLabelTooltip={props.withLabelTooltip} />
+      <FilterButtonActions
+        tooltipText={tooltipText}
+        isAdmin={isAdmin}
+        editable={editable}
+        editComponent={editComponent}
+        deleteComponent={deleteComponent}
+      />
     </button>
   );
 }
 
-interface LabelProps {
-  label: string;
-  enabled?: boolean;
+interface FilterButtonIconProps {
+  FilterIcon?: FilterIcon;
+  selected: boolean;
 }
 
-function Label(props: LabelProps) {
-  if (!props.enabled) {
-    return (
-      <span className='overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm font-normal capitalize hover:underline'>
-        {props.label}
-      </span>
-    );
-  }
+function FilterButtonIcon({ FilterIcon, selected }: FilterButtonIconProps) {
+  if (!FilterIcon) return null;
+  return (
+    <div className='flex h-full w-4 items-center'>
+      <FilterIcon selected={selected} />
+    </div>
+  );
+}
 
+interface FilterButtonLabelProps {
+  label: string;
+  withLabelTooltip?: boolean;
+}
+
+function FilterButtonLabel({ label, withLabelTooltip }: FilterButtonLabelProps) {
+  if (!withLabelTooltip) {
+    return <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{label}</span>;
+  }
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm font-normal capitalize hover:underline'>
-            {props.label}
-          </span>
+          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{label}</span>
         </TooltipTrigger>
         <TooltipContent>
-          <p className='capitalize'>{props.label}</p>
+          <p className='capitalize'>{label}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  );
+}
+
+interface FilterButtonActionsProps {
+  tooltipText?: string;
+  isAdmin?: boolean;
+  editable: boolean;
+  editComponent?: React.ReactNode;
+  deleteComponent?: React.ReactNode;
+}
+
+function FilterButtonActions({ tooltipText, isAdmin, editable, editComponent, deleteComponent }: FilterButtonActionsProps) {
+  return (
+    <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+      {tooltipText && <InfoIcon tooltipText={tooltipText} />}
+      {isAdmin && editable && (
+        <>
+          {editComponent}
+          {deleteComponent}
+        </>
+      )}
+    </div>
   );
 }
 
