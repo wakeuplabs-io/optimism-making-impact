@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/api",
+    "packages/prisma",
+    "packages/schemas",
+    "packages/web"
   ],
   "scripts": {
     "lint": "concurrently \"npm run lint --workspace api --if-present\" \"npm run lint --workspace prisma --if-present\" \"npm run lint --workspace schemas --if-present\" \"npm run lint --workspace web --if-present\"",
     "dev": "concurrently \"npm run dev --workspace api --if-present\" \"npm run dev --workspace prisma --if-present\" \"npm run dev --workspace schemas --if-present\" \"npm run dev --workspace web --if-present\"",
-    "build": "concurrently \"npm run build --workspace api --if-present\" \"npm run build --workspace prisma --if-present\" \"npm run build --workspace schemas --if-present\" \"npm run build --workspace web --if-present\"",
+    "build": "npm run build --workspace @optimism-making-impact/prisma && npm run build --workspace @optimism-making-impact/schemas && npm run build --workspace api && npm run build --workspace web",
     "format": "concurrently \"npm run format --workspace api --if-present\" \"npm run format --workspace prisma --if-present\" \"npm run format --workspace schemas --if-present\" \"npm run format --workspace web --if-present\"",
     "studio": "npm run studio --workspace prisma",
     "ui:add": "npm run ui:add --workspace web",
