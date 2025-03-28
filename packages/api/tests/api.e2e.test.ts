@@ -1,8 +1,8 @@
-import { setupTestAuth, createUserToken, getUserHeaders, getAdminHeaders } from './utils/auth-helper.js';
-import { isServerReady, createApiClient } from './utils/server.js';
 import { prisma } from '@/lib/prisma-instance.js';
 import jwt from 'jsonwebtoken';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { createUserToken, getAdminHeaders, getUserHeaders, setupTestAuth } from './utils/auth-helper.js';
+import { createApiClient, isServerReady } from './utils/server.js';
 
 describe('API Endpoints - /api/rounds', () => {
   // Create API client for the real server
@@ -36,11 +36,6 @@ describe('API Endpoints - /api/rounds', () => {
   let createdRoundId: string;
 
   // Test data
-  const newRound = {
-    link1: 'https://example.com/link1',
-    link2: 'https://example.com/link2',
-  };
-
   const updatedRound = {
     link1: 'https://example.com/updated-link1',
     link2: 'https://example.com/updated-link2',

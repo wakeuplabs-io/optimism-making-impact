@@ -1,6 +1,6 @@
-import { setupTestAuth, createMockIdToken, getUserHeaders, addAuthHeader, getAdminHeaders } from './utils/auth-helper.js';
-import { isServerReady, createApiClient } from './utils/server.js';
-import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { addAuthHeader, createMockIdToken, getAdminHeaders, getUserHeaders, setupTestAuth } from './utils/auth-helper.js';
+import { createApiClient, isServerReady } from './utils/server.js';
 
 describe('Authentication E2E Tests', () => {
   // Create an axios client for making API requests to the real server
