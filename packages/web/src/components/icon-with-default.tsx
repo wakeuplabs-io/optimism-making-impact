@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import { icons } from 'lucide-react';
+import React from 'react';
 
 type IconOption = keyof typeof icons;
 
@@ -31,7 +32,7 @@ interface IconWithDefaultProps extends IconVariantProps {
   defaultIcon?: IconOption;
 }
 
-export function IconWithDefault({ src, size, defaultIcon = 'Blocks', className }: IconWithDefaultProps) {
+export const IconWithDefault = React.memo(function IconWithDefault({ src, size, defaultIcon = 'Blocks', className }: IconWithDefaultProps) {
   const LucideIcon = isIconOption(src) ? icons[src] : icons[defaultIcon];
   return <LucideIcon className={cn(iconVariant({ size }), className)} />;
-}
+});
