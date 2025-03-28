@@ -9,7 +9,7 @@
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "test": "NODE_ENV=test dotenv -e .env.test -- vitest",
     "lint": "tsc --noEmit && eslint .",
-    "format": "npx prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [],
   "author": "",

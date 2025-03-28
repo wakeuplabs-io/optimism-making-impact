@@ -9,7 +9,7 @@
     "lint": "tsc -b && eslint .",
     "preview": "vite preview",
     "ui:add": "pnpm dlx shadcn@latest add",
-    "format": "npx prettier --write \"src/**/*.ts\" \"src/**/*.tsx\""
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\""
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
