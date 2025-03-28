@@ -5,9 +5,11 @@ import { ComponentProps, useMemo } from 'react';
 import { useToggle } from 'usehooks-ts';
 
 type FilterIcon = React.ComponentType<{ selected: boolean }>;
+
 interface FilterData {
   id: number;
 }
+
 interface Filter<T extends FilterData> {
   data: T;
   label: string;
@@ -143,7 +145,7 @@ function FilterButton<T extends FilterData>({
     <button
       {...props}
       className={cn(
-        'border-1 flex w-full items-center justify-start gap-2 rounded-full border border-transparent py-0.5',
+        'border-1 flex w-full items-center gap-2 rounded-full border border-transparent py-0.5',
         {
           'text-[#D9D9D9]': !selected,
         },
@@ -151,20 +153,24 @@ function FilterButton<T extends FilterData>({
       )}
       onClick={handleClick}
     >
+      {/* Colored point (icon) on the far left */}
       {FilterIcon && (
-        // All icons have the same size, so we can use a fixed size for the container.
         <div className='flex h-full w-4 shrink-0 items-center justify-start'>
           <FilterIcon selected={selected} />
         </div>
       )}
+
       <Label label={label} enabled={props.withLabelTooltip} />
-      {tooltipText && <InfoIcon tooltipText={tooltipText} />}
-      {isAdmin && editable && (
-        <div className='flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
-          {editComponent}
-          {deleteComponent}
-        </div>
-      )}
+
+      <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
+        {tooltipText && <InfoIcon tooltipText={tooltipText} />}
+        {isAdmin && editable && (
+          <>
+            {editComponent}
+            {deleteComponent}
+          </>
+        )}
+      </div>
     </button>
   );
 }
@@ -177,7 +183,7 @@ interface LabelProps {
 function Label(props: LabelProps) {
   if (!props.enabled) {
     return (
-      <span className='w-full overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
+      <span className='overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm font-normal capitalize hover:underline'>
         {props.label}
       </span>
     );
@@ -187,7 +193,7 @@ function Label(props: LabelProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className='w-full overflow-hidden text-ellipsis text-nowrap text-left text-sm font-normal capitalize hover:underline'>
+          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-left text-sm font-normal capitalize hover:underline'>
             {props.label}
           </span>
         </TooltipTrigger>
