@@ -5,7 +5,6 @@ import { FiltersIcon } from '@/components/icons/filters';
 import { SideMenu } from '@/components/side-menu';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { useIsMobile } from '@/hooks/use-tresholds';
-import { getRandomBadgeColor } from '@/lib/utils';
 import { CompleteSmartListFilter } from '@/types/smart-list-filters';
 import { Hash } from 'lucide-react';
 import { useMemo } from 'react';
@@ -100,14 +99,7 @@ function Content(props: ContentProps) {
           filters={keywords.map((keyword) => ({
             label: keyword.value.toLowerCase(),
             data: keyword,
-            filterIcon: ({ selected }) => (
-              <FilterGroupIcon
-                selected={selected}
-                icon={Hash}
-                color={getRandomBadgeColor(keyword.value.toLowerCase()).color}
-                strokeWidth={3}
-              />
-            ),
+            filterIcon: ({ selected }) => <FilterGroupIcon selected={selected} icon={Hash} color={keyword.color} strokeWidth={3} />,
           }))}
           onSelected={setSelectedKeywords}
           selected={selectedKeywords}
