@@ -32,8 +32,8 @@ export default $config({
       type: 'google',
       details: {
         authorize_scopes: 'email profile',
-        client_id: GoogleClientId.value,
-        client_secret: GoogleClientSecret.value,
+        client_id: GoogleClientId,
+        client_secret: GoogleClientSecret,
       },
       attributes: {
         email: 'email',
