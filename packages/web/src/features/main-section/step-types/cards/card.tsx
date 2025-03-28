@@ -34,8 +34,8 @@ export function Card(props: CardProps) {
         className='group flex min-h-[320px] w-full flex-col gap-6 rounded-2xl border-l-[3px] bg-white p-8 md:w-[45%] lg:w-[320px]'
       >
         <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} attributes={attributes} />
-        <CardBody
-          markdown={props.card.markdown}
+        <CardBody 
+          markdown={props.card.markdown} 
           showMore={isViewingMore}
           onViewMore={() => (isMobile ? setIsViewingMore(true) : setIsModalOpen(true))}
         />
@@ -84,7 +84,6 @@ function CardTitle(props: CardTitleProps) {
     </div>
   );
 }
-
 function StrengthIndicator(props: { strength: CardStrength }) {
   switch (props.strength) {
     case 'LOW':

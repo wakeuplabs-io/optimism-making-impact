@@ -1,4 +1,4 @@
-import { cardStrengthList } from './entitites';
+import { cardStrengthSchema } from './entities/enums.js';
 import { z } from 'zod';
 
 export const keywordValueSchema = z.object({
@@ -18,7 +18,7 @@ const upsertKeywordSchema = keywordValueSchema.extend({
 export const createCardBodySchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   markdown: z.string().min(1, { message: 'Markdown is required' }),
-  strength: z.enum(cardStrengthList).default('MEDIUM'),
+  strength: cardStrengthSchema.default(cardStrengthSchema.enum.MEDIUM),
   stepId: z.number().refine((value) => !!value, {
     message: 'Step is required',
   }),
@@ -31,7 +31,7 @@ export type CreateCardBody = z.infer<typeof createCardBodySchema>;
 export const updateCardBodySchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   markdown: z.string().min(1, { message: 'Markdown is required' }),
-  strength: z.enum(cardStrengthList).default('MEDIUM'),
+  strength: cardStrengthSchema.default(cardStrengthSchema.enum.MEDIUM),
   stepId: z.number().refine((value) => !!value, {
     message: 'Step is required',
   }),

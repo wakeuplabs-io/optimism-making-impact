@@ -50,3 +50,6 @@ packages/prisma/prisma/dbml
 sst-env.d.ts
 
 .DS_Store
+
+#typescript
+**/tsconfig.tsbuildinfo
