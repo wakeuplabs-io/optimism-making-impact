@@ -31,7 +31,18 @@ export function useStep() {
     error,
   } = useQuery({
     queryKey: ['step', selectedStepId],
-    queryFn: () => StepsService.getOne(selectedStepId!),
+    queryFn: async () => {
+      const step = await StepsService.getOne(selectedStepId!);
+
+      const cardColorMap = Object.fromEntries(
+        step.keywords.map((keyword, index) => [keyword.value, BADGE_COLORS[index % BADGE_COLORS.length]]),
+      );
+
+      const keywordsWithColors = step.keywords.map((x) => ({ ...x, color: cardColorMap[x.value] }));
+      const cardWithColors = step.cards.map((x) => ({ ...x, keywords: x.keywords.map((y) => ({ ...y, color: cardColorMap[y.value] })) }));
+
+      return { ...step, keywords: keywordsWithColors, cards: cardWithColors };
+    },
     enabled: !!selectedStepId,
     staleTime: 1000 * 60 * 60 * 24,
   });

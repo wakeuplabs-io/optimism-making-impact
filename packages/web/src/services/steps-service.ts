@@ -1,4 +1,3 @@
-import { BADGE_COLORS } from '@/config';
 import { fetcher } from '@/lib/fetcher';
 import { CompleteStep, Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
@@ -22,16 +21,7 @@ export class StepsServiceClass {
   }
 
   async getOne(stepId: number): Promise<CompleteStep> {
-    const step = await this.fetcher.get<{ data: CompleteStep }>(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
-
-    const cardColorMap = Object.fromEntries(
-      step.keywords.map((keyword, index) => [keyword.value, BADGE_COLORS[index % BADGE_COLORS.length]]),
-    );
-
-    const keywordsWithColors = step.keywords.map((x) => ({ ...x, color: cardColorMap[x.value] }));
-    const cardWithColors = step.cards.map((x) => ({ ...x, keywords: x.keywords.map((y) => ({ ...y, color: cardColorMap[y.value] })) }));
-
-    return { ...step, keywords: keywordsWithColors, cards: cardWithColors };
+    return this.fetcher.get<{ data: CompleteStep }>(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
   }
 
   async getByCategoryId(categoryId: number): Promise<Step[]> {
