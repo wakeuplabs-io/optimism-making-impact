@@ -122,7 +122,7 @@ function FilterButton<T extends FilterData>({
   className,
   data,
   onClick,
-  filterIcon: FilterIcon,
+  filterIcon,
   editable = false,
   deleteComponent,
   editComponent,
@@ -140,7 +140,7 @@ function FilterButton<T extends FilterData>({
       className={cn('flex w-full items-center gap-2 rounded-full py-0.5', !selected && 'text-[#D9D9D9]', className)}
       onClick={handleClick}
     >
-      <FilterButtonIcon FilterIcon={FilterIcon} selected={selected} />
+      {filterIcon && <FilterButtonIcon filterIcon={filterIcon} selected={selected} />}
       <FilterButtonLabel label={label} withLabelTooltip={props.withLabelTooltip} />
       <FilterButtonActions
         tooltipText={tooltipText}
@@ -154,12 +154,11 @@ function FilterButton<T extends FilterData>({
 }
 
 interface FilterButtonIconProps {
-  FilterIcon?: FilterIcon;
+  filterIcon: FilterIcon;
   selected: boolean;
 }
 
-function FilterButtonIcon({ FilterIcon, selected }: FilterButtonIconProps) {
-  if (!FilterIcon) return null;
+function FilterButtonIcon({ filterIcon: FilterIcon, selected }: FilterButtonIconProps) {
   return (
     <div className='flex h-full w-4 items-center'>
       <FilterIcon selected={selected} />
@@ -172,18 +171,18 @@ interface FilterButtonLabelProps {
   withLabelTooltip?: boolean;
 }
 
-function FilterButtonLabel({ label, withLabelTooltip }: FilterButtonLabelProps) {
-  if (!withLabelTooltip) {
-    return <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{label}</span>;
+function FilterButtonLabel(props: FilterButtonLabelProps) {
+  if (!props.withLabelTooltip) {
+    return <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{props.label}</span>;
   }
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{label}</span>
+          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{props.label}</span>
         </TooltipTrigger>
         <TooltipContent>
-          <p className='capitalize'>{label}</p>
+          <p className='capitalize'>{props.label}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -198,21 +197,25 @@ interface FilterButtonActionsProps {
   deleteComponent?: React.ReactNode;
 }
 
-function FilterButtonActions({ tooltipText, isAdmin, editable, editComponent, deleteComponent }: FilterButtonActionsProps) {
+function FilterButtonActions(props: FilterButtonActionsProps) {
   return (
     <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
-      {tooltipText && <InfoIcon tooltipText={tooltipText} />}
-      {isAdmin && editable && (
+      {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
+      {props.isAdmin && props.editable && (
         <>
-          {editComponent}
-          {deleteComponent}
+          {props.editComponent}
+          {props.deleteComponent}
         </>
       )}
     </div>
   );
 }
 
-function InfoIcon(props: { tooltipText: string }) {
+interface InfoIconProps {
+  tooltipText: string;
+}
+
+function InfoIcon(props: InfoIconProps) {
   return (
     <TooltipProvider>
       <Tooltip>
