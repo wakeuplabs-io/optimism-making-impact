@@ -1,19 +1,18 @@
 import { FormInputWrapper } from './form-input';
 import { IconPicker } from '@/features/sidebar/components/icon-picker';
-import { ILucideIcons } from '@/hooks/use-icons';
 import { cn } from '@/lib/utils';
 import { Label } from '@radix-ui/react-label';
-import { createElement, useState } from 'react';
+import { useState } from 'react';
+import { IconWithDefault } from '../icon-with-default';
 
 interface FormIconPickerProps {
   label?: string;
   error?: string;
   selectedIcon: string;
-  modalIcons: ILucideIcons;
   onSelect(iconName: string): void;
 }
 
-export function FormIconPicker({ error, label = 'icon', selectedIcon, modalIcons, onSelect }: FormIconPickerProps) {
+export function FormIconPicker({ error, label = 'Icon', selectedIcon, onSelect }: FormIconPickerProps) {
   const [isIconPickerOpen, setIsIconPickerOpen] = useState(false);
 
   return (
@@ -22,7 +21,7 @@ export function FormIconPicker({ error, label = 'icon', selectedIcon, modalIcons
         <div className='flex flex-col gap-1.5'>
           {label && (
             <Label htmlFor={'icon'} className='text-xs font-normal text-[#BEBEBE]'>
-              label
+              {label}
             </Label>
           )}
           <button
@@ -33,13 +32,12 @@ export function FormIconPicker({ error, label = 'icon', selectedIcon, modalIcons
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
-            {modalIcons[selectedIcon] && createElement(modalIcons[selectedIcon])}
+            <IconWithDefault src={selectedIcon} />
           </button>
         </div>
         <IconPicker
           isVisible={isIconPickerOpen}
           selectedIcon={selectedIcon}
-          modalIcons={modalIcons}
           onSelect={(icon: string) => {
             setIsIconPickerOpen(false);
             onSelect(icon);
