@@ -1,9 +1,8 @@
-
-import { z } from 'zod';
 import { stepTypeSchema } from './entities/enums.js';
+import { z } from 'zod';
 
 export const getAllStepsQueryParams = z.object({
-  categoryId: z.string().transform(Number).optional(),
+  categoryId: z.number().optional(),
 });
 
 export const createStepBodySchema = z.object({
