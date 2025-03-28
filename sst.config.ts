@@ -98,7 +98,7 @@ export default $config({
         VITE_COGNITO_USERPOOL_CLIENT_ID: userPoolClient.id,
         VITE_COGNITO_USERPOOL_DOMAIN: userPoolDomainURL,
       },
-      domain: process.env.UI_URL,
+      domain: process.env.UI_URL?.replace(/^https?:\/\//, ''),
       assets: {
         textEncoding: 'utf-8',
         fileOptions: [
