@@ -1,5 +1,5 @@
-import { colorSchema } from './enums.js';
-import { commonFieldsSchema } from './helpers.js';
+import { colorSchema } from './enums';
+import { commonFieldsSchema } from './helpers';
 import { z } from 'zod';
 
 export const attributeSchema = commonFieldsSchema.extend({
