@@ -21,7 +21,7 @@ export class StepsServiceClass {
   }
 
   async getOne(stepId: number): Promise<CompleteStep> {
-    return this.fetcher.get(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
+    return this.fetcher.get<{ data: CompleteStep }>(stepsEndpoint + `/${stepId}`).then((res) => res.data.data);
   }
 
   async getByCategoryId(categoryId: number): Promise<Step[]> {
