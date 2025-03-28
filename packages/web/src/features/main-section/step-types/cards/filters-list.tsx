@@ -82,6 +82,7 @@ function Content(props: ContentProps) {
             }))}
             onSelected={setSelectedAttributes}
             selected={selectedAttributes}
+            withLabelTooltip
           />
         )}
         <FilterGroup
