@@ -63,7 +63,7 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
         })}
       >
         {props.filters.length === 0 ? (
-          <div className='text-center text-sm'>No filters available</div>
+          <EmptyState />
         ) : (
           <>
             {filtersToDisplay.map((filter, i) => (
@@ -94,6 +94,14 @@ export function FilterGroup<T extends FilterData>(props: FilterGroupProps<T>) {
   );
 }
 
+function EmptyState() {
+  return (
+    <div className='text-center text-sm'>
+      <span>No filters available</span>
+    </div>
+  );
+}
+
 interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'button'>, 'onClick'> {
   label: string;
   editable: boolean;
@@ -108,7 +116,7 @@ interface FilterButtonProps<T extends FilterData> extends Omit<ComponentProps<'b
   withLabelTooltip?: boolean;
 }
 
-export function FilterButton<T extends FilterData>({
+function FilterButton<T extends FilterData>({
   label,
   selected,
   className,
