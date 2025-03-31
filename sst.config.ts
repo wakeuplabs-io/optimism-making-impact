@@ -96,19 +96,7 @@ export default $config({
     });
 
     const apiGateway = new sst.aws.ApiGatewayV2('api', {
-      cors: {
-        allowOrigins: IS_PRODUCTION ? [
-          fixedUrlForRootDomain,
-          UI_URL,
-        ] : [
-          fixedUrlForRootDomain,
-          UI_URL,
-          'http://localhost:5173'
-        ],
-        allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowHeaders: ['Authorization', 'Content-Type'],
-        allowCredentials: true,
-      },
+      cors: true,
     });
 
     apiGateway.route('$default', functionHandler.arn);
@@ -118,7 +106,7 @@ export default $config({
     // production uses root domain and staging a subdomain
     // this is considered with the StaticSite domain parameter 
     const domainRoot = UI_URL.replace(/^https?:\/\/(www\.)?/, '');
-    const domainAlias =UI_URL.replace(/^https?:\/\//, '');
+    const domainAlias = UI_URL.replace(/^https?:\/\//, '');
 
     const ui = new sst.aws.StaticSite('web', {
       build: {
