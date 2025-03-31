@@ -1,5 +1,5 @@
 import { COLORS_OPTIONS } from './helpers';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Step, StepType } from '@prisma/client';
 
 const itemsData = [
   { markdown: 'The first and most well-known cryptocurrency.' },
@@ -24,11 +24,11 @@ const attributeValues = [
   { value: 'Decentralized Application', description: 'Applications that run on a blockchain network, providing decentralized services.' },
 ];
 
-export async function seedItems(prisma: PrismaClient, steps: Array<Prisma.StepGetPayload<{}>>) {
+export async function seedItems(prisma: PrismaClient, steps: Array<Step>) {
   console.log('Seeding items with smart lists and attributes...');
 
   for (const step of steps) {
-    if (step.type !== Prisma.StepType.SMARTLIST) continue;
+    if (step.type !== StepType.SMARTLIST) continue;
 
     const smartListFilter = await prisma.smartListFilter.create({
       data: {

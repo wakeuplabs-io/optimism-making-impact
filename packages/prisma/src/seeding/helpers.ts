@@ -1,6 +1,6 @@
-import { Prisma } from '@prisma/client';
+import { Color } from '@prisma/client';
 
-export const COLORS_OPTIONS = Object.values(Prisma.Color);
+export const COLORS_OPTIONS = Object.values(Color);
 
 export function selectTwoItems<T>(items: T[]): [T, T] {
   const uniqueItems = [...new Set(items)];

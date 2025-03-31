@@ -176,9 +176,6 @@ importers:
 
   packages/schemas:
     dependencies:
-      '@optimism-making-impact/prisma':
-        specifier: workspace:*
-        version: link:../prisma
       zod:
         specifier: 3.24.1
         version: 3.24.1
@@ -186,9 +183,6 @@ importers:
       '@eslint/js':
         specifier: ^9.6.0
         version: 9.18.0
-      '@trivago/prettier-plugin-sort-imports':
-        specifier: ^5.2.0
-        version: 5.2.2(prettier@3.4.2)
       eslint:
         specifier: ^9.6.0
         version: 9.16.0(jiti@1.21.7)

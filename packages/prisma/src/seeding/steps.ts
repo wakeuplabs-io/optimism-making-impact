@@ -1,39 +1,39 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Category, Prisma, PrismaClient, StepType } from '@prisma/client';
 
 const groups = [
   [
-    { title: '(IN) Introduction', icon: 'blocks', type: Prisma.StepType.INFOGRAPHIC },
+    { title: '(IN) Introduction', icon: 'Blocks', type: StepType.INFOGRAPHIC },
     {
       title: '(IT) Checklist',
-      icon: 'blocks',
-      type: Prisma.StepType.SMARTLIST,
+      icon: 'Blocks',
+      type: StepType.SMARTLIST,
       description: 'Check items to understand the concept',
     },
-    { title: '(CA) Priority Cards', icon: 'blocks', type: Prisma.StepType.CARDGRID },
+    { title: '(CA) Priority Cards', icon: 'Blocks', type: StepType.CARDGRID },
   ],
   [
-    { title: '(CA) Visual Cards', icon: 'blocks', type: Prisma.StepType.CARDGRID },
-    { title: '(IN) Overview', icon: 'blocks', type: Prisma.StepType.INFOGRAPHIC },
+    { title: '(CA) Visual Cards', icon: 'Blocks', type: StepType.CARDGRID },
+    { title: '(IN) Overview', icon: 'Blocks', type: StepType.INFOGRAPHIC },
     {
       title: '(IT) Inventory',
-      icon: 'blocks',
-      type: Prisma.StepType.SMARTLIST,
+      icon: 'Blocks',
+      type: StepType.SMARTLIST,
       description: 'Add items to your inventory',
     },
   ],
   [
     {
       title: '(IT) Checkout Items',
-      icon: 'blocks',
-      type: Prisma.StepType.SMARTLIST,
+      icon: 'Blocks',
+      type: StepType.SMARTLIST,
       description: 'Check out items you have added',
     },
-    { title: '(IN) Deep Dive', icon: 'blocks', type: Prisma.StepType.INFOGRAPHIC },
-    { title: '(CA) Information Cards', icon: 'blocks', type: Prisma.StepType.CARDGRID },
+    { title: '(IN) Deep Dive', icon: 'Blocks', type: StepType.INFOGRAPHIC },
+    { title: '(CA) Information Cards', icon: 'Blocks', type: StepType.CARDGRID },
   ],
 ];
 
-export async function seedSteps(prisma: PrismaClient, categories: Prisma.CategoryGetPayload<{}>[]) {
+export async function seedSteps(prisma: PrismaClient, categories: Category[]) {
   console.log('Seeding steps...');
 
   if (categories.length === 0) {
