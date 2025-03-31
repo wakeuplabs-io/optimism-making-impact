@@ -1,19 +1,8 @@
 import { ApiError } from '@/lib/api-error.js';
 import { apiResponse } from '@/lib/api-response/index.js';
 import { prisma } from '@/lib/prisma-instance.js';
-import {
-  Attribute,
-  Card,
-  Category,
-  Infographic,
-  Item,
-  Keyword,
-  PrismaClient,
-  Round,
-  SmartListFilter,
-  Step,
-} from '@optimism-making-impact/prisma';
-import { idParamsSchema, updateRoundBodySchema } from '@optimism-making-impact/schemas';
+import { PrismaClient, Prisma } from '@optimism-making-impact/prisma';
+import { Category, idParamsSchema, updateRoundBodySchema } from '@optimism-making-impact/schemas';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -148,18 +137,18 @@ async function getLastCompleteRound(): Promise<CompleteRound | null> {
 
 type Tx = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
 
-type CompleteStep = Step & {
-  infographics: Infographic[];
-  items: (Item & { attribute: Attribute | null })[];
-  cards: (Card & { keywords: Keyword[]; attribute: Attribute | null })[];
-  smartListFilter?: (SmartListFilter & { attributes: Attribute[] }) | null;
+type CompleteStep = Prisma.StepGetPayload<{}> & {
+  infographics: Prisma.InfographicGetPayload<{}>[];
+  items: (Prisma.ItemGetPayload<{}> & { attribute: Prisma.AttributeGetPayload<{}> | null })[];
+  cards: (Prisma.CardGetPayload<{}> & { keywords: Prisma.KeywordGetPayload<{}>[]; attribute: Prisma.AttributeGetPayload<{}> | null })[];
+  smartListFilter?: (Prisma.SmartListFilterGetPayload<{}> & { attributes: Prisma.AttributeGetPayload<{}>[] }) | null;
 };
 
-type CompleteCategory = Category & {
+type CompleteCategory = Prisma.CategoryGetPayload<{}> & {
   steps: CompleteStep[];
 };
 
-type CompleteRound = Round & {
+type CompleteRound = Prisma.RoundGetPayload<{}> & {
   categories: CompleteCategory[];
 };
 
@@ -184,7 +173,7 @@ async function duplicateRound(originalRound: CompleteRound): Promise<number> {
   });
 }
 
-async function duplicateRoundRecord(tx: Tx, round: Round): Promise<Round> {
+async function duplicateRoundRecord(tx: Tx, round: Prisma.RoundGetPayload<{}>): Promise<Prisma.RoundGetPayload<{}>> {
   return tx.round.create({
     data: {
       link1: round.link1,
@@ -193,7 +182,7 @@ async function duplicateRoundRecord(tx: Tx, round: Round): Promise<Round> {
   });
 }
 
-async function duplicateCategory(tx: Tx, category: CompleteCategory, newRoundId: number): Promise<Category> {
+async function duplicateCategory(tx: Tx, category: CompleteCategory, newRoundId: number): Promise<Prisma.CategoryGetPayload<{}>> {
   return tx.category.create({
     data: {
       name: category.name,
@@ -213,7 +202,7 @@ async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category):
     },
   });
 
-  let newAttributes: Attribute[] = [];
+  let newAttributes: Prisma.AttributeGetPayload<{}>[] = [];
 
   if (step.smartListFilter != null) {
     const { newSmartList, newAttributes: attrs } = await duplicateSmartListFilter(tx, step.smartListFilter);
@@ -243,11 +232,11 @@ async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category):
 async function duplicateSmartListFilter(
   tx: Tx,
   smartListFilter: NonNullable<CompleteStep['smartListFilter']>,
-): Promise<{ newSmartList: SmartListFilter; newAttributes: Attribute[] }> {
+): Promise<{ newSmartList: Prisma.SmartListFilterGetPayload<{}>; newAttributes: Prisma.AttributeGetPayload<{}>[] }> {
   const newSmartList = await tx.smartListFilter.create({
     data: { title: smartListFilter.title },
   });
-  const newAttributes: Attribute[] = [];
+  const newAttributes: Prisma.AttributeGetPayload<{}>[] = [];
   for (const attr of smartListFilter.attributes) {
     const newAttr = await tx.attribute.create({
       data: {
@@ -262,7 +251,7 @@ async function duplicateSmartListFilter(
   return { newSmartList, newAttributes };
 }
 
-async function duplicateInfographic(tx: Tx, infographic: Infographic, newStepId: number): Promise<void> {
+async function duplicateInfographic(tx: Tx, infographic: Prisma.InfographicGetPayload<{}>, newStepId: number): Promise<void> {
   await tx.infographic.create({
     data: {
       image: infographic.image,
@@ -274,9 +263,9 @@ async function duplicateInfographic(tx: Tx, infographic: Infographic, newStepId:
 
 async function duplicateItem(
   tx: Tx,
-  item: Item & { attribute: Attribute | null },
+  item: Prisma.ItemGetPayload<{}> & { attribute: Prisma.AttributeGetPayload<{}> | null },
   newStepId: number,
-  newAttributes: Attribute[],
+  newAttributes: Prisma.AttributeGetPayload<{}>[],
 ): Promise<void> {
   let attributeConnect = undefined;
 
@@ -302,10 +291,10 @@ async function duplicateItem(
 
 async function duplicateCard(
   tx: Tx,
-  card: Card & { keywords: Keyword[]; attribute: Attribute | null },
+  card: Prisma.CardGetPayload<{}> & { keywords: Prisma.KeywordGetPayload<{}>[]; attribute: Prisma.AttributeGetPayload<{}> | null },
   newStepId: number,
-  newAttributes: Attribute[],
-): Promise<Card> {
+  newAttributes: Prisma.AttributeGetPayload<{}>[],
+): Promise<Prisma.CardGetPayload<{}>> {
   let attributeConnect = undefined;
 
   // Directly accessing card.attribute may not guarantee type narrowing because it might be re-read
@@ -330,7 +319,7 @@ async function duplicateCard(
   });
 }
 
-async function duplicateKeyword(tx: Tx, keyword: Keyword, newCardId: number, newStepId: number): Promise<void> {
+async function duplicateKeyword(tx: Tx, keyword: Prisma.KeywordGetPayload<{}>, newCardId: number, newStepId: number): Promise<void> {
   await tx.card.update({
     where: { id: newCardId },
     data: {

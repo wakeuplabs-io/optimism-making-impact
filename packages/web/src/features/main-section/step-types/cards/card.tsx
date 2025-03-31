@@ -1,6 +1,7 @@
 import { StrengthHighIcon, StrengthLowIcon, StrengthMediumIcon } from '@/components/icons/strength';
 import { Modal } from '@/components/modal';
 import { Badge } from '@/components/ui/badge';
+import { BADGE_COLORS } from '@/config';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { EditCardModal } from '@/features/main-section/step-types/cards/edit-card-button';
 import { useStep } from '@/hooks/use-step';
@@ -34,18 +35,18 @@ export function Card(props: CardProps) {
         className='group flex min-h-[320px] w-full flex-col gap-6 rounded-2xl border-l-[3px] bg-white p-8 md:w-[45%] lg:w-[320px]'
       >
         <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} attributes={attributes} />
-        <CardBody
-          markdown={props.card.markdown}
+        <CardBody 
+          markdown={props.card.markdown} 
           showMore={isViewingMore}
           onViewMore={() => (isMobile ? setIsViewingMore(true) : setIsModalOpen(true))}
         />
-        <CardFooter keywords={props.card.keywords} />
+        <CardFooter keywords={props.card.keywords.map((kw, i) => ({ ...kw, color: BADGE_COLORS[i % BADGE_COLORS.length] }))} />
       </div>
       <Modal open={isModalOpen} onOpenChange={(value) => setIsModalOpen(value)}>
         <div className='group flex w-full flex-col justify-between gap-6 bg-white'>
           <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} attributes={attributes} />
           <CardBody markdown={props.card.markdown} showMore={true} />
-          <CardFooter keywords={props.card.keywords} />
+          <CardFooter keywords={props.card.keywords.map((kw, i) => ({ ...kw, color: BADGE_COLORS[i % BADGE_COLORS.length] }))} />
         </div>
       </Modal>
     </>
@@ -84,7 +85,6 @@ function CardTitle(props: CardTitleProps) {
     </div>
   );
 }
-
 function StrengthIndicator(props: { strength: CardStrength }) {
   switch (props.strength) {
     case 'LOW':
