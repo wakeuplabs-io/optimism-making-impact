@@ -23,7 +23,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='gap-8 rounded-3xl p-8 md:max-w-xl'>
+      <DialogContent className='gap-8 p-4 sm:p-8 rounded-3xl md:max-w-xl'>
         <DialogHeader className='mb-8 md:mb-0'>
           <DialogTitle className='text-2xl font-medium'>Setup</DialogTitle>
         </DialogHeader>
@@ -37,7 +37,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 }`}
                 onClick={() => toggleAdminMode()}
               >
-                <User className='h-5 w-5' />
+                <User className='w-5 h-5' />
                 <span>User</span>
               </button>
               <button
@@ -46,7 +46,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
                 }`}
                 onClick={() => toggleAdminMode()}
               >
-                <UserCog className='h-5 w-5' />
+                <UserCog className='w-5 h-5' />
                 <span>Admin</span>
               </button>
             </div>
