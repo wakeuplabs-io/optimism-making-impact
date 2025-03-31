@@ -1,5 +1,9 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+const GOOGLE_CLIENT_ID = `${process.env.GOOGLE_CLIENT_ID}`
+const UI_URL = `${process.env.UI_URL}`
+const GOOGLE_CLIENT_SECRET = `${process.env.GOOGLE_CLIENT_SECRET}`
+
 export default $config({
   app(input) {
     return {
@@ -20,20 +24,22 @@ export default $config({
     };
   },
   async run() {
-    if (!process.env.UI_URL)
+    if (!UI_URL)
       throw new Error("UI_URL not set");
-    if (!process.env.GOOGLE_CLIENT_ID)
+    if (!GOOGLE_CLIENT_ID)
       throw new Error("GOOGLE_CLIENT_ID not set");
-    if (!process.env.GOOGLE_CLIENT_SECRET)
+    if (!GOOGLE_CLIENT_SECRET)
       throw new Error("GOOGLE_CLIENT_SECRET not set");
+
+    const IS_PRODUCTION = $app.stage === 'production'
 
     // AWS data
     const { name: region } = await aws.getRegion({});
 
     //cognito pool
     const userPool = new sst.aws.CognitoUserPool('user-pool');
-    const GoogleClientId = process.env.GOOGLE_CLIENT_ID;
-    const GoogleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const GoogleClientId = GOOGLE_CLIENT_ID;
+    const GoogleClientSecret = GOOGLE_CLIENT_SECRET;
 
     const provider = userPool.addIdentityProvider('Google', {
       type: 'google',
@@ -54,13 +60,13 @@ export default $config({
       userPoolId: userPool.id,
     });
 
-    const fixedUrlForRootDomain = process.env.UI_URL?.replace(/(www\.)?/, '');
+    const fixedUrlForRootDomain = UI_URL.replace(/(www\.)?/, '');
     const userPoolClient = userPool.addClient('op-making-impact-web-client', {
       providers: [provider.providerName],
       transform: {
         client: {
-          callbackUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
-          logoutUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
+          callbackUrls: IS_PRODUCTION ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
+          logoutUrls: IS_PRODUCTION ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
         },
       },
     });
@@ -90,7 +96,19 @@ export default $config({
     });
 
     const apiGateway = new sst.aws.ApiGatewayV2('api', {
-      cors: true,
+      cors: {
+        allowOrigins: IS_PRODUCTION ? [
+          fixedUrlForRootDomain,
+          UI_URL,
+        ] : [
+          fixedUrlForRootDomain,
+          UI_URL,
+          'http://localhost:5173'
+        ],
+        allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowHeaders: ['Authorization', 'Content-Type'],
+        allowCredentials: true,
+      },
     });
 
     apiGateway.route('$default', functionHandler.arn);
@@ -99,8 +117,8 @@ export default $config({
     // staging is https://retroimpactguidelines.wakeuplabs.link/
     // production uses root domain and staging a subdomain
     // this is considered with the StaticSite domain parameter 
-    const domainRoot = process.env.UI_URL?.replace(/^https?:\/\/(www\.)?/, '');
-    const domainAlias = process.env.UI_URL?.replace(/^https?:\/\//, '');
+    const domainRoot = UI_URL.replace(/^https?:\/\/(www\.)?/, '');
+    const domainAlias =UI_URL.replace(/^https?:\/\//, '');
 
     const ui = new sst.aws.StaticSite('web', {
       build: {
