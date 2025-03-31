@@ -86,11 +86,15 @@ export function EditInfographicMarkdown({ infographic, isAdmin, className, ...pr
       isAdmin={isAdmin}
       markdown={infographic.markdown}
       toggleEditMode={() => {
+        // When the user clicks on the edit button, we first toggle the edit mode
         toggleEditMode();
+
+        // Then, we wait for the next tick and do the following:
+        // We focus the text area, set the cursor at the and scroll to the bottom
+        // This is necessary because the text area is initially not visible, so we need to wait until it is visible before we can focus it and set the cursor
         setTimeout(() => {
-          if (!textAreaRef.current) {
-            return;
-          }
+          if (!textAreaRef.current) return;
+
           textAreaRef.current.focus();
           textAreaRef.current.setSelectionRange(textAreaRef.current.value.length, textAreaRef.current.value.length);
           textAreaRef.current.scrollTop = textAreaRef.current.scrollHeight;
@@ -109,25 +113,15 @@ interface InfographicMarkdownProps {
 }
 
 function InfographicMarkdown({ markdown, isAdmin, toggleEditMode, className }: InfographicMarkdownProps) {
-  const [isHovered, toggleIsHovered] = useToggle(false);
-
   return (
     <div
-      className={cn('flex w-full cursor-pointer flex-col items-end gap-2 px-4 xl:px-0', className)}
+      className={cn('group flex w-full flex-col items-end gap-2 px-4 xl:px-0', isAdmin && 'cursor-pointer', className)}
       onClick={toggleEditMode}
-      onMouseEnter={() => toggleIsHovered()}
-      onMouseLeave={toggleIsHovered}
     >
       <div className='prose w-full max-w-full xl:prose-xl'>
         <Markdown className={cn('overflow-auto break-words', className)}>{markdown}</Markdown>
       </div>
-      {isAdmin && (
-        <EditIcon
-          className={cn({
-            invisible: !isHovered,
-          })}
-        />
-      )}
+      {isAdmin && <EditIcon className={cn('opacity-0 group-hover:opacity-100')} />}
     </div>
   );
 }
