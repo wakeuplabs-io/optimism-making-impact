@@ -58,7 +58,6 @@ async function getAll(req: Request, res: Response, next: NextFunction) {
 
     apiResponse.success(res, { steps });
   } catch (error) {
-    console.log('error!!!', error, req.query);
     next(error);
   }
 }

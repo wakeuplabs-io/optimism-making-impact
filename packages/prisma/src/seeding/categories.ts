@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Round } from '@prisma/client';
 
 const categoriesData = [
   { name: 'Technology', icon: 'Blocks' },
@@ -14,7 +14,7 @@ const categoriesData = [
   { name: 'Fitness', icon: 'Blocks' },
 ];
 
-export async function seedCategories(prisma: PrismaClient, rounds: Prisma.RoundGetPayload<{}>[]) {
+export async function seedCategories(prisma: PrismaClient, rounds: Round[]) {
   console.log('Seeding categories...');
 
   if (rounds.length === 0) {

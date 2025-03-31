@@ -1,6 +1,6 @@
 // cards.ts
-import { cardStrengthSchema } from './enums.js';
-import { commonFieldsSchema } from './helpers.js';
+import { cardStrengthSchema } from './enums';
+import { commonFieldsSchema } from './helpers';
 import { z } from 'zod';
 
 export const cardSchema = commonFieldsSchema.extend({

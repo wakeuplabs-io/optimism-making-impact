@@ -1,4 +1,4 @@
-import { idValidator } from './common.js';
+import { idValidator } from './common';
 import { z } from 'zod';
 
 const infogrpahicImageSchema = z.string().min(1, { message: 'Image is required' }).url({

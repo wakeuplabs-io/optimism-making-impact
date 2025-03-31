@@ -1,10 +1,10 @@
-import { cardSchema } from './cards.js';
-import { categorySchema } from './category.js';
-import { stepTypeSchema } from './enums.js';
-import { commonFieldsSchema } from './helpers.js';
-import { infographicSchema } from './infographics.js';
-import { itemSchema } from './items.js';
-import { keywordSchema } from './keywords.js';
+import { cardSchema } from './cards';
+import { categorySchema } from './category';
+import { stepTypeSchema } from './enums';
+import { commonFieldsSchema } from './helpers';
+import { infographicSchema } from './infographics';
+import { itemSchema } from './items';
+import { keywordSchema } from './keywords';
 import { z } from 'zod';
 
 // Basic

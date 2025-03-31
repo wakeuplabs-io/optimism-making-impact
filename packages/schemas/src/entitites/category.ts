@@ -1,4 +1,4 @@
-import { commonFieldsSchema } from './helpers.js';
+import { commonFieldsSchema } from './helpers';
 import { z } from 'zod';
 
 export const categorySchema = commonFieldsSchema.extend({
