@@ -20,6 +20,13 @@ export default $config({
     };
   },
   async run() {
+    if (!process.env.UI_URL)
+      throw new Error("UI_URL not set");
+    if (!process.env.GOOGLE_CLIENT_ID)
+      throw new Error("GOOGLE_CLIENT_ID not set");
+    if (!process.env.GOOGLE_CLIENT_SECRET)
+      throw new Error("GOOGLE_CLIENT_SECRET not set");
+
     // AWS data
     const { name: region } = await aws.getRegion({});
 
@@ -32,8 +39,8 @@ export default $config({
       type: 'google',
       details: {
         authorize_scopes: 'email profile',
-        client_id: GoogleClientId.value,
-        client_secret: GoogleClientSecret.value,
+        client_id: GoogleClientId,
+        client_secret: GoogleClientSecret,
       },
       attributes: {
         email: 'email',
@@ -97,6 +104,10 @@ export default $config({
         VITE_COGNITO_USERPOOL_ID: userPool.id,
         VITE_COGNITO_USERPOOL_CLIENT_ID: userPoolClient.id,
         VITE_COGNITO_USERPOOL_DOMAIN: userPoolDomainURL,
+      },
+      domain: {
+        name: process.env.UI_URL?.replace(/^https?:\/\/www\./, ''),
+        aliases: [process.env.UI_URL?.replace(/^https?:\/\//, '')],
       },
       assets: {
         textEncoding: 'utf-8',
