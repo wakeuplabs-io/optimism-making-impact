@@ -32,8 +32,8 @@ export default $config({
       type: 'google',
       details: {
         authorize_scopes: 'email profile',
-        client_id: GoogleClientId.value,
-        client_secret: GoogleClientSecret.value,
+        client_id: GoogleClientId,
+        client_secret: GoogleClientSecret,
       },
       attributes: {
         email: 'email',
@@ -98,6 +98,7 @@ export default $config({
         VITE_COGNITO_USERPOOL_CLIENT_ID: userPoolClient.id,
         VITE_COGNITO_USERPOOL_DOMAIN: userPoolDomainURL,
       },
+      domain: process.env.UI_URL?.replace(/^https?:\/\//, ''),
       assets: {
         textEncoding: 'utf-8',
         fileOptions: [
