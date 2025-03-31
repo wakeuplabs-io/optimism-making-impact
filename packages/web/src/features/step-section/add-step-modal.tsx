@@ -3,7 +3,6 @@ import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { SelectInput } from '@/components/inputs/select-input';
-import { useIcons } from '@/hooks/use-icons';
 import { capitalizeFirst } from '@/lib/utils';
 import { SmartListFiltersService } from '@/services/smart-list-filters-service';
 import { CreateStepBody, StepType, createStepBodySchema, stepTypes } from '@optimism-making-impact/schemas';
@@ -28,7 +27,7 @@ export function AddStepModal(props: AddStepModalProps) {
   const [smartListsOptions, setSmartListsOptions] = useState<SmartListOption[]>([]);
   const defaultValues = {
     title: '',
-    icon: 'blocks',
+    icon: 'Blocks',
     type: options[0].value as StepType,
     categoryId: props.categoryId,
     description: '',
@@ -79,7 +78,6 @@ interface FormFieldsProps {
 function FormFields({ smartListOptions }: FormFieldsProps) {
   const { control, setValue } = useFormContext<CreateStepBody>();
   const type = useWatch({ control, name: 'type' });
-  const modalIcons = useIcons();
 
   useEffect(() => {
     if (type !== 'CARDGRID') {
@@ -143,11 +141,10 @@ function FormFields({ smartListOptions }: FormFieldsProps) {
             control={control}
             render={({ field }) => (
               <FormIconPicker
-              selectedIcon={field.value}
-              modalIcons={modalIcons}
-              onSelect={(icon: string) => {
-                setValue('icon', icon);
-              }}
+                selectedIcon={field.value}
+                onSelect={(icon: string) => {
+                  setValue('icon', icon);
+                }}
               />
             )}
           />

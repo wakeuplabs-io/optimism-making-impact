@@ -1,4 +1,5 @@
-import { attributeSchema, cardStrengthList, keywordSchema } from '@optimism-making-impact/schemas';
+import { completeKeywordSchema } from '@/types/keywords';
+import { attributeSchema, cardStrengthList } from '@optimism-making-impact/schemas';
 import { z } from 'zod';
 
 export const cardSchema = z.object({
@@ -13,7 +14,7 @@ export type Card = z.infer<typeof cardSchema>;
 
 export const completeCardSchema = cardSchema.extend({
   attribute: attributeSchema.nullish(),
-  keywords: z.array(keywordSchema),
+  keywords: z.array(completeKeywordSchema),
 });
 
 export type CompleteCard = z.infer<typeof completeCardSchema>;

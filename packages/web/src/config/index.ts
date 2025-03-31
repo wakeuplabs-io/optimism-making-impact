@@ -8,18 +8,7 @@ export const WAKEUP_URL = 'https://www.wakeuplabs.io/';
 
 export const AUTOSAVE_INTERVAL = 30 * 1000;
 
-export type BadgeColorType = {
-  color: string;
-  background: string;
-};
-
-export const BADGE_COLORS: BadgeColorType[] = [
-  { color: '#6DCBFF', background: '#D6E8F2' },
-  { color: '#91c987', background: '#DDEFDA' },
-  { color: '#C4C4C4', background: '#F1F0EF' },
-  { color: '#E2B2FF', background: '#E8DEEE' },
-  { color: '#FFB781', background: '#FADEC9' },
-];
+export const BADGE_COLORS = ['#D6E8F2', '#E8DEEE', '#F1F0EF', '#FADEC9', '#DDEFDA', '#FACEC9', '#C9D0FA', '#F2C9FA'] as const;
 
 export type ExtendedColor = Color | 'GRAY';
 

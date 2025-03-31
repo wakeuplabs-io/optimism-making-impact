@@ -5,7 +5,7 @@
   "jsxSingleQuote": true,
   "trailingComma": "all",
   "printWidth": 140,
-  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "plugins": ["prettier-plugin-tailwindcss", "@trivago/prettier-plugin-sort-imports"],
   "tailwindStylesheet": "./src/index.css",
   "tailwindConfig": "./tailwind.config.js",
   "tailwindFunctions": ["clsx"]

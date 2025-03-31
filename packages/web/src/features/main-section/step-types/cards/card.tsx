@@ -6,9 +6,10 @@ import { EditCardModal } from '@/features/main-section/step-types/cards/edit-car
 import { useStep } from '@/hooks/use-step';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
-import { cn, getColor, getRandomBadgeColor } from '@/lib/utils';
+import { cn, getColor } from '@/lib/utils';
 import { CompleteCard } from '@/types/cards';
-import { Attribute, CardStrength, Keyword } from '@optimism-making-impact/schemas';
+import { CompleteKeyword } from '@/types/keywords';
+import { Attribute, CardStrength } from '@optimism-making-impact/schemas';
 import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 
@@ -43,7 +44,7 @@ export function Card(props: CardProps) {
       <Modal open={isModalOpen} onOpenChange={(value) => setIsModalOpen(value)}>
         <div className='group flex w-full flex-col justify-between gap-6 bg-white'>
           <CardTitle card={props.card} stepId={props.stepId} isAdmin={isAdmin} keywords={keywords} attributes={attributes} />
-          <CardBody markdown={props.card.markdown} showMore={true}/>
+          <CardBody markdown={props.card.markdown} showMore={true} />
           <CardFooter keywords={props.card.keywords} />
         </div>
       </Modal>
@@ -55,7 +56,7 @@ interface CardTitleProps {
   card: CompleteCard;
   stepId: number;
   isAdmin: boolean;
-  keywords: Keyword[];
+  keywords: CompleteKeyword[];
   attributes: Attribute[];
 }
 
@@ -127,10 +128,13 @@ function CardBody({ markdown, showMore, onViewMore }: CardBodyProps) {
   return (
     <div className={cn('relative h-[120px] overflow-hidden', { 'h-auto max-h-full': showMore })}>
       <div ref={containerRef} className={cn('max-h-[120px] overflow-hidden pr-2', { 'max-h-full': showMore })}>
-        <div className='prose-s prose flex w-full flex-1'>
+        <div className='prose prose-sm flex w-full flex-1'>
           <Markdown
             className='w-full break-words'
             components={{
+              h1: (props) => <h1 className='text-xl font-bold' {...props} />,
+              h2: (props) => <h2 className='text-lg font-bold' {...props} />,
+              h3: (props) => <p className='text-md font-bold' {...props} />,
               p: (props) => <p className='m-0 text-sm' {...props} />,
             }}
           >
@@ -153,7 +157,7 @@ function CardBody({ markdown, showMore, onViewMore }: CardBodyProps) {
 }
 
 interface CardFooterProps {
-  keywords: Keyword[];
+  keywords: CompleteKeyword[];
 }
 
 function CardFooter(props: CardFooterProps) {
@@ -163,7 +167,7 @@ function CardFooter(props: CardFooterProps) {
         return (
           <Badge
             key={`${keyword.id}-${i}`}
-            style={{ backgroundColor: getRandomBadgeColor(keyword.value).background }}
+            style={{ backgroundColor: keyword.color }}
             className='h-fit w-auto min-w-[112px] flex-shrink-0 rounded-full px-6 py-1 text-center text-xs font-normal'
           >
             {keyword.value}

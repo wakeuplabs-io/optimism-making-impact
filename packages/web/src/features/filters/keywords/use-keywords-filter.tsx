@@ -1,6 +1,6 @@
 import { CLEAR_SELECTED_FILTERS } from '@/features/filters/attributes/attributes-filter-context';
 import { KeywordsFilterContext, SET_KEYWORDS, SET_SELECTED_KEYWORDS } from '@/features/filters/keywords/keywords-filter-context';
-import { Keyword } from '@optimism-making-impact/schemas';
+import { CompleteKeyword } from '@/types/keywords';
 import { useContext } from 'react';
 
 export const useKeywordsFilter = () => {
@@ -12,8 +12,8 @@ export const useKeywordsFilter = () => {
 
   return {
     ...context.state,
-    setKeywords: (keywords: Keyword[]) => context.dispatch({ type: SET_KEYWORDS, payload: keywords }),
-    setSelectedKeywords: (keyword: Keyword) => context.dispatch({ type: SET_SELECTED_KEYWORDS, payload: keyword }),
+    setKeywords: (keywords: CompleteKeyword[]) => context.dispatch({ type: SET_KEYWORDS, payload: keywords }),
+    setSelectedKeywords: (keyword: CompleteKeyword) => context.dispatch({ type: SET_SELECTED_KEYWORDS, payload: keyword }),
     clearSelectedKeywords: () => context.dispatch({ type: CLEAR_SELECTED_FILTERS }),
   };
 };

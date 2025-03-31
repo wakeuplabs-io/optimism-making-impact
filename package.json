@@ -10,6 +10,7 @@
     "studio": "pnpm -r --parallel run studio",
     "ui:add": "pnpm --filter web ui:add",
     "ui:build": "pnpm --filter schemas build && pnpm --filter web build",
+    "db:migrate": "pnpm --filter prisma prisma:migrate:deploy",
     "deploy:app:staging": "sst install && sst deploy --stage=staging --print-logs",
     "deploy:app:production": "sst install && sst deploy --stage=production"
   },
@@ -17,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@tsconfig/node18": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "8.18.0",
     "@typescript-eslint/parser": "8.18.0",

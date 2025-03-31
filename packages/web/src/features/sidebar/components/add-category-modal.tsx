@@ -2,7 +2,6 @@ import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
-import { useIcons } from '@/hooks/use-icons';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useToggle } from 'usehooks-ts';
@@ -17,7 +16,7 @@ export function AddCategoryModal(props: AddCategoryModalProps) {
 
   if (!props.roundId) return;
 
-  const defaultValues: CreateCategoryBody = { name: '', icon: 'blocks', roundId: props.roundId };
+  const defaultValues: CreateCategoryBody = { name: '', icon: 'Blocks', roundId: props.roundId };
 
   function handleSubmit(data: CreateCategoryBody) {
     if (!props.roundId) return;
@@ -48,7 +47,7 @@ interface FormFieldsProps {
 
 function FormFields(props: FormFieldsProps) {
   const { control, setValue, watch } = useFormContext<CreateCategoryBody>();
-  const modalIcons = useIcons();
+
   const selectedIcon = watch('icon');
   return (
     <div className='flex flex-col items-center gap-2'>
@@ -60,7 +59,6 @@ function FormFields(props: FormFieldsProps) {
             render={() => (
               <FormIconPicker
                 selectedIcon={selectedIcon}
-                modalIcons={modalIcons}
                 onSelect={(icon: string) => {
                   setValue('icon', icon);
                 }}

@@ -33,17 +33,27 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
 
       if (!previousRounds) throw new Error('add round - round not found');
 
-      const lastRound = previousRounds[0];
-      const newRound: CompleteRound = {
-        id: lastRound.id + 1,
-        link1: lastRound.link1,
-        link2: lastRound.link2,
+      let newRound: CompleteRound = {
+        id: 1,
+        link1: '',
+        link2: '',
         status: 'PENDING',
-        categories: lastRound.categories.map((cat, idx) => ({
-          ...cat,
-          id: idx,
-        })),
+        categories: [],
       };
+
+      if (previousRounds.length > 0) {
+        const lastRound = previousRounds[0];
+        newRound = {
+          id: lastRound.id + 1,
+          link1: lastRound.link1,
+          link2: lastRound.link2,
+          status: 'PENDING',
+          categories: lastRound.categories.map((cat, idx) => ({
+            ...cat,
+            id: idx,
+          })),
+        };
+      }
 
       queryClient.setQueryData(['rounds'], [newRound, ...previousRounds]);
       return { previousRounds };

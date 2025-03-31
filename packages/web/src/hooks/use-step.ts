@@ -1,4 +1,5 @@
 import { toast } from './use-toast';
+import { BADGE_COLORS } from '@/config';
 import { useQueryParams } from '@/hooks/use-query-params';
 import { queryClient } from '@/main';
 import { AttributesService } from '@/services/attributes-service';
@@ -30,7 +31,18 @@ export function useStep() {
     error,
   } = useQuery({
     queryKey: ['step', selectedStepId],
-    queryFn: () => StepsService.getOne(selectedStepId!),
+    queryFn: async () => {
+      const step = await StepsService.getOne(selectedStepId!);
+
+      const cardColorMap = Object.fromEntries(
+        step.keywords.map((keyword, index) => [keyword.value, BADGE_COLORS[index % BADGE_COLORS.length]]),
+      );
+
+      const keywordsWithColors = step.keywords.map((x) => ({ ...x, color: cardColorMap[x.value] }));
+      const cardWithColors = step.cards.map((x) => ({ ...x, keywords: x.keywords.map((y) => ({ ...y, color: cardColorMap[y.value] })) }));
+
+      return { ...step, keywords: keywordsWithColors, cards: cardWithColors };
+    },
     enabled: !!selectedStepId,
     staleTime: 1000 * 60 * 60 * 24,
   });
@@ -48,7 +60,7 @@ export function useStep() {
       const newCard: CompleteCard = {
         ...data,
         id: 0,
-        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x })),
+        keywords: data.keywords.map((x, idx) => ({ id: idx, ...x, color: BADGE_COLORS[idx % BADGE_COLORS.length] })),
         attribute: previousStep.smartListFilter?.attributes.find((x) => x.id === data.attributeId),
       };
 
