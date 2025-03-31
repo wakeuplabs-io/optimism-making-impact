@@ -128,10 +128,13 @@ function CardBody({ markdown, showMore, onViewMore }: CardBodyProps) {
   return (
     <div className={cn('relative h-[120px] overflow-hidden', { 'h-auto max-h-full': showMore })}>
       <div ref={containerRef} className={cn('max-h-[120px] overflow-hidden pr-2', { 'max-h-full': showMore })}>
-        <div className='prose-s prose flex w-full flex-1'>
+        <div className='prose prose-sm flex w-full flex-1'>
           <Markdown
             className='w-full break-words'
             components={{
+              h1: (props) => <h1 className='text-xl font-bold' {...props} />,
+              h2: (props) => <h2 className='text-lg font-bold' {...props} />,
+              h3: (props) => <p className='text-md font-bold' {...props} />,
               p: (props) => <p className='m-0 text-sm' {...props} />,
             }}
           >
