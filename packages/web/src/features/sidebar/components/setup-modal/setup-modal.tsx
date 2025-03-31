@@ -23,7 +23,7 @@ export function SetupModal({ open, onOpenChange }: SetupModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='gap-8 p-4 sm:p-8 rounded-3xl md:max-w-xl'>
+      <DialogContent className='max-h-screen gap-8 p-4 overflow-y-auto sm:p-8 rounded-3xl md:max-w-xl'>
         <DialogHeader className='mb-8 md:mb-0'>
           <DialogTitle className='text-2xl font-medium'>Setup</DialogTitle>
         </DialogHeader>
