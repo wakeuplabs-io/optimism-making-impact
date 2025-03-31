@@ -94,6 +94,13 @@ export default $config({
 
     apiGateway.route('$default', functionHandler.arn);
 
+    // production is https://retroimpactguidelines.xyz/
+    // staging is https://retroimpactguidelines.wakeuplabs.link/
+    // production uses root domain and staging a subdomain
+    // this is considered with the StaticSite domain parameter 
+    const domainRoot = process.env.UI_URL?.replace(/^https?:\/\/(www\.)?/, '');
+    const domainAlias = process.env.UI_URL?.replace(/^https?:\/\//, '');
+
     const ui = new sst.aws.StaticSite('web', {
       build: {
         command: 'pnpm ui:build',
@@ -106,8 +113,8 @@ export default $config({
         VITE_COGNITO_USERPOOL_DOMAIN: userPoolDomainURL,
       },
       domain: {
-        name: process.env.UI_URL?.replace(/^https?:\/\/www\./, ''),
-        aliases: [process.env.UI_URL?.replace(/^https?:\/\//, '')],
+        name: domainRoot,
+        aliases: domainAlias !== domainRoot ? [domainAlias] : [],
       },
       assets: {
         textEncoding: 'utf-8',
