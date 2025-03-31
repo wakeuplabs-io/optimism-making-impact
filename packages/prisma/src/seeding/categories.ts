@@ -1,17 +1,17 @@
 import { PrismaClient, Round } from '@prisma/client';
 
 const categoriesData = [
-  { name: 'Technology', icon: 'blocks' },
-  { name: 'Innovation', icon: 'blocks' },
-  { name: 'AI & Robotics', icon: 'blocks' },
+  { name: 'Technology', icon: 'Blocks' },
+  { name: 'Innovation', icon: 'Blocks' },
+  { name: 'AI & Robotics', icon: 'Blocks' },
 
-  { name: 'Sustainability', icon: 'blocks' },
-  { name: 'Green Energy', icon: 'blocks' },
-  { name: 'Eco-friendly Tech', icon: 'blocks' },
+  { name: 'Sustainability', icon: 'Blocks' },
+  { name: 'Green Energy', icon: 'Blocks' },
+  { name: 'Eco-friendly Tech', icon: 'Blocks' },
 
-  { name: 'Health & Wellness', icon: 'blocks' },
-  { name: 'Mental Health', icon: 'blocks' },
-  { name: 'Fitness', icon: 'blocks' },
+  { name: 'Health & Wellness', icon: 'Blocks' },
+  { name: 'Mental Health', icon: 'Blocks' },
+  { name: 'Fitness', icon: 'Blocks' },
 ];
 
 export async function seedCategories(prisma: PrismaClient, rounds: Round[]) {

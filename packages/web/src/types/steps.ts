@@ -1,10 +1,9 @@
-import { z } from 'zod';
-import { stepTypeSchema, infographicSchema } from '@optimism-making-impact/schemas';
-
 import { completeCardSchema } from '@/types/cards';
 import { completeItemSchema } from '@/types/items';
-import { keywordSchema } from '@/types/keywords';
+import { completeKeywordSchema } from '@/types/keywords';
 import { completeSmartListFilterSchema } from '@/types/smart-list-filters';
+import { infographicSchema, stepTypeSchema } from '@optimism-making-impact/schemas';
+import { z } from 'zod';
 
 export const stepSchema = z.object({
   id: z.number(),
@@ -25,7 +24,7 @@ export const completeStepSchema = stepSchema.extend({
   cards: z.array(completeCardSchema),
   items: z.array(completeItemSchema),
   smartListFilter: completeSmartListFilterSchema.nullish(),
-  keywords: z.array(keywordSchema),
+  keywords: z.array(completeKeywordSchema),
 });
 
 export type CompleteStep = z.infer<typeof completeStepSchema>;

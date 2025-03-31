@@ -54,12 +54,13 @@ export default $config({
       userPoolId: userPool.id,
     });
 
+    const fixedUrlForRootDomain = process.env.UI_URL?.replace(/(www\.)?/, '');
     const userPoolClient = userPool.addClient('op-making-impact-web-client', {
       providers: [provider.providerName],
       transform: {
         client: {
-          callbackUrls: $app.stage === 'production' ? [process.env.UI_URL] : ['http://localhost:5173', process.env.UI_URL],
-          logoutUrls: $app.stage === 'production' ? [process.env.UI_URL] : ['http://localhost:5173', process.env.UI_URL],
+          callbackUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
+          logoutUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
         },
       },
     });

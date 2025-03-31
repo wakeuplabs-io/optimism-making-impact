@@ -1,9 +1,9 @@
-import { Keyword } from '@optimism-making-impact/schemas';
+import { CompleteKeyword } from '@/types/keywords';
 import React, { createContext } from 'react';
 
 interface KeywordsFilterState {
-  keywords: Keyword[];
-  selectedKeywords: Keyword[];
+  keywords: CompleteKeyword[];
+  selectedKeywords: CompleteKeyword[];
 }
 
 export const SET_KEYWORDS = 'SET_KEYWORDS';
@@ -11,8 +11,8 @@ export const SET_SELECTED_KEYWORDS = 'SET_SELECTED_KEYWORDS';
 export const CLEAR_SELECTED_KEYWORDS = 'CLEAR_SELECTED_FILTERS';
 
 type Action =
-  | { type: typeof SET_KEYWORDS; payload: Keyword[] }
-  | { type: typeof SET_SELECTED_KEYWORDS; payload: Keyword }
+  | { type: typeof SET_KEYWORDS; payload: CompleteKeyword[] }
+  | { type: typeof SET_SELECTED_KEYWORDS; payload: CompleteKeyword }
   | { type: typeof CLEAR_SELECTED_KEYWORDS };
 
 export const initialState: KeywordsFilterState = {
