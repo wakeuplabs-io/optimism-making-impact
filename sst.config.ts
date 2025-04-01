@@ -26,7 +26,9 @@ export default $config({
       throw new Error("GOOGLE_CLIENT_ID not set");
     if (!process.env.GOOGLE_CLIENT_SECRET)
       throw new Error("GOOGLE_CLIENT_SECRET not set");
-
+    if (!process.env.WAKEUP_URL)
+        throw new Error("WAKEUP_URL not set")
+      
     // AWS data
     const { name: region } = await aws.getRegion({});
 
@@ -108,6 +110,7 @@ export default $config({
         output: 'packages/web/dist',
       },
       environment: {
+        VITE_WAKEUP_URL: process.env.WAKEUP_URL,
         VITE_API_URL: $interpolate`${apiGateway.url}/api`,
         VITE_COGNITO_USERPOOL_ID: userPool.id,
         VITE_COGNITO_USERPOOL_CLIENT_ID: userPoolClient.id,

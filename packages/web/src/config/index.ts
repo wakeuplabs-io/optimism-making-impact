@@ -4,7 +4,7 @@ export const IS_DEVELOPMENT = import.meta.env.DEV;
 
 export const MOBILE_THRESHOLD = 1024;
 export const DESKTOP_XL_THRESHOLD = 1536;
-export const WAKEUP_URL = 'https://www.wakeuplabs.io/';
+export const WAKEUP_URL = import.meta.env.VITE_WAKEUP_URL ?? "https://www.wakeuplabs.io/";
 
 export const AUTOSAVE_INTERVAL = 30 * 1000;
 
