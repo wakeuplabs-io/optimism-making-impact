@@ -19,7 +19,11 @@ export function CreateRoundModal({ isDisabled, onSave }: CreateRoundModalProps) 
         onOpenChange={toggleOpen}
         buttons={[{ label: 'Create', variant: 'primary', onClick: () => onSave() }]}
       >
-        <span>You are about to create a new round. Are you sure?</span>
+        <div className="flex flex-col items-center mt-2">
+          <p>You are about to create a new round</p>
+          <p>which will clone the latest round and it's links</p>
+          <p>Are you sure?</p>
+        </div>
       </Modal>
     </>
   );
