@@ -8,7 +8,7 @@ import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
 export function SidebarContent() {
   return (
     <div className='flex h-full flex-col items-start gap-6 pb-16'>
-      <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[127px]' />
+      <img src={OmiLogo} alt='Optimism Making Impact Logo' className='w-[200px]' />
       <div className='flex flex-col justify-start gap-4 md:justify-between'>
         <div className='flex flex-col gap-4'>
           <RoundList />
