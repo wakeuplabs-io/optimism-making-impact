@@ -66,6 +66,7 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
             className={cn({
               'border-red-500 focus-visible:ring-0': validationError,
             })}
+            maxLength={100}
             wrapperClassname='w-full h-full'
             error={validationError}
             value={controlledDescription}
