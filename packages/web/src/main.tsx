@@ -6,6 +6,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { Amplify } from 'aws-amplify';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { TooltipProvider } from './components/ui/tooltip';
 
 Amplify.configure({
   Auth: {
@@ -31,7 +32,12 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <UserProvider>
-        <RouterProvider router={router} />
+        <TooltipProvider
+          delayDuration={300}
+          skipDelayDuration={1000}
+        >
+          <RouterProvider router={router} />
+        </ TooltipProvider>
       </UserProvider>
     </QueryClientProvider>
   </StrictMode>,
