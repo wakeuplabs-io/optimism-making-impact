@@ -6,6 +6,7 @@ import { Ellipsis } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { GithubLink } from './github-link';
 
 interface Item {
   id: number;
@@ -98,7 +99,10 @@ function ViewAllSidebar({ isOpen, title, onOpenChange, children }: ViewAllSideba
             <p className='text-xs font-normal text-gray-700'>All {title}</p>
             <SheetClose>{children}</SheetClose>
           </div>
-          <WakeUpLogo />
+          <div className="flex flex-row gap-2 h-[61px]">
+            <WakeUpLogo />
+            <GithubLink />
+          </div>
         </div>
       </SheetContent>
     </Sheet>

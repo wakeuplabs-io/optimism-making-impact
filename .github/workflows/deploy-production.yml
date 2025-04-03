@@ -76,4 +76,5 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
           WAKEUP_URL: ${{ vars.WAKEUP_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
         run: npm run deploy:app:production

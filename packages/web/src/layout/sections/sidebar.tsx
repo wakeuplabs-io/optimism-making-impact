@@ -30,7 +30,10 @@ export function SidebarSection() {
     return (
       <nav className='flex w-full items-center justify-start gap-12 bg-[#F1F4F9] px-8 pb-7 pt-14 lg:static'>
         <SideMenu
-          trigger={<Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />}
+          trigger={
+            <div className="h-[50px] w-[50px]">
+              <Menu className='h-[50px] w-[50px] text-black' strokeWidth={1} />
+            </div>}
           description='Sidebar'
           side='left'
           className='w-[308px] overflow-y-auto'

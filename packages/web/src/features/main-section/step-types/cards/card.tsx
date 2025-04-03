@@ -113,10 +113,8 @@ function CardBody({ markdown, showMore, onViewMore }: CardBodyProps) {
 
   const checkOverflow = () => {
     const el = containerRef.current;
-    if (el) {
-      console.log('isOverflowing: ', el.scrollHeight > el.clientHeight);
+    if (el)
       setIsOverflowing(el.scrollHeight > el.clientHeight);
-    }
   };
 
   useEffect(() => {
