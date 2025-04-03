@@ -1,6 +1,6 @@
-import { toast } from './use-toast';
-import { useUser } from './use-user';
+import { CategoriesContext } from './categories-context';
 import { useQueryParams } from '@/hooks/use-query-params';
+import { toast } from '@/hooks/use-toast';
 import { queryClient } from '@/main';
 import { CategoriesService } from '@/services/categories-service';
 import { RoundsService } from '@/services/rounds-service';
@@ -8,14 +8,13 @@ import { CompleteRound } from '@/types/rounds';
 import { Category, CreateCategoryBody } from '@optimism-making-impact/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
-export function useCategoryList() {
-  const { isAdminModeEnabled: isAdmin } = useUser();
+export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
   const { selectedRoundId, selectedCategoryId, setSelectedCategoryId } = useQueryParams();
 
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
 
   // Fetch rounds
   const { data: rounds = [], isLoading: roundsLoading } = useQuery({
@@ -120,7 +119,7 @@ export function useCategoryList() {
     if (selectedCategory) {
       setSelectedCategoryId(selectedCategory.id);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, setSelectedCategoryId]);
 
   // Helper functions
 
@@ -144,15 +143,17 @@ export function useCategoryList() {
     addCategory.mutate({ name, icon, roundId });
   };
 
-  return {
-    categories,
-    selectedCategory,
-    isAdmin,
-    roundsLoading,
-    roundId: selectedRoundId,
-    handleCategorySelect,
-    handleCategoryDelete,
-    handleCategoryEdit,
-    handleCategoryAdd,
-  };
-}
+  return (
+    <CategoriesContext.Provider value={{
+      categories,
+      categoriesLoading: roundsLoading,
+      selectedCategory,
+      handleCategorySelect,
+      handleCategoryDelete,
+      handleCategoryEdit,
+      handleCategoryAdd,
+    }}>
+      {children}
+    </CategoriesContext.Provider>
+  );
+};

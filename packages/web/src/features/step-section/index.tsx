@@ -1,6 +1,6 @@
 import { AddStepModal } from '@/features/step-section/add-step-modal';
 import { StepsList } from '@/features/step-section/step-list';
-import { useCategoryList } from '@/hooks/use-category-list';
+import { useCategories } from '@/hooks/use-categories';
 import { useStepsList } from '@/hooks/use-steps-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
@@ -9,7 +9,7 @@ export function StepsSectionContent() {
 
   const isMobile = useIsMobile();
   const { steps, selectedStep, isLoading, error, handleStepSelect, handleStepDelete, handleStepEdit, handleStepAdd } = useStepsList();
-  const { selectedCategory } = useCategoryList();
+  const { selectedCategory } = useCategories();
 
   const showAddStepButton = !isLoading && !isMobile && isAdmin && selectedCategory;
 

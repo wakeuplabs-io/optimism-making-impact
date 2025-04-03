@@ -1,6 +1,6 @@
 import { SideMenu } from '@/components/side-menu';
 import { SidebarContent } from '@/features/sidebar';
-import { useCategoryList } from '@/hooks/use-category-list';
+import { useCategories } from '@/hooks/use-categories';
 import { useRounds } from '@/hooks/use-rounds';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { getRoundName } from '@/lib/utils';
@@ -10,11 +10,11 @@ import { useMemo } from 'react';
 export function SidebarSection() {
   const isMobile = useIsMobile();
   const { selectedRound } = useRounds();
-  const { selectedCategory } = useCategoryList();
+  const { selectedCategory } = useCategories();
 
   const title = useMemo(() => {
     if (!selectedRound) {
-      return 'Round';
+      return '';
     }
 
     const category = selectedRound.categories.find((category) => category.id === selectedCategory?.id);

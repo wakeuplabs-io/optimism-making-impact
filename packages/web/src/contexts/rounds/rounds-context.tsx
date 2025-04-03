@@ -8,7 +8,7 @@ interface RoundsContextType {
   selectedRound?: CompleteRound;
   handleRoundAdd(): void;
   handleRoundSelect(round: CompleteRound): void;
-  editRound(props: { roundId: number; data: UpdateRoundBody }): void;
+  handleEditRound(roundId: number, data: UpdateRoundBody): void;
 }
 
 export const RoundsContext = createContext<RoundsContextType | undefined>(undefined);

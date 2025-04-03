@@ -1,5 +1,6 @@
 import { Toaster } from '@/components/ui/toaster';
 import { IS_DEVELOPMENT } from '@/config';
+import { CategoriesProvider } from '@/contexts/categories/categories-provider';
 import { RoundsProvider } from '@/contexts/rounds/rounds-provider';
 import { StepsProvider } from '@/contexts/steps/steps-provider';
 import { useQueryParams } from '@/hooks/use-query-params';
@@ -16,26 +17,28 @@ export function AppLayout() {
 
   return (
     <RoundsProvider>
-      <StepsProvider>
-        <div className='flex h-screen w-screen flex-col overflow-hidden lg:flex-row'>
-          <SidebarSection />
-          <div
-            className={cn('flex flex-1 flex-col-reverse bg-[#F1F4F9] lg:flex-col lg:px-16 lg:pb-8', {
-              'overflow-y-auto': !isMobile,
-              'overflow-hidden': isMobile,
-            })}
-          >
-            {selectedCategoryId && (
-              <>
-                <StepsSection />
-                <MainSection />
-              </>
-            )}
+      <CategoriesProvider>
+        <StepsProvider>
+          <div className='flex h-screen w-screen flex-col overflow-hidden lg:flex-row'>
+            <SidebarSection />
+            <div
+              className={cn('flex flex-1 flex-col-reverse bg-[#F1F4F9] lg:flex-col lg:px-16 lg:pb-8', {
+                'overflow-y-auto': !isMobile,
+                'overflow-hidden': isMobile,
+              })}
+            >
+              {selectedCategoryId && (
+                <>
+                  <StepsSection />
+                  <MainSection />
+                </>
+              )}
+            </div>
+            <Toaster />
+            {IS_DEVELOPMENT && <IsAdminIndicator />}
           </div>
-          <Toaster />
-          {IS_DEVELOPMENT && <IsAdminIndicator />}
-        </div>
-      </StepsProvider>
+        </StepsProvider>
+      </CategoriesProvider>
     </RoundsProvider>
   );
 }
