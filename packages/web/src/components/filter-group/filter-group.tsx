@@ -1,8 +1,10 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
-import { ComponentProps, useMemo } from 'react';
+import { ComponentProps, useEffect, useMemo, useRef, useState } from 'react';
 import { useToggle } from 'usehooks-ts';
+import { Modal } from '../modal';
 
 type FilterIcon = React.ComponentType<{ selected: boolean }>;
 
@@ -176,16 +178,14 @@ function FilterButtonLabel(props: FilterButtonLabelProps) {
     return <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{props.label}</span>;
   }
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{props.label}</span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p className='capitalize'>{props.label}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className='overflow-hidden text-ellipsis whitespace-nowrap text-sm capitalize hover:underline'>{props.label}</span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p className='capitalize'>{props.label}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -198,6 +198,7 @@ interface FilterButtonActionsProps {
 }
 
 function FilterButtonActions(props: FilterButtonActionsProps) {
+
   return (
     <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
@@ -216,18 +217,34 @@ interface InfoIconProps {
 }
 
 function InfoIcon(props: InfoIconProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node))
+        setIsOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <TooltipProvider>
+    <>
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
-            <Info size={14} className='stroke-[#A8A8A8] hover:stroke-black' />
+            <Info size={14} className='stroke-[#A8A8A8] hover:stroke-black' onClick={() => isMobile && setIsOpen(true)} />
           </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>{props.tooltipText}</p>
         </TooltipContent>
       </Tooltip>
-    </TooltipProvider>
+      <Modal open={isOpen} onOpenChange={() => setIsOpen(false)}>
+        <p>{props.tooltipText}</p>
+      </Modal>
+    </>
   );
 }
