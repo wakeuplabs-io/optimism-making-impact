@@ -22,4 +22,3 @@ jobs:
       DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      WAKEUP_URL: ${{ vars.WAKEUP_URL }}
