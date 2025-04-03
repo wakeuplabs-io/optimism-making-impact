@@ -3,7 +3,7 @@ name: pipeline CD/CI staging
 on:
   push:
     branches:
-      - poc/migrate-to-npm
+      - develop
 
 jobs:
   # Install dependencies
