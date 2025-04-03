@@ -77,7 +77,7 @@ export default $config({
       },
       copyFiles: [
         {
-          from: 'node_modules/@prisma/client/.prisma/client/',
+          from: 'node_modules/.prisma/client/',
           to: '.prisma/client/',
         },
         {
