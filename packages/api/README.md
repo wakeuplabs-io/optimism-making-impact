@@ -15,7 +15,7 @@ POSTGRES_PASSWORD=<your-password>
 To run tests, simply execute the following command from this directory:
 
 ```sh
-pnpm test
+npm run test
 ```
 
 This will automatically reset the database, apply migrations, seed the database and execute the test suite.

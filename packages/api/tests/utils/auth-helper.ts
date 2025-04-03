@@ -308,7 +308,6 @@ export function setupTestAuth() {
 
           // Handle test-specific tokens
           const email = payload.email || 'test@example.com';
-          let isAdmin = false;
 
           console.log('Checking token roles:', {
             customRole: payload['custom:role'],

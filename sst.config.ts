@@ -20,21 +20,16 @@ export default $config({
     };
   },
   async run() {
-    if (!process.env.UI_URL)
-      throw new Error("UI_URL not set");
-    if (!process.env.GOOGLE_CLIENT_ID)
-      throw new Error("GOOGLE_CLIENT_ID not set");
-    if (!process.env.GOOGLE_CLIENT_SECRET)
-      throw new Error("GOOGLE_CLIENT_SECRET not set");
-    if (!process.env.WAKEUP_URL)
-        throw new Error("WAKEUP_URL not set")
-    if (!process.env.REPOSITORY_URL)
-        throw new Error("REPOSITORY_URL not set")
+    if (!process.env.UI_URL) throw new Error('UI_URL not set');
+    if (!process.env.GOOGLE_CLIENT_ID) throw new Error('GOOGLE_CLIENT_ID not set');
+    if (!process.env.GOOGLE_CLIENT_SECRET) throw new Error('GOOGLE_CLIENT_SECRET not set');
+    if (!process.env.WAKEUP_URL) throw new Error('WAKEUP_URL not set');
+    if (!process.env.REPOSITORY_URL) throw new Error('REPOSITORY_URL not set');
       
     // AWS data
     const { name: region } = await aws.getRegion({});
 
-    //cognito pool
+    // Cognito pool
     const userPool = new sst.aws.CognitoUserPool('user-pool');
     const GoogleClientId = process.env.GOOGLE_CLIENT_ID;
     const GoogleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -83,11 +78,11 @@ export default $config({
       },
       copyFiles: [
         {
-          from: 'node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/.prisma/client/',
+          from: 'node_modules/.prisma/client/',
           to: '.prisma/client/',
         },
         {
-          from: 'node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/@prisma/client/',
+          from: 'node_modules/@prisma/client/',
           to: '@prisma/client/',
         },
       ],
@@ -102,13 +97,13 @@ export default $config({
     // production is https://retroimpactguidelines.xyz/
     // staging is https://retroimpactguidelines.wakeuplabs.link/
     // production uses root domain and staging a subdomain
-    // this is considered with the StaticSite domain parameter 
+    // this is considered with the StaticSite domain parameter
     const domainRoot = process.env.UI_URL?.replace(/^https?:\/\/(www\.)?/, '');
     const domainAlias = process.env.UI_URL?.replace(/^https?:\/\//, '');
 
     const ui = new sst.aws.StaticSite('web', {
       build: {
-        command: 'pnpm ui:build',
+        command: 'npm run ui:build',
         output: 'packages/web/dist',
       },
       environment: {

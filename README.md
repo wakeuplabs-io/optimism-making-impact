@@ -88,7 +88,7 @@ sequenceDiagram
 ### System Requirements
 
 - Node.js: v20.18
-- pnpm: v9.9.0
+- npm: v10.7.0
 - PostgreSQL: v17
 
 ### Setup Steps
@@ -113,15 +113,15 @@ sequenceDiagram
      ```
 3. **Install Dependencies** – Run the following command in the root of the project:
    ```
-   pnpm i
+   npm i
    ```
 4. **Run Database Migrations** – Apply database migrations using:
    ```
-   pnpm db:migrate
+   npm run db:migrate
    ```
 5. **Start the Application** – Launch the application with:
    ```
-   pnpm dev
+   npm run dev
    ```
    By default, the application will start on port 5173.
 
