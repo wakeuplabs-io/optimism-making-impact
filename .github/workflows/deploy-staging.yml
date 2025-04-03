@@ -17,15 +17,14 @@ on:
         required: true
       GOOGLE_CLIENT_SECRET:
         required: true
+      WAKEUP_URL:
+        required: true
 
 jobs:
   # Job to Deploy the UI
   deploy:
     runs-on: ubuntu-latest
     environment: staging
-    env:
-      DB_URL: ${{ secrets.DB_URL }}
-      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
     steps:
       # Configure AWS credentials
