@@ -1,22 +1,23 @@
+import { useRounds } from '@/hooks/use-rounds';
 import { AddCategoryModal } from '../add-category-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { CategoryListButton } from './category-list-button';
-import { useCategoryList } from '@/hooks/use-category-list';
+import { useUser } from '@/hooks/use-user';
+import { useCategories } from '@/hooks/use-categories';
 
 export function CategoryList() {
   const {
     categories,
     selectedCategory,
-    isAdmin,
-    roundsLoading,
-    roundId,
     handleCategorySelect,
     handleCategoryDelete,
     handleCategoryEdit,
     handleCategoryAdd,
-  } = useCategoryList();
+  } = useCategories();
+  const { isAdminModeEnabled: isAdmin } = useUser();
+  const { selectedRound, roundsLoading } = useRounds();
 
-  if (!roundsLoading && !roundId) {
+  if (!roundsLoading && !selectedRound?.id) {
     return <p className='text-center text-sm'>Select a round to view its categories.</p>;
   }
 
@@ -43,7 +44,7 @@ export function CategoryList() {
         title='Categories'
         isLoading={roundsLoading}
         items={items}
-        addItem={<AddCategoryModal roundId={roundId} onSave={handleCategoryAdd} />}
+        addItem={<AddCategoryModal roundId={selectedRound?.id} onSave={handleCategoryAdd} />}
         maxItems={5}
       />
     </div>

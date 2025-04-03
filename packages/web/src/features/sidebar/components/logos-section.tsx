@@ -5,7 +5,7 @@ import { useRounds } from '@/hooks/use-rounds';
 import { useUser } from '@/hooks/use-user';
 
 export default function LogosSection() {
-  const { selectedRound, editRound } = useRounds();
+  const { selectedRound, handleEditRound } = useRounds();
   const { isAdminModeEnabled: isAdmin } = useUser();
 
   return (
@@ -15,7 +15,7 @@ export default function LogosSection() {
         disabled={!selectedRound}
         link={selectedRound?.link1 ?? ''}
         isAdmin={isAdmin}
-        onSubmit={(data) => selectedRound && editRound({ roundId: selectedRound.id, data: { link1: data.link } })}
+        onSubmit={(data) => selectedRound && handleEditRound(selectedRound.id, { link1: data.link })}
         className='w-1/2'
       />
       <SidebarLinkButton
@@ -23,7 +23,7 @@ export default function LogosSection() {
         disabled={!selectedRound}
         link={selectedRound?.link2 ?? ''}
         isAdmin={isAdmin}
-        onSubmit={(data) => selectedRound && editRound({ roundId: selectedRound.id, data: { link2: data.link } })}
+        onSubmit={(data) => selectedRound && handleEditRound(selectedRound.id, { link2: data.link })}
         className='w-1/2'
       />
     </div>

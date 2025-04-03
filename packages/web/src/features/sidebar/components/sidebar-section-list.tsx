@@ -3,7 +3,7 @@ import { WakeUpLogo } from './wakeup-logo';
 import { Sheet, SheetClose, SheetContent } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { Ellipsis } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { GithubLink } from './github-link';

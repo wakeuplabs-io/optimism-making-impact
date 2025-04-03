@@ -72,7 +72,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
-  const { mutate: editRound } = useMutation({
+  const editRound = useMutation({
     mutationFn: (props: { roundId: number; data: UpdateRoundBody }) => RoundsService.editOne(props.roundId, props.data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
@@ -113,6 +113,9 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     setSelectedRound(round);
     setSelectedRoundId(round.id);
   }
+  function handleEditRound(roundId: number, data: UpdateRoundBody) {
+    editRound.mutate({ roundId, data })
+  }
 
   // Set default round when rounds load
   useEffect(() => {
@@ -124,7 +127,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
   }, [rounds]);
 
   return (
-    <RoundsContext.Provider value={{ rounds, roundsLoading, selectedRound, handleRoundAdd, handleRoundSelect, editRound }}>
+    <RoundsContext.Provider value={{ rounds, roundsLoading, selectedRound, handleRoundAdd, handleRoundSelect, handleEditRound }}>
       {children}
     </RoundsContext.Provider>
   );
