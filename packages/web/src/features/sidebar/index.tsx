@@ -4,6 +4,7 @@ import LogosSection from '@/features/sidebar/components/logos-section';
 import { RoundList } from '@/features/sidebar/components/round-list/round-list';
 import { SettingsSection } from '@/features/sidebar/components/settings-section/settings-section';
 import { WakeUpLogo } from '@/features/sidebar/components/wakeup-logo';
+import { GithubLink } from './components/github-link';
 
 export function SidebarContent() {
   return (
@@ -19,7 +20,10 @@ export function SidebarContent() {
           <hr />
           <SettingsSection />
         </div>
-        <WakeUpLogo />
+        <div className="flex flex-row gap-2 h-[61px]">
+          <WakeUpLogo />
+          <GithubLink />
+        </div>
       </div>
     </div>
   );
