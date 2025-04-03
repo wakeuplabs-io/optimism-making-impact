@@ -19,7 +19,6 @@ on:
         required: true
 
 jobs:
-  # Job to Deploy the UI
   deploy:
     runs-on: ubuntu-latest
     environment: staging
@@ -43,29 +42,28 @@ jobs:
         with:
           node-version: 20
 
-      # Set up pnpm
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      # Restore cached dependencies
-      - name: Restore pnpm dependencies
+      # Restore cached npm dependencies
+      - name: Restore npm dependencies
         uses: actions/cache/restore@v4
-        id: pnpm-cache
+        id: npm-cache
         with:
           path: |
-            ~/.pnpm-store
+            ~/.npm
             node_modules
             packages/web/node_modules
             packages/schemas/node_modules
             packages/api/node_modules
             packages/prisma/node_modules
-          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: npm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
+
+      # Install npm dependencies (if needed)
+      - name: Install npm dependencies
+        run: npm install
+
       # Run the build
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
       # Run the deploy
       - name: Deploy
@@ -76,4 +74,11 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
           WAKEUP_URL: ${{ vars.WAKEUP_URL }}
-        run: pnpm deploy:app:staging
+        run: npm run deploy:app:staging
+
+      # Output the API URL and store in $GITHUB_OUTPUT
+      - name: Save Output
+        id: save-output
+        run: |
+          API_URL=$(cat .env | sed -n 's/.*ServiceEndpoint = \"\(.*\)\"/\1/p')
+          echo "api_url=$API_URL" >> "$GITHUB_OUTPUT"

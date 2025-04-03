@@ -11,7 +11,6 @@ module.exports = [
   {
     rules: {
       'no-prototype-builtins': 'warn',
-      '@typescript-eslint/ban-types': 'warn',
       '@typescript-eslint/no-explicit-any': 'error',
       'no-unused-vars': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '(^_)' }],
