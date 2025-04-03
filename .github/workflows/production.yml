@@ -17,8 +17,9 @@ jobs:
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION : ${{ secrets.AWS_REGION  }}
+      AWS_REGION: ${{ secrets.AWS_REGION  }}
       DB_URL: ${{ secrets.DB_URL }}
       DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      WAKEUP_URL: ${{ vars.WAKEUP_URL }}

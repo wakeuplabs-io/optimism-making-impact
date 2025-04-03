@@ -10,22 +10,21 @@ on:
       AWS_REGION:
         required: true
       DB_URL:
-          required: true
+        required: true
       DB_URL_NON_POOLING:
-          required: true
+        required: true
       GOOGLE_CLIENT_ID:
-          required: true
+        required: true
       GOOGLE_CLIENT_SECRET:
-          required: true
+        required: true
+      WAKEUP_URL:
+        required: true
 
 jobs:
   # Job to Deploy the UI
   deploy:
     runs-on: ubuntu-latest
     environment: production
-    env:
-      DB_URL: ${{ secrets.DB_URL }}
-      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
     steps:
       # Configure AWS credentials
