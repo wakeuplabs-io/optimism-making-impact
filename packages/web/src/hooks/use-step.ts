@@ -8,7 +8,7 @@ import { InfographicsService } from '@/services/infographics-service';
 import { ItemsService } from '@/services/items-service';
 import { StepsService } from '@/services/steps-service';
 import { CompleteCard } from '@/types/cards';
-import { CompleteStep } from '@/types/steps';
+import { CompleteStep, Step } from '@/types/steps';
 import {
   CreateAttributeBody,
   CreateCardBody,
@@ -23,7 +23,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export function useStep() {
-  const { selectedStepId } = useQueryParams();
+  const { selectedStepId, selectedCategoryId } = useQueryParams();
 
   const {
     data: step,
@@ -149,7 +149,6 @@ export function useStep() {
 
   const { mutate: addAttributeToSmartList } = useMutation({
     mutationFn: (data: CreateAttributeBody) => AttributesService.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] }),
     onMutate: async (data: CreateAttributeBody) => {
       await queryClient.cancelQueries({ queryKey: ['step', selectedStepId] });
 
@@ -159,28 +158,63 @@ export function useStep() {
 
       const updatedSmartListFilter = {
         ...previousStep.smartListFilter,
-        attributes: [...(previousStep.smartListFilter?.attributes ?? []), { id: 0, categoryId: previousStep?.categoryId, ...data }],
+        attributes: [
+          ...(previousStep.smartListFilter?.attributes ?? []),
+          { id: 0, categoryId: previousStep?.categoryId, ...data },
+        ],
       };
 
-      queryClient.setQueryData(['step', selectedStepId], () => ({ ...previousStep, smartListFilter: updatedSmartListFilter }));
+      queryClient.setQueryData(['step', selectedStepId], () => ({
+        ...previousStep,
+        smartListFilter: updatedSmartListFilter,
+      }));
 
       return { previousStep };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] });
+
+      const cacheSteps = queryClient.getQueryData<Step[]>(['steps-by-category', selectedCategoryId]);
+      if (cacheSteps && Array.isArray(cacheSteps)) {
+        for (const cacheStep of cacheSteps) {
+          if (cacheStep.type === 'CARDGRID' && step?.smartListId === cacheStep.smartListId) {
+            queryClient.invalidateQueries({ queryKey: ['step', cacheStep.id] });
+          }
+        }
+      }
     },
     onError: (err, data, context) => {
       if (context?.previousStep) {
         queryClient.setQueryData(['step', selectedStepId], context.previousStep);
       }
+
       let description = `Failed to add attribute to smart list ${data.description}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
       }
 
-      toast({ title: 'Failed to add attribute to smart list', description, variant: 'destructive' });
+      toast({
+        title: 'Failed to add attribute to smart list',
+        description,
+        variant: 'destructive',
+      });
     },
   });
+
   const { mutate: updateAttribute } = useMutation({
     mutationFn: (data: UpdateAttributeBody) => AttributesService.update(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] });
+
+      const cacheSteps = queryClient.getQueryData<Step[]>(['steps-by-category', selectedCategoryId]);
+      if (cacheSteps && Array.isArray(cacheSteps)) {
+        for (const cacheStep of cacheSteps) {
+          if (cacheStep.type === 'CARDGRID' && step?.smartListId === cacheStep.smartListId) {
+            queryClient.invalidateQueries({ queryKey: ['step', cacheStep.id] });
+          }
+        }
+      }
+    },
     onMutate: async (data: UpdateAttributeBody) => {
       await queryClient.cancelQueries({ queryKey: ['step', selectedStepId] });
 
@@ -211,7 +245,18 @@ export function useStep() {
 
   const { mutate: deleteAttribute } = useMutation({
     mutationFn: (attributeId: number) => AttributesService.deleteOne(attributeId),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['step', selectedStepId] });
+
+      const cacheSteps = queryClient.getQueryData<Step[]>(['steps-by-category', selectedCategoryId]);
+      if (cacheSteps && Array.isArray(cacheSteps)) {
+        for (const cacheStep of cacheSteps) {
+          if (cacheStep.type === 'CARDGRID' && step?.smartListId === cacheStep.smartListId) {
+            queryClient.invalidateQueries({ queryKey: ['step', cacheStep.id] });
+          }
+        }
+      }
+    },
     onMutate: async (attributeId: number) => {
       await queryClient.cancelQueries({ queryKey: ['step', selectedStepId] });
 
