@@ -1,17 +1,19 @@
-import { cn } from '@/lib/utils';
 import { TextInput } from '../text-input';
 import { FormInputWrapper } from './form-input';
+import { cn } from '@/lib/utils';
+import React from 'react';
 
 interface FormTextInputProps extends React.ComponentProps<typeof TextInput> {
   error?: string;
   wrapperClassname?: string;
 }
 
-export function FormTextInput({ error, wrapperClassname, ...field }: FormTextInputProps) {
+export const FormTextInput = React.forwardRef<HTMLInputElement, FormTextInputProps>(({ error, wrapperClassname, ...field }, ref) => {
   return (
     <FormInputWrapper error={error} className={wrapperClassname}>
       <TextInput
         {...field}
+        ref={ref}
         className={cn(
           'h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm',
           {
@@ -22,4 +24,6 @@ export function FormTextInput({ error, wrapperClassname, ...field }: FormTextInp
       />
     </FormInputWrapper>
   );
-}
+});
+
+FormTextInput.displayName = 'FormTextInput';

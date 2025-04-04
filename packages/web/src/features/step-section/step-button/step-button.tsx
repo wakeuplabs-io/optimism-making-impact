@@ -7,7 +7,7 @@ import { Step } from '@/types/steps';
 import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { cva } from 'class-variance-authority';
 
-interface StepButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface StepButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   state: StepButtonState;
   step: Step;
   isAdmin?: boolean;
@@ -31,7 +31,8 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
   const showActionIcons = isActive && isAdmin && !isMobile;
 
   return (
-    <button
+    <div
+      role='button'
       {...props}
       className={cn(
         props.className,
@@ -67,6 +68,6 @@ export function StepButton({ isAdmin, onEdit, onDelete, ...props }: StepButtonPr
           )}
         </div>
       )}
-    </button>
+    </div>
   );
 }

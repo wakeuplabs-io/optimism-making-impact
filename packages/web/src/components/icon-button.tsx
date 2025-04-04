@@ -1,13 +1,16 @@
 import { cn } from '@/lib/utils';
+import React from 'react';
 
-interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLDivElement> {
   icon: React.ReactNode;
   variant?: 'primary' | 'secondary';
 }
 
-export function IconButton({ icon, variant = 'primary', className, ...props }: IconButtonProps) {
+export const IconButton = React.forwardRef<HTMLDivElement, IconButtonProps>(({ icon, variant = 'primary', className, ...props }, ref) => {
   return (
-    <button
+    <div
+      role='button'
+      ref={ref}
       className={cn(
         'flex h-[45px] w-[45px] items-center justify-center rounded-full bg-[#14141A] text-white transition-all duration-500 ease-in-out hover:cursor-pointer disabled:cursor-default disabled:bg-gray-400 disabled:hover:opacity-100',
         {
@@ -19,6 +22,8 @@ export function IconButton({ icon, variant = 'primary', className, ...props }: I
       {...props}
     >
       {icon}
-    </button>
+    </div>
   );
-}
+});
+
+IconButton.displayName = 'IconButton';

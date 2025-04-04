@@ -7,17 +7,18 @@ export interface SidebarListButtonProps {
   isDisabled?: boolean;
   isLoading?: boolean;
   children?: React.ReactNode;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   className?: string;
 }
 
 // Wrap with forwardRef to allow ref forwarding
-export const SidebarListButton = React.forwardRef<HTMLButtonElement, SidebarListButtonProps>(
+export const SidebarListButton = React.forwardRef<HTMLDivElement, SidebarListButtonProps>(
   ({ isSelected, isDisabled, isLoading, children, onClick, className }, ref) => {
     const isButtonDisabled = isDisabled || isLoading;
 
     return (
-      <button
+      <div
+        role='button'
         ref={ref}
         className={cn(
           `group flex w-full items-center gap-2 rounded-[10px] px-3 py-2 text-secondary`,
@@ -27,14 +28,14 @@ export const SidebarListButton = React.forwardRef<HTMLButtonElement, SidebarList
           },
           className,
         )}
-        disabled={isButtonDisabled}
-        onClick={onClick}
+        // disabled={isButtonDisabled}
+        onClick={(e) => !isButtonDisabled && onClick && onClick(e)}
       >
         <div className='w-full flex flex-row justify-between items-center'>
           {children}
           {isLoading && <ThreeDotsLoading color='secondary' size='xs' />}
         </div>
-      </button>
+      </div>
     );
   },
 );

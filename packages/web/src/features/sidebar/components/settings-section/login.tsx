@@ -24,7 +24,7 @@ export const Login = () => {
           </div>
         </SidebarListButton>
       </DialogTrigger>
-      <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16'>
+      <DialogContent className='flex w-[600px] max-w-[95%] flex-col items-center rounded-[22px] p-16' aria-describedby={undefined}>
         <DialogHeader className='flex w-full items-start justify-start gap-6'>
           <DialogTitle className='text-left text-2xl font-medium text-dark-low'>Log in</DialogTitle>
           <DialogDescription className='text-left text-xl text-dark-high'>

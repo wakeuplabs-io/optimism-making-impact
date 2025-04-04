@@ -1,9 +1,9 @@
+import { IconWithDefault } from '../icon-with-default';
 import { FormInputWrapper } from './form-input';
 import { IconPicker } from '@/features/sidebar/components/icon-picker';
 import { cn } from '@/lib/utils';
 import { Label } from '@radix-ui/react-label';
 import { useState } from 'react';
-import { IconWithDefault } from '../icon-with-default';
 
 interface FormIconPickerProps {
   label?: string;
@@ -24,16 +24,16 @@ export function FormIconPicker({ error, label = 'Icon', selectedIcon, onSelect }
               {label}
             </Label>
           )}
-          <button
+          <div
             id={label}
-            type='button'
+            role='button'
             className={cn('flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-md border border-gray-300', {
               'text-[#FF0420]': !!selectedIcon,
             })}
             onClick={() => setIsIconPickerOpen((prev) => !prev)}
           >
             <IconWithDefault src={selectedIcon} />
-          </button>
+          </div>
         </div>
         <IconPicker
           isVisible={isIconPickerOpen}

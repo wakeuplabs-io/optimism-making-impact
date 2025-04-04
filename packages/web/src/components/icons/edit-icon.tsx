@@ -1,13 +1,15 @@
 import { cn } from '@/lib/utils';
 import { LucideProps, PencilLine } from 'lucide-react';
+import React from 'react';
 
 interface EditIconProps extends Omit<LucideProps, 'ref'> {
   variant?: 'md' | 'lg';
 }
 
-export function EditIcon({ variant = 'md', className, ...props }: EditIconProps) {
+export const EditIcon = React.forwardRef<SVGSVGElement, EditIconProps>(({ variant = 'md', className, ...props }, ref) => {
   return (
     <PencilLine
+      ref={ref}
       className={cn(
         'stroke-gray-700 hover:cursor-pointer hover:stroke-black',
         {
@@ -19,4 +21,6 @@ export function EditIcon({ variant = 'md', className, ...props }: EditIconProps)
       {...props}
     />
   );
-}
+});
+
+EditIcon.displayName = 'EditIcon';

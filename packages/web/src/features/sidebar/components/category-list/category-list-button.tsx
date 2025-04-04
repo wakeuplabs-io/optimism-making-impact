@@ -5,7 +5,7 @@ import { Category } from '@optimism-making-impact/schemas';
 
 type CategoryListButtonProps = {
   category: Category;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
   onDelete: (id: number) => void;
   onEdit: (name: string, icon: string) => void;
   isSelected?: boolean;
