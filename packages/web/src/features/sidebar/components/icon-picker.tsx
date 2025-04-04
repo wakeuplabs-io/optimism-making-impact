@@ -55,7 +55,8 @@ export const IconPicker = React.memo(function IconPicker({ selectedIcon, onSelec
                 {filteredIcons.length > 0 ? (
                   filteredIcons.slice(0, 1000).map(([name, Icon]) => {
                     return (
-                      <button
+                      <div
+                        role='button'
                         key={name}
                         onClick={(e) => {
                           e.preventDefault();
@@ -66,7 +67,7 @@ export const IconPicker = React.memo(function IconPicker({ selectedIcon, onSelec
                         }`}
                       >
                         <Icon />
-                      </button>
+                      </div>
                     );
                   })
                 ) : (

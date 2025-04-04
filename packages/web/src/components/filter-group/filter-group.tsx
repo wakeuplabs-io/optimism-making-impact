@@ -1,10 +1,10 @@
+import { Modal } from '../modal';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
 import { ComponentProps, useEffect, useMemo, useRef, useState } from 'react';
 import { useToggle } from 'usehooks-ts';
-import { Modal } from '../modal';
 
 type FilterIcon = React.ComponentType<{ selected: boolean }>;
 
@@ -130,6 +130,7 @@ function FilterButton<T extends FilterData>({
   editComponent,
   tooltipText,
   isAdmin,
+  withLabelTooltip,
   ...props
 }: FilterButtonProps<T>) {
   function handleClick() {
@@ -143,7 +144,7 @@ function FilterButton<T extends FilterData>({
       onClick={handleClick}
     >
       {filterIcon && <FilterButtonIcon filterIcon={filterIcon} selected={selected} />}
-      <FilterButtonLabel label={label} withLabelTooltip={props.withLabelTooltip} />
+      <FilterButtonLabel label={label} withLabelTooltip={withLabelTooltip} />
       <FilterButtonActions
         tooltipText={tooltipText}
         isAdmin={isAdmin}
@@ -198,7 +199,6 @@ interface FilterButtonActionsProps {
 }
 
 function FilterButtonActions(props: FilterButtonActionsProps) {
-
   return (
     <div className='ml-auto flex items-center gap-1' onClick={(e) => e.stopPropagation()}>
       {props.tooltipText && <InfoIcon tooltipText={props.tooltipText} />}
@@ -223,8 +223,7 @@ function InfoIcon(props: InfoIconProps) {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node))
-        setIsOpen(false)
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) setIsOpen(false);
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);

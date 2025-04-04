@@ -7,6 +7,9 @@ import { useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { GithubLink } from './github-link';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { DialogTitle } from '@radix-ui/react-dialog';
+
 
 interface Item {
   id: number;
@@ -93,7 +96,12 @@ interface ViewAllSidebarProps {
 function ViewAllSidebar({ isOpen, title, onOpenChange, children }: ViewAllSidebarProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side='left' className='w-[308px] px-8 py-20 overflow-y-auto' overlayClassName='bg-inherit'>
+      <SheetContent side='left' className='w-[308px] px-8 py-20 overflow-y-auto' overlayClassName='bg-inherit' aria-describedby={undefined}>
+        <VisuallyHidden>
+          <DialogTitle>
+            ViewAllSidebar
+          </DialogTitle>
+        </VisuallyHidden>
         <div className='flex w-full flex-col gap-8 justify-between'>
           <div className='flex h-full w-full flex-col gap-2'>
             <p className='text-xs font-normal text-gray-700'>All {title}</p>

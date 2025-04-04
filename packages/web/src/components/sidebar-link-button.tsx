@@ -1,10 +1,10 @@
+import { FormModal } from './form/form-modal';
+import { FormTextInput } from './form/form-text-input';
 import { ImageButton, ImageButtonProps } from '@/components/image-button';
 import { cn } from '@/lib/utils';
 import { UpdateRoundLinkBody, updateRoundLinkBodySchema } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
-import { FormModal } from './form/form-modal';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormTextInput } from './form/form-text-input';
 
 interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   link: string;
@@ -18,17 +18,17 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
   return (
     <div
       className={cn(
-        'relative',
+        'relative flex flex-col',
         {
           'h-16': props.isAdmin,
         },
         props.className,
       )}
     >
-      {props.isAdmin && !props.disabled && <EditLink onSubmit={props.onSubmit} link={props.link} />}
       <a href={props.link} target='_blank' rel='noreferrer'>
         <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
       </a>
+      {props.isAdmin && !props.disabled && <EditLink onSubmit={props.onSubmit} link={props.link} />}
     </div>
   );
 }
@@ -43,9 +43,12 @@ function EditLink(props: EditLinkProps) {
     <FormModal
       title='Edit link'
       trigger={
-        <button className='absolute mb-4 flex h-6 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'>
+        <div
+          role='button'
+          className='mb-4 flex h-6 w-full items-end justify-center gap-2 rounded-b-xl bg-mi-stone-300 text-center text-sm text-slate-500 hover:underline'
+        >
           edit
-        </button>
+        </div>
       }
       onSubmit={props.onSubmit}
       defaultValues={{ link: props.link }}
