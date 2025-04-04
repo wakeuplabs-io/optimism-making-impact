@@ -10,7 +10,7 @@ import { cn, getColor } from '@/lib/utils';
 import { CompleteCard } from '@/types/cards';
 import { CompleteKeyword } from '@/types/keywords';
 import { Attribute, CardStrength } from '@optimism-making-impact/schemas';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 
 interface CardProps {
@@ -111,17 +111,19 @@ function CardBody({ markdown, showMore, onViewMore }: CardBodyProps) {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const checkOverflow = () => {
+  const checkOverflow = useCallback(() => {
     const el = containerRef.current;
-    if (el)
-      setIsOverflowing(el.scrollHeight > el.clientHeight);
-  };
+    if (el) setIsOverflowing(el.scrollHeight > el.clientHeight);
+  }, []);
 
   useEffect(() => {
     checkOverflow();
+  }, [markdown]);
+
+  useEffect(() => {
     window.addEventListener('resize', checkOverflow);
     return () => window.removeEventListener('resize', checkOverflow);
-  }, []);
+  }, [checkOverflow]);
 
   return (
     <div className={cn('relative h-[120px] overflow-hidden', { 'h-auto max-h-full': showMore })}>
