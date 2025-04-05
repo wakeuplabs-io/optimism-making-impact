@@ -83,7 +83,10 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
   const editStep = useMutation({
     mutationFn: ({ stepId, data }: { stepId: number; data: UpdateStepBody }) => StepsService.update(stepId, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] }),
+    onSuccess: (_, props) => {
+      queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
+      queryClient.invalidateQueries({ queryKey: ['step', props.stepId] })
+    },
     onMutate: async (props: { stepId: number; data: UpdateStepBody }) => {
       await queryClient.cancelQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
 
