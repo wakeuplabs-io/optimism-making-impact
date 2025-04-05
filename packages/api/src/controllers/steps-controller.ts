@@ -127,15 +127,55 @@ async function update(req: Request, res: Response, next: NextFunction) {
 async function deleteOne(req: Request, res: Response, next: NextFunction) {
   try {
     const parsed = idParamsSchema.safeParse(req.params);
-
     if (!parsed.success) throw ApiError.badRequest();
 
-    // Delete the specified step
-    const deleted = await prisma.step.delete({
-      where: { id: parsed.data.id },
+    const stepId = parsed.data.id;
+
+    const step = await prisma.step.findUnique({
+      where: { id: stepId },
+      select: {
+        type: true,
+        smartListFilterId: true,
+      },
     });
 
-    apiResponse.success(res, deleted);
+    if (!step) throw ApiError.notFound("Step not found");
+
+    const { type, smartListFilterId } = step;
+
+    let smartListIdToDelete = 0;
+    if (type === "SMARTLIST" && smartListFilterId) {
+      const otherStep = await prisma.step.findFirst({
+        where: {
+          smartListFilterId,
+          id: { not: stepId },
+        },
+      });
+
+      if (otherStep) {
+        throw ApiError.badRequest(
+          "Cannot delete SMARTLIST step: filter is still used by other steps."
+        );
+      }
+      smartListIdToDelete = smartListFilterId;
+    }
+
+    const deletedStep = await prisma.step.delete({
+      where: { id: stepId }
+    });
+
+    if (smartListIdToDelete) {
+      // First we delete it's attributes
+      await prisma.attribute.deleteMany({
+        where: { smartListFilterId: smartListIdToDelete },
+      });
+      // Then the smart list itself
+      await prisma.smartListFilter.delete({
+        where: { id: smartListIdToDelete },
+      });
+    }
+
+    apiResponse.success(res, deletedStep);
   } catch (error) {
     next(error);
   }
