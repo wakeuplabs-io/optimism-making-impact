@@ -4,7 +4,7 @@ import { StrengthsFilterProvider } from '@/features/filters/strengths/strengths-
 import { StepProvider } from '@/features/main-section/step-context';
 import { useCardsStepContext } from '@/features/main-section/step-types/cards/context/use-cards-step-context';
 import { CompleteStep } from '@/types/steps';
-import { ComponentType, FC, useEffect } from 'react';
+import { ComponentType, FC, useEffect, useMemo } from 'react';
 
 /**
  * HOC that wraps a component with the step and filters context providers and
@@ -19,11 +19,15 @@ export function withCardsStepContext<P extends JSX.IntrinsicAttributes & { step:
   WrappedComponent: ComponentType<P>,
 ): FC<P> {
   const CardsStepInitializationWrapper: FC<P> = (props: P) => {
+    const key = useMemo(() => {
+      return JSON.stringify(props.step);
+    }, [props.step]);
+
     return (
       <KeywordsFiltersProvider>
         <AttributesFilterProvider>
           <StrengthsFilterProvider>
-            <StepProvider step={props.step}>
+            <StepProvider step={props.step} key={key}>
               <InnerInitializer {...props} />
             </StepProvider>
           </StrengthsFilterProvider>

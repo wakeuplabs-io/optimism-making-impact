@@ -2,7 +2,7 @@ import { AttributesFilterProvider } from '@/features/filters/attributes/attribut
 import { StepProvider } from '@/features/main-section/step-context';
 import { useItemsStepContext } from '@/features/main-section/step-types/items/context/use-items-step-context';
 import { CompleteStep } from '@/types/steps';
-import { ComponentType, FC, useEffect } from 'react';
+import { ComponentType, FC, useEffect, useMemo } from 'react';
 
 /**
  * HOC that wraps a component with the step and filters context providers and
@@ -17,9 +17,13 @@ export function withItemsStepContext<P extends JSX.IntrinsicAttributes & { step:
   WrappedComponent: ComponentType<P>,
 ): FC<P> {
   const ItemStepInitializationWrapper: FC<P> = (props: P) => {
+    const key = useMemo(() => {
+      return JSON.stringify(props.step);
+    }, [props.step]);
+
     return (
       <AttributesFilterProvider>
-        <StepProvider step={props.step}>
+        <StepProvider step={props.step} key={key}>
           <InnerInitializer {...props} />
         </StepProvider>
       </AttributesFilterProvider>
