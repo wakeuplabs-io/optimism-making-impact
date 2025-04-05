@@ -175,9 +175,7 @@ async function duplicateRound(originalRound: CompleteRound): Promise<number> {
     for (const category of originalRound.categories) {
       const newCategory = await duplicateCategory(tx, category, newRound.id);
 
-      for (const step of category.steps) {
-        await duplicateStep(tx, step, newCategory);
-      }
+      await duplicateSteps(tx, category.steps, newCategory);
     }
 
     return newRound.id;
@@ -203,39 +201,59 @@ async function duplicateCategory(tx: Tx, category: CompleteCategory, newRoundId:
   });
 }
 
-async function duplicateStep(tx: Tx, step: CompleteStep, newCategory: Category): Promise<void> {
-  const newStep = await tx.step.create({
-    data: {
-      title: step.title,
-      icon: step.icon,
-      type: step.type,
-      categoryId: newCategory.id,
-    },
-  });
+async function duplicateSteps(tx: Tx, steps: CompleteStep[], newCategory: Category): Promise<void> {
+  // dictionary matching old id and new attributes
+  const oldSmartFiltersIdMap: { [oldId: number]: { attributes: Attribute[], newId: number } } = {};
 
-  let newAttributes: Attribute[] = [];
-
-  if (step.smartListFilter != null) {
-    const { newSmartList, newAttributes: attrs } = await duplicateSmartListFilter(tx, step.smartListFilter);
-    newAttributes = attrs;
-    await tx.step.update({
-      where: { id: newStep.id },
-      data: { smartListFilterId: newSmartList.id },
+  for (const step of steps) {
+    const newStep = await tx.step.create({
+      data: {
+        title: step.title,
+        icon: step.icon,
+        type: step.type,
+        categoryId: newCategory.id,
+      },
     });
-  }
 
-  for (const infographic of step.infographics) {
-    await duplicateInfographic(tx, infographic, newStep.id);
-  }
+    if (step.smartListFilter != null) {
+      if (!oldSmartFiltersIdMap[step.smartListFilter.id]) {
+        const { newSmartList, newAttributes: attributes } = await duplicateSmartListFilter(tx, step.smartListFilter);
+        oldSmartFiltersIdMap[step.smartListFilter.id] = { attributes, newId: newSmartList.id }
+        await tx.step.update({
+          where: { id: newStep.id },
+          data: { smartListFilterId: newSmartList.id },
+        });
+      } else {
+        const existingSmartListId = oldSmartFiltersIdMap[step.smartListFilter.id].newId;
+        await tx.step.update({
+          where: { id: newStep.id },
+          data: { smartListFilterId: existingSmartListId },
+        });
+      }
+    }
 
-  for (const item of step.items) {
-    await duplicateItem(tx, item, newStep.id, newAttributes);
-  }
+    for (const infographic of step.infographics) {
+      await duplicateInfographic(tx, infographic, newStep.id);
+    }
 
-  for (const card of step.cards) {
-    const newCard = await duplicateCard(tx, card, newStep.id, newAttributes);
-    for (const kw of card.keywords) {
-      await duplicateKeyword(tx, kw, newCard.id, newStep.id);
+    for (const item of step.items) {
+      let newAttributes: Attribute[] = [];
+      if (step.smartListFilter)
+        newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes
+
+      await duplicateItem(tx, item, newStep.id, newAttributes);
+
+    }
+
+    for (const card of step.cards) {
+      let newAttributes: Attribute[] = [];
+      if (step.smartListFilter)
+        newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes
+
+      const newCard = await duplicateCard(tx, card, newStep.id, newAttributes);
+      for (const kw of card.keywords) {
+        await duplicateKeyword(tx, kw, newCard.id, newStep.id);
+      }
     }
   }
 }
