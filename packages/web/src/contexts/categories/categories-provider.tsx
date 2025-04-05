@@ -40,7 +40,7 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
         if (round.id === roundId) {
           return {
             ...round,
-            categories: [{ id: -1, name, icon }, ...round.categories],
+            categories: [{ id: selectedCategoryId ?? 99, name, icon }, ...round.categories],
           };
         }
         return round;
