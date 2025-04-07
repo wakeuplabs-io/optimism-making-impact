@@ -1,5 +1,6 @@
 import { Modal } from '@/components/modal';
 import { SidebarModalAddTrigger } from '@/features/sidebar/components/sidebar-modal-add-trigger';
+import { AlertCircle } from 'lucide-react';
 import { useToggle } from 'usehooks-ts';
 
 interface CreateRoundModalProps {
@@ -17,12 +18,20 @@ export function CreateRoundModal({ isDisabled, onSave }: CreateRoundModalProps) 
         title='New round'
         open={isOpen}
         onOpenChange={toggleOpen}
-        buttons={[{ label: 'Create', variant: 'primary', onClick: () => onSave() }]}
+        buttons={[
+          { label: 'Create', variant: 'primary', onClick: () => onSave() },
+          { label: 'Cancel', variant: 'secondary', closeOnClick: true },
+        ]}
       >
-        <div className='flex flex-col items-center mt-2'>
-          <p>You are about to create a new round</p>
-          <p>which will clone the latest round and it's links</p>
-          <p>Are you sure?</p>
+        <div className='flex flex-col space-y-4 mb-6'>
+          <p className='font-bold text-base'>You're about to create a new round.</p>
+
+          <div className='flex items-start space-x-3 my-1'>
+            <AlertCircle className='text-gray-500 mt-0.5 flex-shrink-0' size={20} />
+            <p className='text-gray-600 text-sm'>This will duplicate the latest round along with all its associated links.</p>
+          </div>
+
+          <p className='font-bold text-base'>Are you sure you want to proceed?</p>
         </div>
       </Modal>
     </>
