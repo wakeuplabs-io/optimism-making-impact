@@ -2,7 +2,6 @@ import { Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { createContext } from 'react';
 
-
 interface StepsContextType {
   steps: Step[];
   isLoading: boolean;
