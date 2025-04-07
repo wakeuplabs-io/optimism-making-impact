@@ -36,7 +36,11 @@ export function AddItemModal(props: AddItemModalProps) {
   return (
     <FormModal
       title='Add item'
-      trigger={<IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />}
+      trigger={
+        <div className='h-[35px] w-[35px] self-center'>
+          <IconButton icon={<Plus />} variant='secondary' className='h-[35px] w-[35px]' />
+        </div>
+      }
       onSubmit={handleSubmit}
       defaultValues={defaultValues}
       schema={createItemSchema}

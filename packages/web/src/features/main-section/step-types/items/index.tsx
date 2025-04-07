@@ -23,7 +23,7 @@ function ItemsStepComponent({ step }: ItemStepProps) {
     <div className={'flex flex-col gap-4'}>
       <div className='flex h-full flex-col gap-6 lg:flex-row'>
         <ItemFilters />
-        <div className='w-full pb-8'>
+        <div className='w-full pb-8 lg:max-w-[75%]'>
           <ItemsList editStepDescription={handleStepDescriptionChange} />
         </div>
       </div>

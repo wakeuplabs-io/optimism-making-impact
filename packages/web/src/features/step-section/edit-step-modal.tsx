@@ -40,7 +40,7 @@ export function EditStepModal(props: EditStepModalProps) {
       }
       onDelete={props.onDelete}
     >
-      <FormFields defaultValues={defaultValues}/>
+      <FormFields defaultValues={defaultValues} />
     </EditEntityModal>
   );
 }
