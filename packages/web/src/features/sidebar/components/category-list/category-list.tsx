@@ -4,6 +4,7 @@ import { CategoryListButton } from './category-list-button';
 import { useCategories } from '@/hooks/use-categories';
 import { useRounds } from '@/hooks/use-rounds';
 import { useUser } from '@/hooks/use-user';
+import { useMemo } from 'react';
 
 export function CategoryList() {
   const { categories, selectedCategory, handleCategorySelect, handleCategoryDelete, handleCategoryEdit, handleCategoryAdd } =
@@ -11,24 +12,27 @@ export function CategoryList() {
   const { isAdminModeEnabled: isAdmin } = useUser();
   const { selectedRound, roundsLoading } = useRounds();
 
-  if (!roundsLoading && !selectedRound?.id) {
+  const items = useMemo(
+    () =>
+      categories?.map((category) => ({
+        id: category.id,
+        item: (
+          <CategoryListButton
+            category={category}
+            isSelected={selectedCategory?.id === category.id}
+            onClick={() => handleCategorySelect(category)}
+            isAdmin={isAdmin}
+            onDelete={handleCategoryDelete}
+            onEdit={handleCategoryEdit}
+          />
+        ),
+      })),
+    [categories, handleCategorySelect, handleCategoryDelete, handleCategoryEdit, isAdmin, selectedCategory?.id],
+  );
+  
+  if (!roundsLoading && selectedRound === undefined) {
     return <p className='text-center text-sm'>Select a round to view its categories.</p>;
   }
-
-  const items =
-    categories?.map((category) => ({
-      id: category.id,
-      item: (
-        <CategoryListButton
-          category={category}
-          isSelected={selectedCategory?.id === category.id}
-          onClick={() => handleCategorySelect(category)}
-          isAdmin={isAdmin}
-          onDelete={handleCategoryDelete}
-          onEdit={handleCategoryEdit}
-        />
-      ),
-    })) ?? [];
 
   return (
     <div className='flex flex-col gap-2'>

@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 
 const indexRouteSearchParamsSchema = z.object({
-  roundId: z.number().min(1).optional(),
+  roundId: z.number().min(0).optional(),
   categoryId: z.number().min(1).optional(),
   stepId: z.number().min(1).optional(),
 });

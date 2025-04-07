@@ -14,12 +14,12 @@ interface AddCategoryModalProps {
 export function AddCategoryModal(props: AddCategoryModalProps) {
   const [isFormOpen, toggleFormOpen] = useToggle(false);
 
-  if (!props.roundId) return;
+  if (props.roundId === undefined) return;
 
   const defaultValues: CreateCategoryBody = { name: '', icon: 'Blocks', roundId: props.roundId };
 
   function handleSubmit(data: CreateCategoryBody) {
-    if (!props.roundId) return;
+    if (props.roundId === undefined) return;
 
     props.onSave?.(data.name, data.icon, props.roundId);
   }
