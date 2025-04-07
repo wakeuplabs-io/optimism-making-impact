@@ -17,6 +17,8 @@ CREATE TABLE "Round" (
 
     CONSTRAINT "Round_pkey" PRIMARY KEY ("id")
 );
+-- Set the sequence for Round.id to start at 0
+ALTER SEQUENCE "Round_id_seq" MINVALUE 0 START 0 RESTART 0;
 
 -- CreateTable
 CREATE TABLE "Category" (
