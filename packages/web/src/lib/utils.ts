@@ -31,9 +31,9 @@ export function extractUniqueKeywordsFromCards(cards: CompleteCard[]): Keyword[]
 }
 
 export function getRoundName(roundId: number) {
-  if (roundId === 1) return "WakeUp Labs’ Proposed Experimentation Round – Milestone #3"
-  
-  return `Round ${roundId - 1}`;
+  if (roundId === 1) return 'WakeUp Labs’ Proposed Experimentation Round – Milestone #3';
+
+  return `Round ${roundId}`;
 }
 
 export function getColor(color: ExtendedColor): string {
