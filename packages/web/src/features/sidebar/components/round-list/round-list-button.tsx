@@ -1,8 +1,8 @@
 import { SidebarListButton } from '../sidebar-list-button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { getRoundName } from '@/lib/utils';
 import { CompleteRound } from '@/types/rounds';
 import { Circle } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useMemo, useRef, useState } from 'react';
 
 interface RoundListButtonProps {
@@ -29,8 +29,12 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
     setTooltipOpen(false);
   };
 
-  const roundName = useMemo(() => { return getRoundName(round.id) }, [round])
-  const isRoundNameLong = useMemo(() => { return roundName.length > 23 }, [roundName])
+  const roundName = useMemo(() => {
+    return getRoundName(round.id);
+  }, [round]);
+  const isRoundNameLong = useMemo(() => {
+    return roundName.length > 23;
+  }, [roundName]);
 
   return (
     <SidebarListButton isSelected={isSelected} isLoading={round.status === 'PENDING'} onClick={() => onSelect(round)}>
@@ -38,14 +42,10 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
         <div className='flex h-[20px] w-[20px] items-center justify-center'>
           <Circle className='h-[7px] w-[7px]' strokeWidth={6} />
         </div>
-        {isRoundNameLong &&
+        {isRoundNameLong && (
           <Tooltip open={tooltipOpen} onOpenChange={setTooltipOpen}>
             <TooltipTrigger asChild>
-              <span
-                className="text-sm truncate w-full text-start"
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-              >
+              <span className='text-sm truncate w-full text-start' onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                 {roundName}
               </span>
             </TooltipTrigger>
@@ -53,11 +53,8 @@ export function RoundListButton({ round, isSelected, onSelect }: RoundListButton
               <span className='text-sm'>{roundName}</span>
             </TooltipContent>
           </Tooltip>
-        }
-        {!isRoundNameLong &&
-          <span className='text-sm truncate w-full text-start'>{roundName}</span>
-        }
-
+        )}
+        {!isRoundNameLong && <span className='text-sm truncate w-full text-start'>{roundName}</span>}
       </div>
     </SidebarListButton>
   );

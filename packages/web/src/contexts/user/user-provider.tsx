@@ -1,8 +1,6 @@
 import { User } from './types';
+import { UserContext } from './user-context';
 import { AUTH_TOKEN_KEY, IS_DEVELOPMENT } from '@/config';
-import { toast } from '@/hooks/use-toast';
-import { AuthService } from '@/services/auth/service';
-import { LocalStorageService } from '@/services/local-storage';
 import {
   AUTHENTICATION_ERROR_DESCRIPTION,
   AUTHENTICATION_ERROR_TITLE,
@@ -10,9 +8,11 @@ import {
   AUTHENTICATION_SUCCESS_DESCRIPTION,
   AUTHENTICATION_SUCCESS_TITLE,
 } from '@/contexts/user/texts';
+import { toast } from '@/hooks/use-toast';
+import { AuthService } from '@/services/auth/service';
+import { LocalStorageService } from '@/services/local-storage';
 import { signOut as amplifySignOut, fetchAuthSession } from 'aws-amplify/auth';
 import { useState, ReactNode, useEffect } from 'react';
-import { UserContext } from './user-context';
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -83,11 +83,5 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     fetchAuth();
   }, []);
 
-  return (
-    <UserContext.Provider
-      value={{ isLoading, isAdminModeEnabled, user, toggleAdminMode, signOut }}
-    >
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ isLoading, isAdminModeEnabled, user, toggleAdminMode, signOut }}>{children}</UserContext.Provider>;
 };

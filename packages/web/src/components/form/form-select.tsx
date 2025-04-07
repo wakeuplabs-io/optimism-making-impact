@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
 import { SelectInput } from '../inputs/select-input';
 import { FormInputWrapper } from './form-input';
+import { cn } from '@/lib/utils';
 
 interface FormSelectProps extends React.ComponentProps<typeof SelectInput> {
   error?: string;

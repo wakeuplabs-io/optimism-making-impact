@@ -14,13 +14,7 @@ export function InfographicStepSkeleton() {
             })}
           >
             <div className='flex w-full flex-grow flex-col xl:w-1/2'>
-              <Skeleton
-                count={1}
-                height={64}
-                containerClassName='w-2/3'
-                borderRadius={10}
-                className='my-10 w-max px-3'
-              />
+              <Skeleton count={1} height={64} containerClassName='w-2/3' borderRadius={10} className='my-10 w-max px-3' />
               <Skeleton count={2} height={36} containerClassName='w-full' borderRadius={10} className='my-2 w-max px-3' />
             </div>
             <Skeleton containerClassName='items-center justify-center w-full md:w-1/2' className='aspect-video h-[274px] xl:h-[320px]' />

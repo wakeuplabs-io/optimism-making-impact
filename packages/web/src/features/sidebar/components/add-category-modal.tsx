@@ -1,5 +1,5 @@
-import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { SidebarModalAddTrigger } from './sidebar-modal-add-trigger';
+import { FormIconPicker } from '@/components/form/form-icon-picker';
 import { FormModal } from '@/components/form/form-modal';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { CreateCategoryBody, createCategoryBodySchema } from '@optimism-making-impact/schemas';

@@ -1,6 +1,6 @@
 import { BaseFilterGroupIconProps, FilterGroupIcon } from '@/components/filter-group/filter-group-icon';
-import { CardStrength } from '@optimism-making-impact/schemas';
 import { CARD_STRENGTH_COLOR_MAP } from '@/config';
+import { CardStrength } from '@optimism-making-impact/schemas';
 import { ArrowDownRight, ArrowRight, ArrowUpRight } from 'lucide-react';
 
 interface FilterStrengthIconProps extends BaseFilterGroupIconProps {

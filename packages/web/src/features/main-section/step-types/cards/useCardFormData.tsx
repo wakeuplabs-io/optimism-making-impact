@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
 import { AttributeOption, attributesOptionsMapper } from '../utils';
 import { Attribute } from '@optimism-making-impact/schemas';
+import { useMemo } from 'react';
 
 export const nonAssignedOption = { value: 0, label: <span>Non assigned</span> };
 

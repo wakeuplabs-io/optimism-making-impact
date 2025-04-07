@@ -139,12 +139,12 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       },
     });
 
-    if (!step) throw ApiError.notFound("Step not found");
+    if (!step) throw ApiError.notFound('Step not found');
 
     const { type, smartListFilterId } = step;
 
     let smartListIdToDelete = 0;
-    if (type === "SMARTLIST" && smartListFilterId) {
+    if (type === 'SMARTLIST' && smartListFilterId) {
       const otherStep = await prisma.step.findFirst({
         where: {
           smartListFilterId,
@@ -153,15 +153,13 @@ async function deleteOne(req: Request, res: Response, next: NextFunction) {
       });
 
       if (otherStep) {
-        throw ApiError.badRequest(
-          "Cannot delete SMARTLIST step: filter is still used by other steps."
-        );
+        throw ApiError.badRequest('Cannot delete SMARTLIST step: filter is still used by other steps.');
       }
       smartListIdToDelete = smartListFilterId;
     }
 
     const deletedStep = await prisma.step.delete({
-      where: { id: stepId }
+      where: { id: stepId },
     });
 
     if (smartListIdToDelete) {

@@ -158,10 +158,7 @@ export function useStep() {
 
       const updatedSmartListFilter = {
         ...previousStep.smartListFilter,
-        attributes: [
-          ...(previousStep.smartListFilter?.attributes ?? []),
-          { id: 0, categoryId: previousStep?.categoryId, ...data },
-        ],
+        attributes: [...(previousStep.smartListFilter?.attributes ?? []), { id: 0, categoryId: previousStep?.categoryId, ...data }],
       };
 
       queryClient.setQueryData(['step', selectedStepId], () => ({

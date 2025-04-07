@@ -1,19 +1,13 @@
-import { useRounds } from '@/hooks/use-rounds';
 import { AddCategoryModal } from '../add-category-modal';
 import { SidebarSectionList } from '../sidebar-section-list';
 import { CategoryListButton } from './category-list-button';
-import { useUser } from '@/hooks/use-user';
 import { useCategories } from '@/hooks/use-categories';
+import { useRounds } from '@/hooks/use-rounds';
+import { useUser } from '@/hooks/use-user';
 
 export function CategoryList() {
-  const {
-    categories,
-    selectedCategory,
-    handleCategorySelect,
-    handleCategoryDelete,
-    handleCategoryEdit,
-    handleCategoryAdd,
-  } = useCategories();
+  const { categories, selectedCategory, handleCategorySelect, handleCategoryDelete, handleCategoryEdit, handleCategoryAdd } =
+    useCategories();
   const { isAdminModeEnabled: isAdmin } = useUser();
   const { selectedRound, roundsLoading } = useRounds();
 

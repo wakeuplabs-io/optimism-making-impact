@@ -203,7 +203,7 @@ async function duplicateCategory(tx: Tx, category: CompleteCategory, newRoundId:
 
 async function duplicateSteps(tx: Tx, steps: CompleteStep[], newCategory: Category): Promise<void> {
   // dictionary matching old id and new attributes
-  const oldSmartFiltersIdMap: { [oldId: number]: { attributes: Attribute[], newId: number } } = {};
+  const oldSmartFiltersIdMap: { [oldId: number]: { attributes: Attribute[]; newId: number } } = {};
 
   for (const step of steps) {
     const newStep = await tx.step.create({
@@ -218,7 +218,7 @@ async function duplicateSteps(tx: Tx, steps: CompleteStep[], newCategory: Catego
     if (step.smartListFilter != null) {
       if (!oldSmartFiltersIdMap[step.smartListFilter.id]) {
         const { newSmartList, newAttributes: attributes } = await duplicateSmartListFilter(tx, step.smartListFilter);
-        oldSmartFiltersIdMap[step.smartListFilter.id] = { attributes, newId: newSmartList.id }
+        oldSmartFiltersIdMap[step.smartListFilter.id] = { attributes, newId: newSmartList.id };
         await tx.step.update({
           where: { id: newStep.id },
           data: { smartListFilterId: newSmartList.id },
@@ -238,17 +238,14 @@ async function duplicateSteps(tx: Tx, steps: CompleteStep[], newCategory: Catego
 
     for (const item of step.items) {
       let newAttributes: Attribute[] = [];
-      if (step.smartListFilter)
-        newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes
+      if (step.smartListFilter) newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes;
 
       await duplicateItem(tx, item, newStep.id, newAttributes);
-
     }
 
     for (const card of step.cards) {
       let newAttributes: Attribute[] = [];
-      if (step.smartListFilter)
-        newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes
+      if (step.smartListFilter) newAttributes = oldSmartFiltersIdMap[step.smartListFilter.id].attributes;
 
       const newCard = await duplicateCard(tx, card, newStep.id, newAttributes);
       for (const kw of card.keywords) {

@@ -1,8 +1,8 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
 import { TextAreaInput, TextAreaInputModalProps } from '../text-area-input';
 import { FormInputWrapper } from './form-input';
+import { cn } from '@/lib/utils';
 import { Label } from '@radix-ui/react-label';
+import React from 'react';
 
 export interface FormTextAreaProps extends TextAreaInputModalProps {
   label: string;
@@ -34,7 +34,7 @@ export const FormTextArea = React.forwardRef<HTMLTextAreaElement, FormTextAreaPr
         </div>
       </FormInputWrapper>
     );
-  }
+  },
 );
 
 FormTextArea.displayName = 'FormTextArea';
