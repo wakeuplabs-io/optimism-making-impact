@@ -98,7 +98,10 @@ interface InnerFormProps<TFormSchema extends z.AnyZodObject> {
 }
 
 export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormProps<TFormSchema>) {
-  const methods = useForm({ defaultValues: props.defaultValues, resolver: zodResolver(props.schema) });
+  const methods = useForm({
+    defaultValues: props.defaultValues,
+    resolver: zodResolver(props.schema),
+  });
   const { handleSubmit } = methods;
 
   return (
@@ -108,6 +111,7 @@ export function InnerForm<TFormSchema extends z.AnyZodObject>(props: InnerFormPr
         onSubmit={handleSubmit(props.onInternalSubmit)}
         onError={(errors) => console.log(errors)}
         className='min-w-[220px]'
+        noValidate
       >
         {props.children}
       </form>

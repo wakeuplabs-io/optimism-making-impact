@@ -29,7 +29,7 @@ export function CategoryList() {
       })),
     [categories, handleCategorySelect, handleCategoryDelete, handleCategoryEdit, isAdmin, selectedCategory?.id],
   );
-  
+
   if (!roundsLoading && selectedRound === undefined) {
     return <p className='text-center text-sm'>Select a round to view its categories.</p>;
   }
