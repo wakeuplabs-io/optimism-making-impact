@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { DeleteConfirmationModal } from '../delete-confirmation-modal';
+import { EditIcon } from '../icons/edit-icon';
 import { FormModal, FormModalProps } from './form-modal';
 import { Save, Trash } from 'lucide-react';
 import { useToggle } from 'usehooks-ts';
-import { DeleteConfirmationModal } from '../delete-confirmation-modal';
-import { EditIcon } from '../icons/edit-icon';
+import { z } from 'zod';
 
 interface EditEntityModalProps<TFormSchema extends z.AnyZodObject>
   extends Omit<FormModalProps<TFormSchema>, 'title' | 'submitButtonIcon' | 'submitButtonText' | 'secondaryButtonIcon'> {

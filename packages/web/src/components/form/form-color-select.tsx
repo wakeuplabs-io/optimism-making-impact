@@ -1,7 +1,7 @@
-import { Label } from '@radix-ui/react-label';
 import { ColorSelectInput, ColorSelectInputProps } from '../inputs/color-select-input';
 import { FormInputWrapper } from './form-input';
 import { cn } from '@/lib/utils';
+import { Label } from '@radix-ui/react-label';
 
 interface FormColorSelectProps extends ColorSelectInputProps {
   label?: string;

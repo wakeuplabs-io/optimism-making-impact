@@ -8,8 +8,7 @@ interface CategoriesContextType {
   handleCategoryAdd(name: string, icon: string, roundId: number): void;
   handleCategorySelect(category: Category): void;
   handleCategoryEdit(name: string, icon: string): void;
-  handleCategoryDelete(categoryId: number): void,
-
+  handleCategoryDelete(categoryId: number): void;
 }
 
 export const CategoriesContext = createContext<CategoriesContextType | undefined>(undefined);

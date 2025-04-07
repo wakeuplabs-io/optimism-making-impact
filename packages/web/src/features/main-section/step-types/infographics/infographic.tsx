@@ -1,9 +1,9 @@
 import { AddInfographicModal } from './add-infographic-modal';
 import { InfographicList } from './infographic-list';
-import { cn } from '@/lib/utils';
-import { useUser } from '@/hooks/use-user';
-import { ReactNode } from 'react';
 import { useStep } from '@/hooks/use-step';
+import { useUser } from '@/hooks/use-user';
+import { cn } from '@/lib/utils';
+import { ReactNode } from 'react';
 
 function InfographicStepWrapper({ children }: { children: ReactNode }) {
   return (

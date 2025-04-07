@@ -144,15 +144,17 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <CategoriesContext.Provider value={{
-      categories,
-      categoriesLoading: roundsLoading,
-      selectedCategory,
-      handleCategorySelect,
-      handleCategoryDelete,
-      handleCategoryEdit,
-      handleCategoryAdd,
-    }}>
+    <CategoriesContext.Provider
+      value={{
+        categories,
+        categoriesLoading: roundsLoading,
+        selectedCategory,
+        handleCategorySelect,
+        handleCategoryDelete,
+        handleCategoryEdit,
+        handleCategoryAdd,
+      }}
+    >
       {children}
     </CategoriesContext.Provider>
   );

@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import { FormInputWrapper } from './form-input';
 import { MultiSelectInput } from '../ui/multi-select';
+import { FormInputWrapper } from './form-input';
+import { cn } from '@/lib/utils';
 import { Label } from '@radix-ui/react-label';
 
 interface FormMultiSelectProps extends React.ComponentProps<typeof MultiSelectInput> {

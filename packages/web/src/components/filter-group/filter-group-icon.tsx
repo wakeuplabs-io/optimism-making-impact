@@ -1,6 +1,6 @@
-import { LucideIcon, LucideProps } from 'lucide-react';
 import { ColorDot, ColorDotProps } from '../color-dot';
 import { cn, getColor } from '@/lib/utils';
+import { LucideIcon, LucideProps } from 'lucide-react';
 
 export interface BaseFilterGroupIconProps {
   selected: boolean;

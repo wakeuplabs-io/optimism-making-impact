@@ -32,7 +32,12 @@ export function Modal({ buttons = [], contentProps = {}, ...props }: ModalProps)
   return (
     <Dialog {...props}>
       {props.trigger && <DialogTrigger asChild>{props.trigger}</DialogTrigger>}
-      <DialogContent className='flex flex-col gap-0 lg:max-w-[550px] rounded-[22px] p-6 sm:p-12' hideCloseButton={true} aria-describedby={undefined} {...contentProps}>
+      <DialogContent
+        className='flex flex-col gap-0 lg:max-w-[550px] rounded-[22px] p-6 sm:p-12'
+        hideCloseButton={true}
+        aria-describedby={undefined}
+        {...contentProps}
+      >
         <DialogHeader className='flex flex-row items-start justify-between mb-8'>
           <div className='flex flex-col items-start justify-between'>
             {props.title && <DialogTitle className='text-xl text-dark-high font-medium'>{props.title}</DialogTitle>}

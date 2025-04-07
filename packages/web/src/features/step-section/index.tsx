@@ -4,6 +4,7 @@ import { useCategories } from '@/hooks/use-categories';
 import { useStepsList } from '@/hooks/use-steps-list';
 import { useIsMobile } from '@/hooks/use-tresholds';
 import { useUser } from '@/hooks/use-user';
+
 export function StepsSectionContent() {
   const { isAdminModeEnabled: isAdmin } = useUser();
 

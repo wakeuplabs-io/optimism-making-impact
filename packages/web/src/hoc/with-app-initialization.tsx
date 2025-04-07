@@ -1,4 +1,4 @@
-import { ComponentType, FC,  } from 'react';
+import { ComponentType, FC } from 'react';
 
 /**
  * HOC that wraps a component with app initialization logic.
@@ -9,7 +9,6 @@ import { ComponentType, FC,  } from 'react';
  */
 export function withAppInitialization<P extends JSX.IntrinsicAttributes>(WrappedComponent: ComponentType<P>): FC<P> {
   const AppInitializationWrapper: FC<P> = (props: P) => {
-
     return <WrappedComponent {...props} />;
   };
 

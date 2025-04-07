@@ -30,8 +30,9 @@ export function EditStepModal(props: EditStepModalProps) {
       schema={updateStepBodySchema}
       deleteDescription={
         <>
-          {props.step.type === 'SMARTLIST' &&
-            <p>You should first delete any cardgrid asociated to this smartlist, otherwise deletion will fail.</p>}
+          {props.step.type === 'SMARTLIST' && (
+            <p>You should first delete any cardgrid asociated to this smartlist, otherwise deletion will fail.</p>
+          )}
           <span>
             Are you sure you want to delete <b>{props.step.title}</b> step?
           </span>

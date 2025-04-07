@@ -1,9 +1,9 @@
+import { EditEntityModal } from '@/components/form/edit-entity-modal';
+import { FormColorSelect } from '@/components/form/form-color-select';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { Attribute, Color, UpdateAttributeBody, updateAttributeSchema } from '@optimism-making-impact/schemas';
 import { Controller, useFormContext } from 'react-hook-form';
-import { EditEntityModal } from '@/components/form/edit-entity-modal';
-import { FormTextArea } from '@/components/form/form-text-area';
-import { FormColorSelect } from '@/components/form/form-color-select';
 
 interface UpdateAttributeModalProps {
   attribute: Attribute;

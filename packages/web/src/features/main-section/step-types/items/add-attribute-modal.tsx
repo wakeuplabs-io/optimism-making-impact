@@ -1,11 +1,11 @@
+import { FormColorSelect } from '@/components/form/form-color-select';
 import { FormModal } from '@/components/form/form-modal';
+import { FormTextArea } from '@/components/form/form-text-area';
 import { FormTextInput } from '@/components/form/form-text-input';
 import { IconButton } from '@/components/icon-button';
 import { Color, CreateAttributeBody, createAttributeSchema } from '@optimism-making-impact/schemas';
 import { Plus } from 'lucide-react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { FormTextArea } from '@/components/form/form-text-area';
-import { FormColorSelect } from '@/components/form/form-color-select';
 
 interface AddAttributeModalProps {
   smartListFilterId: number;

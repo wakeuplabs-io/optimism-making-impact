@@ -114,7 +114,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
     setSelectedRoundId(round.id);
   }
   function handleEditRound(roundId: number, data: UpdateRoundBody) {
-    editRound.mutate({ roundId, data })
+    editRound.mutate({ roundId, data });
   }
 
   // Set default round when rounds load
