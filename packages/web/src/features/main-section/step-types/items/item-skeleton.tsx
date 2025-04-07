@@ -6,7 +6,7 @@ export function ItemsStepSekeleton() {
   const isMobile = useIsMobile();
 
   return (
-    <div className={'flex flex-col gap-4'}>
+    <div className={'flex flex-col gap-4 h-[80vh] overflow-hidden'}>
       <div className='flex h-full flex-col gap-6 lg:flex-row'>
         {isMobile && <div className='h-14'></div>}
         {!isMobile && (

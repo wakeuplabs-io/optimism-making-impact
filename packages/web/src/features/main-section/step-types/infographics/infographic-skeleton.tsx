@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 
 export function InfographicStepSkeleton() {
   return (
-    <div className='flex w-full flex-col items-center bg-white px-8 py-12 lg:gap-8 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7'>
+    <div className='flex w-full flex-col items-center bg-white px-8 py-12 lg:gap-8 lg:rounded-3xl lg:px-16 lg:pb-16 lg:pt-7 h-[80vh] overflow-hidden'>
       <div className='flex w-full flex-col gap-y-16'>
         {[1, 2, 3].map((x) => (
           <div
