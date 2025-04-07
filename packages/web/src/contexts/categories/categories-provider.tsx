@@ -29,7 +29,7 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
   const addCategory = useMutation({
     mutationFn: ({ name, icon, roundId }: CreateCategoryBody) => CategoriesService.createOne({ name, icon, roundId }),
     onSuccess: ({ data }) => {
-      setSelectedCategoryId(data.id);
+      setSelectedCategory(data);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
     onMutate: async ({ name, icon, roundId }: CreateCategoryBody) => {
