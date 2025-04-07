@@ -2,15 +2,14 @@ import { Step } from '@/types/steps';
 import { CreateStepBody, UpdateStepBody } from '@optimism-making-impact/schemas';
 import { createContext } from 'react';
 
-export type StepWithPosition = Step & { position: number };
 
 interface StepsContextType {
-  steps: StepWithPosition[];
+  steps: Step[];
   isLoading: boolean;
   error: Error | null;
-  selectedStep: StepWithPosition | null;
+  selectedStep?: Step;
   handleStepAdd(categoryId: number, data: CreateStepBody): void;
-  handleStepSelect(step: number): void;
+  handleStepSelect(step: Step): void;
   handleStepDelete(stepId: number): void;
   handleStepEdit(stepId: number, data: UpdateStepBody): void;
 }

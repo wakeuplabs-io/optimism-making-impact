@@ -1,5 +1,6 @@
 import { CategoriesContext } from './categories-context';
 import { useQueryParams } from '@/hooks/use-query-params';
+import { useRounds } from '@/hooks/use-rounds';
 import { toast } from '@/hooks/use-toast';
 import { queryClient } from '@/main';
 import { CategoriesService } from '@/services/categories-service';
@@ -11,7 +12,8 @@ import { AxiosError } from 'axios';
 import { ReactNode, useEffect, useState } from 'react';
 
 export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
-  const { selectedRoundId, selectedCategoryId, setSelectedCategoryId } = useQueryParams();
+  const { selectedCategoryId, setSelectedCategoryId } = useQueryParams();
+  const { selectedRound } = useRounds();
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>();
@@ -27,7 +29,7 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
   const addCategory = useMutation({
     mutationFn: ({ name, icon, roundId }: CreateCategoryBody) => CategoriesService.createOne({ name, icon, roundId }),
     onSuccess: ({ data }) => {
-      setSelectedCategoryId(data.id);
+      setSelectedCategory(data);
       queryClient.invalidateQueries({ queryKey: ['rounds'] });
     },
     onMutate: async ({ name, icon, roundId }: CreateCategoryBody) => {
@@ -40,7 +42,7 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
         if (round.id === roundId) {
           return {
             ...round,
-            categories: [{ id: -1, name, icon }, ...round.categories],
+            categories: [...round.categories, { id: selectedCategoryId ?? 99, name, icon }],
           };
         }
         return round;
@@ -100,15 +102,18 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
 
   // Load categories when rounds change
   useEffect(() => {
-    if (rounds.length === 0) return;
+    if (rounds.length === 0 || !selectedRound) return;
 
-    const foundRound = rounds.find((round) => round.id === selectedRoundId) || null;
+    const foundRound = rounds.find((round) => round.id === selectedRound.id) || null;
     setCategories(foundRound?.categories ?? []);
-  }, [rounds, selectedRoundId]);
+  }, [rounds, selectedRound]);
 
   // Set default category
   useEffect(() => {
-    if (categories.length === 0) return;
+    if (selectedRound && categories.length === 0) {
+      setSelectedCategory(undefined);
+      return;
+    }
 
     const newCategory = categories.find((c) => c.id === selectedCategoryId);
     setSelectedCategory(newCategory ?? categories[0]);
@@ -116,9 +121,7 @@ export const CategoriesProvider = ({ children }: { children: ReactNode }) => {
 
   // Update URL when category changes
   useEffect(() => {
-    if (selectedCategory) {
-      setSelectedCategoryId(selectedCategory.id);
-    }
+    setSelectedCategoryId(selectedCategory ? selectedCategory.id : undefined);
   }, [selectedCategory, setSelectedCategoryId]);
 
   // Helper functions

@@ -1,10 +1,10 @@
-import { StepListStep } from '@/features/step-section/step-list';
+import { Step } from "@/types/steps";
 
-export type StepButtonState = 'past' | 'active' | 'coming';
+export type StepButtonState = 'active' | 'coming';
 
 // TODO: CHECK: if this still works
-export function getButtonState(step: StepListStep, selectedStep: StepListStep | null): StepButtonState {
+export function getButtonState(step: Step, selectedStep?: Step | null): StepButtonState {
+  if (selectedStep?.id === step.id) return 'active';
   if (!selectedStep) return 'coming';
-  if (selectedStep.position === step.position) return 'active';
-  return selectedStep.position > step.position ? 'past' : 'coming';
+  return 'coming';
 }

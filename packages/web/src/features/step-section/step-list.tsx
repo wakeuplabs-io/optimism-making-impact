@@ -7,16 +7,14 @@ import { UpdateStepBody } from '@optimism-making-impact/schemas';
 import { LoaderCircle } from 'lucide-react';
 import { Fragment, useMemo } from 'react';
 
-export type StepListStep = Step & { position: number };
-
 interface StepsListProps {
-  steps: StepListStep[];
-  selectedStep: StepListStep | null;
+  steps: Step[];
+  selectedStep?: Step;
   selectedCategoryId?: number;
   isLoading: boolean;
   isAdmin?: boolean;
   error: unknown;
-  onStepSelect: (stepId: number) => void;
+  onStepSelect: (step: Step) => void;
   onStepDelete: (stepId: number) => void;
   onStepEdit: (id: number, data: UpdateStepBody) => void;
 }
@@ -78,7 +76,7 @@ export function StepsList({
               style={stepWidth}
               className='shrink-0 2xl:max-w-[220px]'
               state={buttonState}
-              onClick={() => onStepSelect(step.id)}
+              onClick={() => onStepSelect(step)}
               step={step}
               isAdmin={isAdmin}
               onDelete={() => onStepDelete(step.id)}

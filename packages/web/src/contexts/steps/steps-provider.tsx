@@ -1,4 +1,4 @@
-import { StepsContext, StepWithPosition } from './steps-context';
+import { StepsContext } from './steps-context';
 import { useQueryParams } from '@/hooks/use-query-params';
 import { toast } from '@/hooks/use-toast';
 import { queryClient } from '@/main';
@@ -11,7 +11,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const { selectedCategoryId, selectedStepId, setSelectedStepId } = useQueryParams();
-  const [selectedStep, setSelectedStep] = useState<StepWithPosition | null>(null);
+  const [selectedStep, setSelectedStep] = useState<Step>();
 
   const {
     data: steps = [],
@@ -29,32 +29,28 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const handleStepSelect = useCallback(
-    (selectedStepId?: number) => {
-      const stepWithPosition = selectedStepId ? (steps.find((s) => s.id === selectedStepId) ?? steps[0]) : steps[0];
-      setSelectedStep(stepWithPosition);
-
-      if (stepWithPosition) {
-        setSelectedStepId(stepWithPosition.id);
-      }
+    (selectedStep?: Step) => {
+      setSelectedStep(selectedStep);
+      setSelectedStepId(selectedStep?.id);
     },
-    [steps],
+    [setSelectedStepId],
   );
 
-  const restoreSelectedStep = useCallback(() => {
-    if (steps.length === 0) return;
-
-    handleStepSelect(selectedStepId);
-  }, [steps, selectedStepId, handleStepSelect]);
-
   useEffect(() => {
-    if (!isLoading && !isFetching) restoreSelectedStep();
-  }, [steps, isLoading, isFetching]);
+    if (isLoading || isFetching) return;
+    if (selectedCategoryId && steps.length === 0) {
+      handleStepSelect(undefined);
+      return;
+    }
+
+    const newStep = steps.find((c) => c.id === selectedStepId);
+    handleStepSelect(newStep ?? steps[0]);
+  }, [steps]);
 
   // API mutations with success handlers
   const deleteStep = useMutation({
     mutationFn: (stepId: number) => StepsService.deleteOne(stepId),
     onSuccess: () => {
-      setSelectedStepId(undefined);
       queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
     },
     onMutate: async (stepId: number) => {
@@ -122,7 +118,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const addStep = useMutation({
     mutationFn: (data: CreateStepBody) => StepsService.create(data),
     onSuccess: ({ data }) => {
-      setSelectedStepId(data.id);
+      handleStepSelect(data);
       queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
     },
     onMutate: async (data: CreateStepBody) => {

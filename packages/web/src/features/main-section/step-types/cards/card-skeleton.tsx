@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 export function CardsStepSkeleton() {
   const isMobile = useIsMobile();
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4 h-[80vh] overflow-hidden'>
       <div className='flex h-full w-full flex-col lg:flex-row lg:gap-8'>
         <div className='mb-6 flex w-full flex-col-reverse items-center lg:flex-1 lg:flex-col'>
           {!isMobile && (

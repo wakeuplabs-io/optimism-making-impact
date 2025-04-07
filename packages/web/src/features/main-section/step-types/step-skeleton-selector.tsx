@@ -1,9 +1,9 @@
 import { CardsStepSkeleton } from './cards/card-skeleton';
 import { InfographicStepSkeleton } from './infographics/infographic-skeleton';
 import { ItemsStepSekeleton } from './items/item-skeleton';
-import { StepWithPosition } from '@/contexts/steps/steps-context';
+import { Step } from '@/types/steps';
 
-export function StepSkeletonSelector(props: { step: StepWithPosition }) {
+export function StepSkeletonSelector(props: { step: Step }) {
   switch (props.step.type) {
     case 'INFOGRAPHIC':
       return <InfographicStepSkeleton />;
