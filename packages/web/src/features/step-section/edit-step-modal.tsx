@@ -40,17 +40,16 @@ export function EditStepModal(props: EditStepModalProps) {
       }
       onDelete={props.onDelete}
     >
-      <FormFields defaultValues={defaultValues} step={props.step} />
+      <FormFields defaultValues={defaultValues}/>
     </EditEntityModal>
   );
 }
 
 interface FormFieldsProps {
   defaultValues: UpdateStepBody;
-  step: Step;
 }
 
-function FormFields({ defaultValues, step }: FormFieldsProps) {
+function FormFields({ defaultValues }: FormFieldsProps) {
   const { control, setValue } = useFormContext<UpdateStepBody>();
 
   return (
@@ -84,16 +83,6 @@ function FormFields({ defaultValues, step }: FormFieldsProps) {
           </div>
         </div>
       </div>
-      {step.type === 'SMARTLIST' && (
-        <div className='flex flex-col gap-1'>
-          <Controller
-            name='description'
-            control={control}
-            defaultValue={defaultValues.description}
-            render={({ field, fieldState }) => <FormTextInput {...field} error={fieldState.error?.message} placeholder='Description' />}
-          />
-        </div>
-      )}
     </div>
   );
 }

@@ -120,19 +120,6 @@ function FormFields({ smartListOptions }: FormFieldsProps) {
           )}
         />
       )}
-
-      {type === 'SMARTLIST' && (
-        <Controller
-          name='description'
-          control={control}
-          render={({ field, fieldState }) => (
-            <div className='flex flex-col gap-1'>
-              <FormTextInput {...field} error={fieldState.error?.message} placeholder='Write here...' />
-            </div>
-          )}
-        />
-      )}
-
       <div className='flex w-full gap-4'>
         <div className='flex w-full flex-row gap-1'>
           <Controller

@@ -53,21 +53,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
     },
-    onMutate: async (stepId: number) => {
-      await queryClient.cancelQueries({ queryKey: [`steps-by-category`, selectedCategoryId] });
-
-      const previousSteps = queryClient.getQueryData<Step[]>([`steps-by-category`, selectedCategoryId]) ?? [];
-
-      const updatedSteps = previousSteps.filter((step) => step.id !== stepId);
-
-      queryClient.setQueryData<Step[]>([`steps-by-category`, selectedCategoryId], updatedSteps);
-
-      return { previousSteps };
-    },
-    onError: (err, stepId, context) => {
-      if (context?.previousSteps) {
-        queryClient.setQueryData([`steps-by-category`, selectedCategoryId], context.previousSteps);
-      }
+    onError: (err, stepId) => {
       let description = `Failed to delete step id ${stepId}`;
       if (err instanceof AxiosError) {
         description = err.response?.data.error.message;
