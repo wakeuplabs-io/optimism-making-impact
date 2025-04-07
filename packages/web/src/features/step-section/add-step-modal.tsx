@@ -115,7 +115,6 @@ function FormFields({ smartListOptions }: FormFieldsProps) {
                 items={smartListOptions}
                 onValueChange={(value) => field.onChange(Number(value))}
                 placeholder='Select Smart List filter'
-                itemClassName='h-[42px] w-full rounded-md border border-gray-300 px-3 text-sm focus:border-red-500 focus:ring-0'
               />
             </div>
           )}
