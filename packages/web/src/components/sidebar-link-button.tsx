@@ -74,11 +74,12 @@ function EditLink(props: EditLinkProps) {
 }
 
 function EditLinkForm() {
-  const { control, watch } = useFormContext<{ link: string }>();
+  const { control, watch, formState } = useFormContext<{ link: string }>();
   const currentLink = watch('link');
-
   // Custom error message based on input state
   const getErrorMessage = (fieldState: ControllerFieldState) => {
+    const showError = formState.isSubmitted;
+    if (!showError) return undefined;
     if (!currentLink || currentLink.trim().length === 0) {
       return 'URL is required';
     } else if (fieldState.error) {
@@ -86,7 +87,6 @@ function EditLinkForm() {
     }
     return undefined;
   };
-
   return (
     <div className='space-y-2'>
       <Controller
