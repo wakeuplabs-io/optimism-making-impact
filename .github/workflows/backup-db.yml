@@ -46,7 +46,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 cp "$DUMP_FILE" "s3://${{ secrets.S3_BACKUP_BUCKET }}/db-backups/$DUMP_FILE"
+          aws s3 cp "$DUMP_FILE" "s3://${{ secrets.S3_BACKUP_BUCKET }}/$DUMP_FILE"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
