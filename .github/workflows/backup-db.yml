@@ -17,19 +17,26 @@ on:
 jobs:
   backup-db:
     runs-on: ubuntu-latest
-    environment: staging
-
-    container:
-      image: postgres:17
 
     steps:
-      - name: Checkout repo (to access package.json)
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install AWS CLI & jq
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Install PostgreSQL client 17
         run: |
-          apt-get update
-          apt-get install -y awscli jq
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg lsb-release
+          echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-17
 
       - name: Read version from package.json
         id: version
@@ -44,10 +51,6 @@ jobs:
           pg_dump --dbname="${{ secrets.DB_URL }}" -F c -f "$FILE_NAME"
           echo "DUMP_FILE=$FILE_NAME" >> $GITHUB_ENV
 
-      - name: Upload to S3
+      - name: Upload backup to S3
         run: |
-          aws s3 cp "$DUMP_FILE" "s3://${{ secrets.S3_BACKUP_BUCKET }}/$DUMP_FILE"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          aws s3 cp "$DUMP_FILE" "s3://${{ secrets.S3_BACKUP_BUCKET }}/db-backups/$DUMP_FILE"
