@@ -4,7 +4,7 @@ import { ImageButton, ImageButtonProps } from '@/components/image-button';
 import { cn } from '@/lib/utils';
 import { UpdateRoundBody } from '@optimism-making-impact/schemas';
 import { Save } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, ControllerFieldState, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 
 interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
@@ -35,7 +35,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
       )}
     >
       <a href={props.link} target='_blank' rel='noreferrer'>
-        <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
+        <ImageButton src={props.src} disabled={props.disabled} />
       </a>
       {props.isAdmin && !props.disabled && <EditLink linkType={props.linkType} onSubmit={props.onSubmit} link={props.link} />}
     </div>
@@ -78,7 +78,7 @@ function EditLinkForm() {
   const currentLink = watch('link');
 
   // Custom error message based on input state
-  const getErrorMessage = (fieldState: any) => {
+  const getErrorMessage = (fieldState: ControllerFieldState) => {
     if (!currentLink || currentLink.trim().length === 0) {
       return 'URL is required';
     } else if (fieldState.error) {
