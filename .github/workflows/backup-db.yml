@@ -17,7 +17,6 @@ on:
 jobs:
   backup-db:
     runs-on: ubuntu-latest
-    environment: staging
 
     container:
       image: postgres:17

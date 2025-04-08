@@ -21,7 +21,7 @@ on:
         required: true
 
 jobs:
-  backup-db:
+  call-backup-db-workflow:
     uses: ./.github/workflows/backup-db.yml
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
