@@ -55,7 +55,7 @@ export const RoundsProvider = ({ children }: { children: ReactNode }) => {
         };
       }
 
-      queryClient.setQueryData(['rounds'], [...previousRounds, newRound]);
+      queryClient.setQueryData(['rounds'], [newRound, ...previousRounds]);
       return { previousRounds };
     },
     onError: (error, _, context) => {

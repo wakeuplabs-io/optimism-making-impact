@@ -1,4 +1,4 @@
-## #Ticket / Issue Tracking
+## Ticket / Issue Tracking
 <!-- Provide the ticket or issue number that this PR is addressing. -->
 [{:code}](https://wakeuplabs.atlassian.net/browse/{:code})
 
