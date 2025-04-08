@@ -13,6 +13,7 @@ interface SidebarLinkButtonProps extends Pick<ImageButtonProps, 'src'> {
   isAdmin?: boolean;
   className?: string;
   disabled?: boolean;
+  linkType: 'link1' | 'link2';
 }
 
 // Create a URL schema for validation
@@ -36,7 +37,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
       <a href={props.link} target='_blank' rel='noreferrer'>
         <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
       </a>
-      {props.isAdmin && !props.disabled && <EditLink onSubmit={props.onSubmit} link={props.link} />}
+      {props.isAdmin && !props.disabled && <EditLink linkType={props.linkType} onSubmit={props.onSubmit} link={props.link} />}
     </div>
   );
 }
@@ -44,6 +45,7 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
 interface EditLinkProps {
   onSubmit: (data: UpdateRoundBody) => void;
   link: string;
+  linkType: 'link1' | 'link2';
 }
 
 function EditLink(props: EditLinkProps) {
@@ -58,7 +60,7 @@ function EditLink(props: EditLinkProps) {
           edit
         </div>
       }
-      onSubmit={(data) => props.onSubmit({ link1: data.link })}
+      onSubmit={(data) => props.onSubmit(props.linkType === 'link1' ? { link1: data.link } : { link2: data.link })}
       defaultValues={{ link: props.link }}
       schema={z.object({
         link: z.string().min(1, { message: 'URL is required' }).url({ message: 'Invalid URL' }),

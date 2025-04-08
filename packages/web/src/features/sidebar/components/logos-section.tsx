@@ -12,6 +12,7 @@ export default function LogosSection() {
   return (
     <div className='flex w-full gap-2'>
       <SidebarLinkButton
+        linkType='link1'
         src={VoteHere}
         disabled={!selectedRound}
         link={selectedRound?.link1 ?? ''}
@@ -20,6 +21,7 @@ export default function LogosSection() {
         className='w-1/2'
       />
       <SidebarLinkButton
+        linkType='link2'
         src={RetroList}
         disabled={!selectedRound}
         link={selectedRound?.link2 ?? ''}
