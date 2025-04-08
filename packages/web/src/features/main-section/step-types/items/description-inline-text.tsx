@@ -80,7 +80,9 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
         <div className='flex h-full items-start'>
           <div className='w-full flex items-center gap-2'>
             <p className='text-[20px] font-[500] lg:truncate w-full'>{validationError ? description : controlledDescription}</p>
-            {isAdmin && <EditPencilButton onClick={toggleEditMode} showLabel={true} />}
+            {isAdmin && (
+              <EditPencilButton onClick={toggleEditMode} showLabel={!controlledDescription || controlledDescription.trim().length === 0} />
+            )}
           </div>
         </div>
       )}
