@@ -20,7 +20,7 @@ jobs:
     environment: staging
 
     container:
-      image: postgres:15
+      image: postgres:17
 
     steps:
       - name: Checkout repo (to access package.json)
