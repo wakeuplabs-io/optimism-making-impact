@@ -39,7 +39,7 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
     const lastRound = await getLastCompleteRound();
 
     if (!lastRound) {
-      await prisma.round.create({ data: { link1: '', link2: '' } });
+      await prisma.round.create({ data: { link1: 'https://vote.optimism.io/', link2: 'https://retrolist.app/' } });
     } else {
       await duplicateRound(lastRound);
     }
