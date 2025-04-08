@@ -125,6 +125,23 @@ sequenceDiagram
    ```
    By default, the application will start on port 5173.
 
+## Deployment
+
+The application is deployed using GitHub Actions. The deployment process is triggered by pushing to the `main` branch. The deployment is handled by the `production.yml` workflow.
+
+The deployment process involves the following steps:
+
+1. **Install Dependencies** – Installs all necessary dependencies.
+2. **Build the Application** – Builds the application for production.
+3. **Migrate the Database** – Applies any necessary database migrations.
+4. **Deploy the Application** – Deploys the application to the production environment.
+
+### Deployment Plan
+
+1. **Open PR from `main` to `develop`** – This step is for reviewing changes before deployment.
+2. **Merge PR from `main` to `develop`** – This step triggers the deployment process.
+3. **Publish new Release from `main`** – This step is optional but recommended for versioning and tracking changes.
+
 ---
 
 <div align="center">
