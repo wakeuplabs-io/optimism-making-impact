@@ -33,25 +33,9 @@ export function SidebarLinkButton(props: SidebarLinkButtonProps) {
         props.className,
       )}
     >
-      {hasValidLink ? (
-        <a href={props.link} target='_blank' rel='noreferrer'>
-          <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
-        </a>
-      ) : (
-        <div className='relative'>
-          <ImageButton className='h-fit' src={props.src} disabled={props.disabled || !props.isAdmin} />
-          {!props.disabled && (
-            <div className='absolute inset-0 flex items-center justify-center bg-black/10 rounded-xl'>
-              {props.isAdmin && props.link && props.link.trim().length > 0 && (
-                <div className='absolute bottom-0 w-full text-center text-xs text-white bg-red-500/70 py-1 rounded-b-xl'>Invalid URL</div>
-              )}
-              {props.isAdmin && !props.link && (
-                <div className='w-full text-xs text-white bg-red-500/70 py-1 rounded-b-xl'>URL is required</div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+      <a href={props.link} target='_blank' rel='noreferrer'>
+        <ImageButton className='h-fit' src={props.src} disabled={props.disabled} />
+      </a>
       {props.isAdmin && !props.disabled && <EditLink onSubmit={props.onSubmit} link={props.link} />}
     </div>
   );
