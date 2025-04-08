@@ -61,7 +61,7 @@ export function DescriptionInlineText({ description, onChange, isAdmin = false, 
   return (
     <div className='min-h-14 grow overflow-ellipsis lg:overflow-hidden flex'>
       {editMode ? (
-        <div className='w-full flex gap-2 items-start'>
+        <div className='w-full flex gap-2 items-start p-[1px]'>
           <FormTextInput
             className={cn({
               'border-red-500 focus-visible:ring-0': validationError,
