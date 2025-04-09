@@ -42,6 +42,8 @@ jobs:
           FILE_NAME="backup_v${VERSION}_${TIMESTAMP}.dump"
           pg_dump --dbname="${{ secrets.DB_URL }}" -F c -f "$FILE_NAME"
           echo "DUMP_FILE=$FILE_NAME" >> $GITHUB_ENV
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
 
       - name: Upload to S3
         run: |
