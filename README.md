@@ -133,8 +133,9 @@ The deployment process involves the following steps:
 
 1. **Install Dependencies** – Installs all necessary dependencies.
 2. **Build the Application** – Builds the application for production.
-3. **Migrate the Database** – Applies any necessary database migrations.
-4. **Deploy the Application** – Deploys the application to the production environment.
+3. **Backup the Database** – Creates a backup of the current database.
+4. **Migrate the Database** – Applies any necessary database migrations.
+5. **Deploy the Application** – Deploys the application to the production environment.
 
 ### Deployment Plan
 
