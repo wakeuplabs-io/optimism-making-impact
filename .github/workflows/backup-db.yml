@@ -17,6 +17,7 @@ on:
 jobs:
   backup-db:
     runs-on: ubuntu-latest
+    environment: production
 
     container:
       image: postgres:17
@@ -40,7 +41,7 @@ jobs:
         run: |
           TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
           FILE_NAME="backup_v${VERSION}_${TIMESTAMP}.dump"
-          pg_dump --dbname="${{ secrets.DB_URL }}" -F c -f "$FILE_NAME"
+          pg_dump --dbname="$DB_URL" -F c -f "$FILE_NAME"
           echo "DUMP_FILE=$FILE_NAME" >> $GITHUB_ENV
         env:
           DB_URL: ${{ secrets.DB_URL }}
