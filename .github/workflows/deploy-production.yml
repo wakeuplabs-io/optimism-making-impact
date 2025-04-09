@@ -67,11 +67,11 @@ jobs:
             packages/prisma/node_modules
           key: npm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
-      
+
       # Install npm dependencies (if needed)
       - name: Install npm dependencies
         run: npm install
-        
+
       # Run the build
       - name: Build
         run: pnpm run build
@@ -80,6 +80,9 @@ jobs:
       - name: Migrate database
         working-directory: ./packages/prisma
         run: npm run prisma:migrate:deploy
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
       # Run the deploy
       - name: Deploy

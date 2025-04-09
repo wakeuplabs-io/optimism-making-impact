@@ -69,6 +69,9 @@ jobs:
       - name: Migrate database
         working-directory: ./packages/prisma
         run: npm run prisma:migrate:deploy
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
 
       # Run the deploy
       - name: Deploy
