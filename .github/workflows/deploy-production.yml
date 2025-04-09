@@ -17,9 +17,19 @@ on:
         required: true
       GOOGLE_CLIENT_SECRET:
         required: true
+      S3_BACKUP_BUCKET:
+        required: true
 
 jobs:
-  # Job to Deploy the UI
+  call-backup-db-workflow:
+    uses: ./.github/workflows/backup-db.yml
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      DB_URL: ${{ secrets.DB_URL }}
+      S3_BACKUP_BUCKET: ${{ secrets.S3_BACKUP_BUCKET }}
+
   deploy:
     runs-on: ubuntu-latest
     environment: production
@@ -43,29 +53,33 @@ jobs:
         with:
           node-version: 20
 
-      # Set up pnpm
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       # Restore cached dependencies
       - name: Restore pnpm dependencies
         uses: actions/cache/restore@v4
         id: pnpm-cache
         with:
           path: |
-            ~/.pnpm-store
+            ~/.npm
             node_modules
             packages/web/node_modules
             packages/schemas/node_modules
             packages/api/node_modules
             packages/prisma/node_modules
-          key: pnpm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: npm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           fail-on-cache-miss: true
+      
+      # Install npm dependencies (if needed)
+      - name: Install npm dependencies
+        run: npm install
+        
       # Run the build
       - name: Build
         run: pnpm run build
+
+      # Migrate DB
+      - name: Migrate database
+        working-directory: ./packages/prisma
+        run: npm run prisma:migrate:deploy
 
       # Run the deploy
       - name: Deploy

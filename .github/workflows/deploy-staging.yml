@@ -65,6 +65,11 @@ jobs:
       - name: Build
         run: npm run build
 
+        # Migrate DB
+      - name: Migrate database
+        working-directory: ./packages/prisma
+        run: npm run prisma:migrate:deploy
+
       # Run the deploy
       - name: Deploy
         env:

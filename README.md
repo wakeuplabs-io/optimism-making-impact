@@ -125,6 +125,27 @@ sequenceDiagram
    ```
    By default, the application will start on port 5173.
 
+## Deployment
+
+The application is deployed using GitHub Actions. The deployment process is triggered by pushing to the `main` branch. The deployment is handled by the `production.yml` workflow.
+
+The deployment process involves the following steps:
+
+1. **Install Dependencies** – Installs all necessary dependencies.
+2. **Build the Application** – Builds the application for production.
+3. **Backup the Database** – Creates a backup of the current database.
+4. **Migrate the Database** – Applies any necessary database migrations.
+5. **Deploy the Application** – Deploys the application to the production environment.
+
+### Deployment Plan
+
+1. **Backup Database** – Before any deployment a `backup` of the database must be taken to ensure data integrity in case of any issues.
+   - Stored in the `optimism-making-impact-production-db-backups` s3 bucket.
+   - Named with the version and current date and time. e.g. `backup_v1.0.0-2023-09-15T12:34:56Z.sql`
+2. **Open PR from `main` to `develop`** – This step is for reviewing changes before deployment.
+3. **Merge PR from `main` to `develop`** – This step triggers the deployment process.
+4. **Publish new Release from `main`** – This step is optional but recommended for versioning and tracking changes.
+
 ---
 
 <div align="center">
