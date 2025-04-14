@@ -4,11 +4,13 @@ Welcome to the [WakeUp Labs](https://www.wakeuplabs.io/) Optimism Retro Impact G
 
 For more details about the application's requirements, check out the [Mission Request](https://gov.optimism.io/t/ready-to-vote-making-impact-evaluation-accessible/7489).
 
-## Application Links
+## Application Links and Demo
 
 Staging: https://retroimpactguidelines.wakeuplabs.link
 
 Production: https://retroimpactguidelines.xyz
+
+Demo: https://www.youtube.com/watch?v=tQf0O3rYOqA
 
 ## Introduction
 
