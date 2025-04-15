@@ -1,9 +1,13 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+// AWS Tags
+const CUSTOMER = 'optimism';
+const PROJECT = 'making-impact';
+
 export default $config({
   app(input) {
     return {
-      name: 'optimism-making-impact',
+      name: `${CUSTOMER}-${PROJECT}`,
       removal: input?.stage === 'production' ? 'retain' : 'remove',
       protect: ['production'].includes(input?.stage),
       home: 'aws',
@@ -11,7 +15,8 @@ export default $config({
         aws: {
           defaultTags: {
             tags: {
-              customer: 'optimism-making-impact',
+              customer: CUSTOMER,
+              project: PROJECT,
               stage: input?.stage,
             },
           },
