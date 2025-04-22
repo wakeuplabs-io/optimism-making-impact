@@ -169,17 +169,22 @@ type CompleteRound = Round & {
  * @returns The newly created round ID.
  */
 async function duplicateRound(originalRound: CompleteRound): Promise<number> {
-  return await prisma.$transaction(async (tx: Tx) => {
-    const newRound = await duplicateRoundRecord(tx, originalRound);
+  return await prisma.$transaction(
+    async (tx: Tx) => {
+      const newRound = await duplicateRoundRecord(tx, originalRound);
 
-    for (const category of originalRound.categories) {
-      const newCategory = await duplicateCategory(tx, category, newRound.id);
+      for (const category of originalRound.categories) {
+        const newCategory = await duplicateCategory(tx, category, newRound.id);
 
-      await duplicateSteps(tx, category.steps, newCategory);
-    }
+        await duplicateSteps(tx, category.steps, newCategory);
+      }
 
-    return newRound.id;
-  });
+      return newRound.id;
+    },
+    {
+      timeout: 30_000,
+    },
+  );
 }
 
 async function duplicateRoundRecord(tx: Tx, round: Round): Promise<Round> {
