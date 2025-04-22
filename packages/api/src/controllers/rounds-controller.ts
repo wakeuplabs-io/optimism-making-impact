@@ -182,7 +182,7 @@ async function duplicateRound(originalRound: CompleteRound): Promise<number> {
       return newRound.id;
     },
     {
-      timeout: 30_000,
+      timeout: 30 * 1000,
     },
   );
 }
