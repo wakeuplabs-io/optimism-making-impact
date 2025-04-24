@@ -30,7 +30,7 @@ export default $config({
     if (!process.env.GOOGLE_CLIENT_SECRET) throw new Error('GOOGLE_CLIENT_SECRET not set');
     if (!process.env.WAKEUP_URL) throw new Error('WAKEUP_URL not set');
     if (!process.env.REPOSITORY_URL) throw new Error('REPOSITORY_URL not set');
-      
+
     // AWS data
     const { name: region } = await aws.getRegion({});
 
@@ -65,6 +65,10 @@ export default $config({
         client: {
           callbackUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
           logoutUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
+          accessTokenValidity: 60, // minutes (1 hour, recommended default)
+          idTokenValidity: 60, // minutes (1 hour, recommended default)
+          refreshTokenValidity: 30, // days (typically 30 or fewer)
+          refreshTokenValidityUnits: 'days', // explicitly set units
         },
       },
     });
