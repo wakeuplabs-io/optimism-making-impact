@@ -15,7 +15,7 @@
     "format": "concurrently \"npm run format --workspace api --if-present\" \"npm run format --workspace @optimism-making-impact/prisma --if-present\" \"npm run format --workspace @optimism-making-impact/schemas --if-present\" \"npm run format --workspace web --if-present\"",
     "studio": "npm run studio --workspace @optimism-making-impact/prisma",
     "ui:add": "npm run ui:add --workspace web",
-    "deploy:app:staging": "sst install && sst refresh && sst deploy --stage=staging --print-logs",
+    "deploy:app:staging": "sst install && sst refresh --stage=staging --print-logs && sst deploy --stage=staging --print-logs",
     "deploy:app:production": "sst install && sst deploy --stage=production",
     "ui:build": "concurrently \"npm run build --workspace @optimism-making-impact/schemas --if-present\" \"npm run build --workspace web --if-present\""
   },
