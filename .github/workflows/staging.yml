@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - fix/sst-refresh
 
 jobs:
   # Install dependencies
