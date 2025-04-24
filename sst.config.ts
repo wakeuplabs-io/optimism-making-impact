@@ -65,8 +65,8 @@ export default $config({
         client: {
           callbackUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
           logoutUrls: $app.stage === 'production' ? [fixedUrlForRootDomain] : ['http://localhost:5173', fixedUrlForRootDomain],
-          accessTokenValidity: 60, // minutes (1 hour, recommended default)
-          idTokenValidity: 60, // minutes (1 hour, recommended default)
+          accessTokenValidity: 24, // hours
+          idTokenValidity: 24, // hours
           refreshTokenValidity: 30, // days (typically 30 or fewer)
           refreshTokenValidityUnits: 'days', // explicitly set units
         },
