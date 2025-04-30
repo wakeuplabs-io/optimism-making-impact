@@ -26,7 +26,7 @@ jobs:
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
       DB_URL: ${{ secrets.DB_URL }}
       S3_BACKUP_BUCKET: ${{ secrets.S3_BACKUP_BUCKET }}
 
@@ -42,7 +42,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
           mask-aws-account-id: 'no'
       # Checkout the repository
       - name: Checkout code
