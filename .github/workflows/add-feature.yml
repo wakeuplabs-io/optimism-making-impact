@@ -1,4 +1,4 @@
-name: Check Repo Secrets on Push
+name: Feature testing
 
 on:
   push:
@@ -6,45 +6,19 @@ on:
       - add-feature
 
 jobs:
-  check-secrets:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if secrets are defined
-        run: |
-          echo "Checking for required secrets..."
+  # Install dependencies
+  call-install-workflow:
+    uses: ./.github/workflows/install-deps.yml
 
-          for secret_name in \
-            AWS_ACCESS_KEY_ID \
-            AWS_SECRET_ACCESS_KEY \
-            AWS_REGION \
-            DB_URL \
-            DB_URL_NON_POOLING \
-            GOOGLE_CLIENT_ID \
-            GOOGLE_CLIENT_SECRET; do
-
-            if [ -n "${!secret_name}" ]; then
-              echo "✅ $secret_name is set"
-            else
-              echo "❌ $secret_name is NOT set"
-            fi
-          done
-
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-
-      - name: Print secrets
-        run: npm run print
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+  # Job to deploy the API
+  call-deploy-api-workflow:
+    uses: ./.github/workflows/deploy-feature.yml
+    needs: call-install-workflow
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION  }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
