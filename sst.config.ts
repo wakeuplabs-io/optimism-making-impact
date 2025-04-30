@@ -30,7 +30,7 @@ export default $config({
     if (!process.env.GOOGLE_CLIENT_SECRET) throw new Error('GOOGLE_CLIENT_SECRET not set');
     if (!process.env.WAKEUP_URL) throw new Error('WAKEUP_URL not set');
     if (!process.env.REPOSITORY_URL) throw new Error('REPOSITORY_URL not set');
-      
+
     // AWS data
     const { name: region } = await aws.getRegion({});
 
@@ -99,10 +99,10 @@ export default $config({
 
     apiGateway.route('$default', functionHandler.arn);
 
-    // production is https://retroimpactguidelines.xyz/
-    // staging is https://retroimpactguidelines.wakeuplabs.link/
-    // production uses root domain and staging a subdomain
-    // this is considered with the StaticSite domain parameter
+    // Production is https://retroimpactguidelines.xyz/
+    // Staging is https://retroimpactguidelines.wakeuplabs.link/
+    // Production uses root domain and staging a subdomain
+    // This is considered with the StaticSite domain parameter
     const domainRoot = process.env.UI_URL?.replace(/^https?:\/\/(www\.)?/, '');
     const domainAlias = process.env.UI_URL?.replace(/^https?:\/\//, '');
 
