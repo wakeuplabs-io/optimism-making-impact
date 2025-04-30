@@ -121,12 +121,7 @@ export default $config({
       },
       domain: {
         name: domainRoot,
-        aliases: domainAlias !== domainRoot ? [domainAlias] : [],
-        hostedZone: domainRoot,
-        domainAlias: {
-          hostedZone: domainRoot,
-          keepExistingRecords: true
-        }
+        aliases: domainAlias !== domainRoot ? [domainAlias] : []
       },
       assets: {
         textEncoding: 'utf-8',
