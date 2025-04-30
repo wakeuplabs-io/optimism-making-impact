@@ -1,0 +1,25 @@
+name: pipeline CD/CI production
+
+on:
+  push:
+    branches:
+      - redeploy-stack
+
+jobs:
+  # Install dependencies
+  call-install-workflow:
+    uses: ./.github/workflows/install-deps.yml
+
+  # Job to deploy the API
+  redeploy-workflow:
+    uses: ./.github/workflows/deploy-redeploy.yml
+    needs: call-install-workflow
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ vars.AWS_REGION  }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      S3_BACKUP_BUCKET: ${{ secrets.S3_BACKUP_BUCKET }}

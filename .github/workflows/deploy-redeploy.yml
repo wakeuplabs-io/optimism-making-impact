@@ -1,0 +1,98 @@
+name: Deploy
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      AWS_REGION:
+        required: true
+      DB_URL:
+        required: true
+      DB_URL_NON_POOLING:
+        required: true
+      GOOGLE_CLIENT_ID:
+        required: true
+      GOOGLE_CLIENT_SECRET:
+        required: true
+      S3_BACKUP_BUCKET:
+        required: true
+
+jobs:
+  # call-backup-db-workflow:
+  #   uses: ./.github/workflows/backup-db.yml
+  #   secrets:
+  #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     AWS_REGION: ${{ vars.AWS_REGION }}
+  #     DB_URL: ${{ secrets.DB_URL }}
+  #     S3_BACKUP_BUCKET: ${{ secrets.S3_BACKUP_BUCKET }}
+
+  deploy:
+    # needs: call-backup-db-workflow
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          mask-aws-account-id: 'no'
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Restore cached dependencies
+      - name: Restore npm dependencies
+        uses: actions/cache/restore@v4
+        id: npm-cache
+        with:
+          path: |
+            ~/.npm
+            node_modules
+            packages/web/node_modules
+            packages/schemas/node_modules
+            packages/api/node_modules
+            packages/prisma/node_modules
+          key: npm-optimism-making-impact-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          fail-on-cache-miss: true
+
+      # Install npm dependencies (if needed)
+      - name: Install npm dependencies
+        run: npm install
+
+      # Run the build
+      # - name: Build
+      #   run: npm run build
+
+      # Migrate DB
+      # - name: Migrate database
+      #   working-directory: ./packages/prisma
+      #   run: npm run prisma:migrate:deploy
+      #   env:
+      #     DB_URL: ${{ secrets.DB_URL }}
+      #     DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
+
+      # Run the deploy
+      - name: Deploy
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          UI_URL: ${{ vars.UI_URL }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
+          WAKEUP_URL: ${{ vars.WAKEUP_URL }}
+          REPOSITORY_URL: ${{ vars.REPOSITORY_URL }}
+        run: npm run deploy:app:redeploy

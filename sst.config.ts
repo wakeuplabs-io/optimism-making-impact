@@ -8,8 +8,10 @@ export default $config({
   app(input) {
     return {
       name: `${CUSTOMER}-${PROJECT}`,
-      removal: input?.stage === 'production' ? 'retain' : 'remove',
-      protect: ['production'].includes(input?.stage),
+      removal: 'remove',
+      protect: false,
+      // removal: input?.stage === 'production' ? 'retain' : 'remove',
+      // protect: ['production'].includes(input?.stage),
       home: 'aws',
       providers: {
         aws: {
@@ -121,7 +123,7 @@ export default $config({
       },
       domain: {
         name: domainRoot,
-        aliases: domainAlias !== domainRoot ? [domainAlias] : []
+        aliases: domainAlias !== domainRoot ? [domainAlias] : [],
       },
       assets: {
         textEncoding: 'utf-8',
