@@ -16,7 +16,7 @@
     "studio": "npm run studio --workspace @optimism-making-impact/prisma",
     "ui:add": "npm run ui:add --workspace web",
     "deploy:app:staging": "sst install && sst deploy --stage=staging --print-logs",
-    "deploy:app:production": "sst install && sst deploy --stage=production --print-logs",
+    "deploy:app:production": "sst install && sst refresh --stage=production && sst deploy --stage=production --print-logs",
     "ui:build": "concurrently \"npm run build --workspace @optimism-making-impact/schemas --if-present\" \"npm run build --workspace web --if-present\""
   },
   "keywords": [],
