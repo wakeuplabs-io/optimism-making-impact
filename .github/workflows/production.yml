@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feat/github-oidc
 
 jobs:
   # Install dependencies
@@ -15,9 +16,7 @@ jobs:
     uses: ./.github/workflows/deploy-production.yml
     needs: call-install-workflow
     secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ vars.AWS_REGION  }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       DB_URL: ${{ secrets.DB_URL }}
       DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}

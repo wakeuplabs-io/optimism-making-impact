@@ -3,9 +3,7 @@ name: Backup Database
 on:
   workflow_call:
     secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
+      AWS_ROLE_ARN:
         required: true
       AWS_REGION:
         required: true
@@ -37,6 +35,13 @@ jobs:
           VERSION=$(jq -r .version package.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: github-actions-backup-db
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Dump the database
         run: |
           TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
@@ -49,7 +54,3 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 cp "$DUMP_FILE" "s3://${{ secrets.S3_BACKUP_BUCKET }}/$DUMP_FILE"
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ vars.AWS_REGION }}
