@@ -5,8 +5,6 @@ on:
     secrets:
       AWS_ROLE_ARN:
         required: true
-      AWS_REGION:
-        required: true
       DB_URL:
         required: true
       DB_URL_NON_POOLING:
