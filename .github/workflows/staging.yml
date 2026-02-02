@@ -14,10 +14,13 @@ jobs:
   call-deploy-api-workflow:
     uses: ./.github/workflows/deploy-staging.yml
     needs: call-install-workflow
+
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
+    
     secrets:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ vars.AWS_REGION  }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       DB_URL: ${{ secrets.DB_URL }}
       DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
