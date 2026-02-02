@@ -20,6 +20,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: staging
+    
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
 
     steps:
       # Configure AWS credentials

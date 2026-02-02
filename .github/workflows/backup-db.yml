@@ -16,6 +16,10 @@ jobs:
   backup-db:
     runs-on: ubuntu-latest
     environment: production
+    
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
 
     container:
       image: postgres:17
@@ -40,7 +44,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: github-actions-backup-db
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Dump the database
         run: |

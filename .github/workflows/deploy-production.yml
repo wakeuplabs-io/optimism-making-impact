@@ -31,6 +31,10 @@ jobs:
     needs: call-backup-db-workflow
     runs-on: ubuntu-latest
     environment: production
+    
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
 
     steps:
       # Configure AWS credentials
@@ -38,7 +42,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          role-session-name: github-actions-deploy-propertize
+          role-session-name: github-actions-deploy-op-retro-impact
           aws-region: sa-east-1
       # Checkout the repository
       - name: Checkout code
