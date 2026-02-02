@@ -22,7 +22,6 @@ jobs:
     
     secrets:
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
-      AWS_REGION: ${{ vars.AWS_REGION  }}
       DB_URL: ${{ secrets.DB_URL }}
       DB_URL_NON_POOLING: ${{ secrets.DB_URL_NON_POOLING }}
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}

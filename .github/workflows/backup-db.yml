@@ -42,7 +42,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: github-actions-backup-db
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: sa-east-1
 
       - name: Dump the database
         run: |
