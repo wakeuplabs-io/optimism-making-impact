@@ -21,6 +21,11 @@ on:
 jobs:
   call-backup-db-workflow:
     uses: ./.github/workflows/backup-db.yml
+
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
+    
     secrets:
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       AWS_REGION: ${{ vars.AWS_REGION }}

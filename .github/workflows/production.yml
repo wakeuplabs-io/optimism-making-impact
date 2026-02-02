@@ -15,6 +15,11 @@ jobs:
   call-deploy-api-workflow:
     uses: ./.github/workflows/deploy-production.yml
     needs: call-install-workflow
+
+    permissions:
+      id-token: write   # Required for OIDC authentication
+      contents: read    # Required for actions/checkout
+    
     secrets:
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
       DB_URL: ${{ secrets.DB_URL }}
